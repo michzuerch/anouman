@@ -1,0 +1,11 @@
+connect 127.0.0.1
+ 
+batch
+
+/subsystem=security/security-domain=Anouman:add(cache-type=default)
+
+/subsystem=security/security-domain=Anouman/authentication=classic:add(login-modules=[{"code"=>"UsersRoles","flag"=>"required", "module-options"=>[("usersProperties"=>"${jboss.server.config.dir}/usersAnouman.properties"),("rolesProperties"=>"${jboss.server.config.dir}/rolesAnouman.properties")] }]   )
+
+run-batch
+:reload
+
