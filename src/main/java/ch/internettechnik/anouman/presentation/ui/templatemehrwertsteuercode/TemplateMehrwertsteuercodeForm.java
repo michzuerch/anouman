@@ -1,4 +1,4 @@
-package ch.internettechnik.anouman.presentation.templatemehrwertsteuercode;
+package ch.internettechnik.anouman.presentation.ui.templatemehrwertsteuercode;
 
 import ch.internettechnik.anouman.backend.entity.TemplateMehrwertsteuercode;
 import com.vaadin.cdi.ViewScoped;

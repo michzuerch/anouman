@@ -14,7 +14,7 @@ import javax.servlet.annotation.WebServlet;
  * Created by michzuerch on 09.05.17.
  */
 
-@WebServlet(asyncSupported = true, urlPatterns = {"/*"},
+@WebServlet(asyncSupported = true, urlPatterns = {"/*"}, name = "AnoumanServlet",
         initParams = {
                 @WebInitParam(name = VaadinSession.UI_PARAMETER, value = "ch.internettechnik.anouman.presentation.ui.AnoumanUI"),
                 @WebInitParam(name = Constants.SERVLET_PARAMETER_UI_PROVIDER, value = "com.vaadin.cdi.CDIUIProvider"),
@@ -26,5 +26,5 @@ import javax.servlet.annotation.WebServlet;
         ui = AnoumanUI.class)
 
 @PersistenceContext(name = "persistence/em", unitName = "AnoumanPU")
-public class Anouman2Servlet extends VaadinServlet {
+public class AnoumanServlet extends VaadinServlet {
 }
