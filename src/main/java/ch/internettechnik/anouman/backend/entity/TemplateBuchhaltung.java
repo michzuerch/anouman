@@ -1,7 +1,5 @@
 package ch.internettechnik.anouman.backend.entity;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -20,7 +18,6 @@ import java.util.Set;
 public class TemplateBuchhaltung extends AbstractEntity {
     @Column
     @NotNull
-    @NotEmpty
     @XmlElement
     private String bezeichnung;
 
