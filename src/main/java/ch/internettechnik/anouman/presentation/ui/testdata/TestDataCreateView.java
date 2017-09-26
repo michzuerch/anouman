@@ -421,7 +421,13 @@ public class TestDataCreateView extends VerticalLayout implements View {
         });
         templateBuchhaltungTestBtn.setIcon(VaadinIcons.ABACUS);
 
-        addComponents(menu, rechnungTestBtn, templateBuchhaltungTestBtn);
+        Button testCreateTemplateBuchhaltung = new Button("Test Create Template Buchhaltung", clickEvent -> {
+            TemplateBuchhaltung bh = new TemplateBuchhaltung();
+            bh.setBezeichnung("TestBH");
+            bh = templateBuchhaltungFacade.save(bh);
+        });
+
+        addComponents(menu, rechnungTestBtn, templateBuchhaltungTestBtn, testCreateTemplateBuchhaltung);
     }
 
     @Override

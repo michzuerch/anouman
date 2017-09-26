@@ -31,6 +31,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.PropertyException;
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by michzuerch on 25.07.15.
@@ -54,23 +55,9 @@ public class BackupView extends VerticalLayout implements View {
     @Inject
     TemplateBuchhaltungFacade templateBuchhaltungFacade;
 
-    Button downloaderTestObject = new DownloadButton(stream -> {
-        JAXBContext context = null;
-        try {
-            context = JAXBContext.newInstance(TestObject.class);
-            Marshaller marshaller = context.createMarshaller();
-            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-            TestObject val = new TestObject();
-            val.setTitle("Titel");
-            marshaller.marshal(val, stream);
-            stream.flush();
-            stream.close();
-        } catch (JAXBException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }).setFileName("TestObject.xml").withCaption("Datei mit TestOject herunterlanden").withIcon(VaadinIcons.DOWNLOAD);
+    @Inject
+    TemplateBuchhaltungenUploadReceiver templateBuchhaltungenUploadReceiver;
+
 
     Button downloaderAdressen = new DownloadButton(stream -> {
         JAXBContext jaxbContext = null;
@@ -97,7 +84,6 @@ public class BackupView extends VerticalLayout implements View {
         }
     }).setFileName("AdressenRechnungenAnouman.xml")
             .withCaption("Datei mit Adressen, Rechnungen, Rechnungspositionen, Aufwand herunterladen").withIcon(VaadinIcons.DOWNLOAD);
-
 
     Button downloaderBuchhaltungen = new DownloadButton(stream -> {
         JAXBContext jaxbContext = null;
@@ -396,7 +382,7 @@ public class BackupView extends VerticalLayout implements View {
     private Upload uploadAdressen = new Upload("Upload Adressen", adressenUploadReceiverReceiver);
     private BuchhaltungenUploadReceiver buchhaltungenUploadReceiver = new BuchhaltungenUploadReceiver();
     private Upload uploadBuchhaltungen = new Upload("Upload Buchhaltungen", buchhaltungenUploadReceiver);
-    private TemplateBuchhaltungenUploadReceiver templateBuchhaltungenUploadReceiver = new TemplateBuchhaltungenUploadReceiver();
+    //private TemplateBuchhaltungenUploadReceiver templateBuchhaltungenUploadReceiver = new TemplateBuchhaltungenUploadReceiver();
     private Upload uploadTemplateBuchhaltungen = new Upload("Upload Template Buchhaltungen", templateBuchhaltungenUploadReceiver);
 
     @PostConstruct
@@ -404,27 +390,49 @@ public class BackupView extends VerticalLayout implements View {
         uploadAdressen.addSucceededListener(adressenUploadReceiverReceiver);
         uploadBuchhaltungen.addSucceededListener(buchhaltungenUploadReceiver);
         uploadTemplateBuchhaltungen.addSucceededListener(templateBuchhaltungenUploadReceiver);
+        uploadTemplateBuchhaltungen.setReceiver(templateBuchhaltungenUploadReceiver);
 
-        listTemplateBuchhaltungen.setItems(templateBuchhaltungFacade.findAll());
-        listTemplateBuchhaltungen.setItemCaptionGenerator(templateBuchhaltung -> templateBuchhaltung.getBezeichnung());
-        listTemplateBuchhaltungen.setEmptySelectionAllowed(false);
-        listTemplateBuchhaltungen.setSelectedItem(templateBuchhaltungFacade.findAll().get(0));
+        List<TemplateBuchhaltung> templateBuchhaltungen = templateBuchhaltungFacade.findAll();
+        if (templateBuchhaltungen.size() == 0) {
+            listTemplateBuchhaltungen.setEnabled(false);
+            downloaderTemplateBuchhaltungen.setEnabled(false);
+            downloaderTemplateBuchhaltung.setEnabled(false);
+        } else {
+            listTemplateBuchhaltungen.setItems(templateBuchhaltungFacade.findAll());
+            listTemplateBuchhaltungen.setItemCaptionGenerator(templateBuchhaltung -> templateBuchhaltung.getBezeichnung());
+            listTemplateBuchhaltungen.setEmptySelectionAllowed(false);
+            listTemplateBuchhaltungen.setSelectedItem(templateBuchhaltungFacade.findAll().get(0));
+        }
         listTemplateBuchhaltungen.setWidth(20, Unit.EM);
 
-        listBuchhaltungen.setItems(buchhaltungFacade.findAll());
-        listBuchhaltungen.setItemCaptionGenerator(buchhaltung -> buchhaltung.getBezeichnung() + " " + buchhaltung.getJahr());
-        listBuchhaltungen.setEmptySelectionAllowed(false);
-        listBuchhaltungen.setSelectedItem(buchhaltungFacade.findAll().get(0));
+        List<Buchhaltung> buchhaltungen = buchhaltungFacade.findAll();
+        if (buchhaltungen.size() == 0) {
+            listBuchhaltungen.setEnabled(false);
+            downloaderBuchhaltungen.setEnabled(false);
+            downloaderBuchhaltung.setEnabled(false);
+        } else {
+            listBuchhaltungen.setItems(buchhaltungFacade.findAll());
+            listBuchhaltungen.setItemCaptionGenerator(buchhaltung -> buchhaltung.getBezeichnung() + " " + buchhaltung.getJahr());
+            listBuchhaltungen.setEmptySelectionAllowed(false);
+            listBuchhaltungen.setSelectedItem(buchhaltungFacade.findAll().get(0));
+        }
         listBuchhaltungen.setWidth(20, Unit.EM);
 
-        listAdressen.setItems(adresseFacade.findAll());
-        listAdressen.setItemCaptionGenerator(adresse -> adresse.getFirma() + " " + adresse.getNachname() + " " + adresse.getOrt());
-        listAdressen.setEmptySelectionAllowed(false);
-        listAdressen.setSelectedItem(adresseFacade.findAll().get(0));
+        List<Adresse> adressen = adresseFacade.findAll();
+        if (adressen.size() == 0) {
+            listAdressen.setEnabled(false);
+            downloaderAdressen.setEnabled(false);
+            downloaderAdresse.setEnabled(false);
+        } else {
+            listAdressen.setItems(adresseFacade.findAll());
+            listAdressen.setItemCaptionGenerator(adresse -> adresse.getFirma() + " " + adresse.getNachname() + " " + adresse.getOrt());
+            listAdressen.setEmptySelectionAllowed(false);
+            listAdressen.setSelectedItem(adresseFacade.findAll().get(0));
+        }
         listAdressen.setWidth(20, Unit.EM);
 
         Panel panelBackup = new Panel("Backup");
-        panelBackup.setContent(new MVerticalLayout(downloaderTestObject, downloaderAdressen, downloaderBuchhaltungen, downloaderTemplateBuchhaltungen,
+        panelBackup.setContent(new MVerticalLayout(downloaderAdressen, downloaderBuchhaltungen, downloaderTemplateBuchhaltungen,
                 new HorizontalLayout(downloaderBuchhaltung, listBuchhaltungen),
                 new HorizontalLayout(downloaderTemplateBuchhaltung, listTemplateBuchhaltungen),
                 new HorizontalLayout(downloaderAdresse, listAdressen)
