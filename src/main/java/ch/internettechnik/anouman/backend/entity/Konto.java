@@ -25,6 +25,8 @@ public class Konto extends AbstractEntity {
     @NotEmpty
     private String kontonummer;
 
+    @Column
+    private String bemerkung;
 
     @OneToMany(mappedBy = "kontoSoll")
     private Set<Unterbuchung> soll;
@@ -91,10 +93,19 @@ public class Konto extends AbstractEntity {
         this.haben = haben;
     }
 
+    public String getBemerkung() {
+        return bemerkung;
+    }
+
+    public void setBemerkung(String bemerkung) {
+        this.bemerkung = bemerkung;
+    }
+
     @Override
     public String toString() {
         return "Konto{" +
                 "bezeichnung='" + bezeichnung + '\'' +
+                "bemerkung='" + bemerkung + '\'' +
                 ", kontonummer='" + kontonummer + '\'' +
                 ", soll=" + soll +
                 ", haben=" + haben +

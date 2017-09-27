@@ -9,6 +9,7 @@ import org.vaadin.viritin.form.AbstractForm;
 public class TemplateKontoForm extends AbstractForm<TemplateKonto> {
     TextField bezeichnung = new TextField("Bezeichnung");
     TextField kontonummer = new TextField("Kontonummer");
+    TextArea bemerkung = new TextArea("Bemerkung");
 
     public TemplateKontoForm() {
         super(TemplateKonto.class);
@@ -24,7 +25,7 @@ public class TemplateKontoForm extends AbstractForm<TemplateKonto> {
 
     @Override
     protected Component createContent() {
-        return new VerticalLayout(new FormLayout(bezeichnung, kontonummer), getToolbar());
+        return new VerticalLayout(new FormLayout(bezeichnung, kontonummer, bemerkung), getToolbar());
     }
 
 

@@ -23,6 +23,9 @@ public class TemplateKonto extends AbstractEntity {
     private String bezeichnung;
 
     @Column
+    private String bemerkung;
+
+    @Column
     @NotNull
     @XmlElement
     private String kontonummer;
@@ -53,6 +56,14 @@ public class TemplateKonto extends AbstractEntity {
         this.bezeichnung = bezeichnung;
     }
 
+    public String getBemerkung() {
+        return bemerkung;
+    }
+
+    public void setBemerkung(String bemerkung) {
+        this.bemerkung = bemerkung;
+    }
+
     public String getKontonummer() {
         return kontonummer;
     }
@@ -67,5 +78,15 @@ public class TemplateKonto extends AbstractEntity {
 
     public void setTemplateKontoart(TemplateKontoart templateKontoart) {
         this.templateKontoart = templateKontoart;
+    }
+
+    @Override
+    public String toString() {
+        return "TemplateKonto{" +
+                "bezeichnung='" + bezeichnung + '\'' +
+                ", bemerkung='" + bemerkung + '\'' +
+                ", kontonummer='" + kontonummer + '\'' +
+                ", templateKontoart=" + templateKontoart +
+                '}';
     }
 }
