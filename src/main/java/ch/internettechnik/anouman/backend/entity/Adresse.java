@@ -82,7 +82,7 @@ public class Adresse extends AbstractEntity {
     private Double stundensatz;
 
     @OneToMany(mappedBy = "adresse")
-    @XmlElement
+    @XmlElement(name = "rechnungen")
     private Set<Rechnung> rechnungen = new HashSet<Rechnung>();
 
     public Adresse(String firma, String anrede, String vorname, String nachname, String strasse, String postleitzahl, @NotBlank(message = "Ort muss eingegeben werden.") String ort, Double stundensatz) {

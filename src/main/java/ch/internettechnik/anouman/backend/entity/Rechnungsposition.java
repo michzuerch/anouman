@@ -4,7 +4,6 @@ import javax.persistence.*;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -103,10 +102,6 @@ public class Rechnungsposition extends AbstractEntity {
         BigDecimal anz = new BigDecimal(getAnzahl());
         BigDecimal total = stk.multiply(anz);
         return total.doubleValue();
-    }
-
-    public void afterUnmarshal(Unmarshaller unmarshaller, Object parent) {
-        this.rechnung = (Rechnung) parent;
     }
 
     @Override

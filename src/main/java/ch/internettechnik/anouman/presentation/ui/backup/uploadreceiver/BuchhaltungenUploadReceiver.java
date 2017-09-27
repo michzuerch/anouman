@@ -1,70 +1,128 @@
 package ch.internettechnik.anouman.presentation.ui.backup.uploadreceiver;
 
-import ch.internettechnik.anouman.backend.session.jpa.api.AdresseService;
-import ch.internettechnik.anouman.backend.session.jpa.api.AufwandService;
-import ch.internettechnik.anouman.backend.session.jpa.api.RechnungService;
-import ch.internettechnik.anouman.backend.session.jpa.api.RechnungspositionService;
+import ch.internettechnik.anouman.backend.entity.*;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.*;
 import ch.internettechnik.anouman.presentation.ui.backup.BackupView;
+import ch.internettechnik.anouman.presentation.ui.backup.xml.buchhaltungen.*;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Upload;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.xml.bind.JAXBContext;
-import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import java.io.*;
 
-public class BuchhaltungenUploadReceiver implements Upload.Receiver, Upload.SucceededListener {
+public class BuchhaltungenUploadReceiver implements Serializable, Upload.Receiver, Upload.SucceededListener {
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(BackupView.class.getName());
 
-    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-
-
-    @Inject
-    AdresseService adresseService;
+    File tempFile;
 
     @Inject
-    RechnungService rechnungService;
+    BuchhaltungFacade buchhaltungFacade;
 
     @Inject
-    RechnungspositionService rechnungspositionService;
+    KontoklasseFacade kontoklasseFacade;
 
     @Inject
-    AufwandService aufwandService;
+    KontogruppeFacade kontogruppeFacade;
+
+    @Inject
+    KontoartFacade kontoartFacade;
+
+    @Inject
+    KontoFacade kontoFacade;
+
+    @Inject
+    MehrwertsteuercodeFacade mehrwertsteuercodeFacade;
+
+    public BuchhaltungenUploadReceiver() {
+    }
 
     @Override
     public OutputStream receiveUpload(String s, String s1) {
+        OutputStream outputStream = null;
+        try {
+            tempFile = File.createTempFile("upl-buchhaltungen", ".tmp");
+            outputStream = new FileOutputStream(tempFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return outputStream;
     }
 
-    //@todo Problem mit outputStream in unmarshal
+    //@todo Problem mit Mehrwertsteuercode und Buchungen
     @Override
     public void uploadSucceeded(Upload.SucceededEvent succeededEvent) {
         JAXBContext jaxbContext = null;
-            /*
-            try {
-                jaxbContext = JAXBContext.newInstance(BackupAdressen.class, Adresse.class, Rechnung.class,
-                        Rechnungsposition.class, Aufwand.class);
-                Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-                BackupAdressen backupAdressen = (BackupAdressen) unmarshaller.unmarshal(IOUtils.toInputStream(outputStream.toByteArray()));
-                for (Adresse a : backupAdressen.getAdressen()) {
-                    adresseFacade.saveOrPersist(a);
-                    for (Rechnung r : a.getRechnungen()) {
-                        rechnungFacade.saveOrPersist(r);
-                        for (Rechnungsposition rp : r.getRechnungspositionen()) {
-                            rechnungspositionFacade.saveOrPersist(rp);
-                        }
-                        for (Aufwand aw : r.getAufwands()) {
-                            aufwandFacade.saveOrPersist(aw);
+        try {
+            jaxbContext = JAXBContext.newInstance(BackupBuchhaltungen.class);
+            Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+            BackupBuchhaltungen backupBuchhaltungen =
+                    (BackupBuchhaltungen) unmarshaller.unmarshal(new FileInputStream(tempFile));
+
+            for (BackupBuchhaltung backupBuchhaltung : backupBuchhaltungen.getBuchhaltungen()) {
+                Buchhaltung buchhaltung = new Buchhaltung();
+                String bezeichnung = backupBuchhaltung.getBezeichnung();
+                buchhaltung.setBezeichnung(bezeichnung);
+                buchhaltung = buchhaltungFacade.save(buchhaltung);
+
+                for (BackupKontoklasse backupKontoklasse : backupBuchhaltung.getKontoklasses()) {
+                    Kontoklasse kontoklasse = new Kontoklasse();
+                    kontoklasse.setBezeichnung(backupKontoklasse.getBezeichnung());
+                    kontoklasse.setKontonummer(backupKontoklasse.getKontonummer());
+                    kontoklasse.setBuchhaltung(buchhaltung);
+                    kontoklasse = kontoklasseFacade.save(kontoklasse);
+                    buchhaltung.getKontoklasse().add(kontoklasse);
+                    buchhaltung = buchhaltungFacade.save(buchhaltung);
+
+                    for (BackupKontogruppe backupKontogruppe : backupKontoklasse.getKontogruppen()) {
+                        Kontogruppe kontogruppe = new Kontogruppe();
+                        kontogruppe.setBezeichnung(backupKontogruppe.getBezeichnung());
+                        kontogruppe.setKontonummer(backupKontogruppe.getKontonummer());
+                        kontogruppe.setKontoklasse(kontoklasse);
+                        kontogruppe = kontogruppeFacade.save(kontogruppe);
+                        kontoklasse.getKontogruppes().add(kontogruppe);
+                        kontoklasse = kontoklasseFacade.save(kontoklasse);
+
+                        for (BackupKontoart backupKontoart : backupKontogruppe.getKontoarten()) {
+                            Kontoart kontoart = new Kontoart();
+                            kontoart.setBezeichnung(backupKontoart.getBezeichnung());
+                            kontoart.setKontonummer(backupKontoart.getKontonummer());
+                            kontoart.setKontogruppe(kontogruppe);
+                            kontoart = kontoartFacade.save(kontoart);
+                            kontogruppe.getKontoarts().add(kontoart);
+                            kontogruppe = kontogruppeFacade.save(kontogruppe);
+
+                            for (BackupKonto backupKonto : backupKontoart.getKonti()) {
+                                Konto konto = new Konto();
+                                konto.setBezeichnung(backupKonto.getBezeichnung());
+                                konto.setKontonummer(backupKonto.getKontonummer());
+                                konto.setKontoart(kontoart);
+                                konto = kontoFacade.save(konto);
+                                kontoart.getKontos().add(konto);
+                                kontoart = kontoartFacade.save(kontoart);
+                            }
                         }
                     }
                 }
-                Notification.show(backupAdressen.getAdressen().size() + " Adressen neu erstellt", Notification.Type.HUMANIZED_MESSAGE);
-            } catch (JAXBException e) {
-                Notification.show("Fehler:" + e.getLocalizedMessage(), Notification.Type.ERROR_MESSAGE);
+                buchhaltung = buchhaltungFacade.save(buchhaltung);
             }
-            */
+            tempFile.deleteOnExit();
+            Notification.show(backupBuchhaltungen.getBuchhaltungen().size() + " Buchhaltungen neu erstellt", Notification.Type.HUMANIZED_MESSAGE);
+        } catch (JAXBException e) {
+            Notification.show("Fehler:" + e.getLocalizedMessage(), Notification.Type.ERROR_MESSAGE);
+        } catch (IOException e) {
+            e.printStackTrace();
+            Notification.show("Fehler:" + e.getLocalizedMessage(), Notification.Type.ERROR_MESSAGE);
+        }
         Notification.show("Buchhaltungen Upload succeeded:" + succeededEvent.getLength(), Notification.Type.TRAY_NOTIFICATION);
+    }
+
+    @PostConstruct
+    private void init() {
     }
 }
 

@@ -12,7 +12,7 @@ import java.util.List;
  * Created by michzuerch on 25.07.15.
  */
 @XmlRootElement(name = "adressen", namespace = "http://www.internettechnik.ch/Anouman")
-@XmlAccessorType(XmlAccessType.FIELD)
+@XmlAccessorType(XmlAccessType.NONE)
 public class BackupAdressen {
     @XmlElement(name = "adresse")
     private List<Adresse> adressen = null;

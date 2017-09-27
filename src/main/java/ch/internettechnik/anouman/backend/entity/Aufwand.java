@@ -8,7 +8,6 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -110,10 +109,6 @@ public class Aufwand extends AbstractEntity {
         return total.doubleValue();
     }
 
-    public void afterUnmarshal(Unmarshaller unmarshaller, Object parent) {
-        this.rechnung = (Rechnung) parent;
-    }
-
     @Override
     public String toString() {
         //DateFormat format = SimpleDateFormat.getDateInstance()
@@ -124,20 +119,4 @@ public class Aufwand extends AbstractEntity {
                 ", ende=" + new SimpleDateFormat("dd.MM. HH:mm").format(ende) +
                 '}';
     }
-
-    /*
-    @PrePersist
-    @PreUpdate
-    public void pre() {
-        System.err.println("Pre:"+ toString());
-    }
-    */
-
-    /*
-    @PostPersist
-    @PostUpdate
-    public void post() {
-        System.err.println("Post:" + toString());
-    }
-    */
 }

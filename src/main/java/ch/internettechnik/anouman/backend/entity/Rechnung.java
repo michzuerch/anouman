@@ -5,7 +5,6 @@ import org.hibernate.validator.constraints.Range;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -191,10 +190,6 @@ public class Rechnung extends AbstractEntity {
         cal.setTime(getRechnungsdatum());
         cal.add(Calendar.DATE, getFaelligInTagen());
         return cal.getTime();
-    }
-
-    public void afterUnmarshal(Unmarshaller unmarshaller, Object parent) {
-        this.adresse = (Adresse) parent;
     }
 
 }

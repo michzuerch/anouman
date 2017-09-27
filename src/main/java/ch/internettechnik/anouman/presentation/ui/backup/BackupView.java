@@ -58,6 +58,9 @@ public class BackupView extends VerticalLayout implements View {
     @Inject
     TemplateBuchhaltungenUploadReceiver templateBuchhaltungenUploadReceiver;
 
+    @Inject
+    AdressenUploadReceiver adressenUploadReceiver;
+
 
     Button downloaderAdressen = new DownloadButton(stream -> {
         JAXBContext jaxbContext = null;
@@ -297,13 +300,15 @@ public class BackupView extends VerticalLayout implements View {
     Button downloaderAdresse = new DownloadButton(stream -> {
         JAXBContext jaxbContext = null;
         try {
-            jaxbContext = JAXBContext.newInstance(Adresse.class, Rechnung.class,
+            jaxbContext = JAXBContext.newInstance(BackupAdressen.class, Adresse.class, Rechnung.class,
                     Rechnungsposition.class, Aufwand.class);
             Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
             jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,
                     true);
-
-            jaxbMarshaller.marshal(listAdressen, stream);
+            BackupAdressen backupAdressen = new BackupAdressen();
+            Adresse adresse = adresseFacade.findBy(listAdressen.getValue().getId());
+            backupAdressen.getAdressen().add(adresse);
+            jaxbMarshaller.marshal(backupAdressen, stream);
             stream.flush();
             stream.close();
         } catch (PropertyException ex) {
@@ -316,7 +321,7 @@ public class BackupView extends VerticalLayout implements View {
             Notification.show(ex.getMessage(), Notification.Type.ERROR_MESSAGE);
             System.err.print(ex);
         }
-    }).setFileName("AdressenRechnungenAnouman.xml")
+    }).setFileName("AdresseRechnungenAnouman.xml")
             .withCaption("Datei mit Adresse, Rechnungen, Rechnungspositionen, Aufwand herunterladen").withIcon(VaadinIcons.DOWNLOAD);
 
     private ComboBox<Buchhaltung> listBuchhaltungen = new ComboBox<>();
@@ -378,8 +383,7 @@ public class BackupView extends VerticalLayout implements View {
         }
     }).setFileName("BuchhaltungAnouman.xml")
             .withCaption("Datei mit Buchhaltung herunterladen").withIcon(VaadinIcons.DOWNLOAD);
-    private AdressenUploadReceiver adressenUploadReceiverReceiver = new AdressenUploadReceiver();
-    private Upload uploadAdressen = new Upload("Upload Adressen", adressenUploadReceiverReceiver);
+    private Upload uploadAdressen = new Upload("Upload Adressen", adressenUploadReceiver);
     private BuchhaltungenUploadReceiver buchhaltungenUploadReceiver = new BuchhaltungenUploadReceiver();
     private Upload uploadBuchhaltungen = new Upload("Upload Buchhaltungen", buchhaltungenUploadReceiver);
     //private TemplateBuchhaltungenUploadReceiver templateBuchhaltungenUploadReceiver = new TemplateBuchhaltungenUploadReceiver();
@@ -387,8 +391,11 @@ public class BackupView extends VerticalLayout implements View {
 
     @PostConstruct
     void init() {
-        uploadAdressen.addSucceededListener(adressenUploadReceiverReceiver);
+        uploadAdressen.addSucceededListener(adressenUploadReceiver);
+        uploadAdressen.setReceiver(adressenUploadReceiver);
+
         uploadBuchhaltungen.addSucceededListener(buchhaltungenUploadReceiver);
+
         uploadTemplateBuchhaltungen.addSucceededListener(templateBuchhaltungenUploadReceiver);
         uploadTemplateBuchhaltungen.setReceiver(templateBuchhaltungenUploadReceiver);
 
