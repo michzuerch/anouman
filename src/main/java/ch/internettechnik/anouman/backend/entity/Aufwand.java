@@ -4,9 +4,8 @@ package ch.internettechnik.anouman.backend.entity;
  * Created by michzuerch on 06.07.15.
  */
 
-import org.hibernate.validator.constraints.NotBlank;
-
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -25,7 +24,7 @@ import java.util.Date;
 public class Aufwand extends AbstractEntity {
     @Column
     @NotNull
-    @NotBlank(message = "Titel muss eingegeben werden.")
+    @NotEmpty(message = "Titel muss eingegeben werden.")
     @XmlElement
     private String titel;
 

@@ -1,6 +1,8 @@
 package ch.internettechnik.anouman.util;
 
-import org.jboss.logging.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -11,7 +13,7 @@ import java.text.ParseException;
  * Created by michzuerch on 03.07.15.
  */
 public class BetragFormat {
-    private static final Logger LOGGER = Logger.getLogger(BetragFormat.class);
+    private static Logger logger = LoggerFactory.getLogger(BetragFormat.class.getName());
 
     private static DecimalFormat getDecimalFormat() {
         DecimalFormatSymbols decimalFormatSymbols = DecimalFormatSymbols.getInstance();
@@ -38,7 +40,7 @@ public class BetragFormat {
     }
 
     public static Float convertToFloat(String val) {
-        LOGGER.debug("converterToFloat(" + val + ")");
+        logger.debug("converterToFloat(" + val + ")");
         if (val == null) return new Float(0f);
         if (val.isEmpty()) return new Float(0f);
         DecimalFormat decimalFormat = getDecimalFormat();
@@ -46,7 +48,7 @@ public class BetragFormat {
         try {
             result = decimalFormat.parse(val).floatValue();
         } catch (ParseException e) {
-            LOGGER.error(e.getMessage());
+            logger.error(e.getMessage());
         }
         return result;
     }

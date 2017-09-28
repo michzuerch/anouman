@@ -1,13 +1,7 @@
 package ch.internettechnik.anouman.backend.entity;
 
-import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.Range;
-
 import javax.persistence.*;
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -50,7 +44,7 @@ public class Adresse extends AbstractEntity {
 
     @Column
     @NotNull
-    @NotBlank(message = "Nachname muss eingegeben werden.")
+    @NotEmpty(message = "Nachname muss eingegeben werden.")
     @Pattern(regexp = "[a-z-A-Z]*", message = "Nachname enthält ungültige Zeichen")
     @XmlElement
     private String nachname;
@@ -77,7 +71,8 @@ public class Adresse extends AbstractEntity {
     @Column
     @NotNull
     @Digits(integer = 8, fraction = 2, message = "Muss ein gültiger Betrag sein")
-    @Range(min = 10, max = 500)
+    @DecimalMin(value = "0.01", message = "Minimaler Betrag ist 0.01")
+    @DecimalMax(value = "500", message = "Maximaler Betrag ist 500")
     @XmlElement
     private Double stundensatz;
 

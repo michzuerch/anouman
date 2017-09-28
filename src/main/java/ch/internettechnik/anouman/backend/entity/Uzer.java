@@ -1,8 +1,7 @@
 package ch.internettechnik.anouman.backend.entity;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -25,13 +24,13 @@ public class Uzer extends AbstractEntity {
     //@todo unique entfernt für Testdaten
     //@Column(unique = true)
     @NotNull
-    @NotEmpty
+    @NotBlank
     @Size(min = 2)
     private String principal;
 
     @Column
     @NotNull
-    @NotEmpty
+    @NotBlank
     @Size(min = 3)
     private String pazzword;
 

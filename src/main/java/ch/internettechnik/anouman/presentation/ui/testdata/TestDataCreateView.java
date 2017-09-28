@@ -2,8 +2,6 @@ package ch.internettechnik.anouman.presentation.ui.testdata;
 
 import ch.internettechnik.anouman.backend.entity.*;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.*;
-import ch.internettechnik.anouman.backend.session.jpa.api.UzerRoleService;
-import ch.internettechnik.anouman.backend.session.jpa.api.UzerService;
 import ch.internettechnik.anouman.presentation.ui.Menu;
 import com.vaadin.annotations.Theme;
 import com.vaadin.cdi.CDIView;
@@ -40,10 +38,10 @@ public class TestDataCreateView extends VerticalLayout implements View {
     AufwandFacade aufwandFacade;
 
     @Inject
-    UzerService uzerService;
+    UzerFacade uzerFacade;
 
     @Inject
-    UzerRoleService uzerRoleService;
+    UzerRoleFacade uzerRoleFacade;
 
     @Inject
     TemplateBuchhaltungFacade templateBuchhaltungFacade;
@@ -76,9 +74,9 @@ public class TestDataCreateView extends VerticalLayout implements View {
         roleBuchhaltung.setRole("buchhaltung");
         roleAdmin.setRoleGroup("group");
 
-        uzerRoleService.saveOrPersist(roleAdmin);
-        uzerRoleService.saveOrPersist(roleRechnung);
-        uzerRoleService.saveOrPersist(roleBuchhaltung);
+        uzerRoleFacade.save(roleAdmin);
+        uzerRoleFacade.save(roleRechnung);
+        uzerRoleFacade.save(roleBuchhaltung);
 
         Uzer uzerAdmin = new Uzer();
         uzerAdmin.setDescription("Administrator");
@@ -87,7 +85,7 @@ public class TestDataCreateView extends VerticalLayout implements View {
         uzerAdmin.getRoles().add(roleAdmin);
         uzerAdmin.getRoles().add(roleRechnung);
         uzerAdmin.getRoles().add(roleBuchhaltung);
-        uzerService.saveOrPersist(uzerAdmin);
+        uzerFacade.save(uzerAdmin);
 
         Uzer uzerKevin = new Uzer();
         uzerKevin.setDescription("Allerweltsuser");
@@ -95,13 +93,13 @@ public class TestDataCreateView extends VerticalLayout implements View {
         uzerKevin.setPrincipal("passpass");
         uzerKevin.getRoles().add(roleRechnung);
         uzerKevin.getRoles().add(roleBuchhaltung);
-        uzerService.saveOrPersist(uzerKevin);
+        uzerFacade.save(uzerKevin);
 
         Uzer uzerAnonymous = new Uzer();
         uzerAnonymous.setDescription("Keine Rollen");
         uzerAnonymous.setPrincipal("anoymous");
         uzerAnonymous.setPrincipal("passpass");
-        uzerService.saveOrPersist(uzerAnonymous);
+        uzerFacade.save(uzerAnonymous);
 
         Notification.show("Testdaten User erstellt", Notification.Type.TRAY_NOTIFICATION);
 

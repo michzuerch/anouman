@@ -1,7 +1,7 @@
 package ch.internettechnik.anouman.presentation.ui.uzer;
 
 import ch.internettechnik.anouman.backend.entity.Uzer;
-import ch.internettechnik.anouman.backend.session.jpa.api.UzerService;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.UzerFacade;
 import ch.internettechnik.anouman.presentation.ui.Menu;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
@@ -27,7 +27,7 @@ public class UzerView extends VerticalLayout implements View {
     private Menu menu;
 
     @Inject
-    private UzerService service;
+    private UzerFacade service;
 
     @Inject
     private UzerForm form;
@@ -50,7 +50,7 @@ public class UzerView extends VerticalLayout implements View {
             form.setEntity(new Uzer());
             form.openInModalPopup();
             form.setSavedHandler(val -> {
-                service.saveOrPersist(val);
+                service.save(val);
                 updateList();
                 grid.select(val);
                 form.closePopup();
@@ -80,7 +80,7 @@ public class UzerView extends VerticalLayout implements View {
                     form.setEntity((Uzer) event.getItem());
                     form.openInModalPopup();
                     form.setSavedHandler(val -> {
-                        service.saveOrPersist(val);
+                        service.save(val);
                         updateList();
                         grid.select(val);
                         form.closePopup();

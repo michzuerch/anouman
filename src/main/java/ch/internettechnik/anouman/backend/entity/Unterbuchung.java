@@ -1,8 +1,7 @@
 package ch.internettechnik.anouman.backend.entity;
 
-import org.hibernate.validator.constraints.NotBlank;
-
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
@@ -17,7 +16,7 @@ import java.util.Date;
 public class Unterbuchung extends AbstractEntity {
     @Column
     @NotNull
-    @NotBlank
+    @NotEmpty
     private String buchungstext;
 
     @Column

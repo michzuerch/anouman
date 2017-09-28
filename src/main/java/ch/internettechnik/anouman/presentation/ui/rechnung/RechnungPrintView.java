@@ -2,9 +2,9 @@ package ch.internettechnik.anouman.presentation.ui.rechnung;
 
 import ch.internettechnik.anouman.backend.entity.Rechnung;
 import ch.internettechnik.anouman.backend.entity.ReportTemplate;
-import ch.internettechnik.anouman.backend.session.jpa.api.AufwandService;
-import ch.internettechnik.anouman.backend.session.jpa.api.RechnungService;
-import ch.internettechnik.anouman.backend.session.jpa.api.ReportTemplateService;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.AufwandFacade;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.RechnungFacade;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ReportTemplateFacade;
 import ch.internettechnik.anouman.presentation.reports.rechnung.RechnungReportTool;
 import ch.internettechnik.anouman.presentation.ui.Menu;
 import com.vaadin.cdi.CDIView;
@@ -22,11 +22,12 @@ import java.io.IOException;
 @CDIView("RechnungPrint")
 public class RechnungPrintView extends VerticalLayout implements View {
     @Inject
-    RechnungService rechnungService;
+    RechnungFacade rechnungFacade;
     @Inject
-    ReportTemplateService reportTemplateService;
+    ReportTemplateFacade reportTemplateFacade;
     @Inject
-    AufwandService aufwandService;
+    AufwandFacade aufwandFacade;
+
     Long idRechnung = new Long(0);
     TextField fieldId = new TextField("id");
     TextField fieldAdresseFirma = new TextField("Adresse Firma");
@@ -49,9 +50,9 @@ public class RechnungPrintView extends VerticalLayout implements View {
                 stream -> {
                     try {
                         ByteArrayInputStream in = new ByteArrayInputStream(
-                                RechnungReportTool.getPdf(rechnungService.findById(this.idRechnung), selectReport.getValue()));
+                                RechnungReportTool.getPdf(rechnungFacade.findBy(this.idRechnung), selectReport.getValue()));
                         IOUtils.copy(
-                                new ByteArrayInputStream(RechnungReportTool.getPdf(rechnungService.findById(this.idRechnung), selectReport.getValue())),
+                                new ByteArrayInputStream(RechnungReportTool.getPdf(rechnungFacade.findBy(this.idRechnung), selectReport.getValue())),
                                 stream);
                         IOUtils.closeQuietly(in);
                         IOUtils.closeQuietly(stream);
@@ -64,7 +65,7 @@ public class RechnungPrintView extends VerticalLayout implements View {
 
 
     private void update() {
-        Rechnung val = rechnungService.findById(this.idRechnung);
+        Rechnung val = rechnungFacade.findBy(this.idRechnung);
         fieldId.setValue(val.getId().toString());
         fieldAdresseFirma.setValue(val.getAdresse().getFirma());
         fieldAdresseNachname.setValue(val.getAdresse().getNachname());
@@ -77,7 +78,7 @@ public class RechnungPrintView extends VerticalLayout implements View {
         fieldZwischentotal.setValue(val.getZwischentotal().toString());
         fieldRechnungstotal.setValue(val.getRechnungstotal().toString());
 
-        selectReport.setItems(reportTemplateService.findAll());
+        selectReport.setItems(reportTemplateFacade.findAll());
         selectReport.setItemCaptionGenerator(reportTemplate -> reportTemplate.getBezeichnung());
     }
 
@@ -114,7 +115,7 @@ public class RechnungPrintView extends VerticalLayout implements View {
 
         update();
         selectReport.setEmptySelectionAllowed(false);
-        selectReport.setSelectedItem(reportTemplateService.findAll().get(0));
+        selectReport.setSelectedItem(reportTemplateFacade.findAll().get(0));
 
         btnPrint = getPrintButton();
 

@@ -4,7 +4,7 @@ import ch.internettechnik.anouman.backend.entity.Adresse;
 import ch.internettechnik.anouman.backend.entity.Rechnung;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.AdresseFacade;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.RechnungFacade;
-import ch.internettechnik.anouman.backend.session.jpa.api.ReportTemplateService;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ReportTemplateFacade;
 import ch.internettechnik.anouman.presentation.ui.Menu;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
@@ -36,7 +36,7 @@ public class RechnungView extends VerticalLayout implements View {
     private AdresseFacade adresseFacade;
 
     @Inject
-    private ReportTemplateService reportTemplateService;
+    private ReportTemplateFacade reportTemplateFacade;
 
     @Inject
     private RechnungForm form;

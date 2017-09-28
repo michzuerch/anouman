@@ -1,10 +1,7 @@
 package ch.internettechnik.anouman.backend.entity;
 
-import org.hibernate.validator.constraints.Range;
-
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -43,7 +40,9 @@ public class Rechnung extends AbstractEntity {
 
     @Column
     @NotNull
-    @Range(min = 1, max = 365)
+    @Digits(integer = 2, fraction = 0, message = "Ungültiges Zahlenformat")
+    @DecimalMin(value = "1", message = "Minimal 1 Tag")
+    @DecimalMax(value = "365", message = "Maximal 365 Tage")
     @XmlElement
     private int faelligInTagen;
 

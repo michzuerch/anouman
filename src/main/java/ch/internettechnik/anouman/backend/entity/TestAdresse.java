@@ -1,11 +1,10 @@
 package ch.internettechnik.anouman.backend.entity;
 
-import org.hibernate.validator.constraints.NotBlank;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
@@ -17,7 +16,7 @@ import javax.validation.constraints.Pattern;
 public class TestAdresse extends AbstractEntity {
     @Column
     @NotNull
-    @NotBlank(message = "Nachname muss eingegeben werden.")
+    @NotEmpty(message = "Nachname muss eingegeben werden.")
     @Pattern(regexp = "[a-z-A-Z]*", message = "Nachname enthält ungültige Zeichen")
     private String nachname;
     @Column

@@ -8,7 +8,8 @@ import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
-import org.jboss.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.Serializable;
@@ -22,7 +23,7 @@ import java.util.Locale;
  * Created by michzuerch on 29.06.15.
  */
 public class RechnungReportTool implements Serializable {
-    private static Logger log = Logger.getLogger(RechnungReportTool.class);
+    private static Logger logger = LoggerFactory.getLogger(RechnungReportTool.class.getName());
 
     public static byte[] getPdf(Rechnung val, ReportTemplate reportTemplate) {
         JasperReport report;
@@ -73,7 +74,7 @@ public class RechnungReportTool implements Serializable {
                     aw.getRechnung().getAdresse().getStundensatz(),
                     aw.getDauerInStunden(), aw.getPositionstotal()));
         }
-        log.debug("Anzahl gefundende Rechnungspositonen:" + list.size());
+        logger.debug("Anzahl gefundende Rechnungspositonen:" + list.size());
         JRBeanCollectionDataSource collectionDataSource = new JRBeanCollectionDataSource(list);
 
         Locale locale = new Locale("de", "CH");

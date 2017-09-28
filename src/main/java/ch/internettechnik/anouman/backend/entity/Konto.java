@@ -1,8 +1,7 @@
 package ch.internettechnik.anouman.backend.entity;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
@@ -17,12 +16,12 @@ import java.util.Set;
 public class Konto extends AbstractEntity {
     @Column
     @NotNull
-    @NotEmpty
+    @NotBlank
     private String bezeichnung;
 
     @Column
     @NotNull
-    @NotEmpty
+    @NotBlank
     private String kontonummer;
 
     @Column

@@ -6,13 +6,14 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
-import org.jboss.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.form.AbstractForm;
 
 @ViewScoped
 public class ReportTemplateEditForm extends AbstractForm<ReportTemplate> {
-    private static final Logger LOGGER = Logger.getLogger(ReportTemplateEditForm.class);
+    private static Logger logger = LoggerFactory.getLogger(ReportTemplateEditForm.class.getName());
 
     TextField bezeichnung = new MTextField("Bezeichnung");
     TemplateTextField template = new TemplateTextField();

@@ -1,10 +1,7 @@
 package ch.internettechnik.anouman.backend.entity;
 
-import org.hibernate.validator.constraints.NotEmpty;
-import org.hibernate.validator.constraints.Range;
-
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,12 +17,14 @@ import java.util.Set;
 public class Buchhaltung extends AbstractEntity {
     @Column
     @NotNull
-    @NotEmpty
+    @NotBlank
     private String bezeichnung;
 
     @Column
     @NotNull
-    @Range(min = 1990, max = 2200)
+    @Digits(integer = 4, fraction = 0, message = "Ungültiges Zahlenformat")
+    @DecimalMin(value = "1950", message = "Nicht vor 1950")
+    @DecimalMax(value = "2150", message = "Nicht nach 2150")
     private int jahr;
 
     @OneToMany(mappedBy = "buchhaltung")

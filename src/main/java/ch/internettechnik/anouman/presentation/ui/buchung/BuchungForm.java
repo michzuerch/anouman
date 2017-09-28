@@ -6,7 +6,6 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
-import org.jboss.logging.Logger;
 import org.vaadin.viritin.form.AbstractForm;
 
 /**
@@ -14,7 +13,6 @@ import org.vaadin.viritin.form.AbstractForm;
  */
 @ViewScoped
 public class BuchungForm extends AbstractForm<Buchung> {
-    private static final Logger LOGGER = Logger.getLogger(BuchungForm.class);
 
     //@Inject
     //TemplateKontoplanSelect kontoplan;
