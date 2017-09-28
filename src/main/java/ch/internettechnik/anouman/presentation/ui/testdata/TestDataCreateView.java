@@ -397,6 +397,8 @@ public class TestDataCreateView extends VerticalLayout implements View {
         mehrwertsteuercode.setMehrwertsteuerKonto(konto1);
         mehrwertsteuercode.setTemplateBuchhaltung(buchhaltung);
         mehrwertsteuercode = templateMehrwertsteuercodeFacade.save(mehrwertsteuercode);
+        konto1.setTemplateMehrwertsteuercode(mehrwertsteuercode);
+        konto1 = templateKontoFacade.save(konto1);
 
         buchhaltung = templateBuchhaltungFacade.save(buchhaltung);
         Notification.show("Testdaten Template Buchhaltung erstellt", Notification.Type.TRAY_NOTIFICATION);
@@ -414,18 +416,12 @@ public class TestDataCreateView extends VerticalLayout implements View {
         });
         uzerTestBtn.setIcon(VaadinIcons.CAMERA);
 
-        Button templateBuchhaltungTestBtn = new Button("Create TestData Template Buchhaltung", clickEvent -> {
+        Button testCreateTemplateBuchhaltung = new Button("Test Create Template Buchhaltung", clickEvent -> {
             createTestDataTemplateBuchhaltung();
         });
-        templateBuchhaltungTestBtn.setIcon(VaadinIcons.ABACUS);
+        testCreateTemplateBuchhaltung.setIcon(VaadinIcons.TOOTH);
 
-        Button testCreateTemplateBuchhaltung = new Button("Test Create Template Buchhaltung", clickEvent -> {
-            TemplateBuchhaltung bh = new TemplateBuchhaltung();
-            bh.setBezeichnung("TestBH");
-            bh = templateBuchhaltungFacade.save(bh);
-        });
-
-        addComponents(menu, rechnungTestBtn, templateBuchhaltungTestBtn, testCreateTemplateBuchhaltung);
+        addComponents(menu, rechnungTestBtn, testCreateTemplateBuchhaltung);
     }
 
     @Override

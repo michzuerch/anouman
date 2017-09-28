@@ -198,6 +198,7 @@ public class BackupView extends VerticalLayout implements View {
                     backupMehrwertsteuercode.setVerkauf(mehrwertsteuercode.isVerkauf());
                     backupMehrwertsteuercode.setKonto(mehrwertsteuercode.getKonto());
                     backupBuchhaltung.getMehrwertsteuercodes().add(backupMehrwertsteuercode);
+                    System.err.println("Konto:" + mehrwertsteuercode.getKonto());
                 });
                 buchhaltung.getTemplateKontoklasses().stream().forEach(kontoklasse -> {
                     BackupTemplateKontoklasse backupKontoklasse = new BackupTemplateKontoklasse(kontoklasse.getBezeichnung(), kontoklasse.getKontonummer());
@@ -211,6 +212,8 @@ public class BackupView extends VerticalLayout implements View {
                             kontoart.getTemplateKontos().stream().forEach(konto -> {
                                 BackupTemplateKonto backupKonto = new BackupTemplateKonto(konto.getId(), konto.getBezeichnung(), konto.getKontonummer(), konto.getShowKontonummer());
                                 backupKontoart.getKonti().add(backupKonto);
+
+                                System.err.println("Mwst:" + konto.getTemplateMehrwertsteuercode());
                             });
                         });
                     });

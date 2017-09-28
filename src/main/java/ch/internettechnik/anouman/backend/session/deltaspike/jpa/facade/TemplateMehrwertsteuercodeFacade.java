@@ -1,6 +1,7 @@
 package ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade;
 
 import ch.internettechnik.anouman.backend.entity.TemplateBuchhaltung;
+import ch.internettechnik.anouman.backend.entity.TemplateKonto;
 import ch.internettechnik.anouman.backend.entity.TemplateMehrwertsteuercode;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.repository.TemplateMehrwertsteuercodeRepository;
 
@@ -36,5 +37,10 @@ public class TemplateMehrwertsteuercodeFacade {
     public List<TemplateMehrwertsteuercode> findByBezeichnungLikeIgnoreCase(String bezeichnung) {
         return repo.findByBezeichnungLikeIgnoreCase(bezeichnung);
     }
+
+    public TemplateMehrwertsteuercode findByTemplateKonto(TemplateKonto templateKonto) {
+        return repo.findByTemplateKonto(templateKonto);
+    }
+
 
 }

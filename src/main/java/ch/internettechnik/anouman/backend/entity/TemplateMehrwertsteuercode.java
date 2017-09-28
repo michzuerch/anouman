@@ -1,7 +1,10 @@
 package ch.internettechnik.anouman.backend.entity;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -18,13 +21,11 @@ import javax.xml.bind.annotation.XmlElement;
 public class TemplateMehrwertsteuercode extends AbstractEntity {
     @Column
     @NotNull
-    @NotEmpty
     @XmlElement
     private String code;
 
     @Column
     @NotNull
-    @NotEmpty
     @XmlElement
     private String bezeichnung;
 

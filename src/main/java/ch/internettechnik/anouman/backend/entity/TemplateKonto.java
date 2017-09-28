@@ -33,6 +33,10 @@ public class TemplateKonto extends AbstractEntity {
     @ManyToOne(cascade = CascadeType.PERSIST)
     private TemplateKontoart templateKontoart;
 
+    @XmlElement
+    @OneToOne
+    private TemplateMehrwertsteuercode templateMehrwertsteuercode;
+
     public TemplateKonto() {
     }
 
@@ -78,6 +82,14 @@ public class TemplateKonto extends AbstractEntity {
 
     public void setTemplateKontoart(TemplateKontoart templateKontoart) {
         this.templateKontoart = templateKontoart;
+    }
+
+    public TemplateMehrwertsteuercode getTemplateMehrwertsteuercode() {
+        return templateMehrwertsteuercode;
+    }
+
+    public void setTemplateMehrwertsteuercode(TemplateMehrwertsteuercode templateMehrwertsteuercode) {
+        this.templateMehrwertsteuercode = templateMehrwertsteuercode;
     }
 
     @Override

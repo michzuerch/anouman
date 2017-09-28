@@ -4,6 +4,8 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by michzuerch on 16.11.15.
@@ -17,6 +19,9 @@ public class BackupTemplateKonto {
     private String kontonummer;
     @XmlElement
     private String showKontonummer;
+    @XmlElement(name = "mehrwertsteuercode")
+    private Set<BackupTemplateMehrwertsteuercode> mehrwertsteuercodes = new HashSet<>();
+
 
     private Long id;
 
@@ -52,6 +57,14 @@ public class BackupTemplateKonto {
 
     public void setShowKontonummer(String showKontonummer) {
         this.showKontonummer = showKontonummer;
+    }
+
+    public Set<BackupTemplateMehrwertsteuercode> getMehrwertsteuercodes() {
+        return mehrwertsteuercodes;
+    }
+
+    public void setMehrwertsteuercodes(Set<BackupTemplateMehrwertsteuercode> mehrwertsteuercodes) {
+        this.mehrwertsteuercodes = mehrwertsteuercodes;
     }
 
     public Long getId() {

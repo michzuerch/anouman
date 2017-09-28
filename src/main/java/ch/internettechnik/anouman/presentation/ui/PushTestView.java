@@ -1,6 +1,5 @@
-package ch.internettechnik.anouman.presentation.ui.testdata;
+package ch.internettechnik.anouman.presentation.ui;
 
-import ch.internettechnik.anouman.presentation.ui.Menu;
 import com.vaadin.annotations.Theme;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.navigator.View;
