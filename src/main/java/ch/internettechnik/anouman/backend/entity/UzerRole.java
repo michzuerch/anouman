@@ -1,7 +1,6 @@
 package ch.internettechnik.anouman.backend.entity;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
@@ -20,7 +19,6 @@ public class UzerRole extends AbstractEntity {
     //@todo unique entfernt für Testdaten
     //@Column(unique = true)
     @NotNull
-    @NotBlank
     private String role;
 
     @Column

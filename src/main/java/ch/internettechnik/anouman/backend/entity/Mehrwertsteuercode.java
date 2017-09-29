@@ -1,7 +1,10 @@
 package ch.internettechnik.anouman.backend.entity;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 /**
@@ -15,12 +18,10 @@ import java.util.Set;
 public class Mehrwertsteuercode extends AbstractEntity {
     @Column
     @NotNull
-    @NotEmpty
     private String code;
 
     @Column
     @NotNull
-    @NotEmpty
     private String bezeichnung;
 
     @Column

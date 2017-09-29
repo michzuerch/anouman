@@ -4,8 +4,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -13,7 +11,6 @@ import java.util.Objects;
  * @author Matti Tahvonen
  */
 @MappedSuperclass
-@XmlAccessorType(XmlAccessType.NONE)
 public abstract class AbstractEntity implements Serializable, Cloneable {
 
     @Version

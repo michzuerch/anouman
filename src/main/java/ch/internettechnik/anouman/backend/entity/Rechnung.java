@@ -2,9 +2,6 @@ package ch.internettechnik.anouman.backend.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
@@ -25,17 +22,14 @@ import java.util.Set;
         @NamedQuery(name = "Rechnung.findByDatum", query = "SELECT r FROM Rechnung r where r.rechnungsdatum = :datum"),
         @NamedQuery(name = "Rechnung.findByBezeichnungLike", query = "SELECT r FROM Rechnung r where r.bezeichnung LIKE :bezeichnung")
 })
-@XmlAccessorType(XmlAccessType.NONE)
 public class Rechnung extends AbstractEntity {
     @Temporal(TemporalType.DATE)
-    @XmlElement
     @NotNull
     private Date rechnungsdatum;
 
     @Column
     @NotNull
     @Size(min = 3, max = 50)
-    @XmlElement
     private String bezeichnung;
 
     @Column
@@ -43,25 +37,20 @@ public class Rechnung extends AbstractEntity {
     @Digits(integer = 2, fraction = 0, message = "Ungültiges Zahlenformat")
     @DecimalMin(value = "1", message = "Minimal 1 Tag")
     @DecimalMax(value = "365", message = "Maximal 365 Tage")
-    @XmlElement
     private int faelligInTagen;
 
     @Column
-    @XmlElement
     private boolean bezahlt;
 
     @Column
-    @XmlElement
     private boolean verschickt;
 
     @ManyToOne
     private Adresse adresse;
 
-    @XmlElement
     @OneToMany(mappedBy = "rechnung", cascade = CascadeType.ALL)
     private Set<Rechnungsposition> rechnungspositionen = new HashSet<Rechnungsposition>();
 
-    @XmlElement
     @OneToMany(mappedBy = "rechnung", cascade = CascadeType.ALL)
     private Set<Aufwand> aufwands = new HashSet<Aufwand>();
 

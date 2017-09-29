@@ -1,7 +1,10 @@
 package ch.internettechnik.anouman.backend.entity;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,7 +20,6 @@ import java.util.Set;
 public class Buchhaltung extends AbstractEntity {
     @Column
     @NotNull
-    @NotBlank
     private String bezeichnung;
 
     @Column

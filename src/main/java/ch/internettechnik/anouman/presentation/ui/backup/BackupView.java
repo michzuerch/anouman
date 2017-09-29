@@ -9,7 +9,7 @@ import ch.internettechnik.anouman.presentation.ui.Menu;
 import ch.internettechnik.anouman.presentation.ui.backup.uploadreceiver.AdressenUploadReceiver;
 import ch.internettechnik.anouman.presentation.ui.backup.uploadreceiver.BuchhaltungenUploadReceiver;
 import ch.internettechnik.anouman.presentation.ui.backup.uploadreceiver.TemplateBuchhaltungenUploadReceiver;
-import ch.internettechnik.anouman.presentation.ui.backup.xml.adressen.BackupAdressen;
+import ch.internettechnik.anouman.presentation.ui.backup.xml.adressen.*;
 import ch.internettechnik.anouman.presentation.ui.backup.xml.buchhaltungen.*;
 import ch.internettechnik.anouman.presentation.ui.backup.xml.templatebuchhaltungen.*;
 import com.vaadin.cdi.CDIView;
@@ -61,17 +61,61 @@ public class BackupView extends VerticalLayout implements View {
     @Inject
     AdressenUploadReceiver adressenUploadReceiver;
 
+    @Inject
+    BuchhaltungenUploadReceiver buchhaltungenUploadReceiver;
 
     Button downloaderAdressen = new DownloadButton(stream -> {
         JAXBContext jaxbContext = null;
         try {
-            jaxbContext = JAXBContext.newInstance(BackupAdressen.class, Adresse.class, Rechnung.class,
+            jaxbContext = JAXBContext.newInstance(BackupAdressen.class, BackupAdresse.class, Rechnung.class,
                     Rechnungsposition.class, Aufwand.class);
             Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
             jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,
                     true);
             BackupAdressen backupAdressen = new BackupAdressen();
-            backupAdressen.setAdressen(adresseFacade.findAll());
+            backupAdressen.setBackupdatum(new Date());
+
+            adresseFacade.findAll().stream().forEach(adresse -> {
+                BackupAdresse backupAdresse = new BackupAdresse();
+                backupAdresse.setAnrede(adresse.getAnrede());
+                backupAdresse.setFirma(adresse.getFirma());
+                backupAdresse.setNachname(adresse.getNachname());
+                backupAdresse.setOrt(adresse.getOrt());
+                backupAdresse.setPostleitzahl(adresse.getPostleitzahl());
+                backupAdresse.setStrasse(adresse.getStrasse());
+                backupAdresse.setStundensatz(adresse.getStundensatz());
+                backupAdresse.setVorname(adresse.getVorname());
+                backupAdressen.getAdressen().add(backupAdresse);
+
+                adresse.getRechnungen().stream().forEach(rechnung -> {
+                    BackupRechnung backupRechnung = new BackupRechnung();
+                    backupRechnung.setBezahlt(rechnung.isBezahlt());
+                    backupRechnung.setVerschickt(rechnung.isVerschickt());
+                    backupRechnung.setBezeichnung(rechnung.getBezeichnung());
+                    backupRechnung.setFaelligInTagen(rechnung.getFaelligInTagen());
+                    backupRechnung.setRechnungsdatum(rechnung.getRechnungsdatum());
+                    backupAdresse.getRechnungen().add(backupRechnung);
+
+                    rechnung.getRechnungspositionen().stream().forEach(rechnungsposition -> {
+                        BackupRechnungsposition backupRechnungsposition = new BackupRechnungsposition();
+                        backupRechnungsposition.setAnzahl(rechnungsposition.getAnzahl());
+                        backupRechnungsposition.setBezeichnung(rechnungsposition.getBezeichnung());
+                        backupRechnungsposition.setBezeichnunglang(rechnungsposition.getBezeichnunglang());
+                        backupRechnungsposition.setMengeneinheit(rechnungsposition.getMengeneinheit());
+                        backupRechnung.getRechnungspositions().add(backupRechnungsposition);
+                    });
+
+                    rechnung.getAufwands().stream().forEach(aufwand -> {
+                        BackupAufwand backupAufwand = new BackupAufwand();
+                        backupAufwand.setTitel(aufwand.getTitel());
+                        backupAufwand.setBezeichnung(aufwand.getBezeichnung());
+                        backupAufwand.setStart(aufwand.getStart());
+                        backupAufwand.setEnde(aufwand.getEnde());
+                        backupRechnung.getAufwands().add(backupAufwand);
+                    });
+                });
+            });
+
             jaxbMarshaller.marshal(backupAdressen, stream);
             stream.flush();
             stream.close();
@@ -198,7 +242,6 @@ public class BackupView extends VerticalLayout implements View {
                     backupMehrwertsteuercode.setVerkauf(mehrwertsteuercode.isVerkauf());
                     backupMehrwertsteuercode.setKonto(mehrwertsteuercode.getKonto());
                     backupBuchhaltung.getMehrwertsteuercodes().add(backupMehrwertsteuercode);
-                    System.err.println("Konto:" + mehrwertsteuercode.getKonto());
                 });
                 buchhaltung.getTemplateKontoklasses().stream().forEach(kontoklasse -> {
                     BackupTemplateKontoklasse backupKontoklasse = new BackupTemplateKontoklasse(kontoklasse.getBezeichnung(), kontoklasse.getKontonummer());
@@ -212,8 +255,16 @@ public class BackupView extends VerticalLayout implements View {
                             kontoart.getTemplateKontos().stream().forEach(konto -> {
                                 BackupTemplateKonto backupKonto = new BackupTemplateKonto(konto.getId(), konto.getBezeichnung(), konto.getKontonummer(), konto.getShowKontonummer());
                                 backupKontoart.getKonti().add(backupKonto);
-
-                                System.err.println("Mwst:" + konto.getTemplateMehrwertsteuercode());
+                                konto.getTemplateMehrwertsteuercode().stream().forEach(mehrwertsteuercode -> {
+                                    BackupTemplateMehrwertsteuercode backupTemplateMehrwertsteuercode =
+                                            new BackupTemplateMehrwertsteuercode(
+                                                    mehrwertsteuercode.getBezeichnung(),
+                                                    mehrwertsteuercode.getCode(),
+                                                    mehrwertsteuercode.getProzent(),
+                                                    mehrwertsteuercode.isVerkauf()
+                                            );
+                                    backupKonto.getMehrwertsteuercodes().add(backupTemplateMehrwertsteuercode);
+                                });
                             });
                         });
                     });
@@ -275,6 +326,16 @@ public class BackupView extends VerticalLayout implements View {
                         kontoart.getTemplateKontos().stream().forEach(konto -> {
                             BackupTemplateKonto backupKonto = new BackupTemplateKonto(konto.getId(), konto.getBezeichnung(), konto.getKontonummer(), konto.getShowKontonummer());
                             backupKontoart.getKonti().add(backupKonto);
+                            konto.getTemplateMehrwertsteuercode().stream().forEach(mehrwertsteuercode -> {
+                                BackupTemplateMehrwertsteuercode backupTemplateMehrwertsteuercode =
+                                        new BackupTemplateMehrwertsteuercode(
+                                                mehrwertsteuercode.getBezeichnung(),
+                                                mehrwertsteuercode.getCode(),
+                                                mehrwertsteuercode.getProzent(),
+                                                mehrwertsteuercode.isVerkauf()
+                                        );
+                                backupKonto.getMehrwertsteuercodes().add(backupTemplateMehrwertsteuercode);
+                            });
                         });
                     });
                 });
@@ -303,14 +364,55 @@ public class BackupView extends VerticalLayout implements View {
     Button downloaderAdresse = new DownloadButton(stream -> {
         JAXBContext jaxbContext = null;
         try {
-            jaxbContext = JAXBContext.newInstance(BackupAdressen.class, Adresse.class, Rechnung.class,
+            jaxbContext = JAXBContext.newInstance(BackupAdressen.class, BackupAdresse.class, Rechnung.class,
                     Rechnungsposition.class, Aufwand.class);
             Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
             jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,
                     true);
             BackupAdressen backupAdressen = new BackupAdressen();
-            Adresse adresse = adresseFacade.findBy(listAdressen.getValue().getId());
-            backupAdressen.getAdressen().add(adresse);
+            backupAdressen.setBackupdatum(new Date());
+
+            Adresse adresse = listAdressen.getValue();
+
+            BackupAdresse backupAdresse = new BackupAdresse();
+            backupAdresse.setAnrede(adresse.getAnrede());
+            backupAdresse.setFirma(adresse.getFirma());
+            backupAdresse.setNachname(adresse.getNachname());
+            backupAdresse.setOrt(adresse.getOrt());
+            backupAdresse.setPostleitzahl(adresse.getPostleitzahl());
+            backupAdresse.setStrasse(adresse.getStrasse());
+            backupAdresse.setStundensatz(adresse.getStundensatz());
+            backupAdresse.setVorname(adresse.getVorname());
+            backupAdressen.getAdressen().add(backupAdresse);
+
+            adresse.getRechnungen().stream().forEach(rechnung -> {
+                BackupRechnung backupRechnung = new BackupRechnung();
+                backupRechnung.setBezahlt(rechnung.isBezahlt());
+                backupRechnung.setVerschickt(rechnung.isVerschickt());
+                backupRechnung.setBezeichnung(rechnung.getBezeichnung());
+                backupRechnung.setFaelligInTagen(rechnung.getFaelligInTagen());
+                backupRechnung.setRechnungsdatum(rechnung.getRechnungsdatum());
+                backupAdresse.getRechnungen().add(backupRechnung);
+
+                rechnung.getRechnungspositionen().stream().forEach(rechnungsposition -> {
+                    BackupRechnungsposition backupRechnungsposition = new BackupRechnungsposition();
+                    backupRechnungsposition.setAnzahl(rechnungsposition.getAnzahl());
+                    backupRechnungsposition.setBezeichnung(rechnungsposition.getBezeichnung());
+                    backupRechnungsposition.setBezeichnunglang(rechnungsposition.getBezeichnunglang());
+                    backupRechnungsposition.setMengeneinheit(rechnungsposition.getMengeneinheit());
+                    backupRechnung.getRechnungspositions().add(backupRechnungsposition);
+                });
+
+                rechnung.getAufwands().stream().forEach(aufwand -> {
+                    BackupAufwand backupAufwand = new BackupAufwand();
+                    backupAufwand.setTitel(aufwand.getTitel());
+                    backupAufwand.setBezeichnung(aufwand.getBezeichnung());
+                    backupAufwand.setStart(aufwand.getStart());
+                    backupAufwand.setEnde(aufwand.getEnde());
+                    backupRechnung.getAufwands().add(backupAufwand);
+                });
+            });
+
             jaxbMarshaller.marshal(backupAdressen, stream);
             stream.flush();
             stream.close();
@@ -328,8 +430,6 @@ public class BackupView extends VerticalLayout implements View {
             .withCaption("Datei mit Adresse, Rechnungen, Rechnungspositionen, Aufwand herunterladen").withIcon(VaadinIcons.DOWNLOAD);
 
     private ComboBox<Buchhaltung> listBuchhaltungen = new ComboBox<>();
-
-
     Button downloaderBuchhaltung = new DownloadButton(stream -> {
         JAXBContext jaxbContext = null;
         try {
@@ -386,10 +486,9 @@ public class BackupView extends VerticalLayout implements View {
         }
     }).setFileName("BuchhaltungAnouman.xml")
             .withCaption("Datei mit Buchhaltung herunterladen").withIcon(VaadinIcons.DOWNLOAD);
+
     private Upload uploadAdressen = new Upload("Upload Adressen", adressenUploadReceiver);
-    private BuchhaltungenUploadReceiver buchhaltungenUploadReceiver = new BuchhaltungenUploadReceiver();
     private Upload uploadBuchhaltungen = new Upload("Upload Buchhaltungen", buchhaltungenUploadReceiver);
-    //private TemplateBuchhaltungenUploadReceiver templateBuchhaltungenUploadReceiver = new TemplateBuchhaltungenUploadReceiver();
     private Upload uploadTemplateBuchhaltungen = new Upload("Upload Template Buchhaltungen", templateBuchhaltungenUploadReceiver);
 
     @PostConstruct

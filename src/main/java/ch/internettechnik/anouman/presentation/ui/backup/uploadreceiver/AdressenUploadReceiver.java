@@ -9,7 +9,7 @@ import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.AufwandF
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.RechnungFacade;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.RechnungspositionFacade;
 import ch.internettechnik.anouman.presentation.ui.backup.BackupView;
-import ch.internettechnik.anouman.presentation.ui.backup.xml.adressen.BackupAdressen;
+import ch.internettechnik.anouman.presentation.ui.backup.xml.adressen.*;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Upload;
 import org.slf4j.LoggerFactory;
@@ -20,7 +20,6 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.*;
-import java.util.Date;
 
 public class AdressenUploadReceiver implements Serializable, Upload.Receiver, Upload.SucceededListener {
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(BackupView.class.getName());
@@ -65,28 +64,46 @@ public class AdressenUploadReceiver implements Serializable, Upload.Receiver, Up
             BackupAdressen backupAdressen =
                     (BackupAdressen) unmarshaller.unmarshal(new FileInputStream(tempFile));
 
-            for (Adresse adresse : backupAdressen.getAdressen()) {
+            for (BackupAdresse backupAdresse : backupAdressen.getAdressen()) {
+                Adresse adresse = new Adresse();
+                adresse.setAnrede(backupAdresse.getAnrede());
+                adresse.setFirma(backupAdresse.getFirma());
+                adresse.setNachname(backupAdresse.getNachname());
+                adresse.setOrt(backupAdresse.getOrt());
+                adresse.setNachname(backupAdresse.getNachname());
+                adresse.setPostleitzahl(backupAdresse.getPostleitzahl());
+                adresse.setStrasse(backupAdresse.getStrasse());
+                adresse.setStundensatz(backupAdresse.getStundensatz());
                 adresse = adresseFacade.save(adresse);
-                for (Rechnung rechnung : adresse.getRechnungen()) {
-                    System.err.println("Rechnung:" + rechnung);
+                for (BackupRechnung backupRechnung : backupAdresse.getRechnungen()) {
+                    Rechnung rechnung = new Rechnung();
+                    rechnung.setRechnungsdatum(backupRechnung.getRechnungsdatum());
+                    rechnung.setBezeichnung(backupRechnung.getBezeichnung());
+                    rechnung.setVerschickt(backupRechnung.isVerschickt());
+                    rechnung.setBezahlt(backupRechnung.isBezahlt());
+                    rechnung.setFaelligInTagen(backupRechnung.getFaelligInTagen());
                     rechnung.setAdresse(adresse);
                     adresse = adresseFacade.save(adresse);
-
-                    rechnung.setFaelligInTagen(10);
-                    rechnung.setBezahlt(true);
-                    rechnung.setVerschickt(true);
-                    rechnung.setBezeichnung("Manuell Ausgefüllt");
-                    rechnung.setRechnungsdatum(new Date());
-
                     rechnung = rechnungFacade.save(rechnung);
 
-                    for (Rechnungsposition rechnungsposition : rechnung.getRechnungspositionen()) {
+                    for (BackupRechnungsposition backupRechnungsposition : backupRechnung.getRechnungspositions()) {
+                        Rechnungsposition rechnungsposition = new Rechnungsposition();
+                        rechnungsposition.setAnzahl(backupRechnungsposition.getAnzahl());
+                        rechnungsposition.setBezeichnung(backupRechnungsposition.getBezeichnung());
+                        rechnungsposition.setBezeichnunglang(backupRechnungsposition.getBezeichnunglang());
+                        rechnungsposition.setMengeneinheit(backupRechnungsposition.getMengeneinheit());
+                        rechnungsposition.setStueckpreis(backupRechnungsposition.getStueckpreis());
                         rechnungsposition.setRechnung(rechnung);
                         rechnung = rechnungFacade.save(rechnung);
                         rechnungsposition = rechnungspositionFacade.save(rechnungsposition);
                     }
 
-                    for (Aufwand aufwand : rechnung.getAufwands()) {
+                    for (BackupAufwand backupAufwand : backupRechnung.getAufwands()) {
+                        Aufwand aufwand = new Aufwand();
+                        aufwand.setBezeichnung(backupAufwand.getBezeichnung());
+                        aufwand.setTitel(backupAufwand.getTitel());
+                        aufwand.setStart(backupAufwand.getStart());
+                        aufwand.setEnde(backupAufwand.getEnde());
                         aufwand.setRechnung(rechnung);
                         rechnung = rechnungFacade.save(rechnung);
                         aufwand = aufwandFacade.save(aufwand);
@@ -103,7 +120,7 @@ public class AdressenUploadReceiver implements Serializable, Upload.Receiver, Up
             e.printStackTrace();
         }
 
-        Notification.show("Adressen Upload succeeded:" + succeededEvent.getLength(), Notification.Type.TRAY_NOTIFICATION);
+        //Notification.show("Adressen Upload succeeded:" + succeededEvent.getLength(), Notification.Type.TRAY_NOTIFICATION);
     }
 
     @PostConstruct

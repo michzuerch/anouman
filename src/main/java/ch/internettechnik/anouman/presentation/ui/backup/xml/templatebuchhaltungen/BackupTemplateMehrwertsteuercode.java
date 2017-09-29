@@ -28,8 +28,11 @@ public class BackupTemplateMehrwertsteuercode {
     @XmlElement
     private Long konto;
 
-    public BackupTemplateMehrwertsteuercode(String bezeichnung) {
+    public BackupTemplateMehrwertsteuercode(String bezeichnung, String code, Float prozent, boolean verkauf) {
         this.bezeichnung = bezeichnung;
+        this.code = code;
+        this.prozent = prozent;
+        this.verkauf = verkauf;
     }
 
     public BackupTemplateMehrwertsteuercode() {

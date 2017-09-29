@@ -394,10 +394,10 @@ public class TestDataCreateView extends VerticalLayout implements View {
         mehrwertsteuercode.setCode("V12");
         mehrwertsteuercode.setProzent(12.0f);
         mehrwertsteuercode.setVerkauf(true);
-        mehrwertsteuercode.setMehrwertsteuerKonto(konto1);
+        mehrwertsteuercode.setTemplateMehrwertsteuerKonto(konto1);
         mehrwertsteuercode.setTemplateBuchhaltung(buchhaltung);
         mehrwertsteuercode = templateMehrwertsteuercodeFacade.save(mehrwertsteuercode);
-        konto1.setTemplateMehrwertsteuercode(mehrwertsteuercode);
+        konto1.getTemplateMehrwertsteuercode().add(mehrwertsteuercode);
         konto1 = templateKontoFacade.save(konto1);
 
         buchhaltung = templateBuchhaltungFacade.save(buchhaltung);

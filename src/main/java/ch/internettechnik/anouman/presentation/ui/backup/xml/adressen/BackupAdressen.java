@@ -1,11 +1,8 @@
 package ch.internettechnik.anouman.presentation.ui.backup.xml.adressen;
 
-import ch.internettechnik.anouman.backend.entity.Adresse;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -14,14 +11,25 @@ import java.util.List;
 @XmlRootElement(name = "adressen", namespace = "http://www.internettechnik.ch/Anouman")
 @XmlAccessorType(XmlAccessType.NONE)
 public class BackupAdressen {
-    @XmlElement(name = "adresse")
-    private List<Adresse> adressen = null;
+    @XmlAttribute
+    private Date backupdatum;
 
-    public List<Adresse> getAdressen() {
+    @XmlElement(name = "adresse")
+    private List<BackupAdresse> adressen = new ArrayList<>();
+
+    public List<BackupAdresse> getAdressen() {
         return adressen;
     }
 
-    public void setAdressen(List<Adresse> adressen) {
+    public void setAdressen(List<BackupAdresse> adressen) {
         this.adressen = adressen;
+    }
+
+    public Date getBackupdatum() {
+        return backupdatum;
+    }
+
+    public void setBackupdatum(Date backupdatum) {
+        this.backupdatum = backupdatum;
     }
 }

@@ -2,10 +2,6 @@ package ch.internettechnik.anouman.backend.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,19 +13,15 @@ import java.util.List;
         @NamedQuery(name = "TemplateKontoklasse.findAll", query = "SELECT k FROM TemplateKontoklasse k"),
         @NamedQuery(name = "TemplateKontoklasse.findById", query = "SELECT k FROM TemplateKontoklasse k where k.id = :id")
 })
-@XmlAccessorType(XmlAccessType.NONE)
 public class TemplateKontoklasse extends AbstractEntity {
     @Column
     @NotNull
-    @XmlElement
     private String bezeichnung;
 
     @Column
     @NotNull
-    @XmlElement
     private String kontonummer;
 
-    @XmlElement(name = "Kontogruppe")
     @OneToMany(mappedBy = "templateKontoklasse")
     private List<TemplateKontogruppe> templateKontogruppes = new ArrayList<TemplateKontogruppe>();
 
@@ -47,7 +39,6 @@ public class TemplateKontoklasse extends AbstractEntity {
     }
 
     @Transient
-    @XmlAttribute
     public String getShowKontonummer() {
         return getKontonummer();
     }

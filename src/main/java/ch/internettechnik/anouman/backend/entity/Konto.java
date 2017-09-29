@@ -1,7 +1,6 @@
 package ch.internettechnik.anouman.backend.entity;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
@@ -16,12 +15,10 @@ import java.util.Set;
 public class Konto extends AbstractEntity {
     @Column
     @NotNull
-    @NotBlank
     private String bezeichnung;
 
     @Column
     @NotNull
-    @NotBlank
     private String kontonummer;
 
     @Column

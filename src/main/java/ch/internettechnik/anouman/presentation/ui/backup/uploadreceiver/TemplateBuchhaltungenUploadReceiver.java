@@ -106,6 +106,8 @@ public class TemplateBuchhaltungenUploadReceiver implements Serializable, Upload
                                 konto = templateKontoFacade.save(konto);
                                 kontoart.getTemplateKontos().add(konto);
                                 kontoart = templateKontoartFacade.save(kontoart);
+
+                                //if (konto.getTemplateMehrwertsteuercode() != null)
                             }
                         }
                     }

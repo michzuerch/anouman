@@ -2,10 +2,8 @@ package ch.internettechnik.anouman.backend.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by michzuerch on 07.08.15.
@@ -15,11 +13,9 @@ import javax.xml.bind.annotation.XmlElement;
         @NamedQuery(name = "TemplateKonto.findAll", query = "SELECT k FROM TemplateKonto k"),
         @NamedQuery(name = "TemplateKonto.findById", query = "SELECT k FROM TemplateKonto k where k.id = :id")
 })
-@XmlAccessorType(XmlAccessType.NONE)
 public class TemplateKonto extends AbstractEntity {
     @Column
     @NotNull
-    @XmlElement
     private String bezeichnung;
 
     @Column
@@ -27,15 +23,13 @@ public class TemplateKonto extends AbstractEntity {
 
     @Column
     @NotNull
-    @XmlElement
     private String kontonummer;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     private TemplateKontoart templateKontoart;
 
-    @XmlElement
-    @OneToOne
-    private TemplateMehrwertsteuercode templateMehrwertsteuercode;
+    @OneToMany(mappedBy = "templateMehrwertsteuerKonto")
+    private Set<TemplateMehrwertsteuercode> templateMehrwertsteuercode = new HashSet<>();
 
     public TemplateKonto() {
     }
@@ -47,7 +41,6 @@ public class TemplateKonto extends AbstractEntity {
     }
 
     @Transient
-    @XmlAttribute
     public String getShowKontonummer() {
         return getTemplateKontoart().getShowKontonummer() + getKontonummer();
     }
@@ -84,21 +77,11 @@ public class TemplateKonto extends AbstractEntity {
         this.templateKontoart = templateKontoart;
     }
 
-    public TemplateMehrwertsteuercode getTemplateMehrwertsteuercode() {
+    public Set<TemplateMehrwertsteuercode> getTemplateMehrwertsteuercode() {
         return templateMehrwertsteuercode;
     }
 
-    public void setTemplateMehrwertsteuercode(TemplateMehrwertsteuercode templateMehrwertsteuercode) {
+    public void setTemplateMehrwertsteuercode(Set<TemplateMehrwertsteuercode> templateMehrwertsteuercode) {
         this.templateMehrwertsteuercode = templateMehrwertsteuercode;
-    }
-
-    @Override
-    public String toString() {
-        return "TemplateKonto{" +
-                "bezeichnung='" + bezeichnung + '\'' +
-                ", bemerkung='" + bemerkung + '\'' +
-                ", kontonummer='" + kontonummer + '\'' +
-                ", templateKontoart=" + templateKontoart +
-                '}';
     }
 }
