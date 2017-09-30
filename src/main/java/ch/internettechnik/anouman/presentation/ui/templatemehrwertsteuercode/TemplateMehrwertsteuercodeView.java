@@ -71,7 +71,7 @@ public class TemplateMehrwertsteuercodeView extends VerticalLayout implements Vi
 
 
         CssLayout tools = new CssLayout();
-        tools.addComponents(filterTextBezeichnung, clearFilterTextBtn, addBtn);
+        tools.addComponents(filterTemplateBuchhaltung, filterTextBezeichnung, clearFilterTextBtn, addBtn);
         tools.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 
         grid.setCaption("Template Mehrwertsteuercode");

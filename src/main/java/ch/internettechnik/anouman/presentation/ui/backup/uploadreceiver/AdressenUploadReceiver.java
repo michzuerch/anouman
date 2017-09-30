@@ -69,6 +69,7 @@ public class AdressenUploadReceiver implements Serializable, Upload.Receiver, Up
                 adresse.setAnrede(backupAdresse.getAnrede());
                 adresse.setFirma(backupAdresse.getFirma());
                 adresse.setNachname(backupAdresse.getNachname());
+                adresse.setVorname(backupAdresse.getVorname());
                 adresse.setOrt(backupAdresse.getOrt());
                 adresse.setNachname(backupAdresse.getNachname());
                 adresse.setPostleitzahl(backupAdresse.getPostleitzahl());

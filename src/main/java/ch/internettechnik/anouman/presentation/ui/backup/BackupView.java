@@ -400,6 +400,7 @@ public class BackupView extends VerticalLayout implements View {
                     backupRechnungsposition.setBezeichnung(rechnungsposition.getBezeichnung());
                     backupRechnungsposition.setBezeichnunglang(rechnungsposition.getBezeichnunglang());
                     backupRechnungsposition.setMengeneinheit(rechnungsposition.getMengeneinheit());
+                    backupRechnungsposition.setStueckpreis(rechnungsposition.getStueckpreis());
                     backupRechnung.getRechnungspositions().add(backupRechnungsposition);
                 });
 

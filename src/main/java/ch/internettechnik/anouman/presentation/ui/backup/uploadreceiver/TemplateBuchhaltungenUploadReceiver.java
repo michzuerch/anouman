@@ -107,7 +107,20 @@ public class TemplateBuchhaltungenUploadReceiver implements Serializable, Upload
                                 kontoart.getTemplateKontos().add(konto);
                                 kontoart = templateKontoartFacade.save(kontoart);
 
-                                //if (konto.getTemplateMehrwertsteuercode() != null)
+                                if (backupTemplateKonto.getMehrwertsteuercodes().size() > 0) {
+                                    for (BackupTemplateMehrwertsteuercode backupMehrwertsteuercode : backupTemplateKonto.getMehrwertsteuercodes()) {
+                                        TemplateMehrwertsteuercode mehrwertsteuercode = new TemplateMehrwertsteuercode();
+                                        mehrwertsteuercode.setBezeichnung(backupMehrwertsteuercode.getBezeichnung());
+                                        mehrwertsteuercode.setCode(backupMehrwertsteuercode.getCode());
+                                        mehrwertsteuercode.setProzent(backupMehrwertsteuercode.getProzent());
+                                        mehrwertsteuercode.setTemplateMehrwertsteuerKonto(konto);
+                                        mehrwertsteuercode.setTemplateBuchhaltung(buchhaltung);
+                                        mehrwertsteuercode = templateMehrwertsteuercodeFacade.save(mehrwertsteuercode);
+                                        konto.getTemplateMehrwertsteuercode().add(mehrwertsteuercode);
+                                        konto = templateKontoFacade.save(konto);
+
+                                    }
+                                }
                             }
                         }
                     }
