@@ -3,6 +3,7 @@ package ch.internettechnik.anouman.presentation.ui.templatemehrwertsteuercode;
 import ch.internettechnik.anouman.backend.entity.TemplateBuchhaltung;
 import ch.internettechnik.anouman.backend.entity.TemplateMehrwertsteuercode;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.TemplateBuchhaltungFacade;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.TemplateKontoFacade;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.TemplateMehrwertsteuercodeFacade;
 import ch.internettechnik.anouman.presentation.ui.Menu;
 import com.vaadin.cdi.CDIView;
@@ -36,6 +37,9 @@ public class TemplateMehrwertsteuercodeView extends VerticalLayout implements Vi
     private TemplateBuchhaltungFacade templateBuchhaltungFacade;
 
     @Inject
+    private TemplateKontoFacade templateKontoFacade;
+
+    @Inject
     private TemplateMehrwertsteuercodeForm form;
 
     @Override
@@ -59,6 +63,14 @@ public class TemplateMehrwertsteuercodeView extends VerticalLayout implements Vi
         Button addBtn = new Button(VaadinIcons.PLUS);
         addBtn.addClickListener(event -> {
             grid.asSingleSelect().clear();
+            TemplateMehrwertsteuercode templateMehrwertsteuercode = new TemplateMehrwertsteuercode();
+            TemplateBuchhaltung templateBuchhaltung = templateBuchhaltungFacade.findAll().get(0);
+
+            templateMehrwertsteuercode.setTemplateBuchhaltung(templateBuchhaltung);
+            templateMehrwertsteuercode.setProzent(8f);
+
+            if (!filterTemplateBuchhaltung.isEmpty())
+                templateMehrwertsteuercode.setTemplateBuchhaltung(filterTemplateBuchhaltung.getValue());
             form.setEntity(new TemplateMehrwertsteuercode());
             form.openInModalPopup();
             form.setSavedHandler(val -> {

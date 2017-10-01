@@ -1,7 +1,6 @@
 package ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade;
 
 import ch.internettechnik.anouman.backend.entity.TemplateKonto;
-import ch.internettechnik.anouman.backend.entity.TemplateMehrwertsteuercode;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.repository.TemplateKontoRepository;
 
 import javax.ejb.Stateless;
@@ -32,10 +31,4 @@ public class TemplateKontoFacade {
     public List<TemplateKonto> findByBezeichnungLikeIgnoreCase(String bezeichnung) {
         return repo.findByBezeichnungLikeIgnoreCase(bezeichnung);
     }
-
-    public TemplateKonto findByTemplateMehrwertsteuercode(TemplateMehrwertsteuercode templateMehrwertsteuercode) {
-        return repo.findByTemplateMehrwertsteuercode(templateMehrwertsteuercode);
-    }
-
-
 }

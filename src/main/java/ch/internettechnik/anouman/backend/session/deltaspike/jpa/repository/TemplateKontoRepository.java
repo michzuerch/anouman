@@ -1,8 +1,8 @@
 package ch.internettechnik.anouman.backend.session.deltaspike.jpa.repository;
 
 
+import ch.internettechnik.anouman.backend.entity.TemplateBuchhaltung;
 import ch.internettechnik.anouman.backend.entity.TemplateKonto;
-import ch.internettechnik.anouman.backend.entity.TemplateMehrwertsteuercode;
 import org.apache.deltaspike.data.api.EntityRepository;
 import org.apache.deltaspike.data.api.Repository;
 
@@ -12,5 +12,5 @@ import java.util.List;
 public interface TemplateKontoRepository extends EntityRepository<TemplateKonto, Long> {
     List<TemplateKonto> findByBezeichnungLikeIgnoreCase(String bezeichnung);
 
-    TemplateKonto findByTemplateMehrwertsteuercode(TemplateMehrwertsteuercode templateMehrwertsteuercode);
+    List<TemplateKonto> findByTemplateBuchhaltung(TemplateBuchhaltung templateBuchhaltung);
 }

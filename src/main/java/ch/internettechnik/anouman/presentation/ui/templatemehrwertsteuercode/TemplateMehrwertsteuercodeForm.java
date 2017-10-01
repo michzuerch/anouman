@@ -16,7 +16,7 @@ public class TemplateMehrwertsteuercodeForm extends AbstractForm<TemplateMehrwer
     @Inject
     TemplateBuchhaltungFacade templateBuchhaltungFacade;
 
-    NativeSelect<TemplateBuchhaltung> buchhaltung = new NativeSelect<>();
+    NativeSelect<TemplateBuchhaltung> templateBuchhaltung = new NativeSelect<>();
     TextField bezeichnung = new TextField("Bezeichnung");
     TextField code = new TextField("Code");
     TextField prozent = new TextField("Prozent");
@@ -26,7 +26,7 @@ public class TemplateMehrwertsteuercodeForm extends AbstractForm<TemplateMehrwer
     }
 
     public void lockSelect() {
-        buchhaltung.setEnabled(false);
+        templateBuchhaltung.setEnabled(false);
     }
 
     @Override
@@ -39,16 +39,16 @@ public class TemplateMehrwertsteuercodeForm extends AbstractForm<TemplateMehrwer
 
     @Override
     protected Component createContent() {
-        buchhaltung.setCaption("Template Buchhaltung");
-        buchhaltung.setEmptySelectionAllowed(false);
-        buchhaltung.setItemCaptionGenerator(item -> item.getBezeichnung() + " " + item.getId());
-        buchhaltung.setItems(templateBuchhaltungFacade.findAll());
+        templateBuchhaltung.setCaption("Template Buchhaltung");
+        templateBuchhaltung.setEmptySelectionAllowed(false);
+        templateBuchhaltung.setItemCaptionGenerator(item -> item.getBezeichnung() + " " + item.getId());
+        templateBuchhaltung.setItems(templateBuchhaltungFacade.findAll());
 
         getBinder().forField(prozent).withConverter(
                 new StringToFloatConverter("Muss Prozent Zahl sein")
         ).bind("prozent");
 
-        return new VerticalLayout(new FormLayout(buchhaltung, code, bezeichnung, prozent), getToolbar());
+        return new VerticalLayout(new FormLayout(templateBuchhaltung, code, bezeichnung, prozent), getToolbar());
     }
 
 
