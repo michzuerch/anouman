@@ -5,7 +5,8 @@ import ch.internettechnik.anouman.presentation.ui.backup.uploadreceiver.Template
 import com.vaadin.cdi.ViewScoped;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.ui.*;
-import org.jboss.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.vaadin.viritin.button.DownloadButton;
 import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.form.AbstractForm;
@@ -16,7 +17,7 @@ import java.io.OutputStream;
 
 @ViewScoped
 public class ReportTemplateForm extends AbstractForm<ReportTemplate> implements Upload.Receiver, Upload.SucceededListener {
-    private static final Logger LOGGER = Logger.getLogger(ReportTemplateForm.class);
+    private static Logger logger = LoggerFactory.getLogger(ReportTemplateForm.class.getName());
 
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 

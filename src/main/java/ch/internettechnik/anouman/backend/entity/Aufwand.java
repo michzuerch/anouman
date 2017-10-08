@@ -4,14 +4,8 @@ package ch.internettechnik.anouman.backend.entity;
  * Created by michzuerch on 06.07.15.
  */
 
-import org.hibernate.validator.constraints.NotBlank;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -22,26 +16,20 @@ import java.util.Date;
         @NamedQuery(name = "Aufwand.findById", query = "SELECT a FROM Aufwand a where a.id = :id"),
         @NamedQuery(name = "Aufwand.findByTitel", query = "SELECT a FROM Aufwand a where a.titel LIKE :titel")
 })
-@XmlAccessorType(XmlAccessType.NONE)
 public class Aufwand extends AbstractEntity {
     @Column
     @NotNull
-    @NotBlank(message = "Titel muss eingegeben werden.")
-    @XmlElement
     private String titel;
 
     @Column
-    @XmlElement
     private String bezeichnung;
 
     @Column
     @Temporal(TemporalType.TIMESTAMP)
-    @XmlElement
     private Date start;
 
     @Column
     @Temporal(TemporalType.TIMESTAMP)
-    @XmlElement
     private Date ende;
 
     @ManyToOne
@@ -110,10 +98,6 @@ public class Aufwand extends AbstractEntity {
         return total.doubleValue();
     }
 
-    public void afterUnmarshal(Unmarshaller unmarshaller, Object parent) {
-        this.rechnung = (Rechnung) parent;
-    }
-
     @Override
     public String toString() {
         //DateFormat format = SimpleDateFormat.getDateInstance()
@@ -124,20 +108,4 @@ public class Aufwand extends AbstractEntity {
                 ", ende=" + new SimpleDateFormat("dd.MM. HH:mm").format(ende) +
                 '}';
     }
-
-    /*
-    @PrePersist
-    @PreUpdate
-    public void pre() {
-        System.err.println("Pre:"+ toString());
-    }
-    */
-
-    /*
-    @PostPersist
-    @PostUpdate
-    public void post() {
-        System.err.println("Post:" + toString());
-    }
-    */
 }

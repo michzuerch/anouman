@@ -1,12 +1,7 @@
 package ch.internettechnik.anouman.backend.entity;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,12 +11,9 @@ import java.util.Set;
         @NamedQuery(name = "TemplateBuchhaltung.findById", query = "SELECT b FROM TemplateBuchhaltung b where b.id = :id")
 
 })
-@XmlAccessorType(XmlAccessType.NONE)
 public class TemplateBuchhaltung extends AbstractEntity {
     @Column
     @NotNull
-    @NotEmpty
-    @XmlElement
     private String bezeichnung;
 
     @OneToMany(mappedBy = "templateBuchhaltung")

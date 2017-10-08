@@ -3,7 +3,8 @@ package ch.internettechnik.anouman.presentation.ui.editortest;
 import ch.internettechnik.anouman.backend.entity.EditorTest;
 import com.vaadin.cdi.ViewScoped;
 import com.vaadin.ui.*;
-import org.jboss.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.vaadin.viritin.form.AbstractForm;
 
 /**
@@ -11,7 +12,7 @@ import org.vaadin.viritin.form.AbstractForm;
  */
 @ViewScoped
 public class EditorTestForm extends AbstractForm<EditorTest> {
-    private static final Logger LOGGER = Logger.getLogger(EditorTestForm.class);
+    private static Logger logger = LoggerFactory.getLogger(EditorTestForm.class.getName());
 
     //@Inject
     //TemplateKontoplanSelect kontoplan;

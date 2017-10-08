@@ -1,6 +1,7 @@
 package ch.internettechnik.anouman.util;
 
-import org.jboss.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -10,7 +11,7 @@ import java.text.ParseException;
  * Created by michzuerch on 03.07.15.
  */
 public class AnzahlFormat {
-    private static final Logger LOGGER = Logger.getLogger(BetragFormat.class);
+    private static Logger logger = LoggerFactory.getLogger(AnzahlFormat.class.getName());
 
     //@todo kein Dezimalpunkt bei ganzen Zahlen
     private static DecimalFormat getDecimalFormat() {
@@ -34,7 +35,7 @@ public class AnzahlFormat {
         try {
             return decimalFormat.parse(val).floatValue();
         } catch (ParseException e) {
-            LOGGER.error(e.getMessage());
+            logger.error(e.getMessage());
             return new Float(0f);
         }
     }

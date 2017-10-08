@@ -1,9 +1,9 @@
 package ch.internettechnik.anouman.backend.entity;
 
-import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.Range;
-
 import javax.persistence.*;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
@@ -18,17 +18,17 @@ import java.util.Set;
 public class Mehrwertsteuercode extends AbstractEntity {
     @Column
     @NotNull
-    @NotBlank
     private String code;
 
     @Column
     @NotNull
-    @NotBlank
     private String bezeichnung;
 
     @Column
     @NotNull
-    @Range(min = 1, max = 45)
+    @Digits(integer = 2, fraction = 2, message = "Ungültiges Zahlenformat")
+    @DecimalMin(value = "0.1", message = "Minimale Mehrwertsteuer ist 0.1%")
+    @DecimalMax(value = "50", message = "Maximale Mehrwertsteuer ist 50%")
     private Float prozent;
 
     @OneToOne

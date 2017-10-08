@@ -1,7 +1,7 @@
 package ch.internettechnik.anouman.presentation.ui.editortest;
 
 import ch.internettechnik.anouman.backend.entity.EditorTest;
-import ch.internettechnik.anouman.backend.session.jpa.api.EditorTestService;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.EditorTestFacade;
 import ch.internettechnik.anouman.presentation.ui.Menu;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
@@ -27,7 +27,7 @@ public class EditorTestView extends VerticalLayout implements View {
     private Menu menu;
 
     @Inject
-    private EditorTestService service;
+    private EditorTestFacade editorTestFacade;
 
     @Inject
     private EditorTestForm form;
@@ -50,7 +50,7 @@ public class EditorTestView extends VerticalLayout implements View {
             form.setEntity(new EditorTest());
             form.openInModalPopup();
             form.setSavedHandler(val -> {
-                service.saveOrPersist(val);
+                editorTestFacade.save(val);
                 updateList();
                 grid.select(val);
                 form.closePopup();
@@ -70,7 +70,7 @@ public class EditorTestView extends VerticalLayout implements View {
         grid.addColumn(editorTest -> "löschen",
                 new ButtonRenderer(event -> {
                     Notification.show("Lösche EditorTest id:" + event.getItem(), Notification.Type.HUMANIZED_MESSAGE);
-                    service.delete((EditorTest) event.getItem());
+                    editorTestFacade.delete((EditorTest) event.getItem());
                     updateList();
                 })
         );
@@ -80,7 +80,7 @@ public class EditorTestView extends VerticalLayout implements View {
                     form.setEntity((EditorTest) event.getItem());
                     form.openInModalPopup();
                     form.setSavedHandler(val -> {
-                        service.saveOrPersist(val);
+                        editorTestFacade.save(val);
                         updateList();
                         grid.select(val);
                         form.closePopup();
@@ -100,12 +100,7 @@ public class EditorTestView extends VerticalLayout implements View {
 
     public void updateList() {
         List<EditorTest> items;
-        if (!filterText.isEmpty()) {
-            items = service.findByErsterLike(filterText.getValue().toLowerCase());
-        } else {
-            items = service.findAll();
-        }
-        //items = service.findAll();
+        items = editorTestFacade.findAll();
         grid.setItems(items);
     }
 

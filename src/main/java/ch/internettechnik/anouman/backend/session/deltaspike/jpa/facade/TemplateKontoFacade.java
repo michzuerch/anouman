@@ -31,5 +31,4 @@ public class TemplateKontoFacade {
     public List<TemplateKonto> findByBezeichnungLikeIgnoreCase(String bezeichnung) {
         return repo.findByBezeichnungLikeIgnoreCase(bezeichnung);
     }
-
 }

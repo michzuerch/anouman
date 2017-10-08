@@ -4,11 +4,12 @@
 package ch.internettechnik.anouman.util;
 
 import ch.internettechnik.anouman.util.exception.EsrToolException;
-import org.jboss.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class EsrTool {
-    Logger log = Logger.getLogger(this.getClass());
+    private static Logger logger = LoggerFactory.getLogger(EsrTool.class.getName());
 
     public boolean isPlzSwitzerland(String plz) {
         return plz.matches("\\d\\d\\d\\d");
@@ -151,7 +152,7 @@ public class EsrTool {
 
             result = zeroString + val2;
         } catch (NumberFormatException pe) {
-            log.error(pe);
+            logger.error(pe.getLocalizedMessage());
 
             return null;
         }

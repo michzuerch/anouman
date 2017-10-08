@@ -3,9 +3,9 @@ package ch.internettechnik.anouman.presentation.ui.rechnung;
 import ch.internettechnik.anouman.backend.entity.Aufwand;
 import ch.internettechnik.anouman.backend.entity.Rechnung;
 import ch.internettechnik.anouman.backend.entity.Rechnungsposition;
-import ch.internettechnik.anouman.backend.session.jpa.api.AufwandService;
-import ch.internettechnik.anouman.backend.session.jpa.api.RechnungService;
-import ch.internettechnik.anouman.backend.session.jpa.api.RechnungspositionService;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.AufwandFacade;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.RechnungFacade;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.RechnungspositionFacade;
 import ch.internettechnik.anouman.presentation.ui.Menu;
 import ch.internettechnik.anouman.presentation.ui.aufwand.AufwandForm;
 import ch.internettechnik.anouman.presentation.ui.rechnungsposition.RechnungspositionForm;
@@ -24,13 +24,16 @@ public class RechnungDetailView extends VerticalLayout implements View {
     @Inject
     RechnungspositionForm rechnungspositionForm;
     @Inject
+    RechnungFacade rechnungFacade;
+    @Inject
     AufwandForm aufwandForm;
     @Inject
-    RechnungService rechnungService;
+    RechnungspositionFacade rechnungspositionFacade;
     @Inject
-    RechnungspositionService rechnungspositionService;
+    AufwandFacade aufwandFacade;
     @Inject
-    AufwandService aufwandService;
+    private Menu menu;
+
     Long idRechnung = new Long(0);
     TextField fieldId = new TextField("id");
     TextField fieldAdresseFirma = new TextField("Adresse Firma");
@@ -48,11 +51,9 @@ public class RechnungDetailView extends VerticalLayout implements View {
     Button btnAddRechnungsposition = new Button("Add Rechnungsposition");
     Button btnAddAufwand = new Button("Add Aufwand");
     Button btnBack = new Button("Zurück", clickEvent -> getUI().getNavigator().navigateTo("Rechnung/id/" + getIdRechnung()));
-    @Inject
-    private Menu menu;
 
     private void update() {
-        Rechnung val = rechnungService.findById(getIdRechnung());
+        Rechnung val = rechnungFacade.findBy(getIdRechnung());
         fieldId.setValue(val.getId().toString());
         fieldAdresseFirma.setValue(val.getAdresse().getFirma());
         fieldAdresseNachname.setValue(val.getAdresse().getNachname());
@@ -65,8 +66,8 @@ public class RechnungDetailView extends VerticalLayout implements View {
         fieldZwischentotal.setValue(val.getZwischentotal().toString());
         fieldRechnungstotal.setValue(val.getRechnungstotal().toString());
 
-        rechnungspositionGrid.setItems(rechnungspositionService.findByCriteria(val));
-        aufwandGrid.setItems(aufwandService.findByCriteria(val));
+        rechnungspositionGrid.setItems(rechnungspositionFacade.findByRechnung(val));
+        aufwandGrid.setItems(aufwandFacade.findByRechnung(val));
 
     }
 
@@ -112,10 +113,10 @@ public class RechnungDetailView extends VerticalLayout implements View {
         rechnungspositionGrid.addColumn(rechnungsposition -> "löschen",
                 new ButtonRenderer(event -> {
                     Notification.show("Lösche Rechnungsposition id:" + event.getItem(), Notification.Type.HUMANIZED_MESSAGE);
-                    rechnungspositionService.delete((Rechnungsposition) event.getItem());
-                    Rechnung val = rechnungService.findById(getIdRechnung());
+                    rechnungspositionFacade.delete((Rechnungsposition) event.getItem());
+                    Rechnung val = rechnungFacade.findBy(getIdRechnung());
                     val.getRechnungspositionen().remove(event.getItem());
-                    rechnungService.saveOrPersist(val);
+                    rechnungFacade.save(val);
                     update();
                 })
         );
@@ -127,8 +128,8 @@ public class RechnungDetailView extends VerticalLayout implements View {
         aufwandGrid.addColumn(aufwand -> "löschen",
                 new ButtonRenderer(event -> {
                     Notification.show("Lösche Aufwand id:" + event.getItem(), Notification.Type.HUMANIZED_MESSAGE);
-                    aufwandService.delete((Aufwand) event.getItem());
-                    Rechnung val = rechnungService.findById(getIdRechnung());
+                    aufwandFacade.delete((Aufwand) event.getItem());
+                    Rechnung val = rechnungFacade.findBy(getIdRechnung());
                     val.getAufwands().remove(event.getItem());
                     update();
                 })
@@ -147,15 +148,15 @@ public class RechnungDetailView extends VerticalLayout implements View {
             val.setStueckpreis(0d);
             val.setMengeneinheit("Stück");
             val.setAnzahl(0d);
-            val.setRechnung(rechnungService.findById(getIdRechnung()));
+            val.setRechnung(rechnungFacade.findBy(getIdRechnung()));
             rechnungspositionForm.lockSelect();
             rechnungspositionForm.setEntity(val);
             rechnungspositionForm.openInModalPopup();
             rechnungspositionForm.setSavedHandler(rechnungsposition -> {
-                rechnungspositionService.saveOrPersist(rechnungsposition);
-                Rechnung rechnung = rechnungService.findById(getIdRechnung());
+                rechnungspositionFacade.save(rechnungsposition);
+                Rechnung rechnung = rechnungFacade.findBy(getIdRechnung());
                 rechnung.getRechnungspositionen().add(val);
-                rechnungService.saveOrPersist(rechnung);
+                rechnungFacade.save(rechnung);
                 rechnungspositionForm.closePopup();
                 update();
             });
@@ -164,15 +165,15 @@ public class RechnungDetailView extends VerticalLayout implements View {
         btnAddAufwand.addClickListener(event -> {
             aufwandGrid.asSingleSelect().clear();
             Aufwand val = new Aufwand();
-            val.setRechnung(rechnungService.findById(getIdRechnung()));
+            val.setRechnung(rechnungFacade.findBy(getIdRechnung()));
             aufwandForm.lockSelect();
             aufwandForm.setEntity(val);
             aufwandForm.openInModalPopup();
             aufwandForm.setSavedHandler(aufwand -> {
-                aufwandService.saveOrPersist(aufwand);
-                Rechnung rechnung = rechnungService.findById(getIdRechnung());
+                aufwandFacade.save(aufwand);
+                Rechnung rechnung = rechnungFacade.findBy(getIdRechnung());
                 rechnung.getAufwands().add(aufwand);
-                rechnungService.saveOrPersist(rechnung);
+                rechnungFacade.save(rechnung);
                 aufwandForm.closePopup();
                 update();
             });

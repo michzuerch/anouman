@@ -102,7 +102,6 @@ public class RechnungspositionView extends VerticalLayout implements View {
         grid.setCaptionAsHtml(true);
         grid.addColumn(Rechnungsposition::getId).setCaption("id");
         grid.addColumn(Rechnungsposition::getBezeichnung).setCaption("Bezeichnung");
-        //grid.addColumn(Rechnungsposition::getRechnungsdatum).setCaption("Rechnungdatum");
         grid.addColumn(Rechnungsposition::getAnzahl).setCaption("Anzahl");
         grid.addColumn(Rechnungsposition::getMengeneinheit).setCaption("Mengeneinheit");
         grid.addColumn(Rechnungsposition::getStueckpreis).setCaption("Stückpreis");

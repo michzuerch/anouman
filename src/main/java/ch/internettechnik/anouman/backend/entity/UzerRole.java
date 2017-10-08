@@ -1,7 +1,5 @@
 package ch.internettechnik.anouman.backend.entity;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
@@ -21,7 +19,6 @@ public class UzerRole extends AbstractEntity {
     //@todo unique entfernt für Testdaten
     //@Column(unique = true)
     @NotNull
-    @NotEmpty
     private String role;
 
     @Column

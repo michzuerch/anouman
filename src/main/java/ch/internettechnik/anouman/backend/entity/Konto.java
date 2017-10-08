@@ -1,7 +1,5 @@
 package ch.internettechnik.anouman.backend.entity;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
@@ -17,14 +15,14 @@ import java.util.Set;
 public class Konto extends AbstractEntity {
     @Column
     @NotNull
-    @NotEmpty
     private String bezeichnung;
 
     @Column
     @NotNull
-    @NotEmpty
     private String kontonummer;
 
+    @Column
+    private String bemerkung;
 
     @OneToMany(mappedBy = "kontoSoll")
     private Set<Unterbuchung> soll;
@@ -91,10 +89,19 @@ public class Konto extends AbstractEntity {
         this.haben = haben;
     }
 
+    public String getBemerkung() {
+        return bemerkung;
+    }
+
+    public void setBemerkung(String bemerkung) {
+        this.bemerkung = bemerkung;
+    }
+
     @Override
     public String toString() {
         return "Konto{" +
                 "bezeichnung='" + bezeichnung + '\'' +
+                "bemerkung='" + bemerkung + '\'' +
                 ", kontonummer='" + kontonummer + '\'' +
                 ", soll=" + soll +
                 ", haben=" + haben +

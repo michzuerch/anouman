@@ -3,7 +3,8 @@ package ch.internettechnik.anouman.presentation.ui.buchhaltung;
 import ch.internettechnik.anouman.backend.entity.Buchhaltung;
 import com.vaadin.cdi.ViewScoped;
 import com.vaadin.ui.*;
-import org.jboss.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.vaadin.viritin.fields.IntegerField;
 import org.vaadin.viritin.form.AbstractForm;
 
@@ -12,7 +13,7 @@ import org.vaadin.viritin.form.AbstractForm;
  */
 @ViewScoped
 public class BuchhaltungForm extends AbstractForm<Buchhaltung> {
-    private static final Logger LOGGER = Logger.getLogger(BuchhaltungForm.class);
+    private static Logger logger = LoggerFactory.getLogger(BuchhaltungForm.class.getName());
 
     TextField bezeichnung = new TextField("Bezeichnung");
     IntegerField jahr = new IntegerField("Jahr");

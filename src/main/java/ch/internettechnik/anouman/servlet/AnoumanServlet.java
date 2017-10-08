@@ -14,7 +14,7 @@ import javax.servlet.annotation.WebServlet;
  * Created by michzuerch on 09.05.17.
  */
 
-@WebServlet(asyncSupported = true, urlPatterns = {"/*"}, name = "AnoumanServlet",
+@WebServlet(asyncSupported = true, urlPatterns = {"/ui/*", "/VAADIN/*"}, name = "AnoumanServlet",
         initParams = {
                 @WebInitParam(name = VaadinSession.UI_PARAMETER, value = "ch.internettechnik.anouman.presentation.ui.AnoumanUI"),
                 @WebInitParam(name = Constants.SERVLET_PARAMETER_UI_PROVIDER, value = "com.vaadin.cdi.CDIUIProvider"),

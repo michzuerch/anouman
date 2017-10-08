@@ -3,7 +3,6 @@ package ch.internettechnik.anouman.presentation.ui.uzer;
 import ch.internettechnik.anouman.backend.entity.Uzer;
 import com.vaadin.cdi.ViewScoped;
 import com.vaadin.ui.*;
-import org.jboss.logging.Logger;
 import org.vaadin.viritin.form.AbstractForm;
 
 /**
@@ -11,7 +10,6 @@ import org.vaadin.viritin.form.AbstractForm;
  */
 @ViewScoped
 public class UzerForm extends AbstractForm<Uzer> {
-    private static final Logger LOGGER = Logger.getLogger(UzerForm.class);
 
     //@Inject
     //TemplateKontoplanSelect kontoplan;

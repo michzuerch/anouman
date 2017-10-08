@@ -1,13 +1,10 @@
 package ch.internettechnik.anouman.backend.entity;
 
-import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.Range;
-
 import javax.persistence.*;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 
 /**
  * Created by michzuerch on 07.08.15.
@@ -17,31 +14,26 @@ import javax.xml.bind.annotation.XmlElement;
         @NamedQuery(name = "TemplateMehrwertsteuercode.findAll", query = "SELECT m FROM TemplateMehrwertsteuercode m"),
         @NamedQuery(name = "TemplateMehrwertsteuercode.findById", query = "SELECT m FROM TemplateMehrwertsteuercode m where m.id = :id")
 })
-@XmlAccessorType(XmlAccessType.NONE)
 public class TemplateMehrwertsteuercode extends AbstractEntity {
     @Column
     @NotNull
-    @NotBlank
-    @XmlElement
     private String code;
 
     @Column
     @NotNull
-    @NotBlank
-    @XmlElement
     private String bezeichnung;
 
     @Column
     @NotNull
-    @Range(min = 1, max = 45)
-    @XmlElement
+    @Digits(integer = 2, fraction = 2, message = "Ungültiges Zahlenformat")
+    @DecimalMin(value = "0.1", message = "Minimale Mehrwertsteuer ist 0.1%")
+    @DecimalMax(value = "50", message = "Maximale Mehrwertsteuer ist 50%")
     private Float prozent;
 
-    @OneToOne
-    private TemplateKonto mehrwertsteuerKonto;
+    @ManyToOne
+    private TemplateKonto templateMehrwertsteuerKonto;
 
     @Column
-    @XmlElement
     private boolean verkauf;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
@@ -55,7 +47,7 @@ public class TemplateMehrwertsteuercode extends AbstractEntity {
         this.code = code;
         this.bezeichnung = bezeichnung;
         this.prozent = prozent;
-        this.mehrwertsteuerKonto = mehrwertsteuerKonto;
+        this.templateMehrwertsteuerKonto = mehrwertsteuerKonto;
         this.verkauf = verkauf;
     }
 
@@ -83,12 +75,12 @@ public class TemplateMehrwertsteuercode extends AbstractEntity {
         this.prozent = prozent;
     }
 
-    public TemplateKonto getMehrwertsteuerKonto() {
-        return mehrwertsteuerKonto;
+    public TemplateKonto getTemplateMehrwertsteuerKonto() {
+        return templateMehrwertsteuerKonto;
     }
 
-    public void setMehrwertsteuerKonto(TemplateKonto mehrwertsteuerKonto) {
-        this.mehrwertsteuerKonto = mehrwertsteuerKonto;
+    public void setTemplateMehrwertsteuerKonto(TemplateKonto templateMehrwertsteuerKonto) {
+        this.templateMehrwertsteuerKonto = templateMehrwertsteuerKonto;
     }
 
     public boolean isVerkauf() {
@@ -105,5 +97,25 @@ public class TemplateMehrwertsteuercode extends AbstractEntity {
 
     public void setTemplateBuchhaltung(TemplateBuchhaltung templateBuchhaltung) {
         this.templateBuchhaltung = templateBuchhaltung;
+    }
+
+    public String getProzentString() {
+        return getProzent().toString();
+    }
+
+    public void setProzentString(String prozent) {
+        setProzent(Float.valueOf(prozent));
+    }
+
+    @Override
+    public String toString() {
+        return "TemplateMehrwertsteuercode{" +
+                "code='" + code + '\'' +
+                ", bezeichnung='" + bezeichnung + '\'' +
+                ", prozent=" + prozent +
+                ", templateMehrwertsteuerKonto id =" + templateMehrwertsteuerKonto.getId() +
+                ", verkauf=" + verkauf +
+                ", templateBuchhaltung id =" + templateBuchhaltung.getId() +
+                '}';
     }
 }

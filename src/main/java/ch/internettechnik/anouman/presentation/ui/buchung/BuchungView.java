@@ -1,7 +1,7 @@
 package ch.internettechnik.anouman.presentation.ui.buchung;
 
 import ch.internettechnik.anouman.backend.entity.Buchung;
-import ch.internettechnik.anouman.backend.session.jpa.api.BuchungService;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.BuchungFacade;
 import ch.internettechnik.anouman.presentation.ui.Menu;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
@@ -27,7 +27,7 @@ public class BuchungView extends VerticalLayout implements View {
     private Menu menu;
 
     @Inject
-    private BuchungService service;
+    private BuchungFacade service;
 
     @Inject
     private BuchungForm form;
@@ -50,7 +50,7 @@ public class BuchungView extends VerticalLayout implements View {
             form.setEntity(new Buchung());
             form.openInModalPopup();
             form.setSavedHandler(val -> {
-                service.saveOrPersist(val);
+                service.save(val);
                 updateList();
                 grid.select(val);
                 form.closePopup();
@@ -80,7 +80,7 @@ public class BuchungView extends VerticalLayout implements View {
                     form.setEntity((Buchung) event.getItem());
                     form.openInModalPopup();
                     form.setSavedHandler(val -> {
-                        service.saveOrPersist(val);
+                        service.save(val);
                         updateList();
                         grid.select(val);
                         form.closePopup();

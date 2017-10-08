@@ -1,11 +1,8 @@
 package ch.internettechnik.anouman.backend.entity;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -19,19 +16,16 @@ import java.util.Set;
         @NamedQuery(name = "Uzer.findById", query = "SELECT u FROM Uzer u where u.id = :id"),
         @NamedQuery(name = "Uzer.findByName", query = "SELECT u FROM Uzer u where u.principal = :name")
 })
-@XmlRootElement
 public class Uzer extends AbstractEntity {
 
     //@todo unique entfernt für Testdaten
     //@Column(unique = true)
     @NotNull
-    @NotEmpty
     @Size(min = 2)
     private String principal;
 
     @Column
     @NotNull
-    @NotEmpty
     @Size(min = 3)
     private String pazzword;
 

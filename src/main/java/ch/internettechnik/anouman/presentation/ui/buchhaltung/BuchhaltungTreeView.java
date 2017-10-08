@@ -1,7 +1,7 @@
 package ch.internettechnik.anouman.presentation.ui.buchhaltung;
 
 import ch.internettechnik.anouman.backend.entity.*;
-import ch.internettechnik.anouman.backend.session.jpa.api.*;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.*;
 import ch.internettechnik.anouman.presentation.ui.Menu;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.data.TreeData;
@@ -29,19 +29,19 @@ public class BuchhaltungTreeView extends VerticalLayout implements View {
     private Menu menu;
 
     @Inject
-    private BuchhaltungService buchhaltungService;
+    private BuchhaltungFacade buchhaltungFacade;
 
     @Inject
-    private KontoklasseService kontoklasseService;
+    private KontoklasseFacade kontoklasseFacade;
 
     @Inject
-    private KontogruppeService kontogruppeService;
+    private KontogruppeFacade kontogruppeFacade;
 
     @Inject
-    private KontoartService kontoartService;
+    private KontoartFacade kontoartFacade;
 
     @Inject
-    private KontoService kontoService;
+    private KontoFacade kontoFacade;
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
@@ -107,7 +107,7 @@ public class BuchhaltungTreeView extends VerticalLayout implements View {
 
     private NativeSelect<Buchhaltung> createNativeSelect() {
         NativeSelect<Buchhaltung> select = new NativeSelect<>();
-        Collection<Buchhaltung> buchhaltungen = buchhaltungService.findAll();
+        Collection<Buchhaltung> buchhaltungen = buchhaltungFacade.findAll();
         select.setItems(buchhaltungen);
         select.setEmptySelectionAllowed(false);
         return select;
@@ -117,7 +117,7 @@ public class BuchhaltungTreeView extends VerticalLayout implements View {
         Grid<Kontoklasse> grid = new Grid<>();
         grid.setCaption("Kontoklassen");
         grid.setSizeFull();
-        Buchhaltung buchhaltung = buchhaltungService.findById(val.getId());
+        Buchhaltung buchhaltung = buchhaltungFacade.findBy(val.getId());
         grid.setItems(buchhaltung.getKontoklasse());
         grid.addColumn(Kontoklasse::getId);
         grid.addColumn(Kontoklasse::getBezeichnung);
@@ -128,7 +128,7 @@ public class BuchhaltungTreeView extends VerticalLayout implements View {
         Grid<Kontogruppe> grid = new Grid<>();
         grid.setCaption("Kontogruppen");
         grid.setSizeFull();
-        Kontoklasse kontoklasse = kontoklasseService.findById(val.getId());
+        Kontoklasse kontoklasse = kontoklasseFacade.findBy(val.getId());
         grid.setItems(kontoklasse.getKontogruppes());
         grid.addColumn(Kontogruppe::getId);
         grid.addColumn(Kontogruppe::getBezeichnung);
@@ -139,7 +139,7 @@ public class BuchhaltungTreeView extends VerticalLayout implements View {
         Grid<Kontoart> grid = new Grid<>();
         grid.setCaption("Kontoarten");
         grid.setSizeFull();
-        Kontogruppe kontogruppe = kontogruppeService.findById(val.getId());
+        Kontogruppe kontogruppe = kontogruppeFacade.findBy(val.getId());
         grid.setItems(kontogruppe.getKontoarts());
         grid.addColumn(Kontoart::getId);
         grid.addColumn(Kontoart::getBezeichnung);
@@ -150,7 +150,7 @@ public class BuchhaltungTreeView extends VerticalLayout implements View {
         Grid<Konto> grid = new Grid<>();
         grid.setCaption("Konti");
         grid.setSizeFull();
-        Kontoart kontoart = kontoartService.findById(val.getId());
+        Kontoart kontoart = kontoartFacade.findBy(val.getId());
         grid.setItems(kontoart.getKontos());
         grid.addColumn(Konto::getId);
         grid.addColumn(Konto::getBezeichnung);
@@ -163,7 +163,7 @@ public class BuchhaltungTreeView extends VerticalLayout implements View {
         Buchhaltung buchhaltung;
 
         if (!buchhaltungSelect.getSelectedItem().isPresent()) {
-            buchhaltungSelect.setSelectedItem(buchhaltungService.findAll().get(0));
+            buchhaltungSelect.setSelectedItem(buchhaltungFacade.findAll().get(0));
         }
 
         buchhaltung = buchhaltungSelect.getSelectedItem().get();

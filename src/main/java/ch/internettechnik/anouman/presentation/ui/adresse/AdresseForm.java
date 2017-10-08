@@ -4,7 +4,8 @@ import ch.internettechnik.anouman.backend.entity.Adresse;
 import com.vaadin.cdi.ViewScoped;
 import com.vaadin.data.converter.StringToDoubleConverter;
 import com.vaadin.ui.*;
-import org.jboss.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.vaadin.viritin.form.AbstractForm;
 
 import java.util.Locale;
@@ -16,7 +17,7 @@ import java.util.Locale;
  */
 @ViewScoped
 public class AdresseForm extends AbstractForm<Adresse> {
-    private static final Logger LOGGER = Logger.getLogger(AdresseForm.class);
+    private static Logger logger = LoggerFactory.getLogger(AdresseForm.class.getName());
 
     TextField firma = new TextField("Firma");
     TextField anrede = new TextField("Anrede");

@@ -1,8 +1,10 @@
 package ch.internettechnik.anouman.presentation.ui.templatemehrwertsteuercode;
 
 import ch.internettechnik.anouman.backend.entity.TemplateBuchhaltung;
+import ch.internettechnik.anouman.backend.entity.TemplateKonto;
 import ch.internettechnik.anouman.backend.entity.TemplateMehrwertsteuercode;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.TemplateBuchhaltungFacade;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.TemplateKontoFacade;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.TemplateMehrwertsteuercodeFacade;
 import ch.internettechnik.anouman.presentation.ui.Menu;
 import com.vaadin.cdi.CDIView;
@@ -16,6 +18,8 @@ import com.vaadin.ui.themes.ValoTheme;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
 
 @CDIView(value = "TemplateMehrwertsteuercode")
 public class TemplateMehrwertsteuercodeView extends VerticalLayout implements View {
@@ -34,6 +38,9 @@ public class TemplateMehrwertsteuercodeView extends VerticalLayout implements Vi
 
     @Inject
     private TemplateBuchhaltungFacade templateBuchhaltungFacade;
+
+    @Inject
+    private TemplateKontoFacade templateKontoFacade;
 
     @Inject
     private TemplateMehrwertsteuercodeForm form;
@@ -59,7 +66,18 @@ public class TemplateMehrwertsteuercodeView extends VerticalLayout implements Vi
         Button addBtn = new Button(VaadinIcons.PLUS);
         addBtn.addClickListener(event -> {
             grid.asSingleSelect().clear();
-            form.setEntity(new TemplateMehrwertsteuercode());
+            TemplateMehrwertsteuercode templateMehrwertsteuercode = new TemplateMehrwertsteuercode();
+            TemplateBuchhaltung templateBuchhaltung = templateBuchhaltungFacade.findAll().get(0);
+            templateMehrwertsteuercode.setTemplateBuchhaltung(templateBuchhaltung);
+//            templateMehrwertsteuercode.setCode("Test11");
+//            templateMehrwertsteuercode.setBezeichnung("Bezeichn...");
+            templateMehrwertsteuercode.setProzent(8f);
+            templateMehrwertsteuercode.setTemplateMehrwertsteuerKonto(createTemplateKontoList(templateBuchhaltung).get(0));
+
+            if (!filterTemplateBuchhaltung.isEmpty())
+                templateMehrwertsteuercode.setTemplateBuchhaltung(filterTemplateBuchhaltung.getValue());
+            System.err.println(templateMehrwertsteuercode);
+            form.setEntity(templateMehrwertsteuercode);
             form.openInModalPopup();
             form.setSavedHandler(val -> {
                 facade.save(val);
@@ -71,7 +89,7 @@ public class TemplateMehrwertsteuercodeView extends VerticalLayout implements Vi
 
 
         CssLayout tools = new CssLayout();
-        tools.addComponents(filterTextBezeichnung, clearFilterTextBtn, addBtn);
+        tools.addComponents(filterTemplateBuchhaltung, filterTextBezeichnung, clearFilterTextBtn, addBtn);
         tools.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 
         grid.setCaption("Template Mehrwertsteuercode");
@@ -81,6 +99,7 @@ public class TemplateMehrwertsteuercodeView extends VerticalLayout implements Vi
         grid.addColumn(TemplateMehrwertsteuercode::getProzent).setCaption("Prozent");
         grid.addColumn(TemplateMehrwertsteuercode::getBezeichnung).setCaption("Bezeichnung");
         grid.addColumn(templateMehrwertsteuercode -> templateMehrwertsteuercode.getTemplateBuchhaltung().getId()).setCaption("Template Buchhaltung");
+        grid.addColumn(templateMehrwertsteuercode -> templateMehrwertsteuercode.getTemplateMehrwertsteuerKonto().getId()).setCaption("Konto");
 
         grid.setSizeFull();
 
@@ -95,6 +114,7 @@ public class TemplateMehrwertsteuercodeView extends VerticalLayout implements Vi
 
         grid.addColumn(buchhaltung -> "ändern",
                 new ButtonRenderer(event -> {
+                    System.err.println((TemplateMehrwertsteuercode) event.getItem());
                     form.setEntity((TemplateMehrwertsteuercode) event.getItem());
                     form.openInModalPopup();
                     form.setSavedHandler(val -> {
@@ -114,6 +134,21 @@ public class TemplateMehrwertsteuercodeView extends VerticalLayout implements Vi
         addComponentsAndExpand(grid);
     }
 
+    private List<TemplateKonto> createTemplateKontoList(TemplateBuchhaltung buchhaltung) {
+        List<TemplateKonto> list = new ArrayList<>();
+
+        buchhaltung.getTemplateKontoklasses().stream().forEach(templateKontoklasse -> {
+            templateKontoklasse.getTemplateKontogruppes().stream().forEach(templateKontogruppe -> {
+                templateKontogruppe.getTemplateKontoarts().stream().forEach(templateKontoart -> {
+                    templateKontoart.getTemplateKontos().stream().forEach(templateKonto1 -> {
+                        list.add(templateKonto1);
+                    });
+                });
+            });
+        });
+        return list;
+    }
+
     public void updateList() {
         if (!filterTemplateBuchhaltung.isEmpty()) {
             logger.debug("Suche mit Template Buchhaltung");
@@ -124,7 +159,7 @@ public class TemplateMehrwertsteuercodeView extends VerticalLayout implements Vi
             grid.setItems(facade.findByBezeichnungLikeIgnoreCase(filterTextBezeichnung.getValue() + "%"));
             return;
         } else
-        grid.setItems(facade.findAll());
+            grid.setItems(facade.findAll());
     }
 
 }

@@ -2,8 +2,8 @@ package ch.internettechnik.anouman.presentation.ui.uzerrole;
 
 import ch.internettechnik.anouman.backend.entity.Uzer;
 import ch.internettechnik.anouman.backend.entity.UzerRole;
-import ch.internettechnik.anouman.backend.session.jpa.api.UzerRoleService;
-import ch.internettechnik.anouman.backend.session.jpa.api.UzerService;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.UzerFacade;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.UzerRoleFacade;
 import ch.internettechnik.anouman.presentation.ui.Menu;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
@@ -30,10 +30,10 @@ public class UzerRoleView extends VerticalLayout implements View {
     private Menu menu;
 
     @Inject
-    private UzerRoleService service;
+    private UzerRoleFacade uzerRoleFacade;
 
     @Inject
-    private UzerService uzerService;
+    private UzerFacade uzerFacade;
 
     @Inject
     private UzerRoleForm form;
@@ -48,7 +48,7 @@ public class UzerRoleView extends VerticalLayout implements View {
         filterText.addValueChangeListener(e -> updateList());
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
 
-        Collection<Uzer> uzers = uzerService.findAll();
+        Collection<Uzer> uzers = uzerFacade.findAll();
         ComboBox<Uzer> uzerComboBox = new ComboBox<>("", uzers);
         uzerComboBox.setItemCaptionGenerator(Uzer::getPrincipal);
         uzerComboBox.setEmptySelectionAllowed(true);
@@ -64,7 +64,7 @@ public class UzerRoleView extends VerticalLayout implements View {
             form.setEntity(new UzerRole());
             form.openInModalPopup();
             form.setSavedHandler(val -> {
-                service.saveOrPersist(val);
+                uzerRoleFacade.save(val);
                 updateList();
                 grid.select(val);
                 form.closePopup();
@@ -85,7 +85,7 @@ public class UzerRoleView extends VerticalLayout implements View {
         grid.addColumn(val -> "löschen",
                 new ButtonRenderer(event -> {
                     Notification.show("Lösche User Role id:" + event.getItem(), Notification.Type.HUMANIZED_MESSAGE);
-                    service.delete((UzerRole) event.getItem());
+                    uzerRoleFacade.delete((UzerRole) event.getItem());
                     updateList();
                 })
         );
@@ -95,7 +95,7 @@ public class UzerRoleView extends VerticalLayout implements View {
                     form.setEntity((UzerRole) event.getItem());
                     form.openInModalPopup();
                     form.setSavedHandler(val -> {
-                        service.saveOrPersist(val);
+                        uzerRoleFacade.save(val);
                         updateList();
                         grid.select(val);
                         form.closePopup();
@@ -123,12 +123,12 @@ public class UzerRoleView extends VerticalLayout implements View {
         }
         /*
         if (!filterText.isEmpty()) {
-            items = service.findByErsterLike(filterText.getValue().toLowerCase());
+            items = uzerRoleFacade.findByErsterLike(filterText.getValue().toLowerCase());
         } else {
-            items = service.findAll();
+            items = uzerRoleFacade.findAll();
         }
         */
-        items = service.findAll();
+        items = uzerRoleFacade.findAll();
         grid.setItems(items);
     }
 

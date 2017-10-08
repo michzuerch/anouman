@@ -34,4 +34,3 @@ public class AnoumanUI extends UI {
         navigator.navigateTo("About");
     }
 }
-

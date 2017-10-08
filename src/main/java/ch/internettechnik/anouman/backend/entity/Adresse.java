@@ -1,17 +1,7 @@
 package ch.internettechnik.anouman.backend.entity;
 
-import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.Range;
-
 import javax.persistence.*;
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.validation.constraints.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -33,59 +23,46 @@ import java.util.Set;
 
 //@Email(message = "Email Address is not a valid format")
 
-@XmlRootElement(name = "adresse")
-@XmlAccessorType(XmlAccessType.NONE)
 public class Adresse extends AbstractEntity {
     @Column
-    @XmlElement
     private String firma;
 
     @Column
-    @XmlElement
     private String anrede;
 
     @Column
-    @XmlElement
     private String vorname;
 
     @Column
     @NotNull
-    @NotBlank(message = "Nachname muss eingegeben werden.")
     @Pattern(regexp = "[a-z-A-Z]*", message = "Nachname enthält ungültige Zeichen")
-    @XmlElement
     private String nachname;
 
     @Column
-    @XmlElement
     private String strasse;
 
     @Column
     @NotNull
     @Size(min = 4, max = 5)
-    @NotBlank(message = "Postleitzahl muss eingegeben werden.")
     @Pattern(regexp = "[0-9]*", message = "Postleitzahl enthält ungültige Zeichen")
-    @XmlElement
     private String postleitzahl;
 
     @Column
     @NotNull
-    @NotBlank(message = "Ort muss eingegeben werden.")
     @Size(min = 3)
-    @XmlElement
     private String ort;
 
     @Column
     @NotNull
     @Digits(integer = 8, fraction = 2, message = "Muss ein gültiger Betrag sein")
-    @Range(min = 10, max = 500)
-    @XmlElement
+    @DecimalMin(value = "0.01", message = "Minimaler Betrag ist 0.01")
+    @DecimalMax(value = "500", message = "Maximaler Betrag ist 500")
     private Double stundensatz;
 
     @OneToMany(mappedBy = "adresse")
-    @XmlElement
     private Set<Rechnung> rechnungen = new HashSet<Rechnung>();
 
-    public Adresse(String firma, String anrede, String vorname, String nachname, String strasse, String postleitzahl, @NotBlank(message = "Ort muss eingegeben werden.") String ort, Double stundensatz) {
+    public Adresse(String firma, String anrede, String vorname, String nachname, String strasse, String postleitzahl, String ort, Double stundensatz) {
         this.firma = firma;
         this.anrede = anrede;
         this.vorname = vorname;

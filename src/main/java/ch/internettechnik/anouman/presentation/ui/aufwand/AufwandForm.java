@@ -5,7 +5,6 @@ import ch.internettechnik.anouman.backend.entity.Rechnung;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.RechnungFacade;
 import com.vaadin.cdi.ViewScoped;
 import com.vaadin.ui.*;
-import org.jboss.logging.Logger;
 import org.vaadin.viritin.form.AbstractForm;
 
 import javax.inject.Inject;
@@ -16,7 +15,6 @@ import java.time.ZoneOffset;
  */
 @ViewScoped
 public class AufwandForm extends AbstractForm<Aufwand> {
-    private static final Logger LOGGER = Logger.getLogger(AufwandForm.class);
 
     NativeSelect<Rechnung> rechnung = new NativeSelect<>();
     TextField titel = new TextField("Titel");

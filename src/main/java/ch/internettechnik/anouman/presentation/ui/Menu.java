@@ -260,6 +260,13 @@ public class Menu extends CustomComponent {
             }
         });
 
+        testsItem.addItem("Push Test", VaadinIcons.PUZZLE_PIECE, new MenuBar.Command() {
+            @Override
+            public void menuSelected(MenuBar.MenuItem selectedItem) {
+                getUI().getNavigator().navigateTo("PushTest");
+            }
+        });
+
         testsItem.addItem("TestAdresse", VaadinIcons.EDIT, new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem selectedItem) {
