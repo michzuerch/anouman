@@ -98,4 +98,24 @@ public class TemplateMehrwertsteuercode extends AbstractEntity {
     public void setTemplateBuchhaltung(TemplateBuchhaltung templateBuchhaltung) {
         this.templateBuchhaltung = templateBuchhaltung;
     }
+
+    public String getProzentString() {
+        return getProzent().toString();
+    }
+
+    public void setProzentString(String prozent) {
+        setProzent(Float.valueOf(prozent));
+    }
+
+    @Override
+    public String toString() {
+        return "TemplateMehrwertsteuercode{" +
+                "code='" + code + '\'' +
+                ", bezeichnung='" + bezeichnung + '\'' +
+                ", prozent=" + prozent +
+                ", templateMehrwertsteuerKonto id =" + templateMehrwertsteuerKonto.getId() +
+                ", verkauf=" + verkauf +
+                ", templateBuchhaltung id =" + templateBuchhaltung.getId() +
+                '}';
+    }
 }

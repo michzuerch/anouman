@@ -18,7 +18,9 @@ import com.vaadin.ui.themes.ValoTheme;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @CDIView(value = "TemplateBuchhaltungTree")
 public class TemplateBuchhaltungTreeView extends VerticalLayout implements View {
@@ -29,12 +31,11 @@ public class TemplateBuchhaltungTreeView extends VerticalLayout implements View 
     private Grid<TemplateKontogruppe> kontogruppeGrid = new Grid<>();
     private Grid<TemplateKontoart> kontoartGrid = new Grid<>();
     private Grid<TemplateKonto> kontoGrid = new Grid<>();
-    private Grid<TemplateMehrwertsteuercode> mehrwertsteuercodeGrid = new Grid<>();
     private ComboBox<TemplateBuchhaltung> buchhaltungSelect = new ComboBox<>();
     private Button addBuchhaltungBtn = new Button("Erstelle Buchhaltung");
     private Button addGridBtn = new Button("Erstelle Konto");
     private Button mehrwertsteuercodeBtn = new Button("Mehrwertsteuercode");
-    private PopupView popupMehrwertsteuercode;
+    private Window windowMehrwertsteuercode;
 
     private TemplateBuchhaltungTreeData treeRootItem;
 
@@ -81,18 +82,15 @@ public class TemplateBuchhaltungTreeView extends VerticalLayout implements View 
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
         setStyleName("anouman-background");
         HorizontalLayout toolsLayout = new HorizontalLayout();
-
         HorizontalLayout bodyLayout = new HorizontalLayout();
-
         buchhaltungSelect = createBuchhaltungSelect();
+        buchhaltungSelect.setWidth(400, Unit.PIXELS);
 
         addBuchhaltungBtn = createButtonAddTemplateBuchhaltung();
-        popupMehrwertsteuercode = new PopupView("Mwst", createMehrwertsteuerPopup());
+        windowMehrwertsteuercode = createTemplateMehrwertsteuerWindow(buchhaltungSelect.getValue());
         toolsLayout.addComponentsAndExpand(buchhaltungSelect);
-        toolsLayout.addComponents(addBuchhaltungBtn, mehrwertsteuercodeBtn, popupMehrwertsteuercode);
+        toolsLayout.addComponents(addBuchhaltungBtn, mehrwertsteuercodeBtn);
 
-
-        toolsLayout.setWidth(50, Unit.PERCENTAGE);
         addBuchhaltungBtn.setIcon(VaadinIcons.CAMERA);
         buchhaltungTree = createBuchhaltungTree();
         buchhaltungTree.select(treeRootItem);
@@ -106,9 +104,8 @@ public class TemplateBuchhaltungTreeView extends VerticalLayout implements View 
         bodyLayout.addComponentsAndExpand(addGridBtn, kontoklasseGrid);
         bodyLayout.setExpandRatio(addGridBtn, 0.1f);
         bodyLayout.setExpandRatio(kontoklasseGrid, 4);
-
         mehrwertsteuercodeBtn.addClickListener(event -> {
-            popupMehrwertsteuercode.setPopupVisible(true);
+            UI.getCurrent().addWindow(windowMehrwertsteuercode);
         });
 
         buchhaltungTree.setSelectionMode(Grid.SelectionMode.SINGLE);
@@ -119,6 +116,7 @@ public class TemplateBuchhaltungTreeView extends VerticalLayout implements View 
                 buchhaltungTree.select(treeRootItem);
                 buchhaltungTree.expand(treeRootItem);
             }
+            windowMehrwertsteuercode = createTemplateMehrwertsteuerWindow(buchhaltungSelect.getValue());
         });
 
         buchhaltungTree.addSelectionListener(event -> {
@@ -127,8 +125,7 @@ public class TemplateBuchhaltungTreeView extends VerticalLayout implements View 
             bodyLayout.removeComponent(kontoartGrid);
             bodyLayout.removeComponent(kontoGrid);
             bodyLayout.removeComponent(addGridBtn);
-            bodyLayout.removeComponent(mehrwertsteuercodeGrid);
-            mehrwertsteuercodeGrid = createMehrwertsteuercodeGrid(buchhaltungSelect.getValue());
+            windowMehrwertsteuercode = createTemplateMehrwertsteuerWindow(buchhaltungSelect.getValue());
             if (!buchhaltungTree.asSingleSelect().isEmpty()) {
                 TemplateBuchhaltungTreeData selectedItem = buchhaltungTree.asSingleSelect().getValue();
                 buchhaltungTree.expand(selectedItem);
@@ -136,37 +133,33 @@ public class TemplateBuchhaltungTreeView extends VerticalLayout implements View 
                     kontoklasseGrid = createGridKontoklasse(selectedItem);
                     addGridBtn = createButtonAddTemplateKontoklasse();
 
-                    bodyLayout.addComponents(addGridBtn, kontoklasseGrid, mehrwertsteuercodeGrid);
+                    bodyLayout.addComponents(addGridBtn, kontoklasseGrid);
                     bodyLayout.setExpandRatio(addGridBtn, 0.1f);
                     bodyLayout.setExpandRatio(kontoklasseGrid, 4);
-                    bodyLayout.setExpandRatio(mehrwertsteuercodeGrid, 1);
                 }
                 if (selectedItem.getType().equals("KK")) {
                     kontogruppeGrid = createGridKontogruppe(selectedItem);
                     addGridBtn = createButtonAddTemplateKontogruppe(templateKontoklasseFacade.findBy(selectedItem.getId()));
 
-                    bodyLayout.addComponents(addGridBtn, kontogruppeGrid, mehrwertsteuercodeGrid);
+                    bodyLayout.addComponents(addGridBtn, kontogruppeGrid);
                     bodyLayout.setExpandRatio(addGridBtn, 0.1f);
                     bodyLayout.setExpandRatio(kontogruppeGrid, 4);
-                    bodyLayout.setExpandRatio(mehrwertsteuercodeGrid, 1);
                 }
                 if (selectedItem.getType().equals("KG")) {
                     kontoartGrid = createGridKontoart(selectedItem);
                     addGridBtn = createButtonAddTemplateKontoart(templateKontogruppeFacade.findBy(selectedItem.getId()));
 
-                    bodyLayout.addComponents(addGridBtn, kontoartGrid, mehrwertsteuercodeGrid);
+                    bodyLayout.addComponents(addGridBtn, kontoartGrid);
                     bodyLayout.setExpandRatio(addGridBtn, 0.1f);
                     bodyLayout.setExpandRatio(kontoartGrid, 4);
-                    bodyLayout.setExpandRatio(mehrwertsteuercodeGrid, 1);
                 }
                 if (selectedItem.getType().equals("KA")) {
                     kontoGrid = createGridKonto(selectedItem);
                     addGridBtn = createButtonAddTemplateKonto(templateKontoartFacade.findBy(selectedItem.getId()));
 
-                    bodyLayout.addComponents(addGridBtn, kontoGrid, mehrwertsteuercodeGrid);
+                    bodyLayout.addComponents(addGridBtn, kontoGrid);
                     bodyLayout.setExpandRatio(addGridBtn, 0.1f);
                     bodyLayout.setExpandRatio(kontoGrid, 4);
-                    bodyLayout.setExpandRatio(mehrwertsteuercodeGrid, 1);
                 }
                 //Notification.show("Selected from Tree:" + selectedItem.getType() + " id:" + selectedItem.getId(), Notification.Type.TRAY_NOTIFICATION);
             }
@@ -436,21 +429,124 @@ public class TemplateBuchhaltungTreeView extends VerticalLayout implements View 
         return grid;
     }
 
-    private Grid<TemplateMehrwertsteuercode> createMehrwertsteuercodeGrid(TemplateBuchhaltung buchhaltung) {
-        Grid<TemplateMehrwertsteuercode> grid = new Grid<>();
-        grid.setCaption("Mehrwertsteuercodes");
-        grid.setItems(buchhaltung.getTemplateMehrwertsteuercodes());
-        grid.addColumn(TemplateMehrwertsteuercode::getCode);
-        grid.addColumn(TemplateMehrwertsteuercode::getBezeichnung);
-        grid.addColumn(TemplateMehrwertsteuercode::getProzent);
-        return grid;
+
+    private List<TemplateKonto> createTemplateKontoList(TemplateBuchhaltung buchhaltung) {
+        List<TemplateKonto> list = new ArrayList<>();
+
+        buchhaltung.getTemplateKontoklasses().stream().forEach(templateKontoklasse -> {
+            templateKontoklasse.getTemplateKontogruppes().stream().forEach(templateKontogruppe -> {
+                templateKontogruppe.getTemplateKontoarts().stream().forEach(templateKontoart -> {
+                    templateKontoart.getTemplateKontos().stream().forEach(templateKonto1 -> {
+                        list.add(templateKonto1);
+                    });
+                });
+            });
+        });
+        return list;
     }
 
-    private VerticalLayout createMehrwertsteuerPopup() {
-        VerticalLayout layout = new VerticalLayout();
-        Grid<TemplateMehrwertsteuercode> grid = createMehrwertsteuercodeGrid(buchhaltungSelect.getValue());
-        layout.addComponent(grid);
-        return layout;
+    private Window createTemplateMehrwertsteuerWindow(TemplateBuchhaltung buchhaltung) {
+        HorizontalLayout layout = new HorizontalLayout();
+
+        Grid<TemplateMehrwertsteuercode> grid = new Grid<>();
+
+        grid.setCaption("Mehrwertsteuercodes");
+        grid.setItems(buchhaltung.getTemplateMehrwertsteuercodes());
+        grid.getEditor().setEnabled(true);
+
+        grid.getEditor().addSaveListener(event -> {
+            if (grid.getEditor().getBinder().isValid()) {
+                templateMehrwertsteuercodeFacade.save(event.getBean());
+                templateBuchhaltungFacade.findBy(buchhaltung.getId());
+                grid.setItems(getMehrwertsteuerList());
+            }
+        });
+
+        // @todo Lieber direkt Float als String...
+//        TextField prozentFld = new TextField();
+//        grid.getEditor().getBinder().bind(prozentFld,TemplateMehrwertsteuercode::getProzentString,
+//                TemplateMehrwertsteuercode::setProzentString);
+
+        // @todo Validator geht nicht...
+//        grid.getEditor().getBinder().forField(prozentFld).withValidator(s -> Validator.isFloat(s)==true, "kein Float");
+
+        grid.addColumn(TemplateMehrwertsteuercode::getId).setCaption("Id");
+        grid.addColumn(TemplateMehrwertsteuercode::getVersion).setCaption("Vers");
+//        grid.addColumn(templateMehrwertsteuercode -> templateMehrwertsteuercode.getTemplateBuchhaltung().getBezeichnung()+" "
+//                + templateMehrwertsteuercode.getTemplateBuchhaltung().getId()).setCaption("Buchhaltung");
+        grid.addColumn(TemplateMehrwertsteuercode::getCode).setEditorComponent(new TextField(), TemplateMehrwertsteuercode::setCode).setCaption("Code");
+        grid.addColumn(TemplateMehrwertsteuercode::getBezeichnung).setEditorComponent(new TextField(), TemplateMehrwertsteuercode::setBezeichnung).setCaption("Bezeichnung");
+        grid.addColumn(TemplateMehrwertsteuercode::getProzentString).setEditorComponent(new TextField(), TemplateMehrwertsteuercode::setProzentString).setCaption("Prozent");
+        grid.addColumn(TemplateMehrwertsteuercode::isVerkauf).setEditorComponent(new CheckBox(), TemplateMehrwertsteuercode::setVerkauf).setCaption("Verkauf");
+        grid.addColumn(templateMehrwertsteuercode -> templateMehrwertsteuercode.getTemplateMehrwertsteuerKonto().getBezeichnung()
+                + " " + templateMehrwertsteuercode.getTemplateMehrwertsteuerKonto().getId()).setCaption("Konto");
+        grid.addColumn(templateMehrwertsteuercode -> templateMehrwertsteuercode.getTemplateMehrwertsteuerKonto().getShowKontonummer()).setCaption("KoNr");
+        grid.addColumn(event -> "löschen",
+                new ButtonRenderer(event -> {
+                    TemplateMehrwertsteuercode val = (TemplateMehrwertsteuercode) event.getItem();
+                    Notification.show("Löschen Template Mehrwertsteuercode id:" + val.getId());
+                    templateMehrwertsteuercodeFacade.delete(val);
+                    grid.setItems(templateMehrwertsteuercodeFacade.findByTemplateBuchhaltung(buchhaltungSelect.getValue()));
+                }));
+        grid.addColumn(event -> "ändern",
+                new ButtonRenderer(event -> {
+                    templateMehrwertsteuercodeForm.setEntity((TemplateMehrwertsteuercode) event.getItem());
+                    templateMehrwertsteuercodeForm.openInModalPopup();
+                    templateMehrwertsteuercodeForm.setSavedHandler(val -> {
+                        templateMehrwertsteuercodeFacade.save(val);
+                        grid.setItems(templateMehrwertsteuercodeFacade.findByTemplateBuchhaltung(buchhaltungSelect.getValue()));
+                        grid.select(val);
+                        templateMehrwertsteuercodeForm.closePopup();
+                    });
+                    templateMehrwertsteuercodeForm.setResetHandler(val -> {
+                        grid.setItems(templateMehrwertsteuercodeFacade.findByTemplateBuchhaltung(buchhaltungSelect.getValue()));
+                        grid.select(val);
+                        templateMehrwertsteuercodeForm.closePopup();
+                    });
+
+                }));
+
+        Button mehrwertsteuerAddBtn = new Button("Add Mehrwersteuercode", event -> {
+            grid.asSingleSelect().clear();
+            TemplateMehrwertsteuercode mehrwertsteuercode = new TemplateMehrwertsteuercode();
+            mehrwertsteuercode.setTemplateBuchhaltung(buchhaltungSelect.getValue());
+            mehrwertsteuercode.setTemplateMehrwertsteuerKonto(createTemplateKontoList(buchhaltungSelect.getValue()).get(0));
+
+            mehrwertsteuercode.setProzent(8f);
+            templateMehrwertsteuercodeForm.setWidth(500, Unit.PIXELS);
+            templateMehrwertsteuercodeForm.setEntity(mehrwertsteuercode);
+            templateMehrwertsteuercodeForm.openInModalPopup();
+            templateMehrwertsteuercodeForm.setSavedHandler(templateMehrwertsteuercode -> {
+                templateMehrwertsteuercodeFacade.save(templateMehrwertsteuercode);
+                grid.setItems(getMehrwertsteuerList());
+                grid.select(templateMehrwertsteuercode);
+                templateMehrwertsteuercodeForm.closePopup();
+            });
+
+        });
+
+        mehrwertsteuerAddBtn.setIcon(VaadinIcons.ASTERISK);
+        mehrwertsteuerAddBtn.setStyleName(ValoTheme.BUTTON_ICON_ONLY);
+        mehrwertsteuerAddBtn.setSizeUndefined();
+        layout.addComponents(mehrwertsteuerAddBtn);
+        layout.addComponentsAndExpand(grid);
+        layout.setMargin(true);
+
+        Window window = new Window("Template Mehrwersteuercode");
+        window.setContent(layout);
+        window.setClosable(true);
+        window.setModal(true);
+        window.setResizable(true);
+        window.setDraggable(true);
+        window.setWidth("1200px");
+        window.setHeight("600px");
+        window.center();
+        return window;
+    }
+
+
+    private List<TemplateMehrwertsteuercode> getMehrwertsteuerList() {
+        return templateMehrwertsteuercodeFacade.findByTemplateBuchhaltung(buchhaltungSelect.getValue());
     }
 
     private Tree<TemplateBuchhaltungTreeData> createBuchhaltungTree() {
@@ -486,18 +582,12 @@ public class TemplateBuchhaltungTreeView extends VerticalLayout implements View 
                 kontogruppe.getTemplateKontoarts().forEach(kontoart -> {
                     TemplateBuchhaltungTreeData valKA = new TemplateBuchhaltungTreeData(kontoart.getId(), "KA", kontoart.getBezeichnung() + " KoNr:" + kontoart.getShowKontonummer());
                     buchhaltungTreeData.addItem(valKG, valKA);
-                    /*
-
-                    Keine Konten mehr im Tree weil diese schon im Grid angezeigt werden
-                    kontoart.getTemplateKontos().forEach(konto -> {
-                        TemplateBuchhaltungTreeData valKO = new TemplateBuchhaltungTreeData(konto.getId(), "KO", konto.getBezeichnung() + " KoNr:" + konto.getShowKontonummer());
-                        buchhaltungTreeData.addItem(valKA, valKO);
-                    });
-                     */
                 });
             });
         });
         provider.refreshAll();
         return provider;
     }
+
+
 }
