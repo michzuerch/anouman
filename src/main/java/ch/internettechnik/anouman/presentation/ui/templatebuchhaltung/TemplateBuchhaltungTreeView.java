@@ -506,7 +506,7 @@ public class TemplateBuchhaltungTreeView extends VerticalLayout implements View 
 
                 }));
 
-        Button mehrwertsteuerAddBtn = new Button("Add Mehrwersteuercode", event -> {
+        Button mehrwertsteuerAddBtn = new Button("Add Mehrwertsteuercode", event -> {
             grid.asSingleSelect().clear();
             TemplateMehrwertsteuercode mehrwertsteuercode = new TemplateMehrwertsteuercode();
             mehrwertsteuercode.setTemplateBuchhaltung(buchhaltungSelect.getValue());
