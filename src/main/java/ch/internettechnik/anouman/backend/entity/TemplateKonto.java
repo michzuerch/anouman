@@ -2,8 +2,8 @@ package ch.internettechnik.anouman.backend.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by michzuerch on 07.08.15.
@@ -25,11 +25,11 @@ public class TemplateKonto extends AbstractEntity {
     @NotNull
     private String kontonummer;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     private TemplateKontoart templateKontoart;
 
-    @OneToMany(mappedBy = "templateMehrwertsteuerKonto")
-    private Set<TemplateMehrwertsteuercode> templateMehrwertsteuercode = new HashSet<>();
+    @OneToMany(mappedBy = "templateMehrwertsteuerKonto", cascade = CascadeType.ALL)
+    private List<TemplateMehrwertsteuercode> templateMehrwertsteuercode = new ArrayList<>();
 
     public TemplateKonto() {
     }
@@ -77,11 +77,23 @@ public class TemplateKonto extends AbstractEntity {
         this.templateKontoart = templateKontoart;
     }
 
-    public Set<TemplateMehrwertsteuercode> getTemplateMehrwertsteuercode() {
+    public List<TemplateMehrwertsteuercode> getTemplateMehrwertsteuercode() {
         return templateMehrwertsteuercode;
     }
 
-    public void setTemplateMehrwertsteuercode(Set<TemplateMehrwertsteuercode> templateMehrwertsteuercode) {
+    public void setTemplateMehrwertsteuercode(List<TemplateMehrwertsteuercode> templateMehrwertsteuercode) {
         this.templateMehrwertsteuercode = templateMehrwertsteuercode;
+    }
+
+    @Override
+    public String toString() {
+        return "TemplateKonto{" +
+                "id='" + getId().toString() + '\'' +
+                ", bezeichnung='" + bezeichnung + '\'' +
+                ", bemerkung='" + bemerkung + '\'' +
+                ", kontonummer='" + kontonummer + '\'' +
+                ", templateKontoart=" + templateKontoart +
+                ", templateMehrwertsteuercode=" + templateMehrwertsteuercode +
+                '}';
     }
 }

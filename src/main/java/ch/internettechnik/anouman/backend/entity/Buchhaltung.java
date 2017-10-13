@@ -5,8 +5,8 @@ import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by michzuerch on 07.08.15.
@@ -29,11 +29,11 @@ public class Buchhaltung extends AbstractEntity {
     @DecimalMax(value = "2150", message = "Nicht nach 2150")
     private int jahr;
 
-    @OneToMany(mappedBy = "buchhaltung")
-    private Set<Kontoklasse> kontoklasse = new HashSet<>();
+    @OneToMany(mappedBy = "buchhaltung", cascade = CascadeType.ALL)
+    private List<Kontoklasse> kontoklasse = new ArrayList<>();
 
-    @OneToMany(mappedBy = "buchhaltung")
-    private Set<Mehrwertsteuercode> mehrwertsteuercode = new HashSet<>();
+    @OneToMany(mappedBy = "buchhaltung", cascade = CascadeType.ALL)
+    private List<Mehrwertsteuercode> mehrwertsteuercode = new ArrayList<>();
 
 
     public Buchhaltung() {
@@ -55,19 +55,19 @@ public class Buchhaltung extends AbstractEntity {
         this.jahr = jahr;
     }
 
-    public Set<Kontoklasse> getKontoklasse() {
+    public List<Kontoklasse> getKontoklasse() {
         return kontoklasse;
     }
 
-    public void setKontoklasse(Set<Kontoklasse> kontoklasse) {
+    public void setKontoklasse(List<Kontoklasse> kontoklasse) {
         this.kontoklasse = kontoklasse;
     }
 
-    public Set<Mehrwertsteuercode> getMehrwertsteuercode() {
+    public List<Mehrwertsteuercode> getMehrwertsteuercode() {
         return mehrwertsteuercode;
     }
 
-    public void setMehrwertsteuercode(Set<Mehrwertsteuercode> mehrwertsteuercode) {
+    public void setMehrwertsteuercode(List<Mehrwertsteuercode> mehrwertsteuercode) {
         this.mehrwertsteuercode = mehrwertsteuercode;
     }
 

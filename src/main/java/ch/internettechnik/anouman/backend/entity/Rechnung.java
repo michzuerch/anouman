@@ -3,10 +3,10 @@ package ch.internettechnik.anouman.backend.entity;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -49,10 +49,10 @@ public class Rechnung extends AbstractEntity {
     private Adresse adresse;
 
     @OneToMany(mappedBy = "rechnung", cascade = CascadeType.ALL)
-    private Set<Rechnungsposition> rechnungspositionen = new HashSet<Rechnungsposition>();
+    private List<Rechnungsposition> rechnungspositionen = new ArrayList<>();
 
     @OneToMany(mappedBy = "rechnung", cascade = CascadeType.ALL)
-    private Set<Aufwand> aufwands = new HashSet<Aufwand>();
+    private List<Aufwand> aufwands = new ArrayList<>();
 
     public Rechnung() {
     }
@@ -109,19 +109,19 @@ public class Rechnung extends AbstractEntity {
         this.adresse = adresse;
     }
 
-    public Set<Rechnungsposition> getRechnungspositionen() {
+    public List<Rechnungsposition> getRechnungspositionen() {
         return rechnungspositionen;
     }
 
-    public void setRechnungspositionen(Set<Rechnungsposition> rechnungspositionen) {
+    public void setRechnungspositionen(List<Rechnungsposition> rechnungspositionen) {
         this.rechnungspositionen = rechnungspositionen;
     }
 
-    public Set<Aufwand> getAufwands() {
+    public List<Aufwand> getAufwands() {
         return aufwands;
     }
 
-    public void setAufwands(Set<Aufwand> aufwands) {
+    public void setAufwands(List<Aufwand> aufwands) {
         this.aufwands = aufwands;
     }
 

@@ -21,7 +21,7 @@ public class KontoklasseFacade {
     }
 
     public Kontoklasse save(Kontoklasse val) {
-        return repo.saveAndFlushAndRefresh(val);
+        return repo.save(val);
     }
 
     public List<Kontoklasse> findAll() {

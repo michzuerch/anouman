@@ -2,8 +2,8 @@ package ch.internettechnik.anouman.backend.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by michzuerch on 03.03.15.
@@ -59,8 +59,8 @@ public class Adresse extends AbstractEntity {
     @DecimalMax(value = "500", message = "Maximaler Betrag ist 500")
     private Double stundensatz;
 
-    @OneToMany(mappedBy = "adresse")
-    private Set<Rechnung> rechnungen = new HashSet<Rechnung>();
+    @OneToMany(mappedBy = "adresse", cascade = CascadeType.ALL)
+    private List<Rechnung> rechnungen = new ArrayList<>();
 
     public Adresse(String firma, String anrede, String vorname, String nachname, String strasse, String postleitzahl, String ort, Double stundensatz) {
         this.firma = firma;
@@ -146,11 +146,11 @@ public class Adresse extends AbstractEntity {
         this.ort = ort;
     }
 
-    public Set<Rechnung> getRechnungen() {
+    public List<Rechnung> getRechnungen() {
         return rechnungen;
     }
 
-    public void setRechnungen(Set<Rechnung> rechnungen) {
+    public void setRechnungen(List<Rechnung> rechnungen) {
         this.rechnungen = rechnungen;
     }
 

@@ -2,8 +2,8 @@ package ch.internettechnik.anouman.backend.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by michzuerch on 25.08.15.
@@ -25,8 +25,8 @@ public class Kontoart extends AbstractEntity {
     @ManyToOne
     private Kontogruppe kontogruppe;
 
-    @OneToMany(mappedBy = "kontoart")
-    private Set<Konto> kontos = new HashSet<>();
+    @OneToMany(mappedBy = "kontoart", cascade = CascadeType.ALL)
+    private List<Konto> kontos = new ArrayList<>();
 
     @Transient
     public String getShowKontonummer() {
@@ -49,11 +49,11 @@ public class Kontoart extends AbstractEntity {
         this.kontonummer = kontonummer;
     }
 
-    public Set<Konto> getKontos() {
+    public List<Konto> getKontos() {
         return kontos;
     }
 
-    public void setKontos(Set<Konto> kontos) {
+    public void setKontos(List<Konto> kontos) {
         this.kontos = kontos;
     }
 

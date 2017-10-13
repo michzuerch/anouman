@@ -7,7 +7,6 @@ package ch.internettechnik.anouman.backend.entity;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity
@@ -100,12 +99,13 @@ public class Aufwand extends AbstractEntity {
 
     @Override
     public String toString() {
-        //DateFormat format = SimpleDateFormat.getDateInstance()
         return "Aufwand{" +
+                ", id=" + id +
                 "titel='" + titel + '\'' +
                 ", bezeichnung='" + bezeichnung + '\'' +
-                ", start=" + new SimpleDateFormat("dd.MM. HH:mm").format(start) +
-                ", ende=" + new SimpleDateFormat("dd.MM. HH:mm").format(ende) +
+                ", start=" + start +
+                ", ende=" + ende +
+                ", rechnung=" + rechnung +
                 '}';
     }
 }

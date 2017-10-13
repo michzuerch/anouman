@@ -1,7 +1,7 @@
 package ch.internettechnik.anouman.presentation.ui.templatebuchhaltung;
 
-import ch.internettechnik.anouman.backend.entity.TemplateBuchhaltung;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.TemplateBuchhaltungFacade;
+import ch.internettechnik.anouman.backend.entity.*;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.*;
 import ch.internettechnik.anouman.presentation.ui.Menu;
 import ch.internettechnik.anouman.presentation.ui.templatebuchhaltung.form.TemplateBuchhaltungForm;
 import com.vaadin.cdi.CDIView;
@@ -31,6 +31,24 @@ public class TemplateBuchhaltungView extends VerticalLayout implements View {
 
     @Inject
     private TemplateBuchhaltungForm form;
+
+    @Inject
+    private BuchhaltungFacade buchhaltungFacade;
+
+    @Inject
+    private KontoklasseFacade kontoklasseFacade;
+
+    @Inject
+    private KontogruppeFacade kontogruppeFacade;
+
+    @Inject
+    private KontoartFacade kontoartFacade;
+
+    @Inject
+    private KontoFacade kontoFacade;
+
+    @Inject
+    private MehrwertsteuercodeFacade mehrwertsteuercodeFacade;
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
@@ -97,7 +115,55 @@ public class TemplateBuchhaltungView extends VerticalLayout implements View {
                         form.closePopup();
                     });
                 }));
+
+        grid.addColumn(adresse -> "Buchhaltung erstellen",
+                new ButtonRenderer(event -> {
+                    TemplateBuchhaltung templateBuchhaltung = (TemplateBuchhaltung) event.getItem();
+
+                    Buchhaltung buchhaltung = new Buchhaltung();
+                    buchhaltung.setBezeichnung(templateBuchhaltung.getBezeichnung());
+                    buchhaltung.setJahr(2000);
+                    buchhaltung = buchhaltungFacade.save(buchhaltung);
+
+                    for (TemplateKontoklasse templateKontoklasse : templateBuchhaltung.getTemplateKontoklasses()) {
+                        Kontoklasse kontoklasse = new Kontoklasse();
+                        kontoklasse.setBuchhaltung(buchhaltung);
+                        kontoklasse.setBezeichnung(templateKontoklasse.getBezeichnung());
+                        kontoklasse.setKontonummer(templateKontoklasse.getKontonummer());
+                        kontoklasse = kontoklasseFacade.save(kontoklasse);
+
+                        for (TemplateKontogruppe templateKontogruppe : templateKontoklasse.getTemplateKontogruppes()) {
+                            Kontogruppe kontogruppe = new Kontogruppe();
+                            kontogruppe.setBezeichnung(templateKontogruppe.getBezeichnung());
+                            kontogruppe.setKontonummer(templateKontogruppe.getKontonummer());
+                            kontogruppe = kontogruppeFacade.save(kontogruppe);
+
+                            for (TemplateKontoart templateKontoart : templateKontogruppe.getTemplateKontoarts()) {
+                                Kontoart kontoart = new Kontoart();
+                                kontoart.setBezeichnung(templateKontoart.getBezeichnung());
+                                kontoart.setKontonummer(templateKontoart.getKontonummer());
+                                kontoart = kontoartFacade.save(kontoart);
+
+                                for (TemplateKonto templateKonto : templateKontoart.getTemplateKontos()) {
+                                    Konto konto = new Konto();
+                                    konto.setBezeichnung(templateKonto.getBezeichnung());
+                                    konto.setKontonummer(templateKonto.getKontonummer());
+                                    konto.setBemerkung(templateKonto.getBemerkung());
+                                    konto = kontoFacade.save(konto);
+                                }
+                            }
+                        }
+                    }
+                    updateList();
+                    Notification.show("Buchhaltung " + buchhaltung + " erstellt");
+                })
+
+        );
+
+
+
         updateList();
+
         addComponents(menu, tools);
         addComponentsAndExpand(grid);
     }

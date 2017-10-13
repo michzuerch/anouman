@@ -36,7 +36,7 @@ public class TemplateMehrwertsteuercode extends AbstractEntity {
     @Column
     private boolean verkauf;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     private TemplateBuchhaltung templateBuchhaltung;
 
 

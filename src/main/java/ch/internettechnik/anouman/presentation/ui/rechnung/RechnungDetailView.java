@@ -114,9 +114,6 @@ public class RechnungDetailView extends VerticalLayout implements View {
                 new ButtonRenderer(event -> {
                     Notification.show("Lösche Rechnungsposition id:" + event.getItem(), Notification.Type.HUMANIZED_MESSAGE);
                     rechnungspositionFacade.delete((Rechnungsposition) event.getItem());
-                    Rechnung val = rechnungFacade.findBy(getIdRechnung());
-                    val.getRechnungspositionen().remove(event.getItem());
-                    rechnungFacade.save(val);
                     update();
                 })
         );
@@ -127,10 +124,9 @@ public class RechnungDetailView extends VerticalLayout implements View {
         aufwandGrid.addColumn(Aufwand::getPositionstotal).setCaption("Total");
         aufwandGrid.addColumn(aufwand -> "löschen",
                 new ButtonRenderer(event -> {
-                    Notification.show("Lösche Aufwand id:" + event.getItem(), Notification.Type.HUMANIZED_MESSAGE);
-                    aufwandFacade.delete((Aufwand) event.getItem());
-                    Rechnung val = rechnungFacade.findBy(getIdRechnung());
-                    val.getAufwands().remove(event.getItem());
+                    Aufwand aufwand = (Aufwand) event.getItem();
+                    Notification.show("Lösche Aufwand id:" + aufwand, Notification.Type.HUMANIZED_MESSAGE);
+                    aufwandFacade.delete(aufwand);
                     update();
                 })
         );
@@ -154,9 +150,6 @@ public class RechnungDetailView extends VerticalLayout implements View {
             rechnungspositionForm.openInModalPopup();
             rechnungspositionForm.setSavedHandler(rechnungsposition -> {
                 rechnungspositionFacade.save(rechnungsposition);
-                Rechnung rechnung = rechnungFacade.findBy(getIdRechnung());
-                rechnung.getRechnungspositionen().add(val);
-                rechnungFacade.save(rechnung);
                 rechnungspositionForm.closePopup();
                 update();
             });
@@ -171,9 +164,6 @@ public class RechnungDetailView extends VerticalLayout implements View {
             aufwandForm.openInModalPopup();
             aufwandForm.setSavedHandler(aufwand -> {
                 aufwandFacade.save(aufwand);
-                Rechnung rechnung = rechnungFacade.findBy(getIdRechnung());
-                rechnung.getAufwands().add(aufwand);
-                rechnungFacade.save(rechnung);
                 aufwandForm.closePopup();
                 update();
             });

@@ -5,7 +5,8 @@ import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by michzuerch on 07.08.15.
@@ -31,14 +32,14 @@ public class Mehrwertsteuercode extends AbstractEntity {
     @DecimalMax(value = "50", message = "Maximale Mehrwertsteuer ist 50%")
     private Float prozent;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Konto mehrwertsteuerKonto;
 
     @Column
     private boolean verkauf;
 
-    @OneToMany(mappedBy = "mehrwertsteuercode")
-    private Set<Buchung> buchungen;
+    @OneToMany(mappedBy = "mehrwertsteuercode", cascade = CascadeType.ALL)
+    private List<Buchung> buchungen = new ArrayList<>();
 
     @ManyToOne
     private Buchhaltung buchhaltung;
@@ -83,11 +84,11 @@ public class Mehrwertsteuercode extends AbstractEntity {
         this.verkauf = verkauf;
     }
 
-    public Set<Buchung> getBuchungen() {
+    public List<Buchung> getBuchungen() {
         return buchungen;
     }
 
-    public void setBuchungen(Set<Buchung> buchungen) {
+    public void setBuchungen(List<Buchung> buchungen) {
         this.buchungen = buchungen;
     }
 

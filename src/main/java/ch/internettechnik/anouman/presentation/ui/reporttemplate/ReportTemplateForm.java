@@ -1,7 +1,6 @@
 package ch.internettechnik.anouman.presentation.ui.reporttemplate;
 
 import ch.internettechnik.anouman.backend.entity.ReportTemplate;
-import ch.internettechnik.anouman.presentation.ui.backup.uploadreceiver.TemplateBuchhaltungenUploadReceiver;
 import com.vaadin.cdi.ViewScoped;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.ui.*;
@@ -11,7 +10,8 @@ import org.vaadin.viritin.button.DownloadButton;
 import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.form.AbstractForm;
 
-import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -19,12 +19,14 @@ import java.io.OutputStream;
 public class ReportTemplateForm extends AbstractForm<ReportTemplate> implements Upload.Receiver, Upload.SucceededListener {
     private static Logger logger = LoggerFactory.getLogger(ReportTemplateForm.class.getName());
 
-    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    File tempFile;
 
     TextField bezeichnung = new MTextField("Bezeichnung");
     TemplateTextField template = new TemplateTextField();
     TextField filename = new MTextField("Dateiname");
-    Upload upload = new Upload("Report Template hochladen", new TemplateBuchhaltungenUploadReceiver());
+
+    Upload upload = new Upload("Report Template hochladen", this);
+
     Button download = new DownloadButton(stream -> {
         try {
             stream.write(getBinder().getBean().getTemplate());
@@ -59,6 +61,7 @@ public class ReportTemplateForm extends AbstractForm<ReportTemplate> implements 
 
         template.setCaption("Report Template");
         template.setWidth("600px");
+        template.setHeight("800px");
         template.setSizeFull();
         VerticalLayout layout = new VerticalLayout();
         layout.addComponent(new FormLayout(bezeichnung, upload, download, filename));
@@ -69,15 +72,24 @@ public class ReportTemplateForm extends AbstractForm<ReportTemplate> implements 
     }
 
     @Override
-    public OutputStream receiveUpload(String fileName, String mimeType) {
-        filename.setValue(fileName);
+    public OutputStream receiveUpload(String s, String s1) {
+        OutputStream outputStream = null;
+        try {
+            tempFile = File.createTempFile("upl-reporttemplate", ".tmp");
+            outputStream = new FileOutputStream(tempFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return outputStream;
     }
 
     @Override
     public void uploadSucceeded(Upload.SucceededEvent succeededEvent) {
-        template.setValue(outputStream.toByteArray());
+
+        //@todo create outputstream to ByteArray
+        //template.setValue( receiveUpload().toByteArray());
         download.setEnabled(true);
-        getEntity().setTemplate(outputStream.toByteArray());
+        tempFile.deleteOnExit();
+        //getEntity().setTemplate(outputStream.toByteArray());
     }
 }

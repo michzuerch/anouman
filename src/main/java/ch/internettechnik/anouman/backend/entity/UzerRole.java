@@ -2,8 +2,8 @@ package ch.internettechnik.anouman.backend.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by michzuerch on 04.02.16.
@@ -24,8 +24,7 @@ public class UzerRole extends AbstractEntity {
     @Column
     private String roleGroup;
 
-    @ManyToMany(cascade =
-            {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "uzer_role",
             joinColumns = {
                     @JoinColumn(
@@ -40,7 +39,7 @@ public class UzerRole extends AbstractEntity {
                     )
             }
     )
-    private Set<Uzer> uzers = new HashSet<Uzer>();
+    private List<Uzer> uzers = new ArrayList<>();
 
     @Transient
     public int getAnzahlUzers() {
@@ -65,11 +64,11 @@ public class UzerRole extends AbstractEntity {
         this.roleGroup = roleGroup;
     }
 
-    public Set<Uzer> getUzers() {
+    public List<Uzer> getUzers() {
         return uzers;
     }
 
-    public void setUzers(Set<Uzer> uzers) {
+    public void setUzers(List<Uzer> uzers) {
         this.uzers = uzers;
     }
 }

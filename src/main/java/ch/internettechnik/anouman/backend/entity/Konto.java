@@ -2,7 +2,8 @@ package ch.internettechnik.anouman.backend.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by michzuerch on 07.08.15.
@@ -24,11 +25,11 @@ public class Konto extends AbstractEntity {
     @Column
     private String bemerkung;
 
-    @OneToMany(mappedBy = "kontoSoll")
-    private Set<Unterbuchung> soll;
+    @OneToMany(mappedBy = "kontoSoll", cascade = CascadeType.ALL)
+    private List<Unterbuchung> soll = new ArrayList<>();
 
-    @OneToMany(mappedBy = "kontoHaben")
-    private Set<Unterbuchung> haben;
+    @OneToMany(mappedBy = "kontoHaben", cascade = CascadeType.ALL)
+    private List<Unterbuchung> haben = new ArrayList<>();
 
     @ManyToOne
     private Kontoart kontoart;
@@ -73,19 +74,19 @@ public class Konto extends AbstractEntity {
         this.anfangsbestand = anfangsbestand;
     }
 
-    public Set<Unterbuchung> getSoll() {
+    public List<Unterbuchung> getSoll() {
         return soll;
     }
 
-    public void setSoll(Set<Unterbuchung> soll) {
+    public void setSoll(List<Unterbuchung> soll) {
         this.soll = soll;
     }
 
-    public Set<Unterbuchung> getHaben() {
+    public List<Unterbuchung> getHaben() {
         return haben;
     }
 
-    public void setHaben(Set<Unterbuchung> haben) {
+    public void setHaben(List<Unterbuchung> haben) {
         this.haben = haben;
     }
 

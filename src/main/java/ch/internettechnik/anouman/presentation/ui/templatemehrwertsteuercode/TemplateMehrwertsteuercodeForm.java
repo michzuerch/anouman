@@ -28,6 +28,7 @@ public class TemplateMehrwertsteuercodeForm extends AbstractForm<TemplateMehrwer
     TextField bezeichnung = new TextField("Bezeichnung");
     TextField code = new TextField("Code");
     TextField prozent = new TextField("Prozent");
+    CheckBox verkauf = new CheckBox("Verkauf");
 
     public TemplateMehrwertsteuercodeForm() {
         super(TemplateMehrwertsteuercode.class);
@@ -82,7 +83,7 @@ public class TemplateMehrwertsteuercodeForm extends AbstractForm<TemplateMehrwer
                 new StringToFloatConverter("Muss Prozent Zahl sein")
         ).bind("prozent");
 
-        return new VerticalLayout(new FormLayout(templateBuchhaltung, templateMehrwertsteuerKonto, code, bezeichnung, prozent), getToolbar());
+        return new VerticalLayout(new FormLayout(templateBuchhaltung, templateMehrwertsteuerKonto, code, bezeichnung, verkauf, prozent), getToolbar());
     }
 
 

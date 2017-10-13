@@ -2,8 +2,8 @@ package ch.internettechnik.anouman.backend.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NamedQueries({
@@ -16,11 +16,11 @@ public class TemplateBuchhaltung extends AbstractEntity {
     @NotNull
     private String bezeichnung;
 
-    @OneToMany(mappedBy = "templateBuchhaltung")
-    private Set<TemplateKontoklasse> templateKontoklasses = new HashSet<>();
+    @OneToMany(mappedBy = "templateBuchhaltung", cascade = CascadeType.ALL)
+    private List<TemplateKontoklasse> templateKontoklasses = new ArrayList<>();
 
-    @OneToMany(mappedBy = "templateBuchhaltung")
-    private Set<TemplateMehrwertsteuercode> templateMehrwertsteuercodes = new HashSet<>();
+    @OneToMany(mappedBy = "templateBuchhaltung", cascade = CascadeType.ALL)
+    private List<TemplateMehrwertsteuercode> templateMehrwertsteuercodes = new ArrayList<>();
 
     public TemplateBuchhaltung() {
     }
@@ -33,28 +33,27 @@ public class TemplateBuchhaltung extends AbstractEntity {
         this.bezeichnung = bezeichnung;
     }
 
-    public Set<TemplateKontoklasse> getTemplateKontoklasses() {
+    public List<TemplateKontoklasse> getTemplateKontoklasses() {
         return templateKontoklasses;
     }
 
-    public void setTemplateKontoklasses(Set<TemplateKontoklasse> templateKontoklasses) {
+    public void setTemplateKontoklasses(List<TemplateKontoklasse> templateKontoklasses) {
         this.templateKontoklasses = templateKontoklasses;
     }
 
-    public Set<TemplateMehrwertsteuercode> getTemplateMehrwertsteuercodes() {
+    public List<TemplateMehrwertsteuercode> getTemplateMehrwertsteuercodes() {
         return templateMehrwertsteuercodes;
     }
 
-    public void setTemplateMehrwertsteuercodes(Set<TemplateMehrwertsteuercode> templateMehrwertsteuercodes) {
+    public void setTemplateMehrwertsteuercodes(List<TemplateMehrwertsteuercode> templateMehrwertsteuercodes) {
         this.templateMehrwertsteuercodes = templateMehrwertsteuercodes;
     }
 
     @Override
     public String toString() {
         return "TemplateBuchhaltung{" +
+                ", id=" + id +
                 "bezeichnung='" + bezeichnung + '\'' +
-                ", templateKontoklasses=" + templateKontoklasses +
-                ", templateMehrwertsteuercodes=" + templateMehrwertsteuercodes +
                 '}';
     }
 }

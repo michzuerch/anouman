@@ -32,7 +32,7 @@ public class Uzer extends AbstractEntity {
     @Column
     private String description;
 
-    @ManyToMany(mappedBy = "uzers", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "uzers", cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     private Set<UzerRole> roles = new HashSet<UzerRole>();
 
     @Transient

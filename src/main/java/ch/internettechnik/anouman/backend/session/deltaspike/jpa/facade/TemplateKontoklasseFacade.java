@@ -21,7 +21,7 @@ public class TemplateKontoklasseFacade {
     }
 
     public TemplateKontoklasse save(TemplateKontoklasse val) {
-        return repo.saveAndFlushAndRefresh(val);
+        return repo.save(val);
     }
 
     public List<TemplateKontoklasse> findAll() {

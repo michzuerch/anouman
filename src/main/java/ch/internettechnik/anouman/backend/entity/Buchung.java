@@ -1,9 +1,9 @@
 package ch.internettechnik.anouman.backend.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 /**
  * Created by michzuerch on 07.08.15.
@@ -14,8 +14,8 @@ import java.util.Set;
         @NamedQuery(name = "Buchung.findById", query = "SELECT b FROM Buchung b where b.id = :id")
 })
 public class Buchung extends AbstractEntity {
-    @OneToMany(mappedBy = "buchung")
-    private Set<Unterbuchung> unterbuchungs = new HashSet<>();
+    @OneToMany(mappedBy = "buchung", cascade = CascadeType.ALL)
+    private List<Unterbuchung> unterbuchungs = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "MWSTCODE_ID", nullable = false)
@@ -41,11 +41,11 @@ public class Buchung extends AbstractEntity {
         this.belegkopie = belegkopie;
     }
 
-    public Set<Unterbuchung> getUnterbuchungs() {
+    public List<Unterbuchung> getUnterbuchungs() {
         return unterbuchungs;
     }
 
-    public void setUnterbuchungs(Set<Unterbuchung> unterbuchungs) {
+    public void setUnterbuchungs(List<Unterbuchung> unterbuchungs) {
         this.unterbuchungs = unterbuchungs;
     }
 
