@@ -1,10 +1,10 @@
 package ch.internettechnik.anouman.presentation.ui.rechnung;
 
 import ch.internettechnik.anouman.backend.entity.Adresse;
+import ch.internettechnik.anouman.backend.entity.Aufwand;
 import ch.internettechnik.anouman.backend.entity.Rechnung;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.AdresseFacade;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.RechnungFacade;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ReportTemplateFacade;
+import ch.internettechnik.anouman.backend.entity.Rechnungsposition;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.*;
 import ch.internettechnik.anouman.presentation.ui.Menu;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
@@ -30,7 +30,13 @@ public class RechnungView extends VerticalLayout implements View {
     private Menu menu;
 
     @Inject
-    private RechnungFacade facade;
+    private RechnungFacade rechnungFacade;
+
+    @Inject
+    private RechnungspositionFacade rechnungspositionFacade;
+
+    @Inject
+    private AufwandFacade aufwandFacade;
 
     @Inject
     private AdresseFacade adresseFacade;
@@ -71,7 +77,7 @@ public class RechnungView extends VerticalLayout implements View {
                 filterAdresse.setSelectedItem(adresseFacade.findBy(id));
                 updateList();
             } else if (target.equals("id")) {
-                grid.select(facade.findBy(id));
+                grid.select(rechnungFacade.findBy(id));
             }
         }
 
@@ -92,7 +98,7 @@ public class RechnungView extends VerticalLayout implements View {
             form.setEntity(val);
             form.openInModalPopup();
             form.setSavedHandler(rechnung -> {
-                facade.save(rechnung);
+                rechnungFacade.save(rechnung);
                 updateList();
                 grid.select(rechnung);
                 form.closePopup();
@@ -136,8 +142,21 @@ public class RechnungView extends VerticalLayout implements View {
         // Render a button that deletes the data row (item)
         grid.addColumn(rechnung -> "löschen",
                 new ButtonRenderer(event -> {
+                    Rechnung rechnung = (Rechnung) event.getItem();
+                    rechnung = rechnungFacade.findBy(rechnung.getId());
+
+                    for (Rechnungsposition rp : rechnung.getRechnungspositionen()) {
+                        rechnungspositionFacade.delete(rp);
+
+                    }
+
+                    for (Aufwand aw : rechnung.getAufwands()) {
+                        aufwandFacade.delete(aw);
+                    }
+
+                    rechnungFacade.delete(rechnung);
+
                     Notification.show("Lösche Rechnung id:" + event.getItem(), Notification.Type.HUMANIZED_MESSAGE);
-                    facade.delete((Rechnung) event.getItem());
                     updateList();
                 })
         );
@@ -147,7 +166,7 @@ public class RechnungView extends VerticalLayout implements View {
                     form.setEntity((Rechnung) event.getItem());
                     form.openInModalPopup();
                     form.setSavedHandler(rechnung -> {
-                        facade.save(rechnung);
+                        rechnungFacade.save(rechnung);
                         updateList();
                         grid.select(rechnung);
                         form.closePopup();
@@ -188,23 +207,20 @@ public class RechnungView extends VerticalLayout implements View {
             //Suche mit Adresse und Bezeichnung
             logger.debug("Suche mit Adresse und Bezeichnung:" + filterAdresse.getValue().getId() + "," + filterTextBezeichnung.getValue());
             grid.setItems(
-                    facade.findByAdresseAndBezeichnungLikeIgnoreCase(
+                    rechnungFacade.findByAdresseAndBezeichnungLikeIgnoreCase(
                             filterAdresse.getValue(), filterTextBezeichnung.getValue() + "%"));
             return;
         } else if ((filterAdresse.isEmpty()) && (!filterTextBezeichnung.isEmpty())) {
             //Suche mit Bezeichnung
             logger.debug("Suche mit Bezeichnung:" + filterTextBezeichnung.getValue());
-            grid.setItems(facade.findByBezeichnungLikeIgnoreCase(filterTextBezeichnung.getValue() + "%"));
+            grid.setItems(rechnungFacade.findByBezeichnungLikeIgnoreCase(filterTextBezeichnung.getValue() + "%"));
             return;
         } else if ((!filterAdresse.isEmpty()) && (filterTextBezeichnung.isEmpty())) {
             //Suche mit Adresse
             logger.debug("Suche mit Adresse:" + filterAdresse.getValue());
-            grid.setItems(facade.findByAdresse(filterAdresse.getValue()));
+            grid.setItems(rechnungFacade.findByAdresse(filterAdresse.getValue()));
             return;
         }
-        grid.setItems(facade.findAll());
-
-
+        grid.setItems(rechnungFacade.findAll());
     }
-
 }

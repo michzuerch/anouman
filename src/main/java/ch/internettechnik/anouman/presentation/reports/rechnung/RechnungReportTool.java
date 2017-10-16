@@ -25,6 +25,7 @@ import java.util.Locale;
 public class RechnungReportTool implements Serializable {
     private static Logger logger = LoggerFactory.getLogger(RechnungReportTool.class.getName());
 
+    //@todo java.lang.ClassNotFoundException: org.codehaus.groovy.control.CompilationFailedException
     public static byte[] getPdf(Rechnung val, ReportTemplate reportTemplate) {
         JasperReport report;
         JasperPrint print;

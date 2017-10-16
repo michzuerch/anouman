@@ -59,7 +59,7 @@ public class Adresse extends AbstractEntity {
     @DecimalMax(value = "500", message = "Maximaler Betrag ist 500")
     private Double stundensatz;
 
-    @OneToMany(mappedBy = "adresse", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "adresse")
     private List<Rechnung> rechnungen = new ArrayList<>();
 
     public Adresse(String firma, String anrede, String vorname, String nachname, String strasse, String postleitzahl, String ort, Double stundensatz) {

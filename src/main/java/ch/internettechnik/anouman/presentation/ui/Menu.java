@@ -66,6 +66,12 @@ public class Menu extends CustomComponent {
 
         MenuBar.MenuItem toolsItem = menuBar.addItem("Tools", null);
         toolsItem.setIcon(VaadinIcons.CARET_DOWN);
+        toolsItem.addItem("Editable Invoice", VaadinIcons.INBOX, new MenuBar.Command() {
+            @Override
+            public void menuSelected(MenuBar.MenuItem selectedItem) {
+                getUI().getNavigator().navigateTo("/Anouman/EditableInvoice/index.html");
+            }
+        });
 
         MenuBar.MenuItem testsItem = menuBar.addItem("Tests", null);
         testsItem.setIcon(VaadinIcons.TEETH);
@@ -154,6 +160,13 @@ public class Menu extends CustomComponent {
             @Override
             public void menuSelected(MenuBar.MenuItem selectedItem) {
                 getUI().getNavigator().navigateTo("TemplateMehrwertsteuercode");
+            }
+        });
+
+        buchhaltungenItem.addItem("Buchhaltung erstellen", VaadinIcons.CONTROLLER, new MenuBar.Command() {
+            @Override
+            public void menuSelected(MenuBar.MenuItem selectedItem) {
+                getUI().getNavigator().navigateTo("BuchhaltungCreate");
             }
         });
 /*

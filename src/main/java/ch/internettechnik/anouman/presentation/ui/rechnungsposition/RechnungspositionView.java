@@ -29,7 +29,7 @@ public class RechnungspositionView extends VerticalLayout implements View {
     private Menu menu;
 
     @Inject
-    private RechnungspositionFacade facade;
+    private RechnungspositionFacade rechnungspositionFacade;
 
     @Inject
     private RechnungFacade rechnungFacade;
@@ -64,7 +64,7 @@ public class RechnungspositionView extends VerticalLayout implements View {
                 filterRechnung.setSelectedItem(rechnungFacade.findBy(id));
                 updateList();
             } else if (target.equals("id")) {
-                grid.select(facade.findBy(id));
+                grid.select(rechnungspositionFacade.findBy(id));
             }
         }
 
@@ -86,7 +86,7 @@ public class RechnungspositionView extends VerticalLayout implements View {
             form.setEntity(rp);
             form.openInModalPopup();
             form.setSavedHandler(rechnungsposition -> {
-                facade.save(rechnungsposition);
+                rechnungspositionFacade.save(rechnungsposition);
                 updateList();
                 grid.select(rechnungsposition);
                 form.closePopup();
@@ -119,7 +119,9 @@ public class RechnungspositionView extends VerticalLayout implements View {
         // Render a button that deletes the data row (item)
         grid.addColumn(rechnungsposition -> "löschen",
                 new ButtonRenderer(event -> {
-                    Notification.show("Lösche Rechnungsposition id:" + event.getItem(), Notification.Type.HUMANIZED_MESSAGE);
+                    Rechnungsposition rechnungsposition = (Rechnungsposition) event.getItem();
+                    Notification.show("Lösche Rechnungsposition id:" + rechnungsposition, Notification.Type.HUMANIZED_MESSAGE);
+                    rechnungspositionFacade.delete(rechnungsposition);
                     //rechnungspositionService.delete((Rechnungsposition) event.getItem());
                     updateList();
                 })
@@ -130,7 +132,7 @@ public class RechnungspositionView extends VerticalLayout implements View {
                     form.setEntity((Rechnungsposition) event.getItem());
                     form.openInModalPopup();
                     form.setSavedHandler(rechnungsposition -> {
-                        facade.save(rechnungsposition);
+                        rechnungspositionFacade.save(rechnungsposition);
                         updateList();
                         grid.select(rechnungsposition);
                         form.closePopup();
@@ -151,19 +153,19 @@ public class RechnungspositionView extends VerticalLayout implements View {
         if ((!filterRechnung.isEmpty()) && (!filterTextBezeichnung.isEmpty())) {
             // Such mit Rechnung und Bezeichnung
             logger.debug("Suche mit Rechnung und Bezeichnung:" + filterRechnung.getValue().getId() + "," + filterTextBezeichnung.getValue());
-            grid.setItems(facade.findByRechnungAndBezeichnungLikeIgnoreCase(filterRechnung.getValue(), filterTextBezeichnung.getValue() + "%"));
+            grid.setItems(rechnungspositionFacade.findByRechnungAndBezeichnungLikeIgnoreCase(filterRechnung.getValue(), filterTextBezeichnung.getValue() + "%"));
             return;
         } else if ((!filterRechnung.isEmpty()) && (filterTextBezeichnung.isEmpty())) {
             // Suche mit Rechnung
             logger.debug("Suche mit Rechnung:" + filterRechnung.getValue().getId());
-            grid.setItems(facade.findByRechnung(filterRechnung.getValue()));
+            grid.setItems(rechnungspositionFacade.findByRechnung(filterRechnung.getValue()));
             return;
         } else if ((filterRechnung.isEmpty()) && (!filterTextBezeichnung.isEmpty())) {
             // Suche mit Bezeichnung
             logger.debug("Suche mit Bezeichnung:" + filterTextBezeichnung.getValue());
-            grid.setItems(facade.findByBezeichnungLikeIgnoreCase(filterTextBezeichnung.getValue() + "%"));
+            grid.setItems(rechnungspositionFacade.findByBezeichnungLikeIgnoreCase(filterTextBezeichnung.getValue() + "%"));
             return;
         }
-        grid.setItems(facade.findAll());
+        grid.setItems(rechnungspositionFacade.findAll());
     }
 }

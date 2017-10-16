@@ -62,7 +62,7 @@ public class BuchhaltungView extends VerticalLayout implements View {
 
         grid.setCaption("Buchhaltung");
         grid.setCaptionAsHtml(true);
-        grid.addColumn(Buchhaltung::getId).setCaption("id");
+        grid.addColumn(Buchhaltung::getId).setHidable(true).setCaption("id");
         grid.addColumn(Buchhaltung::getBezeichnung).setCaption("Bezeichnung");
         grid.addColumn(Buchhaltung::getJahr).setCaption("Jahr");
         grid.addColumn(buchhaltung -> buchhaltung.getKontoklasse().size()).setCaption("Anzahl Kontoklassen");

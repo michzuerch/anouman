@@ -69,8 +69,6 @@ public class TemplateMehrwertsteuercodeView extends VerticalLayout implements Vi
             TemplateMehrwertsteuercode templateMehrwertsteuercode = new TemplateMehrwertsteuercode();
             TemplateBuchhaltung templateBuchhaltung = templateBuchhaltungFacade.findAll().get(0);
             templateMehrwertsteuercode.setTemplateBuchhaltung(templateBuchhaltung);
-//            templateMehrwertsteuercode.setCode("Test11");
-//            templateMehrwertsteuercode.setBezeichnung("Bezeichn...");
             templateMehrwertsteuercode.setProzent(8f);
             templateMehrwertsteuercode.setTemplateMehrwertsteuerKonto(createTemplateKontoList(templateBuchhaltung).get(0));
 
@@ -100,14 +98,18 @@ public class TemplateMehrwertsteuercodeView extends VerticalLayout implements Vi
         grid.addColumn(TemplateMehrwertsteuercode::getBezeichnung).setCaption("Bezeichnung");
         grid.addColumn(templateMehrwertsteuercode -> templateMehrwertsteuercode.getTemplateBuchhaltung().getId()).setCaption("Template Buchhaltung");
         grid.addColumn(templateMehrwertsteuercode -> templateMehrwertsteuercode.getTemplateMehrwertsteuerKonto().getId()).setCaption("Konto");
-
         grid.setSizeFull();
 
         // Render a button that deletes the data row (item)
         grid.addColumn(adresse -> "löschen",
                 new ButtonRenderer(event -> {
-                    Notification.show("Lösche Template Mehrwertsteuercode id:" + event.getItem(), Notification.Type.HUMANIZED_MESSAGE);
-                    facade.delete((TemplateMehrwertsteuercode) event.getItem());
+                    TemplateMehrwertsteuercode mehrwertsteuercode = (TemplateMehrwertsteuercode) event.getItem();
+                    mehrwertsteuercode = facade.findBy(mehrwertsteuercode.getId());
+                    TemplateBuchhaltung buchhaltung = mehrwertsteuercode.getTemplateBuchhaltung();
+                    buchhaltung.getTemplateMehrwertsteuercodes().remove(mehrwertsteuercode);
+                    templateBuchhaltungFacade.save(buchhaltung);
+                    Notification.show("Lösche Template Mehrwertsteuercode id:" + mehrwertsteuercode.getId(), Notification.Type.HUMANIZED_MESSAGE);
+                    facade.delete(mehrwertsteuercode);
                     updateList();
                 })
         );

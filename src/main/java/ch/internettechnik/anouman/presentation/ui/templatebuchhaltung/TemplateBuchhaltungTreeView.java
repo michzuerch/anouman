@@ -358,9 +358,14 @@ public class TemplateBuchhaltungTreeView extends VerticalLayout implements View 
 
         grid.addColumn(event -> "löschen",
                 new ButtonRenderer(event -> {
-                    Notification.show("Lösche Kontogruppe id:" + event.getItem(), Notification.Type.HUMANIZED_MESSAGE);
-                    templateKontogruppeFacade.delete((TemplateKontogruppe) event.getItem());
+                    TemplateKontogruppe kontogruppe = (TemplateKontogruppe) event.getItem();
+                    TemplateKontoklasse kontoklasse1 = kontogruppe.getTemplateKontoklasse();
+                    Notification.show("Lösche Kontogruppe id:" + kontogruppe.getId(), Notification.Type.HUMANIZED_MESSAGE);
+                    kontoklasse1.getTemplateKontogruppes().remove(kontogruppe);
+                    kontoklasse1 = templateKontoklasseFacade.save(kontoklasse1);
+                    templateKontogruppeFacade.delete(kontogruppe);
                     grid.setItems(kontoklasse.getTemplateKontogruppes());
+                    buchhaltungTree.setDataProvider(updateProvider());
                 })
         ).setCaption("Löschen");
 
@@ -396,9 +401,14 @@ public class TemplateBuchhaltungTreeView extends VerticalLayout implements View 
 
         grid.addColumn(event -> "löschen",
                 new ButtonRenderer(event -> {
-                    Notification.show("Lösche Kontoart id:" + event.getItem(), Notification.Type.HUMANIZED_MESSAGE);
-                    templateKontoartFacade.delete((TemplateKontoart) event.getItem());
+                    TemplateKontoart kontoart = (TemplateKontoart) event.getItem();
+                    TemplateKontogruppe kontogruppe1 = kontoart.getTemplateKontogruppe();
+                    Notification.show("Lösche Kontoart id:" + kontoart.getId(), Notification.Type.HUMANIZED_MESSAGE);
+                    kontogruppe1.getTemplateKontoarts().remove(kontoart);
+                    kontogruppe1 = templateKontogruppeFacade.save(kontogruppe1);
+                    templateKontoartFacade.delete(kontoart);
                     grid.setItems(kontogruppe.getTemplateKontoarts());
+                    buchhaltungTree.setDataProvider(updateProvider());
                 })
         ).setCaption("Löschen");
 
@@ -454,7 +464,9 @@ public class TemplateBuchhaltungTreeView extends VerticalLayout implements View 
         grid.addColumn(event -> "löschen",
                 new ButtonRenderer(event -> {
                     TemplateKonto konto = (TemplateKonto) event.getItem();
-                    Notification.show("Lösche Konto id:" + konto);
+                    TemplateKontoart kontoart1 = konto.getTemplateKontoart();
+                    Notification.show("Lösche Konto id:" + konto.getId());
+                    kontoart1.getTemplateKontos().remove(konto);
                     templateKontoFacade.delete(konto);
                     grid.setItems(kontoart.getTemplateKontos());
                     buchhaltungTree.setDataProvider(updateProvider());
@@ -502,6 +514,9 @@ public class TemplateBuchhaltungTreeView extends VerticalLayout implements View 
         // @todo Validator geht nicht...
 //        grid.getEditor().getBinder().forField(prozentFld).withValidator(s -> Validator.isFloat(s)==true, "kein Float");
 
+        //TextField prozentField = new TextField();
+        //grid.getEditor().getBinder().forField(TemplateMehrwertsteuercode, "code").withConverter(new StringToDoubleConverter("Muss Betrag sein")
+        //).bind("stueckpreis");
         grid.addColumn(TemplateMehrwertsteuercode::getId).setCaption("Id");
         grid.addColumn(TemplateMehrwertsteuercode::getVersion).setCaption("Vers");
         grid.addColumn(TemplateMehrwertsteuercode::getCode).setEditorComponent(new TextField(), TemplateMehrwertsteuercode::setCode).setCaption("Code");
@@ -513,14 +528,22 @@ public class TemplateBuchhaltungTreeView extends VerticalLayout implements View 
         grid.addColumn(templateMehrwertsteuercode -> templateMehrwertsteuercode.getTemplateMehrwertsteuerKonto().getShowKontonummer()).setCaption("KoNr");
         grid.addColumn(event -> "löschen",
                 new ButtonRenderer(event -> {
-                    TemplateMehrwertsteuercode val = (TemplateMehrwertsteuercode) event.getItem();
-                    Notification.show("Löschen Template Mehrwertsteuercode id:" + val.getId());
-                    templateMehrwertsteuercodeFacade.delete(val);
+                    TemplateMehrwertsteuercode mehrwertsteuercode = (TemplateMehrwertsteuercode) event.getItem();
+                    mehrwertsteuercode = templateMehrwertsteuercodeFacade.findBy(mehrwertsteuercode.getId());
+                    TemplateBuchhaltung buchhaltung1 = mehrwertsteuercode.getTemplateBuchhaltung();
+                    buchhaltung1 = templateBuchhaltungFacade.findBy(buchhaltung1.getId());
+                    buchhaltung1.getTemplateMehrwertsteuercodes().remove(mehrwertsteuercode);
+                    buchhaltung1 = templateBuchhaltungFacade.save(buchhaltung1);
+
+                    Notification.show("Löschen Template Mehrwertsteuercode id:" + mehrwertsteuercode.getId());
+                    templateMehrwertsteuercodeFacade.delete(mehrwertsteuercode);
                     grid.setItems(templateMehrwertsteuercodeFacade.findByTemplateBuchhaltung(buchhaltungSelect.getValue()));
                 }));
         grid.addColumn(event -> "ändern",
                 new ButtonRenderer(event -> {
-                    templateMehrwertsteuercodeForm.setEntity((TemplateMehrwertsteuercode) event.getItem());
+                    TemplateMehrwertsteuercode mehrwertsteuercode = (TemplateMehrwertsteuercode) event.getItem();
+                    mehrwertsteuercode = templateMehrwertsteuercodeFacade.findBy(mehrwertsteuercode.getId());
+                    templateMehrwertsteuercodeForm.setEntity(mehrwertsteuercode);
                     templateMehrwertsteuercodeForm.lockSelect();
                     templateMehrwertsteuercodeForm.openInModalPopup();
                     templateMehrwertsteuercodeForm.setSavedHandler(val -> {
@@ -546,6 +569,7 @@ public class TemplateBuchhaltungTreeView extends VerticalLayout implements View 
             mehrwertsteuercode.setProzent(8f);
 
             templateMehrwertsteuercodeForm.setWidth(500, Unit.PIXELS);
+            templateMehrwertsteuercodeForm.lockSelect();
             templateMehrwertsteuercodeForm.setEntity(mehrwertsteuercode);
             templateMehrwertsteuercodeForm.openInModalPopup();
             templateMehrwertsteuercodeForm.setSavedHandler(templateMehrwertsteuercode -> {

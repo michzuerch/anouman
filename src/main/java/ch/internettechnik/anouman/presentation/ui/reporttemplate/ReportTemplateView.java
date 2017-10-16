@@ -10,16 +10,27 @@ import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 
 @CDIView(value = "ReportTemplate")
-public class ReportTemplateView extends VerticalLayout implements View {
+public class ReportTemplateView extends VerticalLayout implements View, Upload.Receiver, Upload.SucceededListener {
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(ReportTemplateView.class.getName());
+
+    File tempFile;
+    String filename;
 
     Grid<ReportTemplate> grid = new Grid<>();
     TextField filterTextBezeichnung = new TextField();
+
+    TextField newReportBezeichnung = new TextField();
+    Upload upload = new Upload();
 
     @Inject
     private Menu menu;
@@ -27,15 +38,23 @@ public class ReportTemplateView extends VerticalLayout implements View {
     @Inject
     private ReportTemplateFacade facade;
 
-    @Inject
-    private ReportTemplateForm form;
-
-    @Inject
-    private ReportTemplateEditForm formEdit;
-
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
         setStyleName("anouman-background");
+
+        upload.setEnabled(false);
+        upload.setReceiver(this);
+        upload.addSucceededListener(this::uploadSucceeded);
+
+        newReportBezeichnung.setPlaceholder("Bezeichnung für neuen Report");
+        newReportBezeichnung.setWidth(350, Unit.PIXELS);
+        newReportBezeichnung.addValueChangeListener(event -> {
+            if (event.getValue().isEmpty()) {
+                upload.setEnabled(false);
+            } else {
+                upload.setEnabled(true);
+            }
+        });
 
         filterTextBezeichnung.setPlaceholder("Filter für Bezeichnung");
         filterTextBezeichnung.addValueChangeListener(e -> updateList());
@@ -47,24 +66,10 @@ public class ReportTemplateView extends VerticalLayout implements View {
             filterTextBezeichnung.clear();
         });
 
-        Button addBtn = new Button(VaadinIcons.PLUS);
-        addBtn.addClickListener(event -> {
-            grid.asSingleSelect().clear();
-            form.setEntity(new ReportTemplate());
-            form.openInModalPopup();
-            form.setSavedHandler(report -> {
-                if (report.getTemplate() == null) System.err.println("Report Template ist Null");
-                System.err.println("report.template: " + report.getTemplate());
-                facade.save(report);
-                updateList();
-                grid.select(report);
-                form.closePopup();
-            });
-        });
 
 
         HorizontalLayout tools = new HorizontalLayout();
-        tools.addComponents(filterTextBezeichnung, clearFilterTextBtn, addBtn);
+        tools.addComponents(filterTextBezeichnung, clearFilterTextBtn, newReportBezeichnung, upload);
         //tools.setWidth(50, Unit.PERCENTAGE);
 
         grid.setCaption("Report Template");
@@ -83,42 +88,7 @@ public class ReportTemplateView extends VerticalLayout implements View {
                 })
         );
 
-        grid.addColumn(report -> "ändern",
-                new ButtonRenderer(event -> {
-                    form.setEntity((ReportTemplate) event.getItem());
-                    form.setCaption("Report Template");
-                    form.openInModalPopup();
-                    form.setSavedHandler(report -> {
-                        facade.save(report);
-                        updateList();
-                        grid.select(report);
-                        form.closePopup();
-                    });
-                    form.setResetHandler(report -> {
-                        updateList();
-                        grid.select(report);
-                        form.closePopup();
-                    });
-                }));
-
-        grid.addColumn(report -> "edit",
-                new ButtonRenderer(event -> {
-                    formEdit.setEntity((ReportTemplate) event.getItem());
-                    formEdit.setCaption("Report Template Edit");
-                    formEdit.openInModalPopup();
-                    formEdit.setSavedHandler(report -> {
-                        facade.save(report);
-                        updateList();
-                        grid.select(report);
-                        formEdit.closePopup();
-                    });
-                    formEdit.setResetHandler(report -> {
-                        updateList();
-                        grid.select(report);
-                        formEdit.closePopup();
-                    });
-
-                }));
+        //@todo Downloadbutton für Report
         grid.setSizeFull();
         updateList();
         addComponents(menu, tools);
@@ -134,4 +104,37 @@ public class ReportTemplateView extends VerticalLayout implements View {
         }
         grid.setItems(facade.findAll());
     }
+
+    @Override
+    public OutputStream receiveUpload(String filename, String s1) {
+        OutputStream outputStream = null;
+        this.filename = filename;
+        try {
+            tempFile = File.createTempFile(this.filename, ".tmp");
+            outputStream = new FileOutputStream(tempFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return outputStream;
+    }
+
+    @Override
+    public void uploadSucceeded(Upload.SucceededEvent succeededEvent) {
+        try {
+            ReportTemplate reportTemplate = new ReportTemplate();
+            byte[] bytes = FileUtils.readFileToByteArray(tempFile);
+            reportTemplate.setBezeichnung(newReportBezeichnung.getValue());
+            reportTemplate.setTemplate(bytes);
+            reportTemplate.setFilename(this.filename);
+
+            facade.save(reportTemplate);
+
+            updateList();
+            Notification.show("Report Template erstellt: " + reportTemplate.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        tempFile.deleteOnExit();
+    }
+
 }

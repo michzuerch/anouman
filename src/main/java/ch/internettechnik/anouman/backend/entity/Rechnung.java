@@ -48,10 +48,10 @@ public class Rechnung extends AbstractEntity {
     @ManyToOne
     private Adresse adresse;
 
-    @OneToMany(mappedBy = "rechnung", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "rechnung", orphanRemoval = true)
     private List<Rechnungsposition> rechnungspositionen = new ArrayList<>();
 
-    @OneToMany(mappedBy = "rechnung", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "rechnung", orphanRemoval = true)
     private List<Aufwand> aufwands = new ArrayList<>();
 
     public Rechnung() {

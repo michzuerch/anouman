@@ -16,10 +16,10 @@ public class TemplateBuchhaltung extends AbstractEntity {
     @NotNull
     private String bezeichnung;
 
-    @OneToMany(mappedBy = "templateBuchhaltung", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "templateBuchhaltung", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TemplateKontoklasse> templateKontoklasses = new ArrayList<>();
 
-    @OneToMany(mappedBy = "templateBuchhaltung", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "templateBuchhaltung", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TemplateMehrwertsteuercode> templateMehrwertsteuercodes = new ArrayList<>();
 
     public TemplateBuchhaltung() {

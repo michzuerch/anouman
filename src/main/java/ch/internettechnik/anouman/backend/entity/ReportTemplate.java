@@ -3,6 +3,7 @@ package ch.internettechnik.anouman.backend.entity;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Arrays;
 
 /**
  * Created by michzuerch on 10.06.15.
@@ -61,4 +62,13 @@ public class ReportTemplate extends AbstractEntity {
         this.filename = filename;
     }
 
+    @Override
+    public String toString() {
+        return "ReportTemplate{" +
+                "bezeichnung='" + bezeichnung + '\'' +
+                ", template=" + Arrays.toString(template) +
+                ", filename='" + filename + '\'' +
+                ", id=" + id +
+                '}';
+    }
 }

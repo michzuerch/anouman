@@ -32,8 +32,6 @@ public class BuchhaltungForm extends AbstractForm<Buchhaltung> {
 
     @Override
     protected Component createContent() {
-
-
         return new VerticalLayout(new FormLayout(
                 bezeichnung, jahr
         ), getToolbar());
