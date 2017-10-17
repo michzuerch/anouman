@@ -31,6 +31,10 @@ public class BuchhaltungCreateView extends VerticalLayout implements View {
     @Inject
     KontoFacade kontoFacade;
     @Inject
+    SammelkontoFacade sammelkontoFacade;
+    @Inject
+    TemplateSammelkontoFacade templateSammelkontoFacade;
+    @Inject
     TemplateBuchhaltungFacade templateBuchhaltungFacade;
     @Inject
     BuchhaltungForm buchhaltungForm;
@@ -54,59 +58,65 @@ public class BuchhaltungCreateView extends VerticalLayout implements View {
         addComponent(layout);
 
         buchhaltungForm.setSavedHandler(val -> {
-                    if (buchhaltungForm.getBinder().isValid()) {
+            if (buchhaltungForm.getBinder().isValid()) {
 
-                        TemplateBuchhaltung templateBuchhaltung = templateBuchhaltungSelect.getValue();
-                        templateBuchhaltung = templateBuchhaltungFacade.findBy(templateBuchhaltung.getId());
+                TemplateBuchhaltung templateBuchhaltung = templateBuchhaltungSelect.getValue();
+                templateBuchhaltung = templateBuchhaltungFacade.findBy(templateBuchhaltung.getId());
 
-                        val = buchhaltungFacade.save(val);
-                        for (TemplateKontoklasse templateKontoklasse : templateBuchhaltung.getTemplateKontoklasses()) {
-                            Kontoklasse kontoklasse = new Kontoklasse();
-                            kontoklasse.setBezeichnung(templateKontoklasse.getBezeichnung());
-                            kontoklasse.setKontonummer(templateKontoklasse.getKontonummer());
-                            kontoklasse.setBuchhaltung(val);
-                            kontoklasse = kontoklasseFacade.save(kontoklasse);
-                            val.getKontoklasse().add(kontoklasse);
-                            val = buchhaltungFacade.save(val);
+                val = buchhaltungFacade.save(val);
+                for (TemplateKontoklasse templateKontoklasse : templateBuchhaltung.getTemplateKontoklasses()) {
+                    Kontoklasse kontoklasse = new Kontoklasse();
+                    kontoklasse.setBezeichnung(templateKontoklasse.getBezeichnung());
+                    kontoklasse.setKontonummer(templateKontoklasse.getKontonummer());
+                    kontoklasse.setBuchhaltung(val);
+                    kontoklasse = kontoklasseFacade.save(kontoklasse);
+                    val.getKontoklasse().add(kontoklasse);
+                    val = buchhaltungFacade.save(val);
 
-                            for (TemplateKontogruppe templateKontogruppe : templateKontoklasse.getTemplateKontogruppes()) {
-                                Kontogruppe kontogruppe = new Kontogruppe();
-                                kontogruppe.setBezeichnung(templateKontogruppe.getBezeichnung());
-                                kontogruppe.setKontonummer(templateKontogruppe.getKontonummer());
-                                kontogruppe.setKontoklasse(kontoklasse);
-                                kontogruppe = kontogruppeFacade.save(kontogruppe);
-                                kontoklasse.getKontogruppes().add(kontogruppe);
-                                kontoklasse = kontoklasseFacade.save(kontoklasse);
+                    for (TemplateKontogruppe templateKontogruppe : templateKontoklasse.getTemplateKontogruppes()) {
+                        Kontogruppe kontogruppe = new Kontogruppe();
+                        kontogruppe.setBezeichnung(templateKontogruppe.getBezeichnung());
+                        kontogruppe.setKontonummer(templateKontogruppe.getKontonummer());
+                        kontogruppe.setKontoklasse(kontoklasse);
+                        kontogruppe = kontogruppeFacade.save(kontogruppe);
+                        kontoklasse.getKontogruppes().add(kontogruppe);
+                        kontoklasse = kontoklasseFacade.save(kontoklasse);
 
-                                for (TemplateKontoart templateKontoart : templateKontogruppe.getTemplateKontoarts()) {
-                                    Kontoart kontoart = new Kontoart();
-                                    kontoart.setBezeichnung(templateKontoart.getBezeichnung());
-                                    kontoart.setKontonummer(templateKontoart.getKontonummer());
-                                    kontoart.setKontogruppe(kontogruppe);
-                                    kontoart = kontoartFacade.save(kontoart);
-                                    kontogruppe.getKontoarts().add(kontoart);
-                                    kontogruppe = kontogruppeFacade.save(kontogruppe);
+                        for (TemplateKontoart templateKontoart : templateKontogruppe.getTemplateKontoarts()) {
+                            Kontoart kontoart = new Kontoart();
+                            kontoart.setBezeichnung(templateKontoart.getBezeichnung());
+                            kontoart.setKontonummer(templateKontoart.getKontonummer());
+                            kontoart.setKontogruppe(kontogruppe);
+                            kontoart = kontoartFacade.save(kontoart);
+                            kontogruppe.getKontoarts().add(kontoart);
+                            kontogruppe = kontogruppeFacade.save(kontogruppe);
 
-                                    for (TemplateKonto templateKonto : templateKontoart.getTemplateKontos()) {
-                                        Konto konto = new Konto();
-                                        konto.setBezeichnung(templateKonto.getBezeichnung());
-                                        konto.setBemerkung(templateKonto.getBemerkung());
-                                        konto.setKontonummer(templateKonto.getKontonummer());
-                                        konto.setKontoart(kontoart);
-                                        konto = kontoFacade.save(konto);
-                                        kontoart.getKontos().add(konto);
-                                        kontoart = kontoartFacade.save(kontoart);
-                                    }
+                            for (TemplateSammelkonto templateSammelkonto : templateKontoart.getTemplateSammelkontos()) {
+                                Sammelkonto sammelkonto = new Sammelkonto();
+                                sammelkonto.setBezeichnung(templateSammelkonto.getBezeichnung());
+                                sammelkonto.setKontonummer(templateSammelkonto.getKontonummer());
+                                sammelkonto.setKontoart(kontoart);
+                                sammelkonto = sammelkontoFacade.save(sammelkonto);
+                                kontoart.getSammelkontos().add(sammelkonto);
+                                kontoart = kontoartFacade.save(kontoart);
+
+                                for (TemplateKonto templateKonto : templateSammelkonto.getTemplateKontos()) {
+                                    Konto konto = new Konto();
+                                    konto.setBezeichnung(templateKonto.getBezeichnung());
+                                    konto.setKontonummer(templateKonto.getKontonummer());
+                                    konto.setBemerkung(templateKonto.getBemerkung());
+                                    konto.setSammelkonto(sammelkonto);
+                                    konto = kontoFacade.save(konto);
+                                    sammelkonto.getKontos().add(konto);
+                                    sammelkonto = sammelkontoFacade.save(sammelkonto);
                                 }
                             }
-
                         }
-                        val = buchhaltungFacade.save(val);
-                        Notification.show("Buchhaltung erstellt id: " + val.getId());
                     }
                 }
-        );
-
-
+                val = buchhaltungFacade.save(val);
+                Notification.show("Buchhaltung erstellt id: " + val.getId());
+            }
+        });
     }
 }

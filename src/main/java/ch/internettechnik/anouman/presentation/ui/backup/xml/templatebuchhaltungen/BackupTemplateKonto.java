@@ -16,6 +16,8 @@ public class BackupTemplateKonto {
     @XmlAttribute
     private String bezeichnung;
     @XmlAttribute
+    private String bemerkung;
+    @XmlAttribute
     private String kontonummer;
     @XmlElement
     private String showKontonummer;
@@ -28,12 +30,6 @@ public class BackupTemplateKonto {
     public BackupTemplateKonto() {
     }
 
-    public BackupTemplateKonto(Long id, String bezeichnung, String kontonummer, String showKontonummer) {
-        this.id = id;
-        this.bezeichnung = bezeichnung;
-        this.kontonummer = kontonummer;
-        this.showKontonummer = showKontonummer;
-    }
 
     public String getBezeichnung() {
         return bezeichnung;
@@ -41,6 +37,14 @@ public class BackupTemplateKonto {
 
     public void setBezeichnung(String bezeichnung) {
         this.bezeichnung = bezeichnung;
+    }
+
+    public String getBemerkung() {
+        return bemerkung;
+    }
+
+    public void setBemerkung(String bemerkung) {
+        this.bemerkung = bemerkung;
     }
 
     public String getKontonummer() {

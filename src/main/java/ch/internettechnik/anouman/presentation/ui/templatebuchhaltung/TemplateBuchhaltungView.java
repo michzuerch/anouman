@@ -48,6 +48,9 @@ public class TemplateBuchhaltungView extends VerticalLayout implements View {
     private KontoFacade kontoFacade;
 
     @Inject
+    private SammelkontoFacade sammelkontoFacade;
+
+    @Inject
     private MehrwertsteuercodeFacade mehrwertsteuercodeFacade;
 
     @Override
@@ -144,12 +147,19 @@ public class TemplateBuchhaltungView extends VerticalLayout implements View {
                                 kontoart.setKontonummer(templateKontoart.getKontonummer());
                                 kontoart = kontoartFacade.save(kontoart);
 
-                                for (TemplateKonto templateKonto : templateKontoart.getTemplateKontos()) {
-                                    Konto konto = new Konto();
-                                    konto.setBezeichnung(templateKonto.getBezeichnung());
-                                    konto.setKontonummer(templateKonto.getKontonummer());
-                                    konto.setBemerkung(templateKonto.getBemerkung());
-                                    konto = kontoFacade.save(konto);
+                                for (TemplateSammelkonto templateSammelkonto : templateKontoart.getTemplateSammelkontos()) {
+                                    Sammelkonto sammelkonto = new Sammelkonto();
+                                    sammelkonto.setBezeichnung(templateSammelkonto.getBezeichnung());
+                                    sammelkonto.setKontonummer(templateSammelkonto.getKontonummer());
+                                    sammelkonto = sammelkontoFacade.save(sammelkonto);
+
+                                    for (TemplateKonto templateKonto : templateSammelkonto.getTemplateKontos()) {
+                                        Konto konto = new Konto();
+                                        konto.setBezeichnung(templateKonto.getBezeichnung());
+                                        konto.setKontonummer(templateKonto.getKontonummer());
+                                        konto.setBemerkung(templateKonto.getBemerkung());
+                                        konto = kontoFacade.save(konto);
+                                    }
                                 }
                             }
                         }

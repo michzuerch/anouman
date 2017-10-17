@@ -9,10 +9,6 @@ import java.util.List;
  * Created by michzuerch on 07.08.15.
  */
 @Entity
-@NamedQueries({
-        @NamedQuery(name = "Konto.findAll", query = "SELECT k FROM Konto k"),
-        @NamedQuery(name = "Konto.findById", query = "SELECT k FROM Konto k where k.id = :id")
-})
 public class Konto extends AbstractEntity {
     @Column
     @NotNull
@@ -32,14 +28,14 @@ public class Konto extends AbstractEntity {
     private List<Unterbuchung> haben = new ArrayList<>();
 
     @ManyToOne
-    private Kontoart kontoart;
+    private Sammelkonto sammelkonto;
 
     @Column
     private Double anfangsbestand;
 
     @Transient
     public String getShowKontonummer() {
-        return getKontoart().getShowKontonummer() + getKontonummer();
+        return getSammelkonto().getShowKontonummer() + getKontonummer();
     }
 
     public String getBezeichnung() {
@@ -58,12 +54,12 @@ public class Konto extends AbstractEntity {
         this.kontonummer = kontonummer;
     }
 
-    public Kontoart getKontoart() {
-        return kontoart;
+    public Sammelkonto getSammelkonto() {
+        return sammelkonto;
     }
 
-    public void setKontoart(Kontoart kontoart) {
-        this.kontoart = kontoart;
+    public void setSammelkonto(Sammelkonto sammelkonto) {
+        this.sammelkonto = sammelkonto;
     }
 
     public Double getAnfangsbestand() {
@@ -98,16 +94,4 @@ public class Konto extends AbstractEntity {
         this.bemerkung = bemerkung;
     }
 
-    @Override
-    public String toString() {
-        return "Konto{" +
-                "bezeichnung='" + bezeichnung + '\'' +
-                "bemerkung='" + bemerkung + '\'' +
-                ", kontonummer='" + kontonummer + '\'' +
-                ", soll=" + soll +
-                ", haben=" + haben +
-                ", kontoart=" + kontoart +
-                ", anfangsbestand=" + anfangsbestand +
-                '}';
-    }
 }

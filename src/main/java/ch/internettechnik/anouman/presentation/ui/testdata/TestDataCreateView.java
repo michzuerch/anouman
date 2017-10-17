@@ -56,6 +56,9 @@ public class TestDataCreateView extends VerticalLayout implements View {
     TemplateKontoartFacade templateKontoartFacade;
 
     @Inject
+    TemplateSammelkontoFacade templateSammelkontoFacade;
+
+    @Inject
     TemplateKontoFacade templateKontoFacade;
 
     @Inject
@@ -201,53 +204,80 @@ public class TestDataCreateView extends VerticalLayout implements View {
         TemplateKontoart kontoart12 = new TemplateKontoart("Art12", "12", kontogruppe6);
         kontoart12 = templateKontoartFacade.save(kontoart12);
 
-        TemplateKonto konto1 = new TemplateKonto("Konto1", "1", kontoart1);
+
+        TemplateSammelkonto sammelkonto1 = new TemplateSammelkonto("Sammelkonto1", "1", kontoart1);
+        sammelkonto1 = templateSammelkontoFacade.save(sammelkonto1);
+        TemplateSammelkonto sammelkonto2 = new TemplateSammelkonto("Sammelkonto2", "1", kontoart2);
+        sammelkonto2 = templateSammelkontoFacade.save(sammelkonto2);
+        TemplateSammelkonto sammelkonto3 = new TemplateSammelkonto("Sammelkonto3", "1", kontoart3);
+        sammelkonto3 = templateSammelkontoFacade.save(sammelkonto3);
+        TemplateSammelkonto sammelkonto4 = new TemplateSammelkonto("Sammelkonto4", "1", kontoart4);
+        sammelkonto4 = templateSammelkontoFacade.save(sammelkonto4);
+        TemplateSammelkonto sammelkonto5 = new TemplateSammelkonto("Sammelkonto5", "1", kontoart5);
+        sammelkonto5 = templateSammelkontoFacade.save(sammelkonto5);
+        TemplateSammelkonto sammelkonto6 = new TemplateSammelkonto("Sammelkonto6", "1", kontoart6);
+        sammelkonto6 = templateSammelkontoFacade.save(sammelkonto6);
+        TemplateSammelkonto sammelkonto7 = new TemplateSammelkonto("Sammelkonto7", "1", kontoart7);
+        sammelkonto7 = templateSammelkontoFacade.save(sammelkonto7);
+        TemplateSammelkonto sammelkonto8 = new TemplateSammelkonto("Sammelkonto8", "1", kontoart8);
+        sammelkonto8 = templateSammelkontoFacade.save(sammelkonto8);
+        TemplateSammelkonto sammelkonto9 = new TemplateSammelkonto("Sammelkonto9", "1", kontoart9);
+        sammelkonto9 = templateSammelkontoFacade.save(sammelkonto9);
+        TemplateSammelkonto sammelkonto10 = new TemplateSammelkonto("Sammelkonto10", "1", kontoart10);
+        sammelkonto10 = templateSammelkontoFacade.save(sammelkonto10);
+        TemplateSammelkonto sammelkonto11 = new TemplateSammelkonto("Sammelkonto11", "1", kontoart11);
+        sammelkonto11 = templateSammelkontoFacade.save(sammelkonto11);
+        TemplateSammelkonto sammelkonto12 = new TemplateSammelkonto("Sammelkonto12", "1", kontoart12);
+        sammelkonto12 = templateSammelkontoFacade.save(sammelkonto12);
+
+
+        TemplateKonto konto1 = new TemplateKonto("Konto1", "Konto1", "1", sammelkonto1);
         konto1 = templateKontoFacade.save(konto1);
-        TemplateKonto konto2 = new TemplateKonto("Konto2", "2", kontoart1);
+        TemplateKonto konto2 = new TemplateKonto("Konto2", "Konto2", "2", sammelkonto2);
         konto2 = templateKontoFacade.save(konto2);
-        TemplateKonto konto3 = new TemplateKonto("Konto3", "3", kontoart2);
+        TemplateKonto konto3 = new TemplateKonto("Konto3", "Konto3", "3", sammelkonto3);
         konto3 = templateKontoFacade.save(konto3);
-        TemplateKonto konto4 = new TemplateKonto("Konto4", "4", kontoart2);
+        TemplateKonto konto4 = new TemplateKonto("Konto4", "Konto4", "4", sammelkonto4);
         konto4 = templateKontoFacade.save(konto4);
-        TemplateKonto konto5 = new TemplateKonto("Konto5", "5", kontoart3);
+        TemplateKonto konto5 = new TemplateKonto("Konto5", "Konto5", "5", sammelkonto5);
         konto5 = templateKontoFacade.save(konto5);
-        TemplateKonto konto6 = new TemplateKonto("Konto6", "6", kontoart3);
+        TemplateKonto konto6 = new TemplateKonto("Konto6", "Konto6", "6", sammelkonto6);
         konto6 = templateKontoFacade.save(konto6);
-        TemplateKonto konto7 = new TemplateKonto("Konto7", "7", kontoart4);
+        TemplateKonto konto7 = new TemplateKonto("Konto7", "Konto7", "7", sammelkonto7);
         konto7 = templateKontoFacade.save(konto7);
-        TemplateKonto konto8 = new TemplateKonto("Konto8", "8", kontoart4);
+        TemplateKonto konto8 = new TemplateKonto("Konto8", "Konto8", "8", sammelkonto8);
         konto8 = templateKontoFacade.save(konto8);
-        TemplateKonto konto9 = new TemplateKonto("Konto9", "9", kontoart5);
+        TemplateKonto konto9 = new TemplateKonto("Konto9", "Konto9", "9", sammelkonto9);
         konto9 = templateKontoFacade.save(konto9);
-        TemplateKonto konto10 = new TemplateKonto("Konto10", "10", kontoart5);
+        TemplateKonto konto10 = new TemplateKonto("Konto10", "Konto10", "10", sammelkonto10);
         konto10 = templateKontoFacade.save(konto10);
-        TemplateKonto konto11 = new TemplateKonto("Konto11", "11", kontoart6);
+        TemplateKonto konto11 = new TemplateKonto("Konto11", "Konto11", "11", sammelkonto11);
         konto11 = templateKontoFacade.save(konto11);
-        TemplateKonto konto12 = new TemplateKonto("Konto12", "12", kontoart6);
+        TemplateKonto konto12 = new TemplateKonto("Konto12", "Konto12", "12", sammelkonto12);
         konto12 = templateKontoFacade.save(konto12);
-        TemplateKonto konto13 = new TemplateKonto("Konto13", "13", kontoart7);
+        TemplateKonto konto13 = new TemplateKonto("Konto13", "Konto13", "13", sammelkonto1);
         konto13 = templateKontoFacade.save(konto13);
-        TemplateKonto konto14 = new TemplateKonto("Konto14", "14", kontoart7);
+        TemplateKonto konto14 = new TemplateKonto("Konto14", "Konto14", "14", sammelkonto2);
         konto14 = templateKontoFacade.save(konto14);
-        TemplateKonto konto15 = new TemplateKonto("Konto15", "15", kontoart8);
+        TemplateKonto konto15 = new TemplateKonto("Konto15", "Konto15", "15", sammelkonto3);
         konto15 = templateKontoFacade.save(konto15);
-        TemplateKonto konto16 = new TemplateKonto("Konto16", "16", kontoart8);
+        TemplateKonto konto16 = new TemplateKonto("Konto16", "Konto16", "16", sammelkonto4);
         konto16 = templateKontoFacade.save(konto16);
-        TemplateKonto konto17 = new TemplateKonto("Konto17", "17", kontoart9);
+        TemplateKonto konto17 = new TemplateKonto("Konto17", "Konto17", "17", sammelkonto5);
         konto17 = templateKontoFacade.save(konto17);
-        TemplateKonto konto18 = new TemplateKonto("Konto18", "18", kontoart9);
+        TemplateKonto konto18 = new TemplateKonto("Konto18", "Konto18", "18", sammelkonto6);
         konto18 = templateKontoFacade.save(konto18);
-        TemplateKonto konto19 = new TemplateKonto("Konto19", "19", kontoart10);
+        TemplateKonto konto19 = new TemplateKonto("Konto19", "Konto19", "19", sammelkonto7);
         konto19 = templateKontoFacade.save(konto19);
-        TemplateKonto konto20 = new TemplateKonto("Konto20", "20", kontoart10);
+        TemplateKonto konto20 = new TemplateKonto("Konto20", "Konto20", "20", sammelkonto8);
         konto20 = templateKontoFacade.save(konto20);
-        TemplateKonto konto21 = new TemplateKonto("Konto21", "21", kontoart11);
+        TemplateKonto konto21 = new TemplateKonto("Konto21", "Konto21", "21", sammelkonto9);
         konto21 = templateKontoFacade.save(konto21);
-        TemplateKonto konto22 = new TemplateKonto("Konto22", "22", kontoart11);
+        TemplateKonto konto22 = new TemplateKonto("Konto22", "Konto22", "22", sammelkonto10);
         konto22 = templateKontoFacade.save(konto22);
-        TemplateKonto konto23 = new TemplateKonto("Konto23", "23", kontoart12);
+        TemplateKonto konto23 = new TemplateKonto("Konto23", "Konto23", "23", sammelkonto11);
         konto23 = templateKontoFacade.save(konto23);
-        TemplateKonto konto24 = new TemplateKonto("Konto24", "24", kontoart12);
+        TemplateKonto konto24 = new TemplateKonto("Konto24", "Konto24", "24", sammelkonto12);
         konto24 = templateKontoFacade.save(konto24);
 
         TemplateMehrwertsteuercode mehrwertsteuercode = new TemplateMehrwertsteuercode();

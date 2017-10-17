@@ -165,36 +165,20 @@ public class BackupView extends VerticalLayout implements View {
                         kontogruppe.getKontoarts().stream().forEach(kontoart -> {
                             BackupKontoart backupKontoart = new BackupKontoart(kontoart.getBezeichnung(), kontoart.getKontonummer());
                             backupKontogruppe.getKontoarten().add(backupKontoart);
-                            kontoart.getKontos().stream().forEach(konto -> {
-                                BackupKonto backupKonto = new BackupKonto(konto.getId(), konto.getBezeichnung(), konto.getKontonummer(), konto.getShowKontonummer(), konto.getAnfangsbestand());
-                                backupKontoart.getKonti().add(backupKonto);
-                                konto.getSoll().stream().forEach(buchung -> {
-                                    BackupBuchung backupBuchung = new BackupBuchung();
-                                    backupBuchung.setId(buchung.getId());
-                                    backupBuchung.setBuchungstext(buchung.getBuchungstext());
-                                    backupBuchung.setLaufnummer(buchung.getLaufnummer());
-                                    backupBuchung.setBuchungsdatum(buchung.getBuchungsdatum());
-                                    backupBuchung.setBetrag(buchung.getBetrag());
-                                    backupBuchung.setKontoSoll(buchung.getKontoSoll().getId());
-                                    backupBuchung.setKontoHaben(buchung.getKontoHaben().getId());
-                                    //if (buchung.getMehrwertsteuercode() != null)
-                                    //   backupBuchung.setMehrwertsteuercode(buchung.getMehrwertsteuercode().getId());
-                                    //backupKonto.addBuchung(backupBuchung);
-                                    //backupBuchhaltung.addBuchung(backupBuchung);
-                                });
-                                konto.getHaben().stream().forEach(buchung -> {
-                                    BackupBuchung backupBuchung = new BackupBuchung();
-                                    backupBuchung.setId(buchung.getId());
-                                    backupBuchung.setBuchungstext(buchung.getBuchungstext());
-                                    backupBuchung.setLaufnummer(buchung.getLaufnummer());
-                                    backupBuchung.setBuchungsdatum(buchung.getBuchungsdatum());
-                                    backupBuchung.setBetrag(buchung.getBetrag());
-                                    backupBuchung.setKontoSoll(buchung.getKontoSoll().getId());
-                                    backupBuchung.setKontoHaben(buchung.getKontoHaben().getId());
-                                    //if (buchung.getMehrwertsteuercode() != null)
-                                    //    backupBuchung.setMehrwertsteuercode(buchung.getMehrwertsteuercode().getId());
-                                    //backupKonto.addBuchung(backupBuchung);
-                                    //backupBuchhaltung.addBuchung(backupBuchung);
+                            kontoart.getSammelkontos().stream().forEach(sammelkonto -> {
+                                BackupSammelkonto backupSammelkonto = new BackupSammelkonto();
+                                backupSammelkonto.setId(sammelkonto.getId());
+                                backupSammelkonto.setBezeichnung(sammelkonto.getBezeichnung());
+                                backupSammelkonto.setKontonummer(sammelkonto.getKontonummer());
+                                backupKontoart.getSammelkontos().add(backupSammelkonto);
+
+                                sammelkonto.getKontos().stream().forEach(konto -> {
+                                    BackupKonto backupKonto = new BackupKonto();
+                                    backupKonto.setBezeichnung(konto.getBezeichnung());
+                                    backupKonto.setKontonummer(konto.getKontonummer());
+                                    backupKonto.setAnfangsbestand(konto.getAnfangsbestand());
+                                    backupKonto.setBemerkung(konto.getBemerkung());
+                                    backupSammelkonto.getKontos().add(backupKonto);
                                 });
                             });
                         });
@@ -243,27 +227,37 @@ public class BackupView extends VerticalLayout implements View {
                     backupMehrwertsteuercode.setKonto(mehrwertsteuercode.getKonto());
                     backupBuchhaltung.getMehrwertsteuercodes().add(backupMehrwertsteuercode);
                 });
-                buchhaltung.getTemplateKontoklasses().stream().forEach(kontoklasse -> {
-                    BackupTemplateKontoklasse backupKontoklasse = new BackupTemplateKontoklasse(kontoklasse.getBezeichnung(), kontoklasse.getKontonummer());
+                buchhaltung.getTemplateKontoklasses().stream().forEach(templateKontoklasse -> {
+                    BackupTemplateKontoklasse backupKontoklasse = new BackupTemplateKontoklasse(templateKontoklasse.getBezeichnung(), templateKontoklasse.getKontonummer());
                     backupBuchhaltung.getKontoklasses().add(backupKontoklasse);
-                    kontoklasse.getTemplateKontogruppes().stream().forEach(kontogruppe -> {
-                        BackupTemplateKontogruppe backupKontogruppe = new BackupTemplateKontogruppe(kontogruppe.getBezeichnung(), kontogruppe.getKontonummer());
-                        backupKontoklasse.getKontogruppen().add(backupKontogruppe);
-                        kontogruppe.getTemplateKontoarts().stream().forEach(kontoart -> {
-                            BackupTemplateKontoart backupKontoart = new BackupTemplateKontoart(kontoart.getBezeichnung(), kontoart.getKontonummer());
-                            backupKontogruppe.getKontoarten().add(backupKontoart);
-                            kontoart.getTemplateKontos().stream().forEach(konto -> {
-                                BackupTemplateKonto backupKonto = new BackupTemplateKonto(konto.getId(), konto.getBezeichnung(), konto.getKontonummer(), konto.getShowKontonummer());
-                                backupKontoart.getKonti().add(backupKonto);
-                                konto.getTemplateMehrwertsteuercode().stream().forEach(mehrwertsteuercode -> {
-                                    BackupTemplateMehrwertsteuercode backupTemplateMehrwertsteuercode =
-                                            new BackupTemplateMehrwertsteuercode(
-                                                    mehrwertsteuercode.getBezeichnung(),
-                                                    mehrwertsteuercode.getCode(),
-                                                    mehrwertsteuercode.getProzent(),
-                                                    mehrwertsteuercode.isVerkauf()
-                                            );
-                                    backupKonto.getMehrwertsteuercodes().add(backupTemplateMehrwertsteuercode);
+                    templateKontoklasse.getTemplateKontogruppes().stream().forEach(templateKontogruppe -> {
+                        BackupTemplateKontogruppe backupTemplateKontogruppe = new BackupTemplateKontogruppe(templateKontogruppe.getBezeichnung(), templateKontogruppe.getKontonummer());
+                        backupKontoklasse.getKontogruppen().add(backupTemplateKontogruppe);
+                        templateKontogruppe.getTemplateKontoarts().stream().forEach(templateKontoart -> {
+                            BackupTemplateKontoart backupTemplateKontoart = new BackupTemplateKontoart(templateKontoart.getBezeichnung(), templateKontoart.getKontonummer());
+                            backupTemplateKontogruppe.getKontoarten().add(backupTemplateKontoart);
+                            templateKontoart.getTemplateSammelkontos().stream().forEach(templateSammelkonto -> {
+                                BackupTemplateSammelkonto backupTemplateSammelkonto = new BackupTemplateSammelkonto();
+                                backupTemplateSammelkonto.setBezeichnung(templateSammelkonto.getBezeichnung());
+                                backupTemplateSammelkonto.setKontonummer(templateSammelkonto.getKontonummer());
+                                backupTemplateKontoart.getBackupTemplateSammelkontos().add(backupTemplateSammelkonto);
+
+                                templateSammelkonto.getTemplateKontos().stream().forEach(templateKonto -> {
+                                    BackupTemplateKonto backupTemplateKonto = new BackupTemplateKonto();
+                                    backupTemplateKonto.setId(templateKonto.getId());
+                                    backupTemplateKonto.setBemerkung(templateKonto.getBemerkung());
+                                    backupTemplateKonto.setKontonummer(templateKonto.getKontonummer());
+                                    backupTemplateKonto.setBezeichnung(templateKonto.getBezeichnung());
+                                    backupTemplateSammelkonto.getKonti().add(backupTemplateKonto);
+
+                                    templateKonto.getTemplateMehrwertsteuercode().stream().forEach(templateMehrwertsteuercode -> {
+                                        BackupTemplateMehrwertsteuercode backupTemplateMehrwertsteuercode = new BackupTemplateMehrwertsteuercode();
+                                        backupTemplateMehrwertsteuercode.setId(templateMehrwertsteuercode.getId());
+                                        backupTemplateMehrwertsteuercode.setBezeichnung(templateMehrwertsteuercode.getBezeichnung());
+                                        backupTemplateMehrwertsteuercode.setProzent(templateMehrwertsteuercode.getProzent());
+                                        backupTemplateMehrwertsteuercode.setCode(templateMehrwertsteuercode.getCode());
+                                        backupTemplateKonto.getMehrwertsteuercodes().add(backupTemplateMehrwertsteuercode);
+                                    });
                                 });
                             });
                         });
@@ -323,18 +317,29 @@ public class BackupView extends VerticalLayout implements View {
                     kontogruppe.getTemplateKontoarts().stream().forEach(kontoart -> {
                         BackupTemplateKontoart backupKontoart = new BackupTemplateKontoart(kontoart.getBezeichnung(), kontoart.getKontonummer());
                         backupKontogruppe.getKontoarten().add(backupKontoart);
-                        kontoart.getTemplateKontos().stream().forEach(konto -> {
-                            BackupTemplateKonto backupKonto = new BackupTemplateKonto(konto.getId(), konto.getBezeichnung(), konto.getKontonummer(), konto.getShowKontonummer());
-                            backupKontoart.getKonti().add(backupKonto);
-                            konto.getTemplateMehrwertsteuercode().stream().forEach(mehrwertsteuercode -> {
-                                BackupTemplateMehrwertsteuercode backupTemplateMehrwertsteuercode =
-                                        new BackupTemplateMehrwertsteuercode(
-                                                mehrwertsteuercode.getBezeichnung(),
-                                                mehrwertsteuercode.getCode(),
-                                                mehrwertsteuercode.getProzent(),
-                                                mehrwertsteuercode.isVerkauf()
-                                        );
-                                backupKonto.getMehrwertsteuercodes().add(backupTemplateMehrwertsteuercode);
+                        kontoart.getTemplateSammelkontos().stream().forEach(templateSammelkonto -> {
+                            BackupTemplateSammelkonto backupTemplateSammelkonto = new BackupTemplateSammelkonto();
+                            backupTemplateSammelkonto.setBezeichnung(templateSammelkonto.getBezeichnung());
+                            backupTemplateSammelkonto.setKontonummer(templateSammelkonto.getKontonummer());
+                            backupKontoart.getBackupTemplateSammelkontos().add(backupTemplateSammelkonto);
+
+                            templateSammelkonto.getTemplateKontos().stream().forEach(templateKonto -> {
+                                BackupTemplateKonto backupTemplateKonto = new BackupTemplateKonto();
+                                backupTemplateKonto.setBezeichnung(templateKonto.getBezeichnung());
+                                backupTemplateKonto.setId(templateKonto.getId());
+                                backupTemplateKonto.setKontonummer(templateKonto.getKontonummer());
+                                backupTemplateKonto.setBemerkung(templateKonto.getBemerkung());
+                                backupTemplateSammelkonto.getKonti().add(backupTemplateKonto);
+                                templateKonto.getTemplateMehrwertsteuercode().stream().forEach(templateMehrwertsteuercode -> {
+                                    BackupTemplateMehrwertsteuercode backupTemplateMehrwertsteuercode = new BackupTemplateMehrwertsteuercode();
+                                    backupTemplateMehrwertsteuercode.setId(templateMehrwertsteuercode.getId());
+                                    backupTemplateMehrwertsteuercode.setCode(templateMehrwertsteuercode.getCode());
+                                    backupTemplateMehrwertsteuercode.setBezeichnung(templateMehrwertsteuercode.getBezeichnung());
+                                    backupTemplateMehrwertsteuercode.setProzent(templateMehrwertsteuercode.getProzent());
+                                    backupTemplateMehrwertsteuercode.setVerkauf(templateMehrwertsteuercode.isVerkauf());
+                                    backupTemplateKonto.getMehrwertsteuercodes().add(backupTemplateMehrwertsteuercode);
+                                });
+
                             });
                         });
                     });
@@ -462,9 +467,21 @@ public class BackupView extends VerticalLayout implements View {
                     kontogruppe.getKontoarts().stream().forEach(kontoart -> {
                         BackupKontoart backupKontoart = new BackupKontoart(kontoart.getBezeichnung(), kontoart.getKontonummer());
                         backupKontogruppe.getKontoarten().add(backupKontoart);
-                        kontoart.getKontos().stream().forEach(konto -> {
-                            BackupKonto backupKonto = new BackupKonto(konto.getId(), konto.getBezeichnung(), konto.getKontonummer(), konto.getShowKontonummer(), konto.getAnfangsbestand());
-                            backupKontoart.getKonti().add(backupKonto);
+
+                        kontoart.getSammelkontos().stream().forEach(sammelkonto -> {
+                            BackupSammelkonto backupSammelkonto = new BackupSammelkonto();
+                            backupSammelkonto.setBezeichnung(sammelkonto.getBezeichnung());
+                            backupSammelkonto.setId(sammelkonto.getId());
+                            backupSammelkonto.setKontonummer(sammelkonto.getKontonummer());
+                            backupKontoart.getSammelkontos().add(backupSammelkonto);
+                            sammelkonto.getKontos().stream().forEach(konto -> {
+                                BackupKonto backupKonto = new BackupKonto();
+                                backupKonto.setId(konto.getId());
+                                backupKonto.setBezeichnung(konto.getBezeichnung());
+                                backupKonto.setAnfangsbestand(konto.getAnfangsbestand());
+                                backupKonto.setKontonummer(konto.getKontonummer());
+
+                            });
                         });
                     });
                 });

@@ -9,10 +9,6 @@ import java.util.List;
  * Created by michzuerch on 25.08.15.
  */
 @Entity
-@NamedQueries({
-        @NamedQuery(name = "Kontoart.findAll", query = "SELECT k FROM Kontoart k"),
-        @NamedQuery(name = "Kontoart.findById", query = "SELECT k FROM Kontoart k where k.id = :id")
-})
 public class Kontoart extends AbstractEntity {
     @Column
     @NotNull
@@ -26,7 +22,7 @@ public class Kontoart extends AbstractEntity {
     private Kontogruppe kontogruppe;
 
     @OneToMany(mappedBy = "kontoart", cascade = CascadeType.ALL)
-    private List<Konto> kontos = new ArrayList<>();
+    private List<Sammelkonto> sammelkontos = new ArrayList<>();
 
     @Transient
     public String getShowKontonummer() {
@@ -49,19 +45,19 @@ public class Kontoart extends AbstractEntity {
         this.kontonummer = kontonummer;
     }
 
-    public List<Konto> getKontos() {
-        return kontos;
-    }
-
-    public void setKontos(List<Konto> kontos) {
-        this.kontos = kontos;
-    }
-
     public String getBezeichnung() {
         return bezeichnung;
     }
 
     public void setBezeichnung(String bezeichnung) {
         this.bezeichnung = bezeichnung;
+    }
+
+    public List<Sammelkonto> getSammelkontos() {
+        return sammelkontos;
+    }
+
+    public void setSammelkontos(List<Sammelkonto> sammelkontos) {
+        this.sammelkontos = sammelkontos;
     }
 }

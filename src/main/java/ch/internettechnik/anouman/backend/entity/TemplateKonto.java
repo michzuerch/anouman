@@ -26,7 +26,7 @@ public class TemplateKonto extends AbstractEntity {
     private String kontonummer;
 
     @ManyToOne
-    private TemplateKontoart templateKontoart;
+    private TemplateSammelkonto templateSammelkonto;
 
     @OneToMany(mappedBy = "templateMehrwertsteuerKonto", cascade = CascadeType.ALL)
     private List<TemplateMehrwertsteuercode> templateMehrwertsteuercode = new ArrayList<>();
@@ -34,15 +34,16 @@ public class TemplateKonto extends AbstractEntity {
     public TemplateKonto() {
     }
 
-    public TemplateKonto(String bezeichnung, String kontonummer, TemplateKontoart templateKontoart) {
+    public TemplateKonto(@NotNull String bezeichnung, String bemerkung, @NotNull String kontonummer, TemplateSammelkonto templateSammelkonto) {
         this.bezeichnung = bezeichnung;
+        this.bemerkung = bemerkung;
         this.kontonummer = kontonummer;
-        this.templateKontoart = templateKontoart;
+        this.templateSammelkonto = templateSammelkonto;
     }
 
     @Transient
     public String getShowKontonummer() {
-        return getTemplateKontoart().getShowKontonummer() + getKontonummer();
+        return getTemplateSammelkonto().getShowKontonummer() + getKontonummer();
     }
 
     public String getBezeichnung() {
@@ -69,12 +70,12 @@ public class TemplateKonto extends AbstractEntity {
         this.kontonummer = kontonummer;
     }
 
-    public TemplateKontoart getTemplateKontoart() {
-        return templateKontoart;
+    public TemplateSammelkonto getTemplateSammelkonto() {
+        return templateSammelkonto;
     }
 
-    public void setTemplateKontoart(TemplateKontoart templateKontoart) {
-        this.templateKontoart = templateKontoart;
+    public void setTemplateSammelkonto(TemplateSammelkonto templateSammelkonto) {
+        this.templateSammelkonto = templateSammelkonto;
     }
 
     public List<TemplateMehrwertsteuercode> getTemplateMehrwertsteuercode() {
@@ -85,15 +86,5 @@ public class TemplateKonto extends AbstractEntity {
         this.templateMehrwertsteuercode = templateMehrwertsteuercode;
     }
 
-    @Override
-    public String toString() {
-        return "TemplateKonto{" +
-                "id='" + getId().toString() + '\'' +
-                ", bezeichnung='" + bezeichnung + '\'' +
-                ", bemerkung='" + bemerkung + '\'' +
-                ", kontonummer='" + kontonummer + '\'' +
-                ", templateKontoart=" + templateKontoart +
-                ", templateMehrwertsteuercode=" + templateMehrwertsteuercode +
-                '}';
-    }
+
 }

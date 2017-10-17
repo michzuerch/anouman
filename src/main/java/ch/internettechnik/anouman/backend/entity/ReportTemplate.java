@@ -9,10 +9,6 @@ import java.util.Arrays;
  * Created by michzuerch on 10.06.15.
  */
 @Entity
-@NamedQueries({
-        @NamedQuery(name = "ReportTemplate.findAll", query = "SELECT rt FROM ReportTemplate rt"),
-        @NamedQuery(name = "ReportTemplate.findById", query = "SELECT rt FROM ReportTemplate rt where rt.id = :id")
-})
 public class ReportTemplate extends AbstractEntity {
     @Column
     @NotNull

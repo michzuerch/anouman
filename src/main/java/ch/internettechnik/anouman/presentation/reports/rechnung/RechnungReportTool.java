@@ -26,6 +26,7 @@ public class RechnungReportTool implements Serializable {
     private static Logger logger = LoggerFactory.getLogger(RechnungReportTool.class.getName());
 
     //@todo java.lang.ClassNotFoundException: org.codehaus.groovy.control.CompilationFailedException
+
     public static byte[] getPdf(Rechnung val, ReportTemplate reportTemplate) {
         JasperReport report;
         JasperPrint print;
@@ -39,7 +40,6 @@ public class RechnungReportTool implements Serializable {
 
         Adresse adresse = val.getAdresse();
 
-        /* todo Check wegen Firma?? */
         if (adresse.getFirma() == null) {
             adresszeile1 = adresse.getAnrede() + " " + adresse.getVorname() + " " + adresse.getNachname();
             adresszeile2 = adresse.getStrasse();
@@ -94,4 +94,5 @@ public class RechnungReportTool implements Serializable {
         }
         return bytes;
     }
+
 }

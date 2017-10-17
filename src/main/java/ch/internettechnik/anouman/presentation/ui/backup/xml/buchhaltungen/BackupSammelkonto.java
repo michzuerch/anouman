@@ -12,23 +12,17 @@ import java.util.Set;
  */
 
 @XmlAccessorType(XmlAccessType.NONE)
-public class BackupKonto {
+public class BackupSammelkonto {
     @XmlAttribute
     private String bezeichnung;
     @XmlAttribute
-    private String bemerkung;
-    @XmlAttribute
     private String kontonummer;
-    @XmlElement
-    private String showKontonummer;
-    @XmlElement
-    private Double anfangsbestand;
     @XmlAttribute
     private Long id;
-    @XmlElement(name = "buchung")
-    private Set<BackupBuchung> buchungen = new HashSet<>();
+    @XmlElement(name = "konto")
+    private Set<BackupKonto> kontos = new HashSet<>();
 
-    public BackupKonto() {
+    public BackupSammelkonto() {
     }
 
     public String getBezeichnung() {
@@ -39,14 +33,6 @@ public class BackupKonto {
         this.bezeichnung = bezeichnung;
     }
 
-    public String getBemerkung() {
-        return bemerkung;
-    }
-
-    public void setBemerkung(String bemerkung) {
-        this.bemerkung = bemerkung;
-    }
-
     public String getKontonummer() {
         return kontonummer;
     }
@@ -55,20 +41,12 @@ public class BackupKonto {
         this.kontonummer = kontonummer;
     }
 
-    public Double getAnfangsbestand() {
-        return anfangsbestand;
+    public Set<BackupKonto> getKontos() {
+        return kontos;
     }
 
-    public void setAnfangsbestand(Double anfangsbestand) {
-        this.anfangsbestand = anfangsbestand;
-    }
-
-    public String getShowKontonummer() {
-        return showKontonummer;
-    }
-
-    public void setShowKontonummer(String showKontonummer) {
-        this.showKontonummer = showKontonummer;
+    public void setKontos(Set<BackupKonto> kontos) {
+        this.kontos = kontos;
     }
 
     public Long getId() {

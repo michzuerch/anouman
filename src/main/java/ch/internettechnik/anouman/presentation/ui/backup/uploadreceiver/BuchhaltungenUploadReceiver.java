@@ -33,6 +33,9 @@ public class BuchhaltungenUploadReceiver implements Serializable, Upload.Receive
     KontoartFacade kontoartFacade;
 
     @Inject
+    SammelkontoFacade sammelkontoFacade;
+
+    @Inject
     KontoFacade kontoFacade;
 
     @Inject
@@ -96,14 +99,29 @@ public class BuchhaltungenUploadReceiver implements Serializable, Upload.Receive
                             kontogruppe.getKontoarts().add(kontoart);
                             kontogruppe = kontogruppeFacade.save(kontogruppe);
 
-                            for (BackupKonto backupKonto : backupKontoart.getKonti()) {
-                                Konto konto = new Konto();
-                                konto.setBezeichnung(backupKonto.getBezeichnung());
-                                konto.setKontonummer(backupKonto.getKontonummer());
-                                konto.setKontoart(kontoart);
-                                konto = kontoFacade.save(konto);
-                                kontoart.getKontos().add(konto);
+
+                            for (BackupSammelkonto backupSammelkonto : backupKontoart.getSammelkontos()) {
+                                Sammelkonto sammelkonto = new Sammelkonto();
+                                sammelkonto.setBezeichnung(backupSammelkonto.getBezeichnung());
+                                sammelkonto.setKontonummer(backupSammelkonto.getKontonummer());
+                                sammelkonto.setKontoart(kontoart);
+                                sammelkonto = sammelkontoFacade.save(sammelkonto);
+                                kontoart.getSammelkontos().add(sammelkonto);
                                 kontoart = kontoartFacade.save(kontoart);
+
+                                for (BackupKonto backupKonto : backupSammelkonto.getKontos()) {
+                                    Konto konto = new Konto();
+                                    konto.setBezeichnung(backupKonto.getBezeichnung());
+                                    konto.setBemerkung(backupKonto.getBemerkung());
+                                    konto.setKontonummer(backupKonto.getKontonummer());
+                                    konto.setAnfangsbestand(backupKonto.getAnfangsbestand());
+                                    konto.setSammelkonto(sammelkonto);
+                                    konto = kontoFacade.save(konto);
+                                    sammelkonto.getKontos().add(konto);
+                                    sammelkonto = sammelkontoFacade.save(sammelkonto);
+
+                                    //@todo Unterbuchungen auch Sichern!
+                                }
                             }
                         }
                     }

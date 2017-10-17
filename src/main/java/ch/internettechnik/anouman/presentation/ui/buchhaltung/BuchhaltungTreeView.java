@@ -41,6 +41,9 @@ public class BuchhaltungTreeView extends VerticalLayout implements View {
     private KontoartFacade kontoartFacade;
 
     @Inject
+    private SammelkontoFacade sammelkontoFacade;
+
+    @Inject
     private KontoFacade kontoFacade;
 
     @Override
@@ -150,10 +153,21 @@ public class BuchhaltungTreeView extends VerticalLayout implements View {
         Grid<Konto> grid = new Grid<>();
         grid.setCaption("Konti");
         grid.setSizeFull();
-        Kontoart kontoart = kontoartFacade.findBy(val.getId());
-        grid.setItems(kontoart.getKontos());
+        Sammelkonto sammelkonto = sammelkontoFacade.findBy(val.getId());
+        grid.setItems(sammelkonto.getKontos());
         grid.addColumn(Konto::getId);
         grid.addColumn(Konto::getBezeichnung);
+        return grid;
+    }
+
+    private Grid<Sammelkonto> createGridSammelkonto(BuchhaltungTreeData val) {
+        Grid<Sammelkonto> grid = new Grid<>();
+        grid.setCaption("Konti");
+        grid.setSizeFull();
+        Kontoart kontoart = kontoartFacade.findBy(val.getId());
+        grid.setItems(kontoart.getSammelkontos());
+        grid.addColumn(Sammelkonto::getId);
+        grid.addColumn(Sammelkonto::getBezeichnung);
         return grid;
     }
 
@@ -188,9 +202,13 @@ public class BuchhaltungTreeView extends VerticalLayout implements View {
                 kontogruppe.getKontoarts().forEach(kontoart -> {
                     BuchhaltungTreeData valKA = new BuchhaltungTreeData(kontoart.getId(), "KA", kontoart.getBezeichnung());
                     buchhaltungTreeData.addItem(valKG, valKA);
-                    kontoart.getKontos().forEach(konto -> {
-                        BuchhaltungTreeData valKO = new BuchhaltungTreeData(konto.getId(), "KO", konto.getBezeichnung());
-                        buchhaltungTreeData.addItem(valKA, valKO);
+                    kontoart.getSammelkontos().forEach(sammelkonto -> {
+                        BuchhaltungTreeData valSK = new BuchhaltungTreeData(sammelkonto.getId(), "SK", sammelkonto.getBezeichnung());
+                        buchhaltungTreeData.addItem(valKA, valSK);
+                        sammelkonto.getKontos().forEach(konto -> {
+                            BuchhaltungTreeData valKO = new BuchhaltungTreeData(konto.getId(), "KO", konto.getBezeichnung());
+                            buchhaltungTreeData.addItem(valSK, valKO);
+                        });
                     });
                 });
             });

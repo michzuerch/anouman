@@ -11,18 +11,18 @@ import java.util.Set;
  * Created by michzuerch on 16.11.15.
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public class BackupTemplateKontoart {
+public class BackupTemplateSammelkonto {
     @XmlAttribute
     private String bezeichnung;
     @XmlAttribute
     private String kontonummer;
-    @XmlElement(name = "sammelkonto")
-    private Set<BackupTemplateSammelkonto> backupTemplateSammelkontos = new HashSet<>();
+    @XmlElement(name = "konto")
+    private Set<BackupTemplateKonto> konti = new HashSet<>();
 
-    public BackupTemplateKontoart() {
+    public BackupTemplateSammelkonto() {
     }
 
-    public BackupTemplateKontoart(String bezeichnung, String kontonummer) {
+    public BackupTemplateSammelkonto(String bezeichnung, String kontonummer) {
         this.bezeichnung = bezeichnung;
         this.kontonummer = kontonummer;
     }
@@ -43,11 +43,12 @@ public class BackupTemplateKontoart {
         this.kontonummer = kontonummer;
     }
 
-    public Set<BackupTemplateSammelkonto> getBackupTemplateSammelkontos() {
-        return backupTemplateSammelkontos;
+    public Set<BackupTemplateKonto> getKonti() {
+        return konti;
     }
 
-    public void setBackupTemplateSammelkontos(Set<BackupTemplateSammelkonto> backupTemplateSammelkontos) {
-        this.backupTemplateSammelkontos = backupTemplateSammelkontos;
+    public void setKonti(Set<BackupTemplateKonto> konti) {
+        this.konti = konti;
     }
+
 }

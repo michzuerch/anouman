@@ -35,6 +35,9 @@ public class TemplateBuchhaltungenUploadReceiver implements Serializable, Upload
     TemplateKontoartFacade templateKontoartFacade;
 
     @Inject
+    TemplateSammelkontoFacade templateSammelkontoFacade;
+
+    @Inject
     TemplateKontoFacade templateKontoFacade;
 
     @Inject
@@ -66,66 +69,75 @@ public class TemplateBuchhaltungenUploadReceiver implements Serializable, Upload
                     (BackupTemplateBuchhaltungen) unmarshaller.unmarshal(new FileInputStream(tempFile));
 
             for (BackupTemplateBuchhaltung backupTemplateBuchhaltung : backupTemplateBuchhaltungen.getBuchhaltungen()) {
-                TemplateBuchhaltung buchhaltung = new TemplateBuchhaltung();
+                TemplateBuchhaltung templateBuchhaltung = new TemplateBuchhaltung();
                 String bezeichnung = backupTemplateBuchhaltung.getBezeichnung();
-                buchhaltung.setBezeichnung(bezeichnung);
-                buchhaltung = templateBuchhaltungFacade.save(buchhaltung);
+                templateBuchhaltung.setBezeichnung(bezeichnung);
+                templateBuchhaltung = templateBuchhaltungFacade.save(templateBuchhaltung);
 
                 for (BackupTemplateKontoklasse backupTemplateKontoklasse : backupTemplateBuchhaltung.getKontoklasses()) {
-                    TemplateKontoklasse kontoklasse = new TemplateKontoklasse();
-                    kontoklasse.setBezeichnung(backupTemplateKontoklasse.getBezeichnung());
-                    kontoklasse.setKontonummer(backupTemplateKontoklasse.getKontonummer());
-                    kontoklasse.setTemplateBuchhaltung(buchhaltung);
-                    kontoklasse = templateKontoklasseFacade.save(kontoklasse);
-                    buchhaltung.getTemplateKontoklasses().add(kontoklasse);
-                    buchhaltung = templateBuchhaltungFacade.save(buchhaltung);
+                    TemplateKontoklasse templateKontoklasse = new TemplateKontoklasse();
+                    templateKontoklasse.setBezeichnung(backupTemplateKontoklasse.getBezeichnung());
+                    templateKontoklasse.setKontonummer(backupTemplateKontoklasse.getKontonummer());
+                    templateKontoklasse.setTemplateBuchhaltung(templateBuchhaltung);
+                    templateKontoklasse = templateKontoklasseFacade.save(templateKontoklasse);
+                    templateBuchhaltung.getTemplateKontoklasses().add(templateKontoklasse);
+                    templateBuchhaltung = templateBuchhaltungFacade.save(templateBuchhaltung);
 
                     for (BackupTemplateKontogruppe backupTemplateKontogruppe : backupTemplateKontoklasse.getKontogruppen()) {
-                        TemplateKontogruppe kontogruppe = new TemplateKontogruppe();
-                        kontogruppe.setBezeichnung(backupTemplateKontogruppe.getBezeichnung());
-                        kontogruppe.setKontonummer(backupTemplateKontogruppe.getKontonummer());
-                        kontogruppe.setTemplateKontoklasse(kontoklasse);
-                        kontogruppe = templateKontogruppeFacade.save(kontogruppe);
-                        kontoklasse.getTemplateKontogruppes().add(kontogruppe);
-                        kontoklasse = templateKontoklasseFacade.save(kontoklasse);
+                        TemplateKontogruppe templateKontogruppe = new TemplateKontogruppe();
+                        templateKontogruppe.setBezeichnung(backupTemplateKontogruppe.getBezeichnung());
+                        templateKontogruppe.setKontonummer(backupTemplateKontogruppe.getKontonummer());
+                        templateKontogruppe.setTemplateKontoklasse(templateKontoklasse);
+                        templateKontogruppe = templateKontogruppeFacade.save(templateKontogruppe);
+                        templateKontoklasse.getTemplateKontogruppes().add(templateKontogruppe);
+                        templateKontoklasse = templateKontoklasseFacade.save(templateKontoklasse);
 
                         for (BackupTemplateKontoart backupTemplateKontoart : backupTemplateKontogruppe.getKontoarten()) {
-                            TemplateKontoart kontoart = new TemplateKontoart();
-                            kontoart.setBezeichnung(backupTemplateKontoart.getBezeichnung());
-                            kontoart.setKontonummer(backupTemplateKontoart.getKontonummer());
-                            kontoart.setTemplateKontogruppe(kontogruppe);
-                            kontoart = templateKontoartFacade.save(kontoart);
-                            kontogruppe.getTemplateKontoarts().add(kontoart);
-                            kontogruppe = templateKontogruppeFacade.save(kontogruppe);
+                            TemplateKontoart templateKontoart = new TemplateKontoart();
+                            templateKontoart.setBezeichnung(backupTemplateKontoart.getBezeichnung());
+                            templateKontoart.setKontonummer(backupTemplateKontoart.getKontonummer());
+                            templateKontoart.setTemplateKontogruppe(templateKontogruppe);
+                            templateKontoart = templateKontoartFacade.save(templateKontoart);
+                            templateKontogruppe.getTemplateKontoarts().add(templateKontoart);
+                            templateKontogruppe = templateKontogruppeFacade.save(templateKontogruppe);
 
-                            for (BackupTemplateKonto backupTemplateKonto : backupTemplateKontoart.getKonti()) {
-                                TemplateKonto konto = new TemplateKonto();
-                                konto.setBezeichnung(backupTemplateKonto.getBezeichnung());
-                                konto.setKontonummer(backupTemplateKonto.getKontonummer());
-                                konto.setTemplateKontoart(kontoart);
-                                konto = templateKontoFacade.save(konto);
-                                kontoart.getTemplateKontos().add(konto);
-                                kontoart = templateKontoartFacade.save(kontoart);
+                            for (BackupTemplateSammelkonto backupTemplateSammelkonto : backupTemplateKontoart.getBackupTemplateSammelkontos()) {
+                                TemplateSammelkonto templateSammelkonto = new TemplateSammelkonto();
+                                templateSammelkonto.setBezeichnung(backupTemplateSammelkonto.getBezeichnung());
+                                templateSammelkonto.setKontonummer(backupTemplateSammelkonto.getKontonummer());
+                                templateSammelkonto.setTemplateKontoart(templateKontoart);
+                                templateSammelkonto = templateSammelkontoFacade.save(templateSammelkonto);
+                                templateKontoart.getTemplateSammelkontos().add(templateSammelkonto);
+                                templateKontoart = templateKontoartFacade.save(templateKontoart);
 
-                                if (backupTemplateKonto.getMehrwertsteuercodes().size() > 0) {
-                                    for (BackupTemplateMehrwertsteuercode backupMehrwertsteuercode : backupTemplateKonto.getMehrwertsteuercodes()) {
-                                        TemplateMehrwertsteuercode mehrwertsteuercode = new TemplateMehrwertsteuercode();
-                                        mehrwertsteuercode.setBezeichnung(backupMehrwertsteuercode.getBezeichnung());
-                                        mehrwertsteuercode.setCode(backupMehrwertsteuercode.getCode());
-                                        mehrwertsteuercode.setProzent(backupMehrwertsteuercode.getProzent());
-                                        mehrwertsteuercode.setTemplateMehrwertsteuerKonto(konto);
-                                        mehrwertsteuercode.setTemplateBuchhaltung(buchhaltung);
-                                        mehrwertsteuercode = templateMehrwertsteuercodeFacade.save(mehrwertsteuercode);
-                                        konto.getTemplateMehrwertsteuercode().add(mehrwertsteuercode);
-                                        konto = templateKontoFacade.save(konto);
+                                for (BackupTemplateKonto backupTemplateKonto : backupTemplateSammelkonto.getKonti()) {
+                                    TemplateKonto templateKonto = new TemplateKonto();
+                                    templateKonto.setBezeichnung(backupTemplateKonto.getBezeichnung());
+                                    templateKonto.setBemerkung(backupTemplateKonto.getBemerkung());
+                                    templateKonto.setKontonummer(backupTemplateKonto.getKontonummer());
+                                    templateKonto.setTemplateSammelkonto(templateSammelkonto);
+                                    templateKonto = templateKontoFacade.save(templateKonto);
+                                    templateSammelkonto.getTemplateKontos().add(templateKonto);
+                                    templateSammelkonto = templateSammelkontoFacade.save(templateSammelkonto);
 
+
+                                    for (BackupTemplateMehrwertsteuercode backupTemplateMehrwertsteuercode : backupTemplateKonto.getMehrwertsteuercodes()) {
+                                        TemplateMehrwertsteuercode templateMehrwertsteuercode = new TemplateMehrwertsteuercode();
+                                        templateMehrwertsteuercode.setCode(backupTemplateMehrwertsteuercode.getCode());
+                                        templateMehrwertsteuercode.setBezeichnung(backupTemplateMehrwertsteuercode.getBezeichnung());
+                                        templateMehrwertsteuercode.setProzent(backupTemplateMehrwertsteuercode.getProzent());
+                                        templateMehrwertsteuercode.setVerkauf(backupTemplateMehrwertsteuercode.isVerkauf());
+                                        templateMehrwertsteuercode.setTemplateBuchhaltung(templateBuchhaltung);
+                                        templateMehrwertsteuercode = templateMehrwertsteuercodeFacade.save(templateMehrwertsteuercode);
+                                        templateKonto.getTemplateMehrwertsteuercode().add(templateMehrwertsteuercode);
+                                        templateKonto = templateKontoFacade.save(templateKonto);
                                     }
                                 }
                             }
                         }
                     }
                 }
-                buchhaltung = templateBuchhaltungFacade.save(buchhaltung);
+                templateBuchhaltung = templateBuchhaltungFacade.save(templateBuchhaltung);
             }
             tempFile.deleteOnExit();
             Notification.show(backupTemplateBuchhaltungen.getBuchhaltungen().size() + " Template Buchhaltungen neu erstellt", Notification.Type.HUMANIZED_MESSAGE);

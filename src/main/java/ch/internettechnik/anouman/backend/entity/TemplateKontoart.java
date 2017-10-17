@@ -26,12 +26,12 @@ public class TemplateKontoart extends AbstractEntity {
     private TemplateKontogruppe templateKontogruppe;
 
     @OneToMany(mappedBy = "templateKontoart", cascade = CascadeType.ALL)
-    private List<TemplateKonto> templateKontos = new ArrayList<TemplateKonto>();
+    private List<TemplateSammelkonto> templateSammelkontos = new ArrayList<TemplateSammelkonto>();
 
     public TemplateKontoart() {
     }
 
-    public TemplateKontoart(String bezeichnung, String kontonummer, TemplateKontogruppe templateKontogruppe) {
+    public TemplateKontoart(@NotNull String bezeichnung, @NotNull String kontonummer, TemplateKontogruppe templateKontogruppe) {
         this.bezeichnung = bezeichnung;
         this.kontonummer = kontonummer;
         this.templateKontogruppe = templateKontogruppe;
@@ -66,11 +66,11 @@ public class TemplateKontoart extends AbstractEntity {
         this.templateKontogruppe = templateKontogruppe;
     }
 
-    public List<TemplateKonto> getTemplateKontos() {
-        return templateKontos;
+    public List<TemplateSammelkonto> getTemplateSammelkontos() {
+        return templateSammelkontos;
     }
 
-    public void setTemplateKontos(List<TemplateKonto> templateKontos) {
-        this.templateKontos = templateKontos;
+    public void setTemplateSammelkontos(List<TemplateSammelkonto> templateSammelkontos) {
+        this.templateSammelkontos = templateSammelkontos;
     }
 }
