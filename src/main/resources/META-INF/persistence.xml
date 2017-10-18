@@ -12,17 +12,16 @@
         <class>ch.internettechnik.anouman.backend.entity.Buchung</class>
         <class>ch.internettechnik.anouman.backend.entity.EditorTest</class>
         <class>ch.internettechnik.anouman.backend.entity.Konto</class>
-        <class>ch.internettechnik.anouman.backend.entity.Kontoart</class>
         <class>ch.internettechnik.anouman.backend.entity.Kontogruppe</class>
+        <class>ch.internettechnik.anouman.backend.entity.Kontohauptgruppe</class>
         <class>ch.internettechnik.anouman.backend.entity.Kontoklasse</class>
-        <class>ch.internettechnik.anouman.backend.entity.Sammelkonto</class>
         <class>ch.internettechnik.anouman.backend.entity.Mehrwertsteuercode</class>
         <class>ch.internettechnik.anouman.backend.entity.Rechnung</class>
         <class>ch.internettechnik.anouman.backend.entity.Rechnungsposition</class>
         <class>ch.internettechnik.anouman.backend.entity.ReportTemplate</class>
         <class>ch.internettechnik.anouman.backend.entity.TemplateSammelkonto</class>
         <class>ch.internettechnik.anouman.backend.entity.TemplateKonto</class>
-        <class>ch.internettechnik.anouman.backend.entity.TemplateKontoart</class>
+        <class>ch.internettechnik.anouman.backend.entity.TemplateKontohauptgruppe</class>
         <class>ch.internettechnik.anouman.backend.entity.TemplateKontogruppe</class>
         <class>ch.internettechnik.anouman.backend.entity.TemplateKontoklasse</class>
         <class>ch.internettechnik.anouman.backend.entity.TemplateBuchhaltung</class>

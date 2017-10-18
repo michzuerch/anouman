@@ -26,7 +26,7 @@ public class TemplateKonto extends AbstractEntity {
     private String kontonummer;
 
     @ManyToOne
-    private TemplateSammelkonto templateSammelkonto;
+    private TemplateKontogruppe templateKontogruppe;
 
     @OneToMany(mappedBy = "templateMehrwertsteuerKonto", cascade = CascadeType.ALL)
     private List<TemplateMehrwertsteuercode> templateMehrwertsteuercode = new ArrayList<>();
@@ -34,16 +34,16 @@ public class TemplateKonto extends AbstractEntity {
     public TemplateKonto() {
     }
 
-    public TemplateKonto(@NotNull String bezeichnung, String bemerkung, @NotNull String kontonummer, TemplateSammelkonto templateSammelkonto) {
+    public TemplateKonto(@NotNull String bezeichnung, String bemerkung, @NotNull String kontonummer, TemplateKontogruppe templateKontogruppe) {
         this.bezeichnung = bezeichnung;
         this.bemerkung = bemerkung;
         this.kontonummer = kontonummer;
-        this.templateSammelkonto = templateSammelkonto;
+        this.templateKontogruppe = templateKontogruppe;
     }
 
     @Transient
     public String getShowKontonummer() {
-        return getTemplateSammelkonto().getShowKontonummer() + getKontonummer();
+        return getTemplateKontogruppe().getShowKontonummer() + getKontonummer();
     }
 
     public String getBezeichnung() {
@@ -70,12 +70,12 @@ public class TemplateKonto extends AbstractEntity {
         this.kontonummer = kontonummer;
     }
 
-    public TemplateSammelkonto getTemplateSammelkonto() {
-        return templateSammelkonto;
+    public TemplateKontogruppe getTemplateKontogruppe() {
+        return templateKontogruppe;
     }
 
-    public void setTemplateSammelkonto(TemplateSammelkonto templateSammelkonto) {
-        this.templateSammelkonto = templateSammelkonto;
+    public void setTemplateKontogruppe(TemplateKontogruppe templateKontogruppe) {
+        this.templateKontogruppe = templateKontogruppe;
     }
 
     public List<TemplateMehrwertsteuercode> getTemplateMehrwertsteuercode() {

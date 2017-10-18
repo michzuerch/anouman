@@ -16,8 +16,8 @@ public class BackupKontogruppe {
     private String bezeichnung;
     @XmlAttribute
     private String kontonummer;
-    @XmlElement(name = "kontoart")
-    private Set<BackupKontoart> kontoarten = new HashSet<>();
+    @XmlElement(name = "sammelkonto")
+    private Set<BackupKonto> kontos = new HashSet<>();
 
     public BackupKontogruppe() {
     }
@@ -43,12 +43,11 @@ public class BackupKontogruppe {
         this.kontonummer = kontonummer;
     }
 
-    public Set<BackupKontoart> getKontoarten() {
-        return kontoarten;
+    public Set<BackupKonto> getKontos() {
+        return kontos;
     }
 
-    public void setKontoarten(Set<BackupKontoart> kontoarten) {
-        this.kontoarten = kontoarten;
+    public void setKontos(Set<BackupKonto> kontos) {
+        this.kontos = kontos;
     }
-
 }

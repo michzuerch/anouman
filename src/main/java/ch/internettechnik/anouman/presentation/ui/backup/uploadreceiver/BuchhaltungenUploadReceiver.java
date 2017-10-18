@@ -33,9 +33,6 @@ public class BuchhaltungenUploadReceiver implements Serializable, Upload.Receive
     KontoartFacade kontoartFacade;
 
     @Inject
-    SammelkontoFacade sammelkontoFacade;
-
-    @Inject
     KontoFacade kontoFacade;
 
     @Inject
@@ -81,33 +78,33 @@ public class BuchhaltungenUploadReceiver implements Serializable, Upload.Receive
                     buchhaltung.getKontoklasse().add(kontoklasse);
                     buchhaltung = buchhaltungFacade.save(buchhaltung);
 
-                    for (BackupKontogruppe backupKontogruppe : backupKontoklasse.getKontogruppen()) {
-                        Kontogruppe kontogruppe = new Kontogruppe();
-                        kontogruppe.setBezeichnung(backupKontogruppe.getBezeichnung());
-                        kontogruppe.setKontonummer(backupKontogruppe.getKontonummer());
-                        kontogruppe.setKontoklasse(kontoklasse);
-                        kontogruppe = kontogruppeFacade.save(kontogruppe);
-                        kontoklasse.getKontogruppes().add(kontogruppe);
+                    for (BackupKontohauptgruppe backupKontohauptgruppe : backupKontoklasse.getBackupKontohauptgruppes()) {
+                        Kontohauptgruppe kontohauptgruppe = new Kontohauptgruppe();
+                        kontohauptgruppe.setBezeichnung(backupKontohauptgruppe.getBezeichnung());
+                        kontohauptgruppe.setKontonummer(backupKontohauptgruppe.getKontonummer());
+                        kontohauptgruppe.setKontoklasse(kontoklasse);
+                        kontohauptgruppe = kontogruppeFacade.save(kontohauptgruppe);
+                        kontoklasse.getKontohauptgruppes().add(kontohauptgruppe);
                         kontoklasse = kontoklasseFacade.save(kontoklasse);
 
-                        for (BackupKontoart backupKontoart : backupKontogruppe.getKontoarten()) {
-                            Kontoart kontoart = new Kontoart();
-                            kontoart.setBezeichnung(backupKontoart.getBezeichnung());
-                            kontoart.setKontonummer(backupKontoart.getKontonummer());
-                            kontoart.setKontogruppe(kontogruppe);
-                            kontoart = kontoartFacade.save(kontoart);
-                            kontogruppe.getKontoarts().add(kontoart);
-                            kontogruppe = kontogruppeFacade.save(kontogruppe);
+                        for (BackupKontogruppe backupKontogruppe : backupKontohauptgruppe.getBackupKontogruppes()) {
+                            Kontogruppe kontogruppe = new Kontogruppe();
+                            kontogruppe.setBezeichnung(backupKontogruppe.getBezeichnung());
+                            kontogruppe.setKontonummer(backupKontogruppe.getKontonummer());
+                            kontogruppe.setKontohauptgruppe(kontohauptgruppe);
+                            kontogruppe = kontoartFacade.save(kontogruppe);
+                            kontohauptgruppe.getKontogruppes().add(kontogruppe);
+                            kontohauptgruppe = kontogruppeFacade.save(kontohauptgruppe);
 
 
-                            for (BackupSammelkonto backupSammelkonto : backupKontoart.getSammelkontos()) {
+                            for (BackupSammelkonto backupSammelkonto : backupKontogruppe.getSammelkontos()) {
                                 Sammelkonto sammelkonto = new Sammelkonto();
                                 sammelkonto.setBezeichnung(backupSammelkonto.getBezeichnung());
                                 sammelkonto.setKontonummer(backupSammelkonto.getKontonummer());
-                                sammelkonto.setKontoart(kontoart);
+                                sammelkonto.setKontogruppe(kontogruppe);
                                 sammelkonto = sammelkontoFacade.save(sammelkonto);
-                                kontoart.getSammelkontos().add(sammelkonto);
-                                kontoart = kontoartFacade.save(kontoart);
+                                kontogruppe.getKontos().add(sammelkonto);
+                                kontogruppe = kontoartFacade.save(kontogruppe);
 
                                 for (BackupKonto backupKonto : backupSammelkonto.getKontos()) {
                                     Konto konto = new Konto();

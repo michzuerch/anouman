@@ -6,14 +6,23 @@ import ch.internettechnik.anouman.backend.session.deltaspike.jpa.repository.Rech
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 @Stateless
+@Path("/RechnungFacade")
 public class RechnungFacade {
     @Inject
     RechnungRepository repo;
 
-    public Rechnung findBy(Long id) {
+    @GET
+    @Path("/findBy/{id}")
+    @Produces(MediaType.APPLICATION_XML)
+    public Rechnung findBy(@PathParam(value = "id") Long id) {
         return repo.findBy(id);
     }
 
@@ -25,6 +34,9 @@ public class RechnungFacade {
         return repo.save(val);
     }
 
+    @GET
+    @Path("/findAll")
+    @Produces(MediaType.APPLICATION_XML)
     public List<Rechnung> findAll() {
         return repo.findAll();
     }

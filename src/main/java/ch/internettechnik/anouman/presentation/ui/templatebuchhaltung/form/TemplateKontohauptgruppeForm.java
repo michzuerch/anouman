@@ -1,23 +1,24 @@
 package ch.internettechnik.anouman.presentation.ui.templatebuchhaltung.form;
 
-import ch.internettechnik.anouman.backend.entity.TemplateKontoart;
+import ch.internettechnik.anouman.backend.entity.TemplateKontohauptgruppe;
 import com.vaadin.cdi.ViewScoped;
 import com.vaadin.ui.*;
 import org.vaadin.viritin.form.AbstractForm;
 
 @ViewScoped
-public class TemplateKontoartForm extends AbstractForm<TemplateKontoart> {
+public class TemplateKontohauptgruppeForm extends AbstractForm<TemplateKontohauptgruppe> {
     TextField bezeichnung = new TextField("Bezeichnung");
     TextField kontonummer = new TextField("Kontonummer");
 
-    public TemplateKontoartForm() {
-        super(TemplateKontoart.class);
+
+    public TemplateKontohauptgruppeForm() {
+        super(TemplateKontohauptgruppe.class);
     }
 
     @Override
     public Window openInModalPopup() {
         final Window openInModalPopup = super.openInModalPopup();
-        openInModalPopup.setCaption("Template Kontoart");
+        openInModalPopup.setCaption("Template Kontohauptgruppe");
         openInModalPopup.setWidth("400px");
         return openInModalPopup;
     }

@@ -10,7 +10,6 @@ public class TemplateKontogruppeForm extends AbstractForm<TemplateKontogruppe> {
     TextField bezeichnung = new TextField("Bezeichnung");
     TextField kontonummer = new TextField("Kontonummer");
 
-
     public TemplateKontogruppeForm() {
         super(TemplateKontogruppe.class);
     }
@@ -18,7 +17,7 @@ public class TemplateKontogruppeForm extends AbstractForm<TemplateKontogruppe> {
     @Override
     public Window openInModalPopup() {
         final Window openInModalPopup = super.openInModalPopup();
-        openInModalPopup.setCaption("Template Kontogruppe");
+        openInModalPopup.setCaption("Template Kontohauptgruppe");
         openInModalPopup.setWidth("400px");
         return openInModalPopup;
     }

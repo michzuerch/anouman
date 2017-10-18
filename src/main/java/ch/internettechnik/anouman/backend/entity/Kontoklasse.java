@@ -26,7 +26,7 @@ public class Kontoklasse extends AbstractEntity {
     private Buchhaltung buchhaltung;
 
     @OneToMany(mappedBy = "kontoklasse", cascade = CascadeType.ALL)
-    private List<Kontogruppe> kontogruppes = new ArrayList<>();
+    private List<Kontohauptgruppe> kontohauptgruppes = new ArrayList<>();
 
     @Transient
     public String getShowKontonummer() {
@@ -49,12 +49,12 @@ public class Kontoklasse extends AbstractEntity {
         this.kontonummer = kontonummer;
     }
 
-    public List<Kontogruppe> getKontogruppes() {
-        return kontogruppes;
+    public List<Kontohauptgruppe> getKontohauptgruppes() {
+        return kontohauptgruppes;
     }
 
-    public void setKontogruppes(List<Kontogruppe> kontogruppes) {
-        this.kontogruppes = kontogruppes;
+    public void setKontohauptgruppes(List<Kontohauptgruppe> kontohauptgruppes) {
+        this.kontohauptgruppes = kontohauptgruppes;
     }
 
     public Buchhaltung getBuchhaltung() {

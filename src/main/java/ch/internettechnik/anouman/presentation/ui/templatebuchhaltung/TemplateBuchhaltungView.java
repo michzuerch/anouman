@@ -39,16 +39,13 @@ public class TemplateBuchhaltungView extends VerticalLayout implements View {
     private KontoklasseFacade kontoklasseFacade;
 
     @Inject
+    private KontohauptgruppeFacade kontohauptgruppeFacade;
+
+    @Inject
     private KontogruppeFacade kontogruppeFacade;
 
     @Inject
-    private KontoartFacade kontoartFacade;
-
-    @Inject
     private KontoFacade kontoFacade;
-
-    @Inject
-    private SammelkontoFacade sammelkontoFacade;
 
     @Inject
     private MehrwertsteuercodeFacade mehrwertsteuercodeFacade;
@@ -78,7 +75,6 @@ public class TemplateBuchhaltungView extends VerticalLayout implements View {
 
         Button mehrwertsteuercodeBtn = new Button(VaadinIcons.CODE);
         mehrwertsteuercodeBtn.setCaption("Mehrwertsteuercodes dieser Template-Buchhaltung");
-
 
 
         CssLayout tools = new CssLayout();
@@ -135,31 +131,24 @@ public class TemplateBuchhaltungView extends VerticalLayout implements View {
                         kontoklasse.setKontonummer(templateKontoklasse.getKontonummer());
                         kontoklasse = kontoklasseFacade.save(kontoklasse);
 
-                        for (TemplateKontogruppe templateKontogruppe : templateKontoklasse.getTemplateKontogruppes()) {
-                            Kontogruppe kontogruppe = new Kontogruppe();
-                            kontogruppe.setBezeichnung(templateKontogruppe.getBezeichnung());
-                            kontogruppe.setKontonummer(templateKontogruppe.getKontonummer());
-                            kontogruppe = kontogruppeFacade.save(kontogruppe);
+                        for (TemplateKontohauptgruppe templateKontohauptgruppe : templateKontoklasse.getTemplateKontohauptgruppes()) {
+                            Kontohauptgruppe kontohauptgruppe = new Kontohauptgruppe();
+                            kontohauptgruppe.setBezeichnung(templateKontohauptgruppe.getBezeichnung());
+                            kontohauptgruppe.setKontonummer(templateKontohauptgruppe.getKontonummer());
+                            kontohauptgruppe = kontohauptgruppeFacade.save(kontohauptgruppe);
 
-                            for (TemplateKontoart templateKontoart : templateKontogruppe.getTemplateKontoarts()) {
-                                Kontoart kontoart = new Kontoart();
-                                kontoart.setBezeichnung(templateKontoart.getBezeichnung());
-                                kontoart.setKontonummer(templateKontoart.getKontonummer());
-                                kontoart = kontoartFacade.save(kontoart);
+                            for (TemplateKontogruppe templateKontogruppe : templateKontohauptgruppe.getTemplateKontogruppes()) {
+                                Kontogruppe kontogruppe = new Kontogruppe();
+                                kontogruppe.setBezeichnung(templateKontogruppe.getBezeichnung());
+                                kontogruppe.setKontonummer(templateKontogruppe.getKontonummer());
+                                kontogruppe = kontogruppeFacade.save(kontogruppe);
 
-                                for (TemplateSammelkonto templateSammelkonto : templateKontoart.getTemplateSammelkontos()) {
-                                    Sammelkonto sammelkonto = new Sammelkonto();
-                                    sammelkonto.setBezeichnung(templateSammelkonto.getBezeichnung());
-                                    sammelkonto.setKontonummer(templateSammelkonto.getKontonummer());
-                                    sammelkonto = sammelkontoFacade.save(sammelkonto);
-
-                                    for (TemplateKonto templateKonto : templateSammelkonto.getTemplateKontos()) {
-                                        Konto konto = new Konto();
-                                        konto.setBezeichnung(templateKonto.getBezeichnung());
-                                        konto.setKontonummer(templateKonto.getKontonummer());
-                                        konto.setBemerkung(templateKonto.getBemerkung());
-                                        konto = kontoFacade.save(konto);
-                                    }
+                                for (TemplateKonto templateKonto : templateKontogruppe.getTemplateKontos()) {
+                                    Konto konto = new Konto();
+                                    konto.setBezeichnung(templateKonto.getBezeichnung());
+                                    konto.setKontonummer(templateKonto.getKontonummer());
+                                    konto.setBemerkung(templateKonto.getBemerkung());
+                                    konto = kontoFacade.save(konto);
                                 }
                             }
                         }
@@ -169,7 +158,6 @@ public class TemplateBuchhaltungView extends VerticalLayout implements View {
                 })
 
         );
-
 
 
         updateList();

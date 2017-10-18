@@ -29,10 +29,10 @@ public class TemplateBuchhaltungenUploadReceiver implements Serializable, Upload
     TemplateKontoklasseFacade templateKontoklasseFacade;
 
     @Inject
-    TemplateKontogruppeFacade templateKontogruppeFacade;
+    TemplateKontohauptgruppeFacade templateKontohauptgruppeFacade;
 
     @Inject
-    TemplateKontoartFacade templateKontoartFacade;
+    TemplateKontogruppeFacade templateKontogruppeFacade;
 
     @Inject
     TemplateSammelkontoFacade templateSammelkontoFacade;
@@ -83,45 +83,34 @@ public class TemplateBuchhaltungenUploadReceiver implements Serializable, Upload
                     templateBuchhaltung.getTemplateKontoklasses().add(templateKontoklasse);
                     templateBuchhaltung = templateBuchhaltungFacade.save(templateBuchhaltung);
 
-                    for (BackupTemplateKontogruppe backupTemplateKontogruppe : backupTemplateKontoklasse.getKontogruppen()) {
-                        TemplateKontogruppe templateKontogruppe = new TemplateKontogruppe();
-                        templateKontogruppe.setBezeichnung(backupTemplateKontogruppe.getBezeichnung());
-                        templateKontogruppe.setKontonummer(backupTemplateKontogruppe.getKontonummer());
-                        templateKontogruppe.setTemplateKontoklasse(templateKontoklasse);
-                        templateKontogruppe = templateKontogruppeFacade.save(templateKontogruppe);
-                        templateKontoklasse.getTemplateKontogruppes().add(templateKontogruppe);
+                    for (BackupTemplateKontohauptgruppe backupTemplateKontohauptgruppe : backupTemplateKontoklasse.getKontohauptgruppen()) {
+                        TemplateKontohauptgruppe templateKontohauptgruppe = new TemplateKontohauptgruppe();
+                        templateKontohauptgruppe.setBezeichnung(backupTemplateKontohauptgruppe.getBezeichnung());
+                        templateKontohauptgruppe.setKontonummer(backupTemplateKontohauptgruppe.getKontonummer());
+                        templateKontohauptgruppe.setTemplateKontoklasse(templateKontoklasse);
+                        templateKontohauptgruppe = templateKontohauptgruppeFacade.save(templateKontohauptgruppe);
+                        templateKontoklasse.getTemplateKontohauptgruppes().add(templateKontohauptgruppe);
                         templateKontoklasse = templateKontoklasseFacade.save(templateKontoklasse);
 
-                        for (BackupTemplateKontoart backupTemplateKontoart : backupTemplateKontogruppe.getKontoarten()) {
-                            TemplateKontoart templateKontoart = new TemplateKontoart();
-                            templateKontoart.setBezeichnung(backupTemplateKontoart.getBezeichnung());
-                            templateKontoart.setKontonummer(backupTemplateKontoart.getKontonummer());
-                            templateKontoart.setTemplateKontogruppe(templateKontogruppe);
-                            templateKontoart = templateKontoartFacade.save(templateKontoart);
-                            templateKontogruppe.getTemplateKontoarts().add(templateKontoart);
+                        for (BackupTemplateKontogruppe backupTemplateKontogruppe : backupTemplateKontohauptgruppe.getBackupTemplateKontogruppes()) {
+                            TemplateKontogruppe templateKontogruppe = new TemplateKontogruppe();
+                            templateKontogruppe.setBezeichnung(backupTemplateKontogruppe.getBezeichnung());
+                            templateKontogruppe.setKontonummer(backupTemplateKontogruppe.getKontonummer());
+                            templateKontogruppe.setTemplateKontohauptgruppe(templateKontohauptgruppe);
                             templateKontogruppe = templateKontogruppeFacade.save(templateKontogruppe);
+                            templateKontohauptgruppe.getTemplateKontogruppes().add(templateKontogruppe);
+                            templateKontohauptgruppe = templateKontohauptgruppeFacade.save(templateKontohauptgruppe);
 
-                            for (BackupTemplateSammelkonto backupTemplateSammelkonto : backupTemplateKontoart.getBackupTemplateSammelkontos()) {
-                                TemplateSammelkonto templateSammelkonto = new TemplateSammelkonto();
-                                templateSammelkonto.setBezeichnung(backupTemplateSammelkonto.getBezeichnung());
-                                templateSammelkonto.setKontonummer(backupTemplateSammelkonto.getKontonummer());
-                                templateSammelkonto.setTemplateKontoart(templateKontoart);
-                                templateSammelkonto = templateSammelkontoFacade.save(templateSammelkonto);
-                                templateKontoart.getTemplateSammelkontos().add(templateSammelkonto);
-                                templateKontoart = templateKontoartFacade.save(templateKontoart);
+                            for (BackupTemplateKonto backupTemplateKonto : backupTemplateKontogruppe.getBackupTemplateKontos()) {
+                                TemplateKonto templateKonto = new TemplateKonto();
+                                templateKonto.setBezeichnung(backupTemplateKonto.getBezeichnung());
+                                templateKonto.setKontonummer(backupTemplateKonto.getKontonummer());
+                                templateKonto.setTemplateKontogruppe(templateKontogruppe);
+                                templateKonto = templateKontoFacade.save(templateKonto);
+                                templateKontogruppe.getTemplateKontos().add(templateKonto);
+                                templateKontogruppe = templateKontogruppeFacade.save(templateKontogruppe);
 
-                                for (BackupTemplateKonto backupTemplateKonto : backupTemplateSammelkonto.getKonti()) {
-                                    TemplateKonto templateKonto = new TemplateKonto();
-                                    templateKonto.setBezeichnung(backupTemplateKonto.getBezeichnung());
-                                    templateKonto.setBemerkung(backupTemplateKonto.getBemerkung());
-                                    templateKonto.setKontonummer(backupTemplateKonto.getKontonummer());
-                                    templateKonto.setTemplateSammelkonto(templateSammelkonto);
-                                    templateKonto = templateKontoFacade.save(templateKonto);
-                                    templateSammelkonto.getTemplateKontos().add(templateKonto);
-                                    templateSammelkonto = templateSammelkontoFacade.save(templateSammelkonto);
-
-
-                                    for (BackupTemplateMehrwertsteuercode backupTemplateMehrwertsteuercode : backupTemplateKonto.getMehrwertsteuercodes()) {
+                                for (BackupTemplateMehrwertsteuercode backupTemplateMehrwertsteuercode : backupTemplateKonto.getBackupTemplateMehrwertsteuercodes()) {
                                         TemplateMehrwertsteuercode templateMehrwertsteuercode = new TemplateMehrwertsteuercode();
                                         templateMehrwertsteuercode.setCode(backupTemplateMehrwertsteuercode.getCode());
                                         templateMehrwertsteuercode.setBezeichnung(backupTemplateMehrwertsteuercode.getBezeichnung());
@@ -132,7 +121,6 @@ public class TemplateBuchhaltungenUploadReceiver implements Serializable, Upload
                                         templateKonto.getTemplateMehrwertsteuercode().add(templateMehrwertsteuercode);
                                         templateKonto = templateKontoFacade.save(templateKonto);
                                     }
-                                }
                             }
                         }
                     }

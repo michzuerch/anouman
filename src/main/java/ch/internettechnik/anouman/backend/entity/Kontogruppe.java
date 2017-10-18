@@ -9,12 +9,6 @@ import java.util.List;
  * Created by michzuerch on 25.08.15.
  */
 @Entity
-@NamedQueries({
-        @NamedQuery(name = "Kontogruppe.findAll", query = "SELECT k FROM Kontogruppe k"),
-        @NamedQuery(name = "Kontogruppe.findById", query = "SELECT k FROM Kontogruppe k where k.id = :id"),
-        @NamedQuery(name = "Kontogruppe.findByKontoklasse", query = "SELECT k FROM Kontogruppe k where k.kontoklasse.id = :kontoklasseId")
-
-})
 public class Kontogruppe extends AbstractEntity {
     @Column
     @NotNull
@@ -25,30 +19,22 @@ public class Kontogruppe extends AbstractEntity {
     private String kontonummer;
 
     @ManyToOne
-    private Kontoklasse kontoklasse;
+    private Kontohauptgruppe kontohauptgruppe;
 
     @OneToMany(mappedBy = "kontogruppe", cascade = CascadeType.ALL)
-    private List<Kontoart> kontoarts = new ArrayList<>();
+    private List<Konto> kontos = new ArrayList<>();
 
     @Transient
     public String getShowKontonummer() {
-        return getKontoklasse().getKontonummer() + getKontonummer();
+        return getKontohauptgruppe().getShowKontonummer() + getKontonummer();
     }
 
-    public Kontoklasse getKontoklasse() {
-        return kontoklasse;
+    public Kontohauptgruppe getKontohauptgruppe() {
+        return kontohauptgruppe;
     }
 
-    public void setKontoklasse(Kontoklasse kontoklasse) {
-        this.kontoklasse = kontoklasse;
-    }
-
-    public List<Kontoart> getKontoarts() {
-        return kontoarts;
-    }
-
-    public void setKontoarts(List<Kontoart> kontoarts) {
-        this.kontoarts = kontoarts;
+    public void setKontohauptgruppe(Kontohauptgruppe kontohauptgruppe) {
+        this.kontohauptgruppe = kontohauptgruppe;
     }
 
     public String getKontonummer() {
@@ -65,5 +51,13 @@ public class Kontogruppe extends AbstractEntity {
 
     public void setBezeichnung(String bezeichnung) {
         this.bezeichnung = bezeichnung;
+    }
+
+    public List<Konto> getKontos() {
+        return kontos;
+    }
+
+    public void setKontos(List<Konto> kontos) {
+        this.kontos = kontos;
     }
 }

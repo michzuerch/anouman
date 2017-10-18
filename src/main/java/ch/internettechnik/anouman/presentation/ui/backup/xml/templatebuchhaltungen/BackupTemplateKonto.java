@@ -21,8 +21,8 @@ public class BackupTemplateKonto {
     private String kontonummer;
     @XmlElement
     private String showKontonummer;
-    @XmlElement(name = "mehrwertsteuercode")
-    private Set<BackupTemplateMehrwertsteuercode> mehrwertsteuercodes = new HashSet<>();
+    @XmlElement(name = "templatemehrwertsteuercode")
+    private Set<BackupTemplateMehrwertsteuercode> backupTemplateMehrwertsteuercodes = new HashSet<>();
 
 
     private Long id;
@@ -63,12 +63,12 @@ public class BackupTemplateKonto {
         this.showKontonummer = showKontonummer;
     }
 
-    public Set<BackupTemplateMehrwertsteuercode> getMehrwertsteuercodes() {
-        return mehrwertsteuercodes;
+    public Set<BackupTemplateMehrwertsteuercode> getBackupTemplateMehrwertsteuercodes() {
+        return backupTemplateMehrwertsteuercodes;
     }
 
-    public void setMehrwertsteuercodes(Set<BackupTemplateMehrwertsteuercode> mehrwertsteuercodes) {
-        this.mehrwertsteuercodes = mehrwertsteuercodes;
+    public void setBackupTemplateMehrwertsteuercodes(Set<BackupTemplateMehrwertsteuercode> backupTemplateMehrwertsteuercodes) {
+        this.backupTemplateMehrwertsteuercodes = backupTemplateMehrwertsteuercodes;
     }
 
     public Long getId() {

@@ -28,14 +28,14 @@ public class Konto extends AbstractEntity {
     private List<Unterbuchung> haben = new ArrayList<>();
 
     @ManyToOne
-    private Sammelkonto sammelkonto;
+    private Kontogruppe kontogruppe;
 
     @Column
     private Double anfangsbestand;
 
     @Transient
     public String getShowKontonummer() {
-        return getSammelkonto().getShowKontonummer() + getKontonummer();
+        return getKontogruppe().getShowKontonummer() + getKontonummer();
     }
 
     public String getBezeichnung() {
@@ -54,12 +54,12 @@ public class Konto extends AbstractEntity {
         this.kontonummer = kontonummer;
     }
 
-    public Sammelkonto getSammelkonto() {
-        return sammelkonto;
+    public Kontogruppe getKontogruppe() {
+        return kontogruppe;
     }
 
-    public void setSammelkonto(Sammelkonto sammelkonto) {
-        this.sammelkonto = sammelkonto;
+    public void setKontogruppe(Kontogruppe kontogruppe) {
+        this.kontogruppe = kontogruppe;
     }
 
     public Double getAnfangsbestand() {

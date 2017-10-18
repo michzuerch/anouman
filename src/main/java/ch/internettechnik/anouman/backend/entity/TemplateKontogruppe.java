@@ -9,11 +9,6 @@ import java.util.List;
  * Created by michzuerch on 25.08.15.
  */
 @Entity
-@NamedQueries({
-        @NamedQuery(name = "TemplateKontogruppe.findAll", query = "SELECT k FROM TemplateKontogruppe k"),
-        @NamedQuery(name = "TemplateKontogruppe.findById", query = "SELECT k FROM TemplateKontogruppe k where k.id = :id"),
-        @NamedQuery(name = "TemplateKontogruppe.findByKontoklasse", query = "SELECT k FROM TemplateKontogruppe k where k.templateKontoklasse.id = :kontoklasseId")
-})
 public class TemplateKontogruppe extends AbstractEntity {
     @Column
     @NotNull
@@ -24,23 +19,23 @@ public class TemplateKontogruppe extends AbstractEntity {
     private String kontonummer;
 
     @ManyToOne
-    private TemplateKontoklasse templateKontoklasse;
+    private TemplateKontohauptgruppe templateKontohauptgruppe;
 
     @OneToMany(mappedBy = "templateKontogruppe", cascade = CascadeType.ALL)
-    private List<TemplateKontoart> templateKontoarts = new ArrayList<>();
+    private List<TemplateKonto> templateKontos = new ArrayList<TemplateKonto>();
 
     public TemplateKontogruppe() {
     }
 
-    public TemplateKontogruppe(String bezeichnung, String kontonummer, TemplateKontoklasse templateKontoklasse) {
+    public TemplateKontogruppe(@NotNull String bezeichnung, @NotNull String kontonummer, TemplateKontohauptgruppe templateKontohauptgruppe) {
         this.bezeichnung = bezeichnung;
         this.kontonummer = kontonummer;
-        this.templateKontoklasse = templateKontoklasse;
+        this.templateKontohauptgruppe = templateKontohauptgruppe;
     }
 
     @Transient
     public String getShowKontonummer() {
-        return getTemplateKontoklasse().getKontonummer() + getKontonummer();
+        return getTemplateKontohauptgruppe().getShowKontonummer() + getKontonummer();
     }
 
     public String getBezeichnung() {
@@ -59,19 +54,19 @@ public class TemplateKontogruppe extends AbstractEntity {
         this.kontonummer = kontonummer;
     }
 
-    public TemplateKontoklasse getTemplateKontoklasse() {
-        return templateKontoklasse;
+    public TemplateKontohauptgruppe getTemplateKontohauptgruppe() {
+        return templateKontohauptgruppe;
     }
 
-    public void setTemplateKontoklasse(TemplateKontoklasse templateKontoklasse) {
-        this.templateKontoklasse = templateKontoklasse;
+    public void setTemplateKontohauptgruppe(TemplateKontohauptgruppe templateKontohauptgruppe) {
+        this.templateKontohauptgruppe = templateKontohauptgruppe;
     }
 
-    public List<TemplateKontoart> getTemplateKontoarts() {
-        return templateKontoarts;
+    public List<TemplateKonto> getTemplateKontos() {
+        return templateKontos;
     }
 
-    public void setTemplateKontoarts(List<TemplateKontoart> templateKontoarts) {
-        this.templateKontoarts = templateKontoarts;
+    public void setTemplateKontos(List<TemplateKonto> templateKontos) {
+        this.templateKontos = templateKontos;
     }
 }

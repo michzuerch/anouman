@@ -20,8 +20,8 @@ public class BuchhaltungTreeView extends VerticalLayout implements View {
     private static final Logger LOGGER = Logger.getLogger(BuchhaltungTreeView.class.getName());
 
     private Grid<Kontoklasse> kontoklasseGrid = new Grid<>();
+    private Grid<Kontohauptgruppe> kontohauptgruppeGrid = new Grid<>();
     private Grid<Kontogruppe> kontogruppeGrid = new Grid<>();
-    private Grid<Kontoart> kontoartGrid = new Grid<>();
     private Grid<Konto> kontoGrid = new Grid<>();
     private NativeSelect<Buchhaltung> buchhaltungSelect = new NativeSelect<>();
 
@@ -35,13 +35,11 @@ public class BuchhaltungTreeView extends VerticalLayout implements View {
     private KontoklasseFacade kontoklasseFacade;
 
     @Inject
+    private KontohauptgruppeFacade kontohauptgruppeFacade;
+
+    @Inject
     private KontogruppeFacade kontogruppeFacade;
 
-    @Inject
-    private KontoartFacade kontoartFacade;
-
-    @Inject
-    private SammelkontoFacade sammelkontoFacade;
 
     @Inject
     private KontoFacade kontoFacade;
@@ -73,8 +71,8 @@ public class BuchhaltungTreeView extends VerticalLayout implements View {
 
         buchhaltungTree.addSelectionListener(event -> {
             bodyLayout.removeComponent(kontoklasseGrid);
+            bodyLayout.removeComponent(kontohauptgruppeGrid);
             bodyLayout.removeComponent(kontogruppeGrid);
-            bodyLayout.removeComponent(kontoartGrid);
             bodyLayout.removeComponent(kontoGrid);
             if (!buchhaltungTree.asSingleSelect().isEmpty()) {
                 BuchhaltungTreeData selectedItem = buchhaltungTree.asSingleSelect().getValue();
@@ -84,14 +82,14 @@ public class BuchhaltungTreeView extends VerticalLayout implements View {
                     bodyLayout.setExpandRatio(kontoklasseGrid, 5);
                 }
                 if (selectedItem.getType().equals("KK")) {
+                    kontohauptgruppeGrid = createGridKontohauptgruppe(selectedItem);
+                    bodyLayout.addComponent(kontohauptgruppeGrid);
+                    bodyLayout.setExpandRatio(kontohauptgruppeGrid, 5);
+                }
+                if (selectedItem.getType().equals("KG")) {
                     kontogruppeGrid = createGridKontogruppe(selectedItem);
                     bodyLayout.addComponent(kontogruppeGrid);
                     bodyLayout.setExpandRatio(kontogruppeGrid, 5);
-                }
-                if (selectedItem.getType().equals("KG")) {
-                    kontoartGrid = createGridKontoart(selectedItem);
-                    bodyLayout.addComponent(kontoartGrid);
-                    bodyLayout.setExpandRatio(kontoartGrid, 5);
                 }
                 if (selectedItem.getType().equals("KA")) {
                     kontoGrid = createGridKonto(selectedItem);
@@ -127,25 +125,25 @@ public class BuchhaltungTreeView extends VerticalLayout implements View {
         return grid;
     }
 
-    private Grid<Kontogruppe> createGridKontogruppe(BuchhaltungTreeData val) {
-        Grid<Kontogruppe> grid = new Grid<>();
+    private Grid<Kontohauptgruppe> createGridKontohauptgruppe(BuchhaltungTreeData val) {
+        Grid<Kontohauptgruppe> grid = new Grid<>();
         grid.setCaption("Kontogruppen");
         grid.setSizeFull();
         Kontoklasse kontoklasse = kontoklasseFacade.findBy(val.getId());
-        grid.setItems(kontoklasse.getKontogruppes());
-        grid.addColumn(Kontogruppe::getId);
-        grid.addColumn(Kontogruppe::getBezeichnung);
+        grid.setItems(kontoklasse.getKontohauptgruppes());
+        grid.addColumn(Kontohauptgruppe::getId);
+        grid.addColumn(Kontohauptgruppe::getBezeichnung);
         return grid;
     }
 
-    private Grid<Kontoart> createGridKontoart(BuchhaltungTreeData val) {
-        Grid<Kontoart> grid = new Grid<>();
+    private Grid<Kontogruppe> createGridKontogruppe(BuchhaltungTreeData val) {
+        Grid<Kontogruppe> grid = new Grid<>();
         grid.setCaption("Kontoarten");
         grid.setSizeFull();
-        Kontogruppe kontogruppe = kontogruppeFacade.findBy(val.getId());
-        grid.setItems(kontogruppe.getKontoarts());
-        grid.addColumn(Kontoart::getId);
-        grid.addColumn(Kontoart::getBezeichnung);
+        Kontohauptgruppe kontohauptgruppe = kontohauptgruppeFacade.findBy(val.getId());
+        grid.setItems(kontohauptgruppe.getKontogruppes());
+        grid.addColumn(Kontogruppe::getId);
+        grid.addColumn(Kontogruppe::getBezeichnung);
         return grid;
     }
 
@@ -153,21 +151,10 @@ public class BuchhaltungTreeView extends VerticalLayout implements View {
         Grid<Konto> grid = new Grid<>();
         grid.setCaption("Konti");
         grid.setSizeFull();
-        Sammelkonto sammelkonto = sammelkontoFacade.findBy(val.getId());
-        grid.setItems(sammelkonto.getKontos());
+        Kontogruppe kontogruppe = kontogruppeFacade.findBy(val.getId());
+        grid.setItems(kontogruppe.getKontos());
         grid.addColumn(Konto::getId);
         grid.addColumn(Konto::getBezeichnung);
-        return grid;
-    }
-
-    private Grid<Sammelkonto> createGridSammelkonto(BuchhaltungTreeData val) {
-        Grid<Sammelkonto> grid = new Grid<>();
-        grid.setCaption("Konti");
-        grid.setSizeFull();
-        Kontoart kontoart = kontoartFacade.findBy(val.getId());
-        grid.setItems(kontoart.getSammelkontos());
-        grid.addColumn(Sammelkonto::getId);
-        grid.addColumn(Sammelkonto::getBezeichnung);
         return grid;
     }
 
@@ -196,19 +183,15 @@ public class BuchhaltungTreeView extends VerticalLayout implements View {
         kontoklasses.forEach(kontoklasse -> {
             BuchhaltungTreeData valKK = new BuchhaltungTreeData(kontoklasse.getId(), "KK", kontoklasse.getBezeichnung() + " id:" + kontoklasse.getId());
             buchhaltungTreeData.addItem(valBH, valKK);
-            kontoklasse.getKontogruppes().forEach(kontogruppe -> {
-                BuchhaltungTreeData valKG = new BuchhaltungTreeData(kontogruppe.getId(), "KG", kontogruppe.getBezeichnung() + " id:" + kontogruppe.getId());
+            kontoklasse.getKontohauptgruppes().forEach(kontohauptgruppe -> {
+                BuchhaltungTreeData valKG = new BuchhaltungTreeData(kontohauptgruppe.getId(), "KG", kontohauptgruppe.getBezeichnung() + " id:" + kontohauptgruppe.getId());
                 buchhaltungTreeData.addItem(valKK, valKG);
-                kontogruppe.getKontoarts().forEach(kontoart -> {
-                    BuchhaltungTreeData valKA = new BuchhaltungTreeData(kontoart.getId(), "KA", kontoart.getBezeichnung());
+                kontohauptgruppe.getKontogruppes().forEach(kontogruppe -> {
+                    BuchhaltungTreeData valKA = new BuchhaltungTreeData(kontogruppe.getId(), "KA", kontogruppe.getBezeichnung());
                     buchhaltungTreeData.addItem(valKG, valKA);
-                    kontoart.getSammelkontos().forEach(sammelkonto -> {
-                        BuchhaltungTreeData valSK = new BuchhaltungTreeData(sammelkonto.getId(), "SK", sammelkonto.getBezeichnung());
+                    kontogruppe.getKontos().forEach(konto -> {
+                        BuchhaltungTreeData valSK = new BuchhaltungTreeData(konto.getId(), "SK", konto.getBezeichnung());
                         buchhaltungTreeData.addItem(valKA, valSK);
-                        sammelkonto.getKontos().forEach(konto -> {
-                            BuchhaltungTreeData valKO = new BuchhaltungTreeData(konto.getId(), "KO", konto.getBezeichnung());
-                            buchhaltungTreeData.addItem(valSK, valKO);
-                        });
                     });
                 });
             });
