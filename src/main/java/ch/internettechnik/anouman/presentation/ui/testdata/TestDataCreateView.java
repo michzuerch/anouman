@@ -56,9 +56,6 @@ public class TestDataCreateView extends VerticalLayout implements View {
     TemplateKontogruppeFacade templateKontogruppeFacade;
 
     @Inject
-    TemplateSammelkontoFacade templateSammelkontoFacade;
-
-    @Inject
     TemplateKontoFacade templateKontoFacade;
 
     @Inject
@@ -166,42 +163,42 @@ public class TestDataCreateView extends VerticalLayout implements View {
         TemplateKontoklasse templateKontoklasse4 = new TemplateKontoklasse("Ertrag", "4", buchhaltung);
         templateKontoklasse4 = templateKontoklasseFacade.save(templateKontoklasse4);
 
-        TemplateKontohauptgruppe templateKontohauptgruppe1 = new TemplateKontohauptgruppe("Gruppe1", "1", templateKontoklasse1);
+        TemplateKontohauptgruppe templateKontohauptgruppe1 = new TemplateKontohauptgruppe("Hauptgruppe 1", "1", templateKontoklasse1);
         templateKontohauptgruppe1 = templateKontohauptgruppeFacade.save(templateKontohauptgruppe1);
-        TemplateKontohauptgruppe templateKontohauptgruppe2 = new TemplateKontohauptgruppe("Gruppe2", "2", templateKontoklasse1);
+        TemplateKontohauptgruppe templateKontohauptgruppe2 = new TemplateKontohauptgruppe("Hauptgruppe 2", "2", templateKontoklasse1);
         templateKontohauptgruppe2 = templateKontohauptgruppeFacade.save(templateKontohauptgruppe2);
-        TemplateKontohauptgruppe templateKontohauptgruppe3 = new TemplateKontohauptgruppe("Gruppe3", "3", templateKontoklasse2);
+        TemplateKontohauptgruppe templateKontohauptgruppe3 = new TemplateKontohauptgruppe("Hauptgruppe 3", "3", templateKontoklasse2);
         templateKontohauptgruppe3 = templateKontohauptgruppeFacade.save(templateKontohauptgruppe3);
-        TemplateKontohauptgruppe templateKontohauptgruppe4 = new TemplateKontohauptgruppe("Gruppe4", "4", templateKontoklasse2);
+        TemplateKontohauptgruppe templateKontohauptgruppe4 = new TemplateKontohauptgruppe("Hauptgruppe 4", "4", templateKontoklasse2);
         templateKontohauptgruppe4 = templateKontohauptgruppeFacade.save(templateKontohauptgruppe4);
-        TemplateKontohauptgruppe templateKontohauptgruppe5 = new TemplateKontohauptgruppe("Gruppe5", "5", templateKontoklasse3);
+        TemplateKontohauptgruppe templateKontohauptgruppe5 = new TemplateKontohauptgruppe("Hauptgruppe 5", "5", templateKontoklasse3);
         templateKontohauptgruppe5 = templateKontohauptgruppeFacade.save(templateKontohauptgruppe5);
-        TemplateKontohauptgruppe templateKontohauptgruppe6 = new TemplateKontohauptgruppe("Gruppe6", "6", templateKontoklasse4);
+        TemplateKontohauptgruppe templateKontohauptgruppe6 = new TemplateKontohauptgruppe("Hauptgruppe 6", "6", templateKontoklasse4);
         templateKontohauptgruppe6 = templateKontohauptgruppeFacade.save(templateKontohauptgruppe6);
 
-        TemplateKontogruppe templateKontogruppe1 = new TemplateKontogruppe("Art1", "1", templateKontohauptgruppe1);
+        TemplateKontogruppe templateKontogruppe1 = new TemplateKontogruppe("Kontogruppe 1", "1", templateKontohauptgruppe1);
         templateKontogruppe1 = templateKontogruppeFacade.save(templateKontogruppe1);
-        TemplateKontogruppe templateKontogruppe2 = new TemplateKontogruppe("Art2", "2", templateKontohauptgruppe1);
+        TemplateKontogruppe templateKontogruppe2 = new TemplateKontogruppe("Kontogruppe 2", "2", templateKontohauptgruppe1);
         templateKontogruppe2 = templateKontogruppeFacade.save(templateKontogruppe2);
-        TemplateKontogruppe templateKontogruppe3 = new TemplateKontogruppe("Art3", "3", templateKontohauptgruppe2);
+        TemplateKontogruppe templateKontogruppe3 = new TemplateKontogruppe("Kontogruppe 3", "3", templateKontohauptgruppe2);
         templateKontogruppe3 = templateKontogruppeFacade.save(templateKontogruppe3);
-        TemplateKontogruppe templateKontogruppe4 = new TemplateKontogruppe("Art4", "4", templateKontohauptgruppe2);
+        TemplateKontogruppe templateKontogruppe4 = new TemplateKontogruppe("Kontogruppe 4", "4", templateKontohauptgruppe2);
         templateKontogruppe4 = templateKontogruppeFacade.save(templateKontogruppe4);
-        TemplateKontogruppe templateKontogruppe5 = new TemplateKontogruppe("Art5", "5", templateKontohauptgruppe3);
+        TemplateKontogruppe templateKontogruppe5 = new TemplateKontogruppe("Kontogruppe 5", "5", templateKontohauptgruppe3);
         templateKontogruppe5 = templateKontogruppeFacade.save(templateKontogruppe5);
-        TemplateKontogruppe templateKontogruppe6 = new TemplateKontogruppe("Art6", "6", templateKontohauptgruppe3);
+        TemplateKontogruppe templateKontogruppe6 = new TemplateKontogruppe("Kontogruppe 6", "6", templateKontohauptgruppe3);
         templateKontogruppe6 = templateKontogruppeFacade.save(templateKontogruppe6);
-        TemplateKontogruppe templateKontogruppe7 = new TemplateKontogruppe("Art7", "7", templateKontohauptgruppe4);
+        TemplateKontogruppe templateKontogruppe7 = new TemplateKontogruppe("Kontogruppe 7", "7", templateKontohauptgruppe4);
         templateKontogruppe7 = templateKontogruppeFacade.save(templateKontogruppe7);
-        TemplateKontogruppe templateKontogruppe8 = new TemplateKontogruppe("Art8", "8", templateKontohauptgruppe4);
+        TemplateKontogruppe templateKontogruppe8 = new TemplateKontogruppe("Kontogruppe 8", "8", templateKontohauptgruppe4);
         templateKontogruppe8 = templateKontogruppeFacade.save(templateKontogruppe8);
-        TemplateKontogruppe templateKontogruppe9 = new TemplateKontogruppe("Art9", "9", templateKontohauptgruppe5);
+        TemplateKontogruppe templateKontogruppe9 = new TemplateKontogruppe("Kontogruppe 9", "9", templateKontohauptgruppe5);
         templateKontogruppe9 = templateKontogruppeFacade.save(templateKontogruppe9);
-        TemplateKontogruppe templateKontogruppe10 = new TemplateKontogruppe("Art10", "10", templateKontohauptgruppe5);
+        TemplateKontogruppe templateKontogruppe10 = new TemplateKontogruppe("Kontogruppe 10", "10", templateKontohauptgruppe5);
         templateKontogruppe10 = templateKontogruppeFacade.save(templateKontogruppe10);
-        TemplateKontogruppe templateKontogruppe11 = new TemplateKontogruppe("Art11", "11", templateKontohauptgruppe6);
+        TemplateKontogruppe templateKontogruppe11 = new TemplateKontogruppe("Kontogruppe 11", "11", templateKontohauptgruppe6);
         templateKontogruppe11 = templateKontogruppeFacade.save(templateKontogruppe11);
-        TemplateKontogruppe templateKontogruppe12 = new TemplateKontogruppe("Art12", "12", templateKontohauptgruppe6);
+        TemplateKontogruppe templateKontogruppe12 = new TemplateKontogruppe("Kontogruppe 12", "12", templateKontohauptgruppe6);
         templateKontogruppe12 = templateKontogruppeFacade.save(templateKontogruppe12);
 
 

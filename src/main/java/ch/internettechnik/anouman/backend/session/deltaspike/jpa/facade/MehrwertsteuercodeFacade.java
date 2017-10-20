@@ -29,7 +29,7 @@ public class MehrwertsteuercodeFacade {
         return repo.findAll();
     }
 
-    public List<Mehrwertsteuercode> findByTemplateBuchhaltung(Buchhaltung buchhaltung) {
+    public List<Mehrwertsteuercode> findByBuchhaltung(Buchhaltung buchhaltung) {
         return repo.findByBuchhaltung(buchhaltung);
     }
 

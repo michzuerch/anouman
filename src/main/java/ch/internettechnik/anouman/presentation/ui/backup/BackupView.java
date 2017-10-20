@@ -146,16 +146,6 @@ public class BackupView extends VerticalLayout implements View {
             buchhaltungFacade.findAll().stream().forEach(buchhaltung -> {
                 BackupBuchhaltung backupBuchhaltung = new BackupBuchhaltung(buchhaltung.getBezeichnung(), buchhaltung.getJahr());
 
-                buchhaltung.getMehrwertsteuercode().stream().forEach(mehrwertsteuercode -> {
-                    BackupMehrwertsteuercode backupMehrwertsteuercode = new BackupMehrwertsteuercode();
-                    backupMehrwertsteuercode.setId(mehrwertsteuercode.getId());
-                    backupMehrwertsteuercode.setBezeichnung(mehrwertsteuercode.getBezeichnung());
-                    backupMehrwertsteuercode.setCode(mehrwertsteuercode.getCode());
-                    backupMehrwertsteuercode.setProzent(mehrwertsteuercode.getProzent());
-                    backupMehrwertsteuercode.setVerkauf(mehrwertsteuercode.isVerkauf());
-                    backupMehrwertsteuercode.setKonto(mehrwertsteuercode.getMehrwertsteuerKonto().getId());
-                    backupBuchhaltung.getMehrwertsteuercodes().add(backupMehrwertsteuercode);
-                });
                 buchhaltung.getKontoklasse().stream().forEach(kontoklasse -> {
                     BackupKontoklasse backupKontoklasse = new BackupKontoklasse(kontoklasse.getBezeichnung(), kontoklasse.getKontonummer());
                     backupBuchhaltung.getKontoklasses().add(backupKontoklasse);
@@ -171,6 +161,15 @@ public class BackupView extends VerticalLayout implements View {
                                 backupKonto.setBezeichnung(konto.getBezeichnung());
                                 backupKonto.setKontonummer(konto.getKontonummer());
                                 backupKontogruppe.getKontos().add(backupKonto);
+                                konto.getMehrwertsteuercode().stream().forEach(mehrwertsteuercode -> {
+                                    BackupMehrwertsteuercode backupMehrwertsteuercode = new BackupMehrwertsteuercode();
+                                    backupMehrwertsteuercode.setId(mehrwertsteuercode.getId());
+                                    backupMehrwertsteuercode.setBezeichnung(mehrwertsteuercode.getBezeichnung());
+                                    backupMehrwertsteuercode.setCode(mehrwertsteuercode.getCode());
+                                    backupMehrwertsteuercode.setProzent(mehrwertsteuercode.getProzent());
+                                    backupMehrwertsteuercode.setVerkauf(mehrwertsteuercode.isVerkauf());
+                                    backupKonto.getMehrwertsteuercodes().add(backupMehrwertsteuercode);
+                                });
                             });
                         });
                     });
@@ -408,30 +407,20 @@ public class BackupView extends VerticalLayout implements View {
     }).setFileName("AdresseRechnungenAnouman.xml")
             .withCaption("Datei mit Adresse, Rechnungen, Rechnungspositionen, Aufwand herunterladen").withIcon(VaadinIcons.DOWNLOAD);
 
-    private ComboBox<Buchhaltung> listBuchhaltungen = new ComboBox<>();
     Button downloaderBuchhaltung = new DownloadButton(stream -> {
         JAXBContext jaxbContext = null;
+        Buchhaltung buchhaltung = listBuchhaltungen.getValue();
+        logger.debug("Gewählte Buchhaltung id:" + buchhaltung.getId());
         try {
             jaxbContext = JAXBContext.newInstance(BackupBuchhaltung.class);
             logger.debug("Start");
             Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
             jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,
                     true);
-            BackupBuchhaltung backupBuchhaltung = new BackupBuchhaltung(listBuchhaltungen.getValue().getBezeichnung(),
-                    listBuchhaltungen.getValue().getJahr());
+            BackupBuchhaltung backupBuchhaltung = new BackupBuchhaltung(buchhaltung.getBezeichnung(), buchhaltung.getJahr());
 
 
-            backupBuchhaltung.getMehrwertsteuercodes().stream().forEach(mehrwertsteuercode -> {
-                BackupMehrwertsteuercode backupMehrwertsteuercode = new BackupMehrwertsteuercode();
-                backupMehrwertsteuercode.setId(mehrwertsteuercode.getId());
-                backupMehrwertsteuercode.setBezeichnung(mehrwertsteuercode.getBezeichnung());
-                backupMehrwertsteuercode.setCode(mehrwertsteuercode.getCode());
-                backupMehrwertsteuercode.setProzent(mehrwertsteuercode.getProzent());
-                backupMehrwertsteuercode.setVerkauf(mehrwertsteuercode.isVerkauf());
-                backupMehrwertsteuercode.setKonto(mehrwertsteuercode.getKonto());
-                backupBuchhaltung.getMehrwertsteuercodes().add(backupMehrwertsteuercode);
-            });
-            listBuchhaltungen.getValue().getKontoklasse().stream().forEach(kontoklasse -> {
+            buchhaltung.getKontoklasse().stream().forEach(kontoklasse -> {
                 BackupKontoklasse backupKontoklasse = new BackupKontoklasse(kontoklasse.getBezeichnung(), kontoklasse.getKontonummer());
                 backupBuchhaltung.getKontoklasses().add(backupKontoklasse);
                 kontoklasse.getKontohauptgruppes().stream().forEach(kontohauptgruppe -> {
@@ -440,13 +429,22 @@ public class BackupView extends VerticalLayout implements View {
                     kontohauptgruppe.getKontogruppes().stream().forEach(kontogruppe -> {
                         BackupKontogruppe backupKontogruppe = new BackupKontogruppe(kontogruppe.getBezeichnung(), kontogruppe.getKontonummer());
                         backupKontohauptgruppe.getBackupKontogruppes().add(backupKontogruppe);
-
                         kontogruppe.getKontos().stream().forEach(konto -> {
                             BackupKonto backupKonto = new BackupKonto();
                             backupKonto.setBezeichnung(konto.getBezeichnung());
                             backupKonto.setId(konto.getId());
                             backupKonto.setKontonummer(konto.getKontonummer());
                             backupKontogruppe.getKontos().add(backupKonto);
+                            konto.getMehrwertsteuercode().stream().forEach(mehrwertsteuercode -> {
+                                BackupMehrwertsteuercode backupMehrwertsteuercode = new BackupMehrwertsteuercode();
+                                backupMehrwertsteuercode.setId(mehrwertsteuercode.getId());
+                                backupMehrwertsteuercode.setBezeichnung(mehrwertsteuercode.getBezeichnung());
+                                backupMehrwertsteuercode.setCode(mehrwertsteuercode.getCode());
+                                backupMehrwertsteuercode.setProzent(mehrwertsteuercode.getProzent());
+                                backupMehrwertsteuercode.setVerkauf(mehrwertsteuercode.isVerkauf());
+                                backupKonto.getMehrwertsteuercodes().add(backupMehrwertsteuercode);
+                            });
+                            //@todo Buchungen, Unterbuchungen
                         });
                     });
                 });
@@ -455,17 +453,11 @@ public class BackupView extends VerticalLayout implements View {
             stream.flush();
             stream.close();
         } catch (PropertyException ex) {
-            Notification.show(ex.getMessage(), Notification.Type.ERROR_MESSAGE);
-            System.err.print(ex);
-            ex.printStackTrace();
+            logger.error(ex.getLocalizedMessage());
         } catch (JAXBException ex) {
-            Notification.show(ex.getMessage(), Notification.Type.ERROR_MESSAGE);
-            System.err.print(ex);
-            ex.printStackTrace();
+            logger.error(ex.getLocalizedMessage());
         } catch (IOException ex) {
-            Notification.show(ex.getMessage(), Notification.Type.ERROR_MESSAGE);
-            System.err.print(ex);
-            ex.printStackTrace();
+            logger.error(ex.getLocalizedMessage());
         }
     }).setFileName("BuchhaltungAnouman.xml")
             .withCaption("Datei mit Buchhaltung herunterladen").withIcon(VaadinIcons.DOWNLOAD);

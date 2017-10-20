@@ -30,7 +30,6 @@ public class TemplateBuchhaltungTreeView extends VerticalLayout implements View 
     private Grid<TemplateKontoklasse> kontoklasseGrid = new Grid<>();
     private Grid<TemplateKontohauptgruppe> kontohauptgruppeGrid = new Grid<>();
     private Grid<TemplateKontogruppe> kontogruppeGrid = new Grid<>();
-    private Grid<TemplateSammelkonto> sammelkontoGrid = new Grid<>();
     private Grid<TemplateKonto> kontoGrid = new Grid<>();
     private ComboBox<TemplateBuchhaltung> buchhaltungSelect = new ComboBox<>();
     private Button addBuchhaltungBtn = new Button("Erstelle Buchhaltung");
@@ -71,9 +70,6 @@ public class TemplateBuchhaltungTreeView extends VerticalLayout implements View 
     private TemplateKontogruppeForm templateKontogruppeForm;
 
     @Inject
-    private TemplateSammelkontoFacade templateSammelkontoFacade;
-
-    @Inject
     private TemplateKontoForm templateKontoForm;
 
     @Inject
@@ -81,9 +77,6 @@ public class TemplateBuchhaltungTreeView extends VerticalLayout implements View 
 
     @Inject
     private TemplateMehrwertsteuercodeForm templateMehrwertsteuercodeForm;
-
-    @Inject
-    private TemplateSammelkontoForm templateSammelkontoForm;
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
@@ -149,7 +142,6 @@ public class TemplateBuchhaltungTreeView extends VerticalLayout implements View 
             bodyLayout.removeComponent(kontoklasseGrid);
             bodyLayout.removeComponent(kontohauptgruppeGrid);
             bodyLayout.removeComponent(kontogruppeGrid);
-            bodyLayout.removeComponent(sammelkontoGrid);
             bodyLayout.removeComponent(kontoGrid);
 
             bodyLayout.removeComponent(addGridBtn);
@@ -173,7 +165,7 @@ public class TemplateBuchhaltungTreeView extends VerticalLayout implements View 
                     bodyLayout.setExpandRatio(addGridBtn, 0.1f);
                     bodyLayout.setExpandRatio(kontohauptgruppeGrid, 4);
                 }
-                if (selectedItem.getType().equals("KG")) {
+                if (selectedItem.getType().equals("HG")) {
                     kontogruppeGrid = createGridTemplateKontogruppe(selectedItem);
                     addGridBtn = createButtonAddTemplateKontogruppe(templateKontohauptgruppeFacade.findBy(selectedItem.getId()));
 
@@ -181,17 +173,9 @@ public class TemplateBuchhaltungTreeView extends VerticalLayout implements View 
                     bodyLayout.setExpandRatio(addGridBtn, 0.1f);
                     bodyLayout.setExpandRatio(kontogruppeGrid, 4);
                 }
-                if (selectedItem.getType().equals("KA")) {
-                    sammelkontoGrid = createGridTemplateSammelkonto(selectedItem);
-                    addGridBtn = createButtonAddTemplateSammelkonto(templateKontogruppeFacade.findBy(selectedItem.getId()));
-
-                    bodyLayout.addComponents(addGridBtn, sammelkontoGrid);
-                    bodyLayout.setExpandRatio(addGridBtn, 0.1f);
-                    bodyLayout.setExpandRatio(sammelkontoGrid, 4);
-                }
-                if (selectedItem.getType().equals("SK")) {
+                if (selectedItem.getType().equals("KG")) {
                     kontoGrid = createGridTemplateKonto(selectedItem);
-                    addGridBtn = createButtonAddTemplateKonto(templateSammelkontoFacade.findBy(selectedItem.getId()));
+                    addGridBtn = createButtonAddTemplateKonto(templateKontogruppeFacade.findBy(selectedItem.getId()));
 
                     bodyLayout.addComponents(addGridBtn, kontoGrid);
                     bodyLayout.setExpandRatio(addGridBtn, 0.1f);
@@ -236,12 +220,14 @@ public class TemplateBuchhaltungTreeView extends VerticalLayout implements View 
                 TemplateBuchhaltung bh = templateBuchhaltungFacade.findBy(buchhaltungSelect.getValue().getId());
                 val.setTemplateBuchhaltung(bh);
                 val = templateKontoklasseFacade.save(val);
+                bh.getTemplateKontoklasses().add(val);
+                bh = templateBuchhaltungFacade.save(bh);
                 buchhaltungSelect.setSelectedItem(val.getTemplateBuchhaltung());
                 updateTree(val.getTemplateBuchhaltung().getId());
                 kontoklasseGrid.setItems(templateBuchhaltungFacade.findBy(buchhaltungSelect.getValue().getId()).getTemplateKontoklasses());
                 kontoklasseGrid.select(val);
                 templateKontoklasseForm.closePopup();
-                Notification.show("Add Kontoklasse " + val);
+                Notification.show("Add Kontoklasse id:" + val.getId());
             });
         });
         return button;
@@ -260,9 +246,12 @@ public class TemplateBuchhaltungTreeView extends VerticalLayout implements View 
                 TemplateKontoklasse kk = templateKontoklasseFacade.findBy(templateKontoklasse.getId());
                 val.setTemplateKontoklasse(kk);
                 val = templateKontohauptgruppeFacade.save(val);
+                kk.getTemplateKontohauptgruppes().add(val);
+                kk = templateKontoklasseFacade.save(kk);
                 updateTree(val.getTemplateKontoklasse().getId());
                 kontohauptgruppeGrid.select(val);
                 templateKontohauptgruppeForm.closePopup();
+                Notification.show("Add Kontohauptgruppe id:" + val.getId());
             });
         });
         return button;
@@ -272,18 +261,21 @@ public class TemplateBuchhaltungTreeView extends VerticalLayout implements View 
         Button button = new Button();
         button.setIcon(VaadinIcons.ASTERISK);
         button.setStyleName(ValoTheme.BUTTON_ICON_ONLY);
-        button.setDescription("Erstelle Template Kontohauptgruppe");
+        button.setDescription("Erstelle Template Kontogruppe");
         button.addClickListener(event -> {
             kontogruppeGrid.asSingleSelect().clear();
             templateKontogruppeForm.setEntity(new TemplateKontogruppe());
             templateKontogruppeForm.openInModalPopup();
             templateKontogruppeForm.setSavedHandler(val -> {
-                TemplateKontohauptgruppe kg = templateKontohauptgruppeFacade.findBy(templateKontohauptgruppe.getId());
-                val.setTemplateKontohauptgruppe(templateKontohauptgruppe);
+                TemplateKontohauptgruppe hg = templateKontohauptgruppeFacade.findBy(templateKontohauptgruppe.getId());
+                val.setTemplateKontohauptgruppe(hg);
                 val = templateKontogruppeFacade.save(val);
+                hg.getTemplateKontogruppes().add(val);
+                hg = templateKontohauptgruppeFacade.save(hg);
                 updateTree(val.getTemplateKontohauptgruppe().getId());
                 kontogruppeGrid.select(val);
                 templateKontogruppeForm.closePopup();
+                Notification.show("Add Kontogruppe id:" + val.getId());
             });
         });
         return button;
@@ -300,12 +292,15 @@ public class TemplateBuchhaltungTreeView extends VerticalLayout implements View 
             templateKontoForm.setEntity(new TemplateKonto());
             templateKontoForm.openInModalPopup();
             templateKontoForm.setSavedHandler(val -> {
-                TemplateKonto konto = templateKontoFacade.findBy(templateKontogruppe.getId());
-                val.setTemplateKonto(konto);
+                TemplateKontogruppe kg = templateKontogruppeFacade.findBy(templateKontogruppe.getId());
+                val.setTemplateKontogruppe(kg);
                 val = templateKontoFacade.save(val);
+                kg.getTemplateKontos().add(val);
+                kg = templateKontogruppeFacade.save(kg);
                 updateTree(val.getTemplateKontogruppe().getId());
                 kontoGrid.select(val);
                 templateKontoForm.closePopup();
+                Notification.show("Add Konto id:" + val.getId());
             });
         });
         return button;
@@ -341,9 +336,9 @@ public class TemplateBuchhaltungTreeView extends VerticalLayout implements View 
                 TemplateKontoklasse templateKontoklasse = event.getBean();
                 templateKontoklasse = templateKontoklasseFacade.save(templateKontoklasse);
                 grid.setItems(templateKontoklasseFacade.findByTemplateBuchhaltung(buchhaltung));
+                grid.select(templateKontoklasseFacade.findBy(event.getBean().getId()));
             }
         });
-
         grid.addColumn(TemplateKontoklasse::getId).setCaption("Id");
         grid.addColumn(TemplateKontoklasse::getVersion).setCaption("Version");
         grid.addColumn(TemplateKontoklasse::getBezeichnung).setId("bezeichnung").setEditorComponent(bezeichnungFld).setCaption("Bezeichnung");
@@ -355,9 +350,9 @@ public class TemplateBuchhaltungTreeView extends VerticalLayout implements View 
                     TemplateBuchhaltung buchhaltung1 = kontoklasse.getTemplateBuchhaltung();
                     Notification.show("Lösche Kontoklasse id:" + kontoklasse);
                     buchhaltung1.getTemplateKontoklasses().remove(kontoklasse);
-                    templateBuchhaltungFacade.save(buchhaltung1);
+                    buchhaltung1 = templateBuchhaltungFacade.save(buchhaltung1);
                     templateKontoklasseFacade.delete(kontoklasse);
-                    grid.setItems(buchhaltung.getTemplateKontoklasses());
+                    grid.setItems(templateKontoklasseFacade.findByTemplateBuchhaltung(buchhaltung1));
                     updateTree(buchhaltung1.getId());
                 })
         ).setCaption("Löschen");
@@ -385,10 +380,12 @@ public class TemplateBuchhaltungTreeView extends VerticalLayout implements View 
                 TemplateKontohauptgruppe templateKontohauptgruppe = event.getBean();
                 templateKontohauptgruppeFacade.save(event.getBean());
                 grid.setItems(templateKontohauptgruppeFacade.findByTemplateKontoklasse(templateKontohauptgruppe.getTemplateKontoklasse()));
+                grid.select(templateKontohauptgruppeFacade.findBy(event.getBean().getId()));
             }
         });
 
         grid.addColumn(TemplateKontohauptgruppe::getId).setCaption("Id");
+        grid.addColumn(TemplateKontohauptgruppe::getVersion).setCaption("Version");
         grid.addColumn(TemplateKontohauptgruppe::getBezeichnung).setId("bezeichnung").setEditorComponent(bezeichnungFld).setCaption("Bezeichnung");
         grid.addColumn(TemplateKontohauptgruppe::getKontonummer).setId("kontonummer").setEditorComponent(kontonummerFld).setCaption("Kontonummer");
 
@@ -396,12 +393,12 @@ public class TemplateBuchhaltungTreeView extends VerticalLayout implements View 
                 new ButtonRenderer(event -> {
                     TemplateKontohauptgruppe templateKontohauptgruppe = (TemplateKontohauptgruppe) event.getItem();
                     TemplateKontoklasse kontoklasse1 = templateKontohauptgruppe.getTemplateKontoklasse();
-                    Notification.show("Lösche Kontohauptgruppe id:" + templateKontohauptgruppe.getId(), Notification.Type.HUMANIZED_MESSAGE);
                     kontoklasse1.getTemplateKontohauptgruppes().remove(templateKontohauptgruppe);
                     kontoklasse1 = templateKontoklasseFacade.save(kontoklasse1);
                     templateKontohauptgruppeFacade.delete(templateKontohauptgruppe);
-                    grid.setItems(kontoklasse.getTemplateKontohauptgruppes());
+                    grid.setItems(templateKontohauptgruppeFacade.findByTemplateKontoklasse(kontoklasse1));
                     updateTree(kontoklasse1.getId());
+                    Notification.show("Lösche Kontohauptgruppe id:" + templateKontohauptgruppe.getId(), Notification.Type.HUMANIZED_MESSAGE);
                 })
         ).setCaption("Löschen");
 
@@ -427,11 +424,13 @@ public class TemplateBuchhaltungTreeView extends VerticalLayout implements View 
         grid.getEditor().addSaveListener(event -> {
             if (binderTemplateKontogruppe.isValid()) {
                 templateKontogruppeFacade.save(event.getBean());
-                grid.setItems(templateKontohauptgruppe.getTemplateKontogruppes());
+                grid.setItems(templateKontogruppeFacade.findByTemplateKontohauptgruppe(event.getBean().getTemplateKontohauptgruppe()));
+                grid.select(templateKontogruppeFacade.findBy(event.getBean().getId()));
             }
         });
 
         grid.addColumn(TemplateKontogruppe::getId).setCaption("Id");
+        grid.addColumn(TemplateKontogruppe::getVersion).setCaption("Version");
         grid.addColumn(TemplateKontogruppe::getBezeichnung).setId("bezeichnung").setEditorComponent(bezeichnungFld).setCaption("Bezeichnung");
         grid.addColumn(TemplateKontogruppe::getKontonummer).setId("kontonummer").setEditorComponent(kontonummerFld).setCaption("Kontonummer");
 
@@ -443,7 +442,7 @@ public class TemplateBuchhaltungTreeView extends VerticalLayout implements View 
                     templateKontohauptgruppe1.getTemplateKontogruppes().remove(templateKontogruppe);
                     templateKontohauptgruppe1 = templateKontohauptgruppeFacade.save(templateKontohauptgruppe1);
                     templateKontogruppeFacade.delete(templateKontogruppe);
-                    grid.setItems(templateKontohauptgruppe.getTemplateKontogruppes());
+                    grid.setItems(templateKontogruppeFacade.findByTemplateKontohauptgruppe(templateKontohauptgruppe1));
                     updateTree(templateKontohauptgruppe1.getId());
                 })
         ).setCaption("Löschen");
@@ -459,8 +458,8 @@ public class TemplateBuchhaltungTreeView extends VerticalLayout implements View 
         Grid<TemplateKonto> grid = new Grid<>();
         grid.setCaption("Konti");
         grid.setSizeFull();
-        TemplateSammelkonto sammelkonto = templateSammelkontoFacade.findBy(val.getId());
-        grid.setItems(sammelkonto.getTemplateKontos());
+        TemplateKontogruppe templateKontogruppe = templateKontogruppeFacade.findBy(val.getId());
+        grid.setItems(templateKontogruppe.getTemplateKontos());
 
         binderTemplateKonto.bind(bezeichnungFld, TemplateKonto::getBezeichnung, TemplateKonto::setBezeichnung);
         binderTemplateKonto.bind(kontonummerFld, TemplateKonto::getKontonummer, TemplateKonto::setKontonummer);
@@ -469,12 +468,16 @@ public class TemplateBuchhaltungTreeView extends VerticalLayout implements View 
         grid.getEditor().setEnabled(true);
         grid.getEditor().addSaveListener(event -> {
             if (binderTemplateKonto.isValid()) {
-                templateKontoFacade.save(event.getBean());
-                grid.setItems(sammelkonto.getTemplateKontos());
+                TemplateKonto templateKonto = event.getBean();
+                templateKontoFacade.save(templateKonto);
+                TemplateKontogruppe templateKontogruppe1 = templateKontogruppeFacade.findBy(templateKonto.getTemplateKontogruppe().getId());
+                grid.setItems(templateKontoFacade.findByTemplateKontogruppe(templateKontogruppe1));
+                grid.select(templateKontoFacade.findBy(event.getBean().getId()));
             }
         });
 
         grid.addColumn(TemplateKonto::getId).setCaption("Id");
+        grid.addColumn(TemplateKonto::getVersion).setCaption("Version");
         grid.addColumn(TemplateKonto::getBezeichnung).setId("bezeichnung").setEditorComponent(bezeichnungFld).setCaption("Bezeichnung");
         grid.addColumn(TemplateKonto::getKontonummer).setId("kontonummer").setEditorComponent(kontonummerFld).setCaption("Kontonummer");
 
@@ -484,13 +487,14 @@ public class TemplateBuchhaltungTreeView extends VerticalLayout implements View 
                     templateKontoForm.openInModalPopup();
                     templateKontoForm.setSavedHandler(konto -> {
                         templateKontoFacade.save(konto);
-                        updateTree(konto.getTemplateSammelkonto().getId());
-                        grid.setItems(sammelkonto.getTemplateKontos());
+                        TemplateKontogruppe templateKontogruppe1 = konto.getTemplateKontogruppe();
+                        updateTree(templateKontogruppe1.getId());
+                        grid.setItems(templateKontogruppe1.getTemplateKontos());
                         grid.select(konto);
                         templateKontoForm.closePopup();
                     });
                     templateKontoForm.setResetHandler(konto -> {
-                        grid.setItems(sammelkonto.getTemplateKontos());
+                        grid.setItems(templateKontogruppe.getTemplateKontos());
                         grid.select(konto);
                         templateKontoForm.closePopup();
                     });
@@ -500,13 +504,13 @@ public class TemplateBuchhaltungTreeView extends VerticalLayout implements View 
         grid.addColumn(event -> "löschen",
                 new ButtonRenderer(event -> {
                     TemplateKonto konto = (TemplateKonto) event.getItem();
-                    TemplateSammelkonto templateSammelkonto = konto.getTemplateSammelkonto();
                     Notification.show("Lösche Konto id:" + konto.getId());
-                    templateSammelkonto.getTemplateKontos().remove(konto);
-                    templateSammelkonto = templateSammelkontoFacade.save(templateSammelkonto);
+                    TemplateKontogruppe templateKontogruppe1 = konto.getTemplateKontogruppe();
+                    templateKontogruppe1.getTemplateKontos().remove(konto);
+                    templateKontogruppe1 = templateKontogruppeFacade.save(templateKontogruppe1);
                     templateKontoFacade.delete(konto);
-                    grid.setItems(sammelkonto.getTemplateKontos());
-                    updateTree(templateSammelkonto.getId());
+                    grid.setItems(templateKontoFacade.findByTemplateKontogruppe(templateKontogruppe1));
+                    updateTree(templateKontogruppe1.getId());
                 })
         ).setCaption("Löschen");
 
@@ -520,10 +524,8 @@ public class TemplateBuchhaltungTreeView extends VerticalLayout implements View 
         buchhaltung.getTemplateKontoklasses().stream().forEach(templateKontoklasse -> {
             templateKontoklasse.getTemplateKontohauptgruppes().stream().forEach(templateKontohauptgruppe -> {
                 templateKontohauptgruppe.getTemplateKontogruppes().stream().forEach(templateKontogruppe -> {
-                    templateKontogruppe.getTemplateSammelkontos().stream().forEach(templateSammelkonto -> {
-                        templateSammelkonto.getTemplateKontos().stream().forEach(templateKonto -> {
-                            list.add(templateKonto);
-                        });
+                    templateKontogruppe.getTemplateKontos().stream().forEach(templateKonto -> {
+                        list.add(templateKonto);
                     });
                 });
             });
@@ -666,21 +668,15 @@ public class TemplateBuchhaltungTreeView extends VerticalLayout implements View 
             buchhaltungTreeData.addItem(valBH, valKK);
             if (valKK.getId() == selectId) buchhaltungTree.select(valKK);
             templateKontoklasse.getTemplateKontohauptgruppes().forEach(templateKontohauptgruppe -> {
-                TemplateBuchhaltungTreeData valKG = new TemplateBuchhaltungTreeData(templateKontohauptgruppe.getId(), "KG", templateKontohauptgruppe.getBezeichnung() + " KoNr:" + templateKontohauptgruppe.getShowKontonummer());
-                list.add(valKG);
-                buchhaltungTreeData.addItem(valKK, valKG);
-                if (valKG.getId() == selectId) buchhaltungTree.select(valKG);
+                TemplateBuchhaltungTreeData valHG = new TemplateBuchhaltungTreeData(templateKontohauptgruppe.getId(), "HG", templateKontohauptgruppe.getBezeichnung() + " KoNr:" + templateKontohauptgruppe.getShowKontonummer());
+                list.add(valHG);
+                buchhaltungTreeData.addItem(valKK, valHG);
+                if (valHG.getId() == selectId) buchhaltungTree.select(valHG);
                 templateKontohauptgruppe.getTemplateKontogruppes().forEach(templateKontogruppe -> {
-                    TemplateBuchhaltungTreeData valKA = new TemplateBuchhaltungTreeData(templateKontogruppe.getId(), "KA", templateKontogruppe.getBezeichnung() + " KoNr:" + templateKontogruppe.getShowKontonummer());
-                    list.add(valKA);
-                    buchhaltungTreeData.addItem(valKG, valKA);
-                    if (valKA.getId() == selectId) buchhaltungTree.select(valKA);
-                    templateKontogruppe.getTemplateSammelkontos().forEach(templateSammelkonto -> {
-                        TemplateBuchhaltungTreeData valSK = new TemplateBuchhaltungTreeData(templateSammelkonto.getId(), "SK", templateSammelkonto.getBezeichnung() + templateSammelkonto.getShowKontonummer());
-                        list.add(valSK);
-                        buchhaltungTreeData.addItem(valKA, valSK);
-                        if (valSK.getId() == selectId) buchhaltungTree.select(valSK);
-                    });
+                    TemplateBuchhaltungTreeData valKG = new TemplateBuchhaltungTreeData(templateKontogruppe.getId(), "KG", templateKontogruppe.getBezeichnung() + " KoNr:" + templateKontogruppe.getShowKontonummer());
+                    list.add(valKG);
+                    buchhaltungTreeData.addItem(valHG, valKG);
+                    if (valKG.getId() == selectId) buchhaltungTree.select(valKG);
                 });
             });
         });

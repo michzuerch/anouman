@@ -21,7 +21,7 @@ public class TemplateKontogruppe extends AbstractEntity {
     @ManyToOne
     private TemplateKontohauptgruppe templateKontohauptgruppe;
 
-    @OneToMany(mappedBy = "templateKontogruppe", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "templateKontogruppe", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TemplateKonto> templateKontos = new ArrayList<TemplateKonto>();
 
     public TemplateKontogruppe() {

@@ -12,10 +12,6 @@ import java.util.List;
  * Created by michzuerch on 07.08.15.
  */
 @Entity
-@NamedQueries({
-        @NamedQuery(name = "Mehrwertsteuercode.findAll", query = "SELECT m FROM Mehrwertsteuercode m"),
-        @NamedQuery(name = "Mehrwertsteuercode.findById", query = "SELECT m FROM Mehrwertsteuercode m where m.id = :id")
-})
 public class Mehrwertsteuercode extends AbstractEntity {
     @Column
     @NotNull
@@ -32,9 +28,6 @@ public class Mehrwertsteuercode extends AbstractEntity {
     @DecimalMax(value = "50", message = "Maximale Mehrwertsteuer ist 50%")
     private Float prozent;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private Konto mehrwertsteuerKonto;
-
     @Column
     private boolean verkauf;
 
@@ -43,6 +36,9 @@ public class Mehrwertsteuercode extends AbstractEntity {
 
     @ManyToOne
     private Buchhaltung buchhaltung;
+
+    @ManyToOne
+    private Konto mehrwertsteuerKonto;
 
     public String getCode() {
         return code;
@@ -84,14 +80,6 @@ public class Mehrwertsteuercode extends AbstractEntity {
         this.verkauf = verkauf;
     }
 
-    public List<Buchung> getBuchungen() {
-        return buchungen;
-    }
-
-    public void setBuchungen(List<Buchung> buchungen) {
-        this.buchungen = buchungen;
-    }
-
     public Buchhaltung getBuchhaltung() {
         return buchhaltung;
     }
@@ -99,6 +87,15 @@ public class Mehrwertsteuercode extends AbstractEntity {
     public void setBuchhaltung(Buchhaltung buchhaltung) {
         this.buchhaltung = buchhaltung;
     }
+
+    public String getProzentString() {
+        return getProzent().toString();
+    }
+
+    public void setProzentString(String prozent) {
+        setProzent(Float.valueOf(prozent));
+    }
+
 
     @Override
     public String toString() {

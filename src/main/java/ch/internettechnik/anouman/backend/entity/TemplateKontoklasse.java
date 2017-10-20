@@ -9,10 +9,6 @@ import java.util.List;
  * Created by michzuerch on 25.08.15.
  */
 @Entity
-@NamedQueries({
-        @NamedQuery(name = "TemplateKontoklasse.findAll", query = "SELECT k FROM TemplateKontoklasse k"),
-        @NamedQuery(name = "TemplateKontoklasse.findById", query = "SELECT k FROM TemplateKontoklasse k where k.id = :id")
-})
 public class TemplateKontoklasse extends AbstractEntity {
     @Column
     @NotNull
@@ -22,7 +18,7 @@ public class TemplateKontoklasse extends AbstractEntity {
     @NotNull
     private String kontonummer;
 
-    @OneToMany(mappedBy = "templateKontoklasse", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "templateKontoklasse", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TemplateKontohauptgruppe> templateKontohauptgruppes = new ArrayList<TemplateKontohauptgruppe>();
 
     @ManyToOne

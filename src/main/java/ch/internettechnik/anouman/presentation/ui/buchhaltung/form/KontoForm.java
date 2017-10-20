@@ -1,30 +1,31 @@
-package ch.internettechnik.anouman.presentation.ui.templatebuchhaltung.form;
+package ch.internettechnik.anouman.presentation.ui.buchhaltung.form;
 
-import ch.internettechnik.anouman.backend.entity.TemplateSammelkonto;
+import ch.internettechnik.anouman.backend.entity.Konto;
 import com.vaadin.cdi.ViewScoped;
 import com.vaadin.ui.*;
 import org.vaadin.viritin.form.AbstractForm;
 
 @ViewScoped
-public class TemplateSammelkontoForm extends AbstractForm<TemplateSammelkonto> {
+public class KontoForm extends AbstractForm<Konto> {
     TextField bezeichnung = new TextField("Bezeichnung");
     TextField kontonummer = new TextField("Kontonummer");
+    TextArea bemerkung = new TextArea("Bemerkung");
 
-    public TemplateSammelkontoForm() {
-        super(TemplateSammelkonto.class);
+    public KontoForm() {
+        super(Konto.class);
     }
 
     @Override
     public Window openInModalPopup() {
         final Window openInModalPopup = super.openInModalPopup();
-        openInModalPopup.setCaption("Template Sammelkonto");
+        openInModalPopup.setCaption("Konto");
         openInModalPopup.setWidth("400px");
         return openInModalPopup;
     }
 
     @Override
     protected Component createContent() {
-        return new VerticalLayout(new FormLayout(bezeichnung, kontonummer), getToolbar());
+        return new VerticalLayout(new FormLayout(bezeichnung, kontonummer, bemerkung), getToolbar());
     }
 
 

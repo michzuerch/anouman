@@ -1,6 +1,9 @@
 package ch.internettechnik.anouman.backend.entity;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
@@ -12,11 +15,6 @@ import java.util.List;
  * Created by michzuerch on 07.08.15.
  */
 @Entity
-@NamedQueries({
-        @NamedQuery(name = "Buchhaltung.findAll", query = "SELECT b FROM Buchhaltung b"),
-        @NamedQuery(name = "Buchhaltung.findById", query = "SELECT b FROM Buchhaltung b where b.id = :id")
-
-})
 public class Buchhaltung extends AbstractEntity {
     @Column
     @NotNull
@@ -29,10 +27,10 @@ public class Buchhaltung extends AbstractEntity {
     @DecimalMax(value = "2150", message = "Nicht nach 2150")
     private int jahr;
 
-    @OneToMany(mappedBy = "buchhaltung", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "buchhaltung", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Kontoklasse> kontoklasse = new ArrayList<>();
 
-    @OneToMany(mappedBy = "buchhaltung", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "buchhaltung", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Mehrwertsteuercode> mehrwertsteuercode = new ArrayList<>();
 
 

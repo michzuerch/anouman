@@ -8,10 +8,6 @@ import java.util.Date;
  * Created by michzuerch on 07.08.15.
  */
 @Entity
-@NamedQueries({
-        @NamedQuery(name = "Unterbuchung.findAll", query = "SELECT u FROM Unterbuchung u"),
-        @NamedQuery(name = "Unterbuchung.findById", query = "SELECT u FROM Unterbuchung u where u.id = :id")
-})
 public class Unterbuchung extends AbstractEntity {
     @Column
     @NotNull

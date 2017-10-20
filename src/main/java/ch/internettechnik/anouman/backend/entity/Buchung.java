@@ -9,16 +9,11 @@ import java.util.List;
  * Created by michzuerch on 07.08.15.
  */
 @Entity
-@NamedQueries({
-        @NamedQuery(name = "Buchung.findAll", query = "SELECT b FROM Buchung b"),
-        @NamedQuery(name = "Buchung.findById", query = "SELECT b FROM Buchung b where b.id = :id")
-})
 public class Buchung extends AbstractEntity {
-    @OneToMany(mappedBy = "buchung", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "buchung", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Unterbuchung> unterbuchungs = new ArrayList<>();
 
     @ManyToOne
-    @JoinColumn(name = "MWSTCODE_ID", nullable = false)
     private Mehrwertsteuercode mehrwertsteuercode;
 
     @Lob

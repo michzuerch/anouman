@@ -16,7 +16,7 @@ public class BackupKontogruppe {
     private String bezeichnung;
     @XmlAttribute
     private String kontonummer;
-    @XmlElement(name = "sammelkonto")
+    @XmlElement(name = "konto")
     private Set<BackupKonto> kontos = new HashSet<>();
 
     public BackupKontogruppe() {

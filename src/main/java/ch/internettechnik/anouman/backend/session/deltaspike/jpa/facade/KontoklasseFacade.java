@@ -1,5 +1,6 @@
 package ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade;
 
+import ch.internettechnik.anouman.backend.entity.Buchhaltung;
 import ch.internettechnik.anouman.backend.entity.Kontoklasse;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.repository.KontoklasseRepository;
 
@@ -32,4 +33,7 @@ public class KontoklasseFacade {
         return repo.findByBezeichnungLikeIgnoreCase(bezeichnung);
     }
 
+    public List<Kontoklasse> findByBuchhaltung(Buchhaltung buchhaltung) {
+        return repo.findByBuchhaltung(buchhaltung);
+    }
 }

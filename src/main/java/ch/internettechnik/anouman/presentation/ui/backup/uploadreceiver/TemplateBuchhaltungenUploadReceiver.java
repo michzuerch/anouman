@@ -35,9 +35,6 @@ public class TemplateBuchhaltungenUploadReceiver implements Serializable, Upload
     TemplateKontogruppeFacade templateKontogruppeFacade;
 
     @Inject
-    TemplateSammelkontoFacade templateSammelkontoFacade;
-
-    @Inject
     TemplateKontoFacade templateKontoFacade;
 
     @Inject

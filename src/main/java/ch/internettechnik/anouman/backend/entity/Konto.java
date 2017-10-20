@@ -21,14 +21,17 @@ public class Konto extends AbstractEntity {
     @Column
     private String bemerkung;
 
-    @OneToMany(mappedBy = "kontoSoll", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "kontoSoll", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Unterbuchung> soll = new ArrayList<>();
 
-    @OneToMany(mappedBy = "kontoHaben", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "kontoHaben", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Unterbuchung> haben = new ArrayList<>();
 
     @ManyToOne
     private Kontogruppe kontogruppe;
+
+    @OneToMany(mappedBy = "mehrwertsteuerKonto", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Mehrwertsteuercode> mehrwertsteuercode = new ArrayList<>();
 
     @Column
     private Double anfangsbestand;
@@ -94,4 +97,11 @@ public class Konto extends AbstractEntity {
         this.bemerkung = bemerkung;
     }
 
+    public List<Mehrwertsteuercode> getMehrwertsteuercode() {
+        return mehrwertsteuercode;
+    }
+
+    public void setMehrwertsteuercode(List<Mehrwertsteuercode> mehrwertsteuercode) {
+        this.mehrwertsteuercode = mehrwertsteuercode;
+    }
 }

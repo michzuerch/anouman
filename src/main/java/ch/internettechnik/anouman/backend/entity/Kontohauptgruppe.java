@@ -9,7 +9,7 @@ import java.util.List;
  * Created by michzuerch on 25.08.15.
  */
 @Entity
-public class Kontogruppe extends AbstractEntity {
+public class Kontohauptgruppe extends AbstractEntity {
     @Column
     @NotNull
     private String bezeichnung;
@@ -19,22 +19,30 @@ public class Kontogruppe extends AbstractEntity {
     private String kontonummer;
 
     @ManyToOne
-    private Kontohauptgruppe kontohauptgruppe;
+    private Kontoklasse kontoklasse;
 
-    @OneToMany(mappedBy = "kontogruppe", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Konto> kontos = new ArrayList<>();
+    @OneToMany(mappedBy = "kontohauptgruppe", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Kontogruppe> kontogruppes = new ArrayList<>();
 
     @Transient
     public String getShowKontonummer() {
-        return getKontohauptgruppe().getShowKontonummer() + getKontonummer();
+        return getKontoklasse().getKontonummer() + getKontonummer();
     }
 
-    public Kontohauptgruppe getKontohauptgruppe() {
-        return kontohauptgruppe;
+    public Kontoklasse getKontoklasse() {
+        return kontoklasse;
     }
 
-    public void setKontohauptgruppe(Kontohauptgruppe kontohauptgruppe) {
-        this.kontohauptgruppe = kontohauptgruppe;
+    public void setKontoklasse(Kontoklasse kontoklasse) {
+        this.kontoklasse = kontoklasse;
+    }
+
+    public List<Kontogruppe> getKontogruppes() {
+        return kontogruppes;
+    }
+
+    public void setKontogruppes(List<Kontogruppe> kontogruppes) {
+        this.kontogruppes = kontogruppes;
     }
 
     public String getKontonummer() {
@@ -51,13 +59,5 @@ public class Kontogruppe extends AbstractEntity {
 
     public void setBezeichnung(String bezeichnung) {
         this.bezeichnung = bezeichnung;
-    }
-
-    public List<Konto> getKontos() {
-        return kontos;
-    }
-
-    public void setKontos(List<Konto> kontos) {
-        this.kontos = kontos;
     }
 }

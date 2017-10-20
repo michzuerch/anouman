@@ -28,7 +28,7 @@ public class TemplateKonto extends AbstractEntity {
     @ManyToOne
     private TemplateKontogruppe templateKontogruppe;
 
-    @OneToMany(mappedBy = "templateMehrwertsteuerKonto", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "templateMehrwertsteuerKonto", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TemplateMehrwertsteuercode> templateMehrwertsteuercode = new ArrayList<>();
 
     public TemplateKonto() {

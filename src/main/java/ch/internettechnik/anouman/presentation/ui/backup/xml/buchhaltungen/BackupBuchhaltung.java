@@ -17,14 +17,8 @@ public class BackupBuchhaltung {
     @XmlAttribute
     private int jahr;
 
-    @XmlElement(name = "buchung")
-    private Set<BackupBuchung> buchungen = new HashSet<>();
-
     @XmlElement(name = "kontoklasse")
     private Set<BackupKontoklasse> kontoklasses = new HashSet<>();
-
-    @XmlElement(name = "mehrwertsteuercode")
-    private Set<BackupMehrwertsteuercode> mehrwertsteuercodes = new HashSet<>();
 
     public BackupBuchhaltung() {
     }
@@ -58,19 +52,4 @@ public class BackupBuchhaltung {
         this.kontoklasses = kontoklasses;
     }
 
-    public Set<BackupMehrwertsteuercode> getMehrwertsteuercodes() {
-        return mehrwertsteuercodes;
-    }
-
-    public void setMehrwertsteuercodes(Set<BackupMehrwertsteuercode> mehrwertsteuercodes) {
-        this.mehrwertsteuercodes = mehrwertsteuercodes;
-    }
-
-    public Set<BackupBuchung> getBuchungen() {
-        return buchungen;
-    }
-
-    public void setBuchungen(Set<BackupBuchung> buchungen) {
-        this.buchungen = buchungen;
-    }
 }

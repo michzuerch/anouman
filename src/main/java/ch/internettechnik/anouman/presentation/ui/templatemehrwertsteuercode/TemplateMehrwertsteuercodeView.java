@@ -142,10 +142,8 @@ public class TemplateMehrwertsteuercodeView extends VerticalLayout implements Vi
         buchhaltung.getTemplateKontoklasses().stream().forEach(templateKontoklasse -> {
             templateKontoklasse.getTemplateKontohauptgruppes().stream().forEach(templateKontohauptgruppe -> {
                 templateKontohauptgruppe.getTemplateKontogruppes().stream().forEach(templateKontogruppe -> {
-                    templateKontogruppe.getTemplateSammelkontos().stream().forEach(templateSammelkonto -> {
-                        templateSammelkonto.getTemplateKontos().stream().forEach(templateKonto -> {
+                    templateKontogruppe.getTemplateKontos().stream().forEach(templateKonto -> {
                             list.add(templateKonto);
-                        });
                     });
                 });
             });

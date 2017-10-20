@@ -1,6 +1,7 @@
 package ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade;
 
 import ch.internettechnik.anouman.backend.entity.TemplateKonto;
+import ch.internettechnik.anouman.backend.entity.TemplateKontogruppe;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.repository.TemplateKontoRepository;
 
 import javax.ejb.Stateless;
@@ -30,5 +31,9 @@ public class TemplateKontoFacade {
 
     public List<TemplateKonto> findByBezeichnungLikeIgnoreCase(String bezeichnung) {
         return repo.findByBezeichnungLikeIgnoreCase(bezeichnung);
+    }
+
+    public List<TemplateKonto> findByTemplateKontogruppe(TemplateKontogruppe templateKontogruppe) {
+        return repo.findByTemplateKontogruppe(templateKontogruppe);
     }
 }

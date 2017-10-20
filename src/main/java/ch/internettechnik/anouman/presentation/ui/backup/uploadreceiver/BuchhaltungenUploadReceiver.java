@@ -30,7 +30,7 @@ public class BuchhaltungenUploadReceiver implements Serializable, Upload.Receive
     KontogruppeFacade kontogruppeFacade;
 
     @Inject
-    KontoartFacade kontoartFacade;
+    KontohauptgruppeFacade kontohauptgruppeFacade;
 
     @Inject
     KontoFacade kontoFacade;
@@ -83,7 +83,7 @@ public class BuchhaltungenUploadReceiver implements Serializable, Upload.Receive
                         kontohauptgruppe.setBezeichnung(backupKontohauptgruppe.getBezeichnung());
                         kontohauptgruppe.setKontonummer(backupKontohauptgruppe.getKontonummer());
                         kontohauptgruppe.setKontoklasse(kontoklasse);
-                        kontohauptgruppe = kontogruppeFacade.save(kontohauptgruppe);
+                        kontohauptgruppe = kontohauptgruppeFacade.save(kontohauptgruppe);
                         kontoklasse.getKontohauptgruppes().add(kontohauptgruppe);
                         kontoklasse = kontoklasseFacade.save(kontoklasse);
 
@@ -92,33 +92,19 @@ public class BuchhaltungenUploadReceiver implements Serializable, Upload.Receive
                             kontogruppe.setBezeichnung(backupKontogruppe.getBezeichnung());
                             kontogruppe.setKontonummer(backupKontogruppe.getKontonummer());
                             kontogruppe.setKontohauptgruppe(kontohauptgruppe);
-                            kontogruppe = kontoartFacade.save(kontogruppe);
+                            kontogruppe = kontogruppeFacade.save(kontogruppe);
                             kontohauptgruppe.getKontogruppes().add(kontogruppe);
-                            kontohauptgruppe = kontogruppeFacade.save(kontohauptgruppe);
+                            kontohauptgruppe = kontohauptgruppeFacade.save(kontohauptgruppe);
 
 
-                            for (BackupSammelkonto backupSammelkonto : backupKontogruppe.getSammelkontos()) {
-                                Sammelkonto sammelkonto = new Sammelkonto();
-                                sammelkonto.setBezeichnung(backupSammelkonto.getBezeichnung());
-                                sammelkonto.setKontonummer(backupSammelkonto.getKontonummer());
-                                sammelkonto.setKontogruppe(kontogruppe);
-                                sammelkonto = sammelkontoFacade.save(sammelkonto);
-                                kontogruppe.getKontos().add(sammelkonto);
-                                kontogruppe = kontoartFacade.save(kontogruppe);
-
-                                for (BackupKonto backupKonto : backupSammelkonto.getKontos()) {
-                                    Konto konto = new Konto();
-                                    konto.setBezeichnung(backupKonto.getBezeichnung());
-                                    konto.setBemerkung(backupKonto.getBemerkung());
-                                    konto.setKontonummer(backupKonto.getKontonummer());
-                                    konto.setAnfangsbestand(backupKonto.getAnfangsbestand());
-                                    konto.setSammelkonto(sammelkonto);
-                                    konto = kontoFacade.save(konto);
-                                    sammelkonto.getKontos().add(konto);
-                                    sammelkonto = sammelkontoFacade.save(sammelkonto);
-
-                                    //@todo Unterbuchungen auch Sichern!
-                                }
+                            for (BackupKonto backupKonto : backupKontogruppe.getKontos()) {
+                                Konto konto = new Konto();
+                                konto.setBezeichnung(backupKonto.getBezeichnung());
+                                konto.setKontonummer(backupKonto.getKontonummer());
+                                konto.setKontogruppe(kontogruppe);
+                                konto = kontoFacade.save(konto);
+                                kontogruppe.getKontos().add(konto);
+                                kontogruppe = kontogruppeFacade.save(kontogruppe);
                             }
                         }
                     }

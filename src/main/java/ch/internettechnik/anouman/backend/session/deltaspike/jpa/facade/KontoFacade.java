@@ -1,6 +1,7 @@
 package ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade;
 
 import ch.internettechnik.anouman.backend.entity.Konto;
+import ch.internettechnik.anouman.backend.entity.Kontogruppe;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.repository.KontoRepository;
 
 import javax.ejb.Stateless;
@@ -30,6 +31,10 @@ public class KontoFacade {
 
     public List<Konto> findByBezeichnungLikeIgnoreCase(String bezeichnung) {
         return repo.findByBezeichnungLikeIgnoreCase(bezeichnung);
+    }
+
+    public List<Konto> findByKontogruppe(Kontogruppe kontogruppe) {
+        return repo.findByKontogruppe(kontogruppe);
     }
 
 }

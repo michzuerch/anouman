@@ -27,6 +27,8 @@ public class BackupKonto {
     private Long id;
     @XmlElement(name = "buchung")
     private Set<BackupBuchung> buchungen = new HashSet<>();
+    @XmlElement(name = "mehrwersteuercode")
+    private Set<BackupMehrwertsteuercode> mehrwertsteuercodes = new HashSet<>();
 
     public BackupKonto() {
     }
@@ -69,6 +71,22 @@ public class BackupKonto {
 
     public void setShowKontonummer(String showKontonummer) {
         this.showKontonummer = showKontonummer;
+    }
+
+    public Set<BackupBuchung> getBuchungen() {
+        return buchungen;
+    }
+
+    public void setBuchungen(Set<BackupBuchung> buchungen) {
+        this.buchungen = buchungen;
+    }
+
+    public Set<BackupMehrwertsteuercode> getMehrwertsteuercodes() {
+        return mehrwertsteuercodes;
+    }
+
+    public void setMehrwertsteuercodes(Set<BackupMehrwertsteuercode> mehrwertsteuercodes) {
+        this.mehrwertsteuercodes = mehrwertsteuercodes;
     }
 
     public Long getId() {
