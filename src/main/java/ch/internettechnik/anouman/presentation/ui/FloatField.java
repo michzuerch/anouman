@@ -13,10 +13,17 @@ public class FloatField extends AbstractNumberField<FloatField, Float> {
         setSizeUndefined();
     }
 
+    @Override
+    protected void configureHtmlElement() {
+        s.setProperty("type", getHtmlFieldType());
+        // prevent all but numbers with a simple js
+        s.setJavaScriptEventHandler("keypress",
+                "function(e) {var c = viritin.getChar(e); return c==null || /^[.\\d\\n\\t\\r]+$/.test(c);}");
+    }
+
     public FloatField(String caption) {
         setCaption(caption);
     }
-
     @Override
     protected void userInputToValue(String str) {
         if (StringUtils.isNotBlank(str)) {

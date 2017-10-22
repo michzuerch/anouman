@@ -33,6 +33,8 @@ public class Buchhaltung extends AbstractEntity {
     @OneToMany(mappedBy = "buchhaltung", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Mehrwertsteuercode> mehrwertsteuercode = new ArrayList<>();
 
+    @OneToMany(mappedBy = "buchhaltung", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Buchung> buchungs = new ArrayList<>();
 
     public Buchhaltung() {
     }
@@ -59,6 +61,14 @@ public class Buchhaltung extends AbstractEntity {
 
     public void setKontoklasse(List<Kontoklasse> kontoklasse) {
         this.kontoklasse = kontoklasse;
+    }
+
+    public List<Buchung> getBuchungs() {
+        return buchungs;
+    }
+
+    public void setBuchungs(List<Buchung> buchungs) {
+        this.buchungs = buchungs;
     }
 
     public List<Mehrwertsteuercode> getMehrwertsteuercode() {

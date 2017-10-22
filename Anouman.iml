@@ -80,6 +80,8 @@
     <orderEntry type="library" name="Maven: com.vaadin:vaadin-client-compiled:8.2-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: com.vaadin:vaadin-themes:8.2-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: org.vaadin.blackbluegl:calendar-component:2.0-BETA3" level="project" />
+    <orderEntry type="library" name="Maven: com.github.appreciated:app-layout-addon:0.9.8" level="project" />
+    <orderEntry type="library" name="Maven: org.ocpsoft.prettytime:prettytime:4.0.1.Final" level="project" />
     <orderEntry type="library" name="Maven: com.vaadin:vaadin-cdi:2.0.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.deltaspike.core:deltaspike-core-api:1.8.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.deltaspike.core:deltaspike-core-impl:1.8.0" level="project" />

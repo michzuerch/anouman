@@ -5,11 +5,14 @@
 @import "../../../VAADIN/addons/vaadin-icons/vaadin-icons.scss";
 /* Provided by calendar-component-2.0-BETA3.jar */
 @import "../../../VAADIN/addons/calendar/calendar-addon.scss";
+/* Provided by app-layout-addon-0.9.8.jar */
+@import "../../../VAADIN/addons/app-layout/app-layout.scss";
 
 
 /* Import and include this mixin into your project theme to include the addon themes */
 @mixin addons {
 	@include vaadin-icons;
   @include calendar-addon;
+  @include app-layout;
 }
 

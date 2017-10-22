@@ -17,7 +17,7 @@ public class KontogruppeForm extends AbstractForm<Kontogruppe> {
     @Override
     public Window openInModalPopup() {
         final Window openInModalPopup = super.openInModalPopup();
-        openInModalPopup.setCaption("Kontohauptgruppe");
+        openInModalPopup.setCaption("Kontogruppe");
         openInModalPopup.setWidth("400px");
         return openInModalPopup;
     }

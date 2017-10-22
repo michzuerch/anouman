@@ -17,6 +17,7 @@ import com.vaadin.ui.themes.ValoTheme;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -79,11 +80,27 @@ public class BuchhaltungTreeView extends VerticalLayout implements View {
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
+        buchhaltungSelect = createBuchhaltungSelect();
+        buchhaltungSelect.setWidth(30, Unit.PERCENTAGE);
+        if (viewChangeEvent.getParameters() != null) {
+            String[] msgs = viewChangeEvent.getParameters().split("/");
+            String target = new String();
+            Long id = new Long(0);
+            for (String msg : msgs) {
+                if (target.isEmpty()) {
+                    target = msg;
+                } else {
+                    id = Long.valueOf(msg);
+                }
+            }
+            if (target.equals("id")) {
+                buchhaltungSelect.setSelectedItem(buchhaltungFacade.findBy(id));
+            }
+        }
+
         setStyleName("anouman-background");
         HorizontalLayout toolsLayout = new HorizontalLayout();
         HorizontalLayout bodyLayout = new HorizontalLayout();
-        buchhaltungSelect = createBuchhaltungSelect();
-        buchhaltungSelect.setWidth(30, Unit.PERCENTAGE);
 
         addBuchhaltungBtn = createButtonAddBuchhaltung();
         windowMehrwertsteuercode = createMehrwertsteuerWindow(buchhaltungSelect.getValue());
@@ -194,7 +211,11 @@ public class BuchhaltungTreeView extends VerticalLayout implements View {
         Button button = new Button("Erstelle Buchhaltung");
         button.setIcon(VaadinIcons.ASTERISK);
         button.addClickListener(event -> {
-            buchhaltungForm.setEntity(new Buchhaltung());
+            Buchhaltung buchhaltung = new Buchhaltung();
+            LocalDate currentDate = LocalDate.now();
+            buchhaltung.setJahr(currentDate.getYear());
+
+            buchhaltungForm.setEntity(buchhaltung);
             buchhaltungForm.openInModalPopup();
             buchhaltungForm.setSavedHandler(val -> {
                 val = buchhaltungFacade.save(val);
@@ -676,6 +697,11 @@ public class BuchhaltungTreeView extends VerticalLayout implements View {
                     list.add(valKG);
                     buchhaltungTreeData.addItem(valHG, valKG);
                     if (valKG.getId() == selectId) buchhaltungTree.select(valKG);
+                    kontogruppe.getKontos().forEach(konto -> {
+                        BuchhaltungTreeData valKO = new BuchhaltungTreeData(konto.getId(), "KO", konto.getBezeichnung() + " KoNr:" + konto.getShowKontonummer());
+                        list.add(valKO);
+                        if (valKO.getId() == selectId) buchhaltungTree.select(valKO);
+                    });
                 });
             });
         });

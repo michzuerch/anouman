@@ -26,6 +26,7 @@ public class BuchhaltungForm extends AbstractForm<Buchhaltung> {
     @Override
     public Window openInModalPopup() {
         final Window openInModalPopup = super.openInModalPopup();
+        openInModalPopup.setCaption("Buchhaltung");
         openInModalPopup.setWidth("400px");
         return openInModalPopup;
     }

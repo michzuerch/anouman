@@ -18,7 +18,7 @@ public class KontoklasseForm extends AbstractForm<Kontoklasse> {
     @Override
     public Window openInModalPopup() {
         final Window openInModalPopup = super.openInModalPopup();
-        openInModalPopup.setCaption("Template Kontoklasse");
+        openInModalPopup.setCaption("Kontoklasse");
         openInModalPopup.setWidth("400px");
         return openInModalPopup;
     }

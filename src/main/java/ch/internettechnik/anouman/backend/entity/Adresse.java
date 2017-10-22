@@ -1,6 +1,9 @@
 package ch.internettechnik.anouman.backend.entity;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 import javax.validation.constraints.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,18 +12,6 @@ import java.util.List;
  * Created by michzuerch on 03.03.15.
  */
 @Entity
-@NamedQueries({
-        @NamedQuery(name = "Adresse.findAll", query = "SELECT a FROM Adresse a"),
-        @NamedQuery(name = "Adresse.findById", query = "SELECT a FROM Adresse a where a.id = :id"),
-        @NamedQuery(name = "Adresse.findByFirma", query = "SELECT a FROM Adresse a where a.firma = :firma"),
-        @NamedQuery(name = "Adresse.findByNachname", query = "SELECT a FROM Adresse a where a.nachname = :nachname"),
-        @NamedQuery(name = "Adresse.findByOrt", query = "SELECT a FROM Adresse a where a.ort = :ort"),
-        @NamedQuery(name = "Adresse.findByFirmaNachname", query = "SELECT a FROM Adresse a where a.firma = :firma and a.nachname = :nachname"),
-        @NamedQuery(name = "Adresse.findByFirmaOrt", query = "SELECT a FROM Adresse a where a.firma = :firma and a.ort = :ort"),
-        @NamedQuery(name = "Adresse.findByFirmaNachnameOrt", query = "SELECT a FROM Adresse a where a.firma = :firma and a.nachname = :nachname and a.ort = :ort"),
-        @NamedQuery(name = "Adresse.findByNachnameOrt", query = "SELECT a FROM Adresse a where a.nachname = :nachname and a.ort = :ort")
-})
-
 //@Email(message = "Email Address is not a valid format")
 
 public class Adresse extends AbstractEntity {

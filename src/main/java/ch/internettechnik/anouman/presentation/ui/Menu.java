@@ -129,6 +129,13 @@ public class Menu extends CustomComponent {
             }
         });
 
+        buchhaltungbuchhaltungMenu.addItem("Buchungsmaske", VaadinIcons.ABACUS, new MenuBar.Command() {
+            @Override
+            public void menuSelected(MenuBar.MenuItem selectedItem) {
+                getUI().getNavigator().navigateTo("Buchungsmaske");
+            }
+        });
+
         MenuBar.MenuItem templateBuchhaltungMenu = buchhaltungenMenu.addItem("Kontoplan", VaadinIcons.MAGIC, null);
 
         templateBuchhaltungMenu.addItem("Template Buchhaltung", VaadinIcons.ROAD, new MenuBar.Command() {

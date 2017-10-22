@@ -5,21 +5,27 @@ import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.*;
 import ch.internettechnik.anouman.presentation.ui.Menu;
 import ch.internettechnik.anouman.presentation.ui.templatebuchhaltung.TemplateBuchhaltungTreeView;
 import com.vaadin.cdi.CDIView;
+import com.vaadin.data.BeanValidationBinder;
+import com.vaadin.data.StatusChangeEvent;
+import com.vaadin.data.StatusChangeListener;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.ui.FormLayout;
-import com.vaadin.ui.NativeSelect;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
 import org.slf4j.LoggerFactory;
+import org.vaadin.viritin.fields.IntegerField;
 
 import javax.inject.Inject;
+import java.time.LocalDate;
 
 @CDIView(value = "BuchhaltungCreate")
 public class BuchhaltungCreateView extends VerticalLayout implements View {
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(TemplateBuchhaltungTreeView.class.getName());
+    private BeanValidationBinder<Buchhaltung> binder = new BeanValidationBinder<>(Buchhaltung.class);
+    private TextField bezeichnungField = new TextField("Bezeichnung");
+    private IntegerField jahrField = new IntegerField("Jahr");
+    private NativeSelect<TemplateBuchhaltung> templateBuchhaltungSelect = new NativeSelect<>();
+    private Button createBuchhaltungBtn = new Button("Erstelle Buchhaltung");
 
-    NativeSelect<TemplateBuchhaltung> templateBuchhaltungSelect = new NativeSelect<>();
     @Inject
     BuchhaltungFacade buchhaltungFacade;
     @Inject
@@ -37,6 +43,7 @@ public class BuchhaltungCreateView extends VerticalLayout implements View {
     @Inject
     private Menu menu;
 
+
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
         templateBuchhaltungSelect.setCaption("Template Buchhaltung");
@@ -45,29 +52,47 @@ public class BuchhaltungCreateView extends VerticalLayout implements View {
         templateBuchhaltungSelect.setEmptySelectionAllowed(false);
         templateBuchhaltungSelect.setSelectedItem(templateBuchhaltungFacade.findAll().get(0));
 
+        binder.forField(bezeichnungField).bind(Buchhaltung::getBezeichnung, Buchhaltung::setBezeichnung);
+        binder.forField(jahrField).bind(Buchhaltung::getJahr, Buchhaltung::setJahr);
+        createBuchhaltungBtn.setEnabled(false);
+
+
         Buchhaltung buchhaltung = new Buchhaltung();
-        buchhaltung.setJahr(2017);
+        LocalDate currentDate = LocalDate.now();
+        buchhaltung.setJahr(currentDate.getYear());
+        binder.setBean(buchhaltung);
+
+        binder.addStatusChangeListener(new StatusChangeListener() {
+            @Override
+            public void statusChange(StatusChangeEvent statusChangeEvent) {
+                if (binder.isValid()) {
+                    createBuchhaltungBtn.setEnabled(true);
+                } else {
+                    createBuchhaltungBtn.setEnabled(false);
+                }
+            }
+        });
+
         buchhaltungForm.setEntity(buchhaltung);
         FormLayout layout = new FormLayout();
-        layout.addComponents(templateBuchhaltungSelect, buchhaltungForm.createContent(), buchhaltungForm.getToolbar());
+        layout.addComponents(templateBuchhaltungSelect, bezeichnungField, jahrField, createBuchhaltungBtn);
         addComponent(menu);
         addComponent(layout);
 
-        buchhaltungForm.setSavedHandler(val -> {
-            if (buchhaltungForm.getBinder().isValid()) {
-
+        createBuchhaltungBtn.addClickListener(clickEvent -> {
+            if (binder.isValid()) {
                 TemplateBuchhaltung templateBuchhaltung = templateBuchhaltungSelect.getValue();
                 templateBuchhaltung = templateBuchhaltungFacade.findBy(templateBuchhaltung.getId());
-
-                val = buchhaltungFacade.save(val);
+                Buchhaltung buchhaltung1 = binder.getBean();
+                buchhaltung1 = buchhaltungFacade.save(buchhaltung1);
                 for (TemplateKontoklasse templateKontoklasse : templateBuchhaltung.getTemplateKontoklasses()) {
                     Kontoklasse kontoklasse = new Kontoklasse();
                     kontoklasse.setBezeichnung(templateKontoklasse.getBezeichnung());
                     kontoklasse.setKontonummer(templateKontoklasse.getKontonummer());
-                    kontoklasse.setBuchhaltung(val);
+                    kontoklasse.setBuchhaltung(buchhaltung1);
                     kontoklasse = kontoklasseFacade.save(kontoklasse);
-                    val.getKontoklasse().add(kontoklasse);
-                    val = buchhaltungFacade.save(val);
+                    buchhaltung1.getKontoklasse().add(kontoklasse);
+                    buchhaltung1 = buchhaltungFacade.save(buchhaltung1);
 
                     for (TemplateKontohauptgruppe templateKontohauptgruppe : templateKontoklasse.getTemplateKontohauptgruppes()) {
                         Kontohauptgruppe kontohauptgruppe = new Kontohauptgruppe();
@@ -99,9 +124,11 @@ public class BuchhaltungCreateView extends VerticalLayout implements View {
                         }
                     }
                 }
-                val = buchhaltungFacade.save(val);
-                Notification.show("Buchhaltung erstellt id: " + val.getId());
+                buchhaltung1 = buchhaltungFacade.save(buchhaltung1);
+                Notification.show("Buchhaltung erstellt id: " + buchhaltung1.getId());
+                UI.getCurrent().getNavigator().navigateTo("BuchhaltungTree/id/" + buchhaltung1.getId());
             }
+
         });
     }
 }

@@ -407,6 +407,8 @@ public class BackupView extends VerticalLayout implements View {
     }).setFileName("AdresseRechnungenAnouman.xml")
             .withCaption("Datei mit Adresse, Rechnungen, Rechnungspositionen, Aufwand herunterladen").withIcon(VaadinIcons.DOWNLOAD);
 
+
+    private ComboBox<Buchhaltung> listBuchhaltungen = new ComboBox<>();
     Button downloaderBuchhaltung = new DownloadButton(stream -> {
         JAXBContext jaxbContext = null;
         Buchhaltung buchhaltung = listBuchhaltungen.getValue();

@@ -6,6 +6,9 @@
         http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
     <persistence-unit name="AnoumanPU" transaction-type="JTA">
         <jta-data-source>java:jboss/datasources/PostgreSQLDS</jta-data-source>
+        <class>ch.internettechnik.anouman.backend.entity.Artikelkategorie</class>
+        <class>ch.internettechnik.anouman.backend.entity.Artikel</class>
+        <class>ch.internettechnik.anouman.backend.entity.Artikelbild</class>
         <class>ch.internettechnik.anouman.backend.entity.Adresse</class>
         <class>ch.internettechnik.anouman.backend.entity.Aufwand</class>
         <class>ch.internettechnik.anouman.backend.entity.Buchhaltung</class>
@@ -19,7 +22,6 @@
         <class>ch.internettechnik.anouman.backend.entity.Rechnung</class>
         <class>ch.internettechnik.anouman.backend.entity.Rechnungsposition</class>
         <class>ch.internettechnik.anouman.backend.entity.ReportTemplate</class>
-        <class>ch.internettechnik.anouman.backend.entity.TemplateSammelkonto</class>
         <class>ch.internettechnik.anouman.backend.entity.TemplateKonto</class>
         <class>ch.internettechnik.anouman.backend.entity.TemplateKontohauptgruppe</class>
         <class>ch.internettechnik.anouman.backend.entity.TemplateKontogruppe</class>
@@ -29,6 +31,9 @@
         <class>ch.internettechnik.anouman.backend.entity.Unterbuchung</class>
         <class>ch.internettechnik.anouman.backend.entity.Uzer</class>
         <class>ch.internettechnik.anouman.backend.entity.UzerRole</class>
+        <class>ch.internettechnik.anouman.backend.entity.ReportCSS</class>
+        <class>ch.internettechnik.anouman.backend.entity.ReportCSSElement</class>
+        <class>ch.internettechnik.anouman.backend.entity.ReportFOPXsl</class>
         <properties>
             <property name="hibernate.cache.use_second_level_cache" value="true"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
