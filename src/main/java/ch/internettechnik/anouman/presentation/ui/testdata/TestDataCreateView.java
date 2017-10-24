@@ -61,6 +61,12 @@ public class TestDataCreateView extends VerticalLayout implements View {
     @Inject
     TemplateMehrwertsteuercodeFacade templateMehrwertsteuercodeFacade;
 
+    @Inject
+    ArtikelkategorieFacade artikelkategorieFacade;
+
+    @Inject
+    ArtikelFacade artikelFacade;
+
     private void createTestDataUzer() {
         UzerRole roleAdmin = new UzerRole();
         roleAdmin.setRole("admin");
@@ -103,6 +109,26 @@ public class TestDataCreateView extends VerticalLayout implements View {
 
         Notification.show("Testdaten User erstellt", Notification.Type.TRAY_NOTIFICATION);
 
+    }
+
+    private void createArtikelstamm() {
+        Artikelkategorie artikelkategorie = new Artikelkategorie();
+        artikelkategorie.setBezeichnung("Futtermittel");
+        artikelkategorie = artikelkategorieFacade.save(artikelkategorie);
+
+        Artikel artikel = new Artikel();
+        artikel.setArtikelkategorie(artikelkategorie);
+        artikel.setAnzahl(120f);
+        artikel.setBezeichnung("Notebook");
+        artikel.setBezeichnungLang("Acer Aspire E15 E-5575G-56GU");
+        artikel.setMengeneinheit("Stück");
+        artikel.setStueckpreis(975f);
+
+        artikel = artikelFacade.save(artikel);
+        artikelkategorie.getArtikels().add(artikel);
+        artikelkategorie = artikelkategorieFacade.save(artikelkategorie);
+
+        Notification.show("Testdaten Artikelstamm und Artikel erstellt", Notification.Type.TRAY_NOTIFICATION);
     }
 
     private void createTestDataRechnung() {
@@ -276,11 +302,17 @@ public class TestDataCreateView extends VerticalLayout implements View {
         });
         uzerTestBtn.setIcon(VaadinIcons.CAMERA);
 
-        Button testCreateTemplateBuchhaltung = new Button("Test Create Template Buchhaltung", clickEvent -> {
+        Button createTemplateBuchhaltungBtn = new Button("Test Create Template Buchhaltung", clickEvent -> {
             createTestDataTemplateBuchhaltung();
         });
-        testCreateTemplateBuchhaltung.setIcon(VaadinIcons.TOOTH);
-        addComponents(menu, rechnungTestBtn, testCreateTemplateBuchhaltung);
+        createTemplateBuchhaltungBtn.setIcon(VaadinIcons.TOOTH);
+
+        Button createArtikelstammBtn = new Button("Create Testdata Artikelstramm", clickEvent -> {
+            createArtikelstamm();
+        });
+        createArtikelstammBtn.setIcon(VaadinIcons.EYE);
+
+        addComponents(menu, rechnungTestBtn, createTemplateBuchhaltungBtn, createArtikelstammBtn);
     }
 
     @Override

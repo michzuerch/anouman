@@ -1,6 +1,7 @@
 package ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade;
 
 import ch.internettechnik.anouman.backend.entity.Artikel;
+import ch.internettechnik.anouman.backend.entity.Artikelkategorie;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.repository.ArtikelRepository;
 
 import javax.ejb.Stateless;
@@ -32,4 +33,11 @@ public class ArtikelFacade {
         return repo.findByBezeichnungLikeIgnoreCase(bezeichnung);
     }
 
+    public List<Artikel> findByArtikelkategorieAndBezeichnungLikeIgnoreCase(Artikelkategorie artikelkategorie, String bezeichnung) {
+        return repo.findByArtikelkategorieAndBezeichnungLikeIgnoreCase(artikelkategorie, bezeichnung);
+    }
+
+    public List<Artikel> findByArtikelkategorie(Artikelkategorie artikelkategorie) {
+        return repo.findByArtikelkategorie(artikelkategorie);
+    }
 }

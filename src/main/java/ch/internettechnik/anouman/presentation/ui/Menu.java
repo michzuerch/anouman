@@ -158,6 +158,31 @@ public class Menu extends CustomComponent {
             }
         });
 
+        MenuBar.MenuItem artikelstammMenu = menuBar.addItem("Artikelstamm", null);
+        artikelstammMenu.setIcon(VaadinIcons.HAMMER);
+
+        artikelstammMenu.addItem("Artikelkategorie", VaadinIcons.SCREWDRIVER, new MenuBar.Command() {
+            @Override
+            public void menuSelected(MenuBar.MenuItem menuItem) {
+                getUI().getNavigator().navigateTo("Artikelkategorie");
+            }
+        });
+
+        artikelstammMenu.addItem("Artikelbild", VaadinIcons.DIAMOND, new MenuBar.Command() {
+            @Override
+            public void menuSelected(MenuBar.MenuItem menuItem) {
+                getUI().getNavigator().navigateTo("Artikelbild");
+            }
+        });
+
+        artikelstammMenu.addItem("Artikel", VaadinIcons.MAGIC, new MenuBar.Command() {
+            @Override
+            public void menuSelected(MenuBar.MenuItem menuItem) {
+                getUI().getNavigator().navigateTo("Artikel");
+            }
+        });
+
+
         MenuBar.MenuItem testsMenu = menuBar.addItem("Tests", null);
         testsMenu.setIcon(VaadinIcons.TEETH);
 
