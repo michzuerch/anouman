@@ -82,15 +82,23 @@ public class ArtikelbildView extends VerticalLayout implements View {
         tools.addComponents(filterTextTitel, clearFilterTextBtn, addBtn);
         tools.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 
-        grid.setCaption("Artikel");
+        grid.setCaption("Artikelbild");
         grid.setCaptionAsHtml(true);
         grid.addColumn(Artikelbild::getId).setCaption("id");
         grid.addColumn(Artikelbild::getTitel).setCaption("Titel");
+        grid.addColumn(Artikelbild::getSize).setCaption("Size");
+
+//        grid.addColumn(artikelbild -> artikelbild.getArtikel().getBezeichnung() + " id:" + artikelbild.getArtikel().getId(),
+//                new ButtonRenderer(event -> {
+//                    Artikelbild artikelbild = (Artikelbild) event.getItem();
+//                    UI.getCurrent().getNavigator().navigateTo("Artikel/id/" + artikelbild.getArtikel().getId());
+//                })
+//        ).setCaption("Artikel").setStyleGenerator(item -> "v-align-center");
 
         grid.setSizeFull();
 
         // Render a button that deletes the data row (item)
-        grid.addColumn(aufwand -> "löschen",
+        grid.addColumn(artikelbild -> "löschen",
                 new ButtonRenderer(event -> {
                     Notification.show("Lösche Artikelbild id:" + event.getItem(), Notification.Type.HUMANIZED_MESSAGE);
                     artikelbildFacade.delete((Artikelbild) event.getItem());

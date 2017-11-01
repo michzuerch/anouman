@@ -36,6 +36,7 @@
           <element id="library" level="project" name="Maven: org.vaadin.blackbluegl:calendar-component:2.0-BETA3" />
           <element id="library" level="project" name="Maven: com.github.appreciated:app-layout-addon:0.9.8" />
           <element id="library" level="project" name="Maven: org.ocpsoft.prettytime:prettytime:4.0.1.Final" />
+          <element id="library" level="project" name="Maven: tm.kod:numberfield7:0.0.5" />
           <element id="library" level="project" name="Maven: com.vaadin:vaadin-cdi:2.0.0" />
           <element id="library" level="project" name="Maven: org.apache.deltaspike.core:deltaspike-core-api:1.8.0" />
           <element id="library" level="project" name="Maven: org.apache.deltaspike.core:deltaspike-core-impl:1.8.0" />

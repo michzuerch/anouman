@@ -33,6 +33,10 @@ public class RechnungForm extends AbstractForm<Rechnung> {
         super(Rechnung.class);
     }
 
+    public void lockSelect() {
+        adresse.setEnabled(false);
+    }
+
     @Override
     public Window openInModalPopup() {
         final Window openInModalPopup = super.openInModalPopup();
@@ -48,6 +52,7 @@ public class RechnungForm extends AbstractForm<Rechnung> {
         adresse.setItemCaptionGenerator(item -> item.getFirma() + " id:" + item.getId());
         adresse.setItems(facade.findAll());
 
+        // @todo In EJB umstellen auf LocalDate
         getBinder().forField(rechnungsdatum)
                 .withConverter(new com.vaadin.data.converter.LocalDateToDateConverter())
                 .bind("rechnungsdatum");

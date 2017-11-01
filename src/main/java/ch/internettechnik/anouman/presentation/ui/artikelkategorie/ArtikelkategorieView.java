@@ -86,6 +86,14 @@ public class ArtikelkategorieView extends VerticalLayout implements View {
         grid.setCaptionAsHtml(true);
         grid.addColumn(Artikelkategorie::getId).setCaption("id");
         grid.addColumn(Artikelkategorie::getBezeichnung).setCaption("Bezeichnung");
+        grid.addColumn(artikelkategorie -> artikelkategorie.getArtikels().size(), new ButtonRenderer(event -> {
+            Artikelkategorie artikelkategorie = (Artikelkategorie) event.getItem();
+            if (artikelkategorie.getArtikels().size() > 0) {
+                UI.getCurrent().getNavigator().navigateTo("Artikel/artikelkategorieId/" + artikelkategorie.getId().toString());
+
+            }
+        })).setCaption("Anzahl Artikel").setStyleGenerator(item -> "v-align-center");
+
 
         grid.setSizeFull();
 

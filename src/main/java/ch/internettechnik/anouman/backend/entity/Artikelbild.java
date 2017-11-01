@@ -42,4 +42,10 @@ public class Artikelbild extends AbstractEntity {
     public void setArtikel(Artikel artikel) {
         this.artikel = artikel;
     }
+
+    public int getSize() {
+        if (getBild() != null) {
+            return getBild().length;
+        } else return 0;
+    }
 }

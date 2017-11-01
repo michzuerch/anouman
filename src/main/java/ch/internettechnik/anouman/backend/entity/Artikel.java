@@ -1,6 +1,7 @@
 package ch.internettechnik.anouman.backend.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,10 +27,11 @@ public class Artikel extends AbstractEntity {
 
     @Column
     @NotNull
-    private Float anzahl;
+    private Double anzahl;
 
     @Column
-    private Float stueckpreis;
+    @Digits(integer = 8, fraction = 2, message = "Muss ein gültiger Betrag sein")
+    private Double stueckpreis;
 
     public String getBezeichnung() {
         return bezeichnung;
@@ -71,19 +73,19 @@ public class Artikel extends AbstractEntity {
         this.mengeneinheit = mengeneinheit;
     }
 
-    public Float getAnzahl() {
+    public Double getAnzahl() {
         return anzahl;
     }
 
-    public void setAnzahl(Float anzahl) {
+    public void setAnzahl(Double anzahl) {
         this.anzahl = anzahl;
     }
 
-    public Float getStueckpreis() {
+    public Double getStueckpreis() {
         return stueckpreis;
     }
 
-    public void setStueckpreis(Float stueckpreis) {
+    public void setStueckpreis(Double stueckpreis) {
         this.stueckpreis = stueckpreis;
     }
 }

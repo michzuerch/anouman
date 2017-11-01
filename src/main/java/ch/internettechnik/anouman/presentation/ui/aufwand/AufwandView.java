@@ -107,6 +107,15 @@ public class AufwandView extends VerticalLayout implements View {
         grid.addColumn(Aufwand::getStart).setCaption("Startzeit");
         grid.addColumn(Aufwand::getEnde).setCaption("Endzeit");
         grid.addColumn(Aufwand::getDauerInStunden).setCaption("Dauer in Stunden");
+        grid.addColumn(aufwand -> aufwand.getRechnung().getBezeichnung() + " " +
+                        aufwand.getRechnung().getAdresse().getNachname() + " " +
+                        aufwand.getRechnung().getAdresse().getOrt() + " id:" +
+                        aufwand.getRechnung().getId(),
+                new ButtonRenderer(event -> {
+                    Aufwand aufwand = (Aufwand) event.getItem();
+                    UI.getCurrent().getNavigator().navigateTo("Rechnung/id/" + aufwand.getRechnung().getId());
+                })
+        ).setCaption("Rechnung").setStyleGenerator(item -> "v-align-center");
 
         grid.setSizeFull();
 

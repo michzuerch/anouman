@@ -118,11 +118,11 @@ public class TestDataCreateView extends VerticalLayout implements View {
 
         Artikel artikel = new Artikel();
         artikel.setArtikelkategorie(artikelkategorie);
-        artikel.setAnzahl(120f);
+        artikel.setAnzahl(120d);
         artikel.setBezeichnung("Notebook");
         artikel.setBezeichnungLang("Acer Aspire E15 E-5575G-56GU");
         artikel.setMengeneinheit("Stück");
-        artikel.setStueckpreis(975f);
+        artikel.setStueckpreis(975d);
 
         artikel = artikelFacade.save(artikel);
         artikelkategorie.getArtikels().add(artikel);

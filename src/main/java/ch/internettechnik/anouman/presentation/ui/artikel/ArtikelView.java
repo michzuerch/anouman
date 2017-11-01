@@ -84,6 +84,8 @@ public class ArtikelView extends VerticalLayout implements View {
             grid.asSingleSelect().clear();
             Artikel artikel = new Artikel();
             artikel.setArtikelkategorie(artikelkategorieFacade.findAll().get(0));
+            artikel.setStueckpreis(0d);
+            artikel.setAnzahl(0d);
             if (!filterArtikelkategorie.isEmpty()) artikel.setArtikelkategorie(filterArtikelkategorie.getValue());
             artikelForm.setEntity(artikel);
             artikelForm.openInModalPopup();
@@ -106,6 +108,12 @@ public class ArtikelView extends VerticalLayout implements View {
         grid.addColumn(Artikel::getMengeneinheit).setCaption("Mengeneinheit");
         grid.addColumn(Artikel::getAnzahl).setCaption("Anzahl");
         grid.addColumn(Artikel::getStueckpreis).setCaption("Stückpreis");
+        grid.addColumn(artikel -> artikel.getArtikelkategorie().getBezeichnung() + " id:" + artikel.getArtikelkategorie().getId(),
+                new ButtonRenderer(event -> {
+                    Artikel artikel = (Artikel) event.getItem();
+                    UI.getCurrent().getNavigator().navigateTo("Artikelkategorie/id/" + artikel.getArtikelkategorie().getId());
+                })
+        ).setCaption("Artikelkategorie").setStyleGenerator(item -> "v-align-center");
 
         grid.setSizeFull();
 
