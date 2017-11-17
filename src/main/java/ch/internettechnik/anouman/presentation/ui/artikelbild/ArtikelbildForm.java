@@ -6,17 +6,14 @@ import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ArtikelF
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ArtikelbildFacade;
 import com.vaadin.cdi.ViewScoped;
 import com.vaadin.ui.*;
-import org.apache.commons.io.FileUtils;
+import org.vaadin.easyuploads.UploadField;
 import org.vaadin.viritin.form.AbstractForm;
 
 import javax.inject.Inject;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 
 @ViewScoped
-public class ArtikelbildForm extends AbstractForm<Artikelbild> implements Upload.Receiver, Upload.SucceededListener {
+public class ArtikelbildForm extends AbstractForm<Artikelbild> {
     @Inject
     ArtikelFacade artikelFacade;
 
@@ -25,7 +22,7 @@ public class ArtikelbildForm extends AbstractForm<Artikelbild> implements Upload
 
     NativeSelect<Artikel> artikel = new NativeSelect<>();
     TextField titel = new TextField("Titel");
-    Upload bild = new Upload();
+    UploadField bild = new UploadField();
 
     @Inject
     ArtikelbildFacade artikelbildFacade;
@@ -49,39 +46,14 @@ public class ArtikelbildForm extends AbstractForm<Artikelbild> implements Upload
     @Override
     protected Component createContent() {
         artikel.setCaption("Artikel");
+        bild.setCaption("Bild");
+        bild.setDisplayUpload(true);
+        bild.setFieldType(UploadField.FieldType.BYTE_ARRAY);
         artikel.setItemCaptionGenerator(artikel1 -> artikel1.getBezeichnung() + " id:" + artikel1.getId());
         artikel.setItems(artikelFacade.findAll());
         artikel.setEmptySelectionAllowed(false);
-        bild.setReceiver(this::receiveUpload);
         return new VerticalLayout(new FormLayout(
                 artikel, titel, bild
         ), getToolbar());
-    }
-
-    @Override
-    public OutputStream receiveUpload(String filename, String s1) {
-        OutputStream outputStream = null;
-        this.filename = filename;
-        try {
-            tempFile = File.createTempFile(this.filename, ".tmp");
-            outputStream = new FileOutputStream(tempFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return outputStream;
-    }
-
-    @Override
-    public void uploadSucceeded(Upload.SucceededEvent succeededEvent) {
-        try {
-            Artikelbild artikelbild = new Artikelbild();
-            byte[] bytes = FileUtils.readFileToByteArray(tempFile);
-            //bild.setValue(bytes);
-            //this.getEntity().setBild(bytes);
-            //this.getBinder().getBean().setBild(bytes);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        tempFile.deleteOnExit();
     }
 }
