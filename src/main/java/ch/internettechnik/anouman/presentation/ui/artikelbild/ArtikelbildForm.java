@@ -6,23 +6,23 @@ import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ArtikelF
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ArtikelbildFacade;
 import com.vaadin.cdi.ViewScoped;
 import com.vaadin.ui.*;
-import org.vaadin.easyuploads.UploadField;
 import org.vaadin.viritin.form.AbstractForm;
+import server.droporchoose.UploadComponent;
 
 import javax.inject.Inject;
-import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @ViewScoped
 public class ArtikelbildForm extends AbstractForm<Artikelbild> {
     @Inject
     ArtikelFacade artikelFacade;
 
-    File tempFile;
-    String filename;
-
     NativeSelect<Artikel> artikel = new NativeSelect<>();
     TextField titel = new TextField("Titel");
-    UploadField bild = new UploadField();
+    UploadComponent bild = new UploadComponent();
 
     @Inject
     ArtikelbildFacade artikelbildFacade;
@@ -39,21 +39,39 @@ public class ArtikelbildForm extends AbstractForm<Artikelbild> {
     public Window openInModalPopup() {
         final Window openInModalPopup = super.openInModalPopup();
         openInModalPopup.setCaption("Artikelbild");
-        openInModalPopup.setWidth("400px");
+        openInModalPopup.setWidth("500px");
         return openInModalPopup;
     }
 
     @Override
     protected Component createContent() {
         artikel.setCaption("Artikel");
-        bild.setCaption("Bild");
-        bild.setDisplayUpload(true);
-        bild.setFieldType(UploadField.FieldType.BYTE_ARRAY);
         artikel.setItemCaptionGenerator(artikel1 -> artikel1.getBezeichnung() + " id:" + artikel1.getId());
         artikel.setItems(artikelFacade.findAll());
         artikel.setEmptySelectionAllowed(false);
+
+        bild.setWidth(300, Unit.PIXELS);
+        bild.setHeight(200, Unit.PIXELS);
+        bild.setCaption("File upload");
+        bild.setReceivedCallback(this::uploadReceived);
+        // optional callbacks
+        //	uploadComponent.setStartedCallback(this::uploadStarted);
+        //	uploadComponent.setProgressCallback(this::uploadProgress);
+        //	uploadComponent.setFailedCallback(this::uploadFailed);
+
         return new VerticalLayout(new FormLayout(
                 artikel, titel, bild
         ), getToolbar());
+    }
+
+    private void uploadReceived(String fileName, Path path) {
+        //System.err.println("Upload finished: " + fileName + ", Path:" +path);
+        try {
+            byte[] data = Files.readAllBytes(Paths.get(path.toUri()));
+            getEntity().setBild(data);
+            System.err.println("len:" + data.length);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
