@@ -2,7 +2,7 @@ package ch.internettechnik.anouman.presentation.reports.rechnung;
 
 import ch.internettechnik.anouman.backend.entity.Adresse;
 import ch.internettechnik.anouman.backend.entity.Rechnung;
-import ch.internettechnik.anouman.backend.entity.ReportTemplate;
+import ch.internettechnik.anouman.backend.entity.report.jasper.ReportJasper;
 import ch.internettechnik.anouman.util.Runden;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -27,7 +27,7 @@ public class RechnungReportTool implements Serializable {
 
     //@todo java.lang.ClassNotFoundException: org.codehaus.groovy.control.CompilationFailedException
 
-    public static byte[] getPdf(Rechnung val, ReportTemplate reportTemplate) {
+    public static byte[] getPdf(Rechnung val, ReportJasper reportJasper) {
         JasperReport report;
         JasperPrint print;
         HashMap params = new HashMap();
@@ -83,7 +83,7 @@ public class RechnungReportTool implements Serializable {
 
         byte[] bytes = new byte[0];
         try {
-            byte[] template = reportTemplate.getTemplate();
+            byte[] template = reportJasper.getTemplate();
 
             JasperDesign jasperDesign = JRXmlLoader.load(new ByteArrayInputStream(template));
             report = JasperCompileManager.compileReport(jasperDesign);

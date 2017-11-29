@@ -1,6 +1,8 @@
 package ch.internettechnik.anouman.presentation.ui.artikelbild;
 
+import ch.internettechnik.anouman.backend.entity.Artikel;
 import ch.internettechnik.anouman.backend.entity.Artikelbild;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ArtikelFacade;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ArtikelbildFacade;
 import ch.internettechnik.anouman.presentation.ui.Menu;
 import com.vaadin.cdi.CDIView;
@@ -30,6 +32,9 @@ public class ArtikelbildView extends VerticalLayout implements View {
 
     @Inject
     private ArtikelbildFacade artikelbildFacade;
+
+    @Inject
+    private ArtikelFacade artikelFacade;
 
     @Inject
     private ArtikelbildForm artikelbildForm;
@@ -87,6 +92,7 @@ public class ArtikelbildView extends VerticalLayout implements View {
         grid.addColumn(Artikelbild::getId).setCaption("id");
         grid.addColumn(Artikelbild::getTitel).setCaption("Titel");
         grid.addColumn(Artikelbild::getSize).setCaption("Size");
+        grid.addColumn(Artikelbild::getMimetype).setCaption("Mimetype");
 
 //        grid.addColumn(bild -> bild.getArtikel().getBezeichnung() + " id:" + bild.getArtikel().getId(),
 //                new ButtonRenderer(event -> {
@@ -100,8 +106,14 @@ public class ArtikelbildView extends VerticalLayout implements View {
         // Render a button that deletes the data row (item)
         grid.addColumn(artikelbild -> "löschen",
                 new ButtonRenderer(event -> {
-                    Notification.show("Lösche Artikelbild id:" + event.getItem(), Notification.Type.HUMANIZED_MESSAGE);
-                    artikelbildFacade.delete((Artikelbild) event.getItem());
+                    Artikelbild bild = (Artikelbild) event.getItem();
+                    Notification.show("Lösche Artikelbild id:" + bild, Notification.Type.HUMANIZED_MESSAGE);
+
+                    Artikel artikel = artikelFacade.findBy(bild.getArtikel().getId());
+                    artikel.getArtikelbilds().remove(bild);
+                    artikelFacade.save(artikel);
+
+                    artikelbildFacade.delete(bild);
                     updateList();
                 })
         );

@@ -1,8 +1,8 @@
 package ch.internettechnik.anouman.presentation.ui.rechnung;
 
 import ch.internettechnik.anouman.backend.entity.Rechnung;
-import ch.internettechnik.anouman.backend.entity.ReportTemplate;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ReportTemplateFacade;
+import ch.internettechnik.anouman.backend.entity.report.jasper.ReportJasper;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ReportJasperFacade;
 import ch.internettechnik.anouman.presentation.reports.rechnung.RechnungReportTool;
 import com.vaadin.cdi.ViewScoped;
 import com.vaadin.icons.VaadinIcons;
@@ -20,10 +20,10 @@ public class RechnungPrintWindow extends CustomComponent {
     private static final Logger LOGGER = Logger.getLogger(RechnungView.class.getName());
 
     @Inject
-    ReportTemplateFacade reportTemplateFacade;
+    ReportJasperFacade reportJasperFacade;
 
     private Rechnung rechnung;
-    private ComboBox<ReportTemplate> reportSelect = new ComboBox<>();
+    private ComboBox<ReportJasper> reportSelect = new ComboBox<>();
     private TextField id = new TextField("Id");
     private TextField bezeichnung = new TextField("Bezeichnung");
     private TextField rechnungsdatum = new TextField("Rechnungsdatum");
@@ -77,9 +77,9 @@ public class RechnungPrintWindow extends CustomComponent {
     }
 
     protected Component createContent() {
-        reportSelect.setItems(reportTemplateFacade.findAll());
+        reportSelect.setItems(reportJasperFacade.findAll());
         reportSelect.setEmptySelectionAllowed(false);
-        reportSelect.setSelectedItem(reportTemplateFacade.findAll().get(0));
+        reportSelect.setSelectedItem(reportJasperFacade.findAll().get(0));
         reportSelect.setItemCaptionGenerator(reportTemplate -> reportTemplate.getBezeichnung());
         reportSelect.setCaption("Report Template");
 

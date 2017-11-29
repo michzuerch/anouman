@@ -21,7 +21,7 @@
         <class>ch.internettechnik.anouman.backend.entity.Mehrwertsteuercode</class>
         <class>ch.internettechnik.anouman.backend.entity.Rechnung</class>
         <class>ch.internettechnik.anouman.backend.entity.Rechnungsposition</class>
-        <class>ch.internettechnik.anouman.backend.entity.ReportTemplate</class>
+        <class>ch.internettechnik.anouman.backend.entity.report.jasper.ReportJasper</class>
         <class>ch.internettechnik.anouman.backend.entity.TemplateKonto</class>
         <class>ch.internettechnik.anouman.backend.entity.TemplateKontohauptgruppe</class>
         <class>ch.internettechnik.anouman.backend.entity.TemplateKontogruppe</class>
@@ -31,19 +31,20 @@
         <class>ch.internettechnik.anouman.backend.entity.Unterbuchung</class>
         <class>ch.internettechnik.anouman.backend.entity.Uzer</class>
         <class>ch.internettechnik.anouman.backend.entity.UzerRole</class>
-        <class>ch.internettechnik.anouman.backend.entity.ReportCSS</class>
-        <class>ch.internettechnik.anouman.backend.entity.ReportCSSElement</class>
-        <class>ch.internettechnik.anouman.backend.entity.ReportFOPXsl</class>
+        <class>ch.internettechnik.anouman.backend.entity.report.css.ReportCSS</class>
+        <class>ch.internettechnik.anouman.backend.entity.report.css.ReportHtml</class>
+        <class>ch.internettechnik.anouman.backend.entity.report.fop.ReportFOPXsl</class>
         <properties>
+            <property name="hibernate.connection.autocommit" value="false"/>
             <property name="hibernate.cache.use_second_level_cache" value="true"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="hibernate.show_sql" value="false"/>
-            <property name="hibernate.format_sql" value="false"/>
+            <property name="hibernate.format_sql" value="true"/>
             <property name="hibernate.transaction.flush_before_completion" value="true"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
             <property name="hibernate.enable_lazy_load_no_trans" value="true"/>
-            <property name="hibernate.transaction.jta.platform"
-                      value="org.hibernate.service.jta.platform.internal.JBossAppServerJtaPlatform"/>
+            <property name="hibernate.jdbc.use_streams_for_binary" value="false"/>
+            <property name="hibernate.flushMode" value="COMMIT"/>
         </properties>
     </persistence-unit>
 </persistence>

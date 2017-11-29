@@ -4,7 +4,6 @@ import ch.internettechnik.anouman.backend.entity.Artikel;
 import ch.internettechnik.anouman.backend.entity.Artikelbild;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ArtikelFacade;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ArtikelbildFacade;
-import ch.internettechnik.anouman.presentation.ui.stream.ArtikelBildStream;
 import com.vaadin.cdi.ViewScoped;
 import com.vaadin.server.StreamResource;
 import com.vaadin.ui.*;
@@ -32,10 +31,6 @@ public class ArtikelbildForm extends AbstractForm<Artikelbild> {
     UploadComponent bild = new UploadComponent();
     Image image = new Image("Bild");
 
-    StreamResource.StreamSource imagesource = new ArtikelBildStream();
-    StreamResource resource =
-            new StreamResource(imagesource, "Bild.png");
-
     public ArtikelbildForm() {
         super(Artikelbild.class);
     }
@@ -62,6 +57,9 @@ public class ArtikelbildForm extends AbstractForm<Artikelbild> {
         bild.setHeight(60, Unit.PIXELS);
         bild.setCaption("File upload");
         bild.setReceivedCallback(this::uploadReceived);
+
+        image.setHeight(100, Unit.PIXELS);
+
         // optional callbacks
         //	uploadComponent.setStartedCallback(this::uploadStarted);
         //	uploadComponent.setProgressCallback(this::uploadProgress);
@@ -76,6 +74,7 @@ public class ArtikelbildForm extends AbstractForm<Artikelbild> {
         try {
             byte[] data = Files.readAllBytes(Paths.get(path.toUri()));
             getEntity().setBild(data);
+            getEntity().setMimetype(Files.probeContentType(path));
 
             StreamResource.StreamSource streamSource = new StreamResource.StreamSource() {
                 public InputStream getStream() {
@@ -83,23 +82,12 @@ public class ArtikelbildForm extends AbstractForm<Artikelbild> {
                 }
             };
             StreamResource imageResource = new StreamResource(streamSource, fileName);
-            //image = new Embedded("", (Resource)imageResource);
 
             image.setCaption("Testbild");
             image.setSource(imageResource);
-            //image = new Image("Testbild", imageResource);
-            System.err.println(Files.probeContentType(path));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
-  /*
-    private void updateImage() {
-        if (getEntity().getBild().length>0) {
-            image
-        }
-    }
-*/
 
 }

@@ -1,10 +1,10 @@
 package ch.internettechnik.anouman.presentation.ui.rechnung;
 
 import ch.internettechnik.anouman.backend.entity.Rechnung;
-import ch.internettechnik.anouman.backend.entity.ReportTemplate;
+import ch.internettechnik.anouman.backend.entity.report.jasper.ReportJasper;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.AufwandFacade;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.RechnungFacade;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ReportTemplateFacade;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ReportJasperFacade;
 import ch.internettechnik.anouman.presentation.reports.rechnung.RechnungReportTool;
 import ch.internettechnik.anouman.presentation.ui.Menu;
 import com.vaadin.cdi.CDIView;
@@ -24,7 +24,7 @@ public class RechnungPrintView extends VerticalLayout implements View {
     @Inject
     RechnungFacade rechnungFacade;
     @Inject
-    ReportTemplateFacade reportTemplateFacade;
+    ReportJasperFacade reportJasperFacade;
     @Inject
     AufwandFacade aufwandFacade;
 
@@ -40,7 +40,7 @@ public class RechnungPrintView extends VerticalLayout implements View {
     TextField fieldMehrwertsteuer = new TextField("Mehrwertsteuer");
     TextField fieldZwischentotal = new TextField("Zwischentotal");
     TextField fieldRechnungstotal = new TextField("Rechnungstotal");
-    NativeSelect<ReportTemplate> selectReport = new NativeSelect<>();
+    NativeSelect<ReportJasper> selectReport = new NativeSelect<>();
     DownloadButton btnPrint = new DownloadButton();
     @Inject
     private Menu menu;
@@ -78,7 +78,7 @@ public class RechnungPrintView extends VerticalLayout implements View {
         fieldZwischentotal.setValue(val.getZwischentotal().toString());
         fieldRechnungstotal.setValue(val.getRechnungstotal().toString());
 
-        selectReport.setItems(reportTemplateFacade.findAll());
+        selectReport.setItems(reportJasperFacade.findAll());
         selectReport.setItemCaptionGenerator(reportTemplate -> reportTemplate.getBezeichnung());
     }
 
@@ -115,7 +115,7 @@ public class RechnungPrintView extends VerticalLayout implements View {
 
         update();
         selectReport.setEmptySelectionAllowed(false);
-        selectReport.setSelectedItem(reportTemplateFacade.findAll().get(0));
+        selectReport.setSelectedItem(reportJasperFacade.findAll().get(0));
 
         btnPrint = getPrintButton();
 

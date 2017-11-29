@@ -1,9 +1,6 @@
 package ch.internettechnik.anouman.backend.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -13,7 +10,11 @@ public class Artikelbild extends AbstractEntity {
     private String titel;
 
     @Column
-    @Lob
+    private String mimetype;
+
+
+    @Column
+    @Basic(fetch = FetchType.LAZY)
     private byte[] bild;
 
     @ManyToOne
@@ -25,6 +26,14 @@ public class Artikelbild extends AbstractEntity {
 
     public void setTitel(String titel) {
         this.titel = titel;
+    }
+
+    public String getMimetype() {
+        return mimetype;
+    }
+
+    public void setMimetype(String mimetype) {
+        this.mimetype = mimetype;
     }
 
     public byte[] getBild() {

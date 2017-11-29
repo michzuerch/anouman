@@ -1,4 +1,6 @@
-package ch.internettechnik.anouman.backend.entity;
+package ch.internettechnik.anouman.backend.entity.report.jasper;
+
+import ch.internettechnik.anouman.backend.entity.AbstractEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -9,7 +11,7 @@ import java.util.Arrays;
  * Created by michzuerch on 10.06.15.
  */
 @Entity
-public class ReportTemplate extends AbstractEntity {
+public class ReportJasper extends AbstractEntity {
     @Column
     @NotNull
     @Size(min = 1, max = 50)
@@ -60,7 +62,7 @@ public class ReportTemplate extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "ReportTemplate{" +
+        return "ReportJasper{" +
                 "bezeichnung='" + bezeichnung + '\'' +
                 ", template=" + Arrays.toString(template) +
                 ", filename='" + filename + '\'' +

@@ -61,7 +61,19 @@ public class Menu extends CustomComponent {
         reportingMenu.addItem("Report Vorlagen (Jasperreports)", VaadinIcons.GAVEL, new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem menuItem) {
-                getUI().getNavigator().navigateTo("ReportTemplate");
+                getUI().getNavigator().navigateTo("ReportJasper");
+            }
+        });
+        reportingMenu.addItem("Report Vorlagen (CSS)", VaadinIcons.GAVEL, new MenuBar.Command() {
+            @Override
+            public void menuSelected(MenuBar.MenuItem menuItem) {
+                getUI().getNavigator().navigateTo("ReportCSS");
+            }
+        });
+        reportingMenu.addItem("Report Vorlagen (FOP)", VaadinIcons.GAVEL, new MenuBar.Command() {
+            @Override
+            public void menuSelected(MenuBar.MenuItem menuItem) {
+                getUI().getNavigator().navigateTo("ReportFOP");
             }
         });
 

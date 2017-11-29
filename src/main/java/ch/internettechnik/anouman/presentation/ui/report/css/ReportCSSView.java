@@ -1,7 +1,7 @@
-package ch.internettechnik.anouman.presentation.ui.reporttemplate;
+package ch.internettechnik.anouman.presentation.ui.report.css;
 
-import ch.internettechnik.anouman.backend.entity.ReportTemplate;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ReportTemplateFacade;
+import ch.internettechnik.anouman.backend.entity.report.jasper.ReportJasper;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ReportJasperFacade;
 import ch.internettechnik.anouman.presentation.ui.Menu;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
@@ -19,14 +19,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-@CDIView(value = "ReportTemplate")
-public class ReportTemplateView extends VerticalLayout implements View, Upload.Receiver, Upload.SucceededListener {
-    private static org.slf4j.Logger logger = LoggerFactory.getLogger(ReportTemplateView.class.getName());
+@CDIView(value = "ReportCSS")
+public class ReportCSSView extends VerticalLayout implements View, Upload.Receiver, Upload.SucceededListener {
+    private static org.slf4j.Logger logger = LoggerFactory.getLogger(ReportCSSView.class.getName());
 
     File tempFile;
     String filename;
 
-    Grid<ReportTemplate> grid = new Grid<>();
+    Grid<ReportJasper> grid = new Grid<>();
     TextField filterTextBezeichnung = new TextField();
 
     TextField newReportBezeichnung = new TextField();
@@ -36,7 +36,7 @@ public class ReportTemplateView extends VerticalLayout implements View, Upload.R
     private Menu menu;
 
     @Inject
-    private ReportTemplateFacade facade;
+    private ReportJasperFacade facade;
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
@@ -67,23 +67,22 @@ public class ReportTemplateView extends VerticalLayout implements View, Upload.R
         });
 
 
-
         HorizontalLayout tools = new HorizontalLayout();
         tools.addComponents(filterTextBezeichnung, clearFilterTextBtn, newReportBezeichnung, upload);
         //tools.setWidth(50, Unit.PERCENTAGE);
 
         grid.setCaption("Report Template");
         grid.setCaptionAsHtml(true);
-        grid.addColumn(ReportTemplate::getId).setCaption("id");
-        grid.addColumn(ReportTemplate::getBezeichnung).setCaption("Bezeichnung");
-        grid.addColumn(ReportTemplate::getFilename).setCaption("Dateiname");
-        grid.addColumn(ReportTemplate::getSize).setCaption("Report Grösse");
+        grid.addColumn(ReportJasper::getId).setCaption("id");
+        grid.addColumn(ReportJasper::getBezeichnung).setCaption("Bezeichnung");
+        grid.addColumn(ReportJasper::getFilename).setCaption("Dateiname");
+        grid.addColumn(ReportJasper::getSize).setCaption("Report Grösse");
 
         // Render a button that deletes the data row (item)
         grid.addColumn(report -> "löschen",
                 new ButtonRenderer(event -> {
                     Notification.show("Lösche id:" + event.getItem(), Notification.Type.HUMANIZED_MESSAGE);
-                    facade.delete((ReportTemplate) event.getItem());
+                    facade.delete((ReportJasper) event.getItem());
                     updateList();
                 })
         );
@@ -121,16 +120,16 @@ public class ReportTemplateView extends VerticalLayout implements View, Upload.R
     @Override
     public void uploadSucceeded(Upload.SucceededEvent succeededEvent) {
         try {
-            ReportTemplate reportTemplate = new ReportTemplate();
+            ReportJasper reportJasper = new ReportJasper();
             byte[] bytes = FileUtils.readFileToByteArray(tempFile);
-            reportTemplate.setBezeichnung(newReportBezeichnung.getValue());
-            reportTemplate.setTemplate(bytes);
-            reportTemplate.setFilename(this.filename);
+            reportJasper.setBezeichnung(newReportBezeichnung.getValue());
+            reportJasper.setTemplate(bytes);
+            reportJasper.setFilename(this.filename);
 
-            facade.save(reportTemplate);
+            facade.save(reportJasper);
 
             updateList();
-            Notification.show("Report Template erstellt: " + reportTemplate.toString());
+            Notification.show("Report Template erstellt: " + reportJasper.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -42,7 +42,7 @@ public class RechnungView extends VerticalLayout implements View {
     private AdresseFacade adresseFacade;
 
     @Inject
-    private ReportTemplateFacade reportTemplateFacade;
+    private ReportJasperFacade reportJasperFacade;
 
     @Inject
     private RechnungForm form;
