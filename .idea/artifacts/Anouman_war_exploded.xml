@@ -19,18 +19,18 @@
           <element id="library" level="project" name="Maven: org.apache.commons:commons-lang3:3.4" />
           <element id="library" level="project" name="Maven: javax.el:javax.el-api:2.2.4" />
           <element id="library" level="project" name="Maven: com.vaadin:vaadin-icons:3.0.1" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/com/vaadin/vaadin-server/8.2-SNAPSHOT/vaadin-server-8.2-20171124.100517-228.jar" output-file-name="vaadin-server-8.2-SNAPSHOT.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/com/vaadin/vaadin-server/8.3-SNAPSHOT/vaadin-server-8.3-20171129.115838-14.jar" output-file-name="vaadin-server-8.3-SNAPSHOT.jar" />
           <element id="library" level="project" name="Maven: com.vaadin:vaadin-sass-compiler:0.9.13" />
           <element id="library" level="project" name="Maven: org.w3c.css:sac:1.3" />
           <element id="library" level="project" name="Maven: com.vaadin.external.flute:flute:1.3.0.gg2" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/com/vaadin/vaadin-shared/8.2-SNAPSHOT/vaadin-shared-8.2-20171124.100315-228.jar" output-file-name="vaadin-shared-8.2-SNAPSHOT.jar" />
-          <element id="library" level="project" name="Maven: org.jsoup:jsoup:1.8.3" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/com/vaadin/vaadin-shared/8.3-SNAPSHOT/vaadin-shared-8.3-20171129.115643-14.jar" output-file-name="vaadin-shared-8.3-SNAPSHOT.jar" />
+          <element id="library" level="project" name="Maven: org.jsoup:jsoup:1.11.2" />
           <element id="library" level="project" name="Maven: com.vaadin.external:gentyref:1.2.0.vaadin1" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/com/vaadin/vaadin-push/8.2-SNAPSHOT/vaadin-push-8.2-20171124.100325-228.jar" output-file-name="vaadin-push-8.2-SNAPSHOT.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/com/vaadin/vaadin-push/8.3-SNAPSHOT/vaadin-push-8.3-20171129.115651-14.jar" output-file-name="vaadin-push-8.3-SNAPSHOT.jar" />
           <element id="library" level="project" name="Maven: com.vaadin.external.atmosphere:atmosphere-runtime:2.4.11.vaadin2" />
           <element id="library" level="project" name="Maven: com.vaadin.external.slf4j:vaadin-slf4j-jdk14:1.6.1" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/com/vaadin/vaadin-client-compiled/8.2-SNAPSHOT/vaadin-client-compiled-8.2-20171124.100657-228.jar" output-file-name="vaadin-client-compiled-8.2-SNAPSHOT.jar" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/com/vaadin/vaadin-themes/8.2-SNAPSHOT/vaadin-themes-8.2-20171124.100705-228.jar" output-file-name="vaadin-themes-8.2-SNAPSHOT.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/com/vaadin/vaadin-client-compiled/8.3-SNAPSHOT/vaadin-client-compiled-8.3-20171129.120102-14.jar" output-file-name="vaadin-client-compiled-8.3-SNAPSHOT.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/com/vaadin/vaadin-themes/8.3-SNAPSHOT/vaadin-themes-8.3-20171129.120110-14.jar" output-file-name="vaadin-themes-8.3-SNAPSHOT.jar" />
           <element id="library" level="project" name="Maven: org.vaadin.addons:drop-or-choose-upload:2.0" />
           <element id="library" level="project" name="Maven: org.vaadin.blackbluegl:calendar-component:2.0-BETA3" />
           <element id="library" level="project" name="Maven: com.github.appreciated:app-layout-addon:0.9.8" />

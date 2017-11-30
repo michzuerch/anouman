@@ -10,6 +10,7 @@ import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
+import com.vaadin.ui.themes.ValoTheme;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.LoggerFactory;
 
@@ -30,6 +31,7 @@ public class ReportJasperView extends VerticalLayout implements View, Upload.Rec
     TextField filterTextBezeichnung = new TextField();
 
     TextField newReportBezeichnung = new TextField();
+
     Upload upload = new Upload();
 
     @Inject
@@ -76,6 +78,11 @@ public class ReportJasperView extends VerticalLayout implements View, Upload.Rec
             form.setEntity(reportJasper);
             form.openInModalPopup();
             form.setSavedHandler(val -> {
+                if (val.getTemplate() == null) {
+                    System.err.println("saveHandler val ist null");
+                } else {
+                    System.err.println("saveHandler len:" + val.getTemplate().length);
+                }
                 facade.save(val);
                 updateList();
                 grid.select(val);
@@ -84,9 +91,9 @@ public class ReportJasperView extends VerticalLayout implements View, Upload.Rec
         });
 
 
-        HorizontalLayout tools = new HorizontalLayout();
+        CssLayout tools = new CssLayout();
         tools.addComponents(filterTextBezeichnung, clearFilterTextBtn, addBtn, newReportBezeichnung, upload);
-        //tools.setWidth(50, Unit.PERCENTAGE);
+        tools.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 
         grid.setCaption("Report Template");
         grid.setCaptionAsHtml(true);
@@ -103,6 +110,24 @@ public class ReportJasperView extends VerticalLayout implements View, Upload.Rec
                     updateList();
                 })
         );
+        grid.addColumn(report -> "ändern",
+                new ButtonRenderer(event -> {
+                    form.setEntity((ReportJasper) event.getItem());
+                    form.openInModalPopup();
+                    form.setSavedHandler(val -> {
+                        facade.save(val);
+                        //service.saveOrPersist(val);
+                        updateList();
+                        grid.select(val);
+                        form.closePopup();
+                    });
+                    form.setResetHandler(val -> {
+                        updateList();
+                        grid.select(val);
+                        form.closePopup();
+                    });
+                }));
+
 
         //@todo Downloadbutton für Report
         grid.setSizeFull();

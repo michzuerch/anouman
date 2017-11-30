@@ -29,7 +29,11 @@ public class ReportJasper extends AbstractEntity {
     private int size;
 
     public int getSize() {
-        return template.length;
+        if (template == null) {
+            return 0;
+        } else {
+            return template.length;
+        }
     }
 
     public void setSize(int size) {
@@ -58,6 +62,14 @@ public class ReportJasper extends AbstractEntity {
 
     public void setFilename(String filename) {
         this.filename = filename;
+    }
+
+    private String getTemplateString() {
+        return template.toString();
+    }
+
+    private void setTemplateString(String val) {
+        setTemplate(val.getBytes());
     }
 
     @Override

@@ -1081,7 +1081,7 @@
  */
 
 .v-vaadin-version:after {
-    content: "8.2-SNAPSHOT";
+    content: "8.3-SNAPSHOT";
 }
 
 .v-widget {
@@ -10694,6 +10694,30 @@ div.v-layout.v-horizontal.v-widget {
 	color: inherit;
 }
 
+.anouman .v-window-closebox:focus::after {
+    content: "";
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    bottom: 6px;
+    left: 2px;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 0 0 2px rgba(25, 125, 225, 0.5);
+    box-shadow: 0 0 0 2px rgba(25, 125, 225, 0.5);
+}
+
+.anouman .v-window-maximizebox:focus::after, .anouman .v-window-restorebox:focus::after {
+    content: "";
+    position: absolute;
+    top: 6px;
+    right: 2px;
+    bottom: 6px;
+    left: 6px;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 0 0 2px rgba(25, 125, 225, 0.5);
+    box-shadow: 0 0 0 2px rgba(25, 125, 225, 0.5);
+}
+
 .anouman .v-window-closebox {
 	padding-right: 4px;
 	border-radius: 0 4px 0 4px;
@@ -10721,6 +10745,10 @@ div.v-layout.v-horizontal.v-widget {
 	width: 37px;
 	padding-right: 0;
 	border-bottom-left-radius: 4px;
+}
+
+.anouman .v-window-closebox-disabled + .v-window-closebox:focus::after, .anouman .v-window-resizebox-disabled + .v-window-closebox:focus::after, .anouman .v-window-restorebox-disabled + .v-window-closebox:focus::after, .anouman .v-window-maximizebox-disabled + .v-window-closebox:focus::after {
+    left: 6px;
 }
 
 .anouman .v-window-maximizebox:before {

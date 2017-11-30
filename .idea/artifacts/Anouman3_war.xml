@@ -1,6 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="Anouman3:war">
-    <output-path>$PROJECT_DIR$/target</output-path>
-    <root id="archive" name="Anouman.war" />
-  </artifact>
-</component>
