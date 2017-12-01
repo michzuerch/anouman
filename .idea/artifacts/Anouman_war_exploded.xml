@@ -19,18 +19,18 @@
           <element id="library" level="project" name="Maven: org.apache.commons:commons-lang3:3.4" />
           <element id="library" level="project" name="Maven: javax.el:javax.el-api:2.2.4" />
           <element id="library" level="project" name="Maven: com.vaadin:vaadin-icons:3.0.1" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/com/vaadin/vaadin-server/8.3-SNAPSHOT/vaadin-server-8.3-20171129.115838-14.jar" output-file-name="vaadin-server-8.3-SNAPSHOT.jar" />
+          <element id="library" level="project" name="Maven: com.vaadin:vaadin-server:8.3-SNAPSHOT" />
           <element id="library" level="project" name="Maven: com.vaadin:vaadin-sass-compiler:0.9.13" />
           <element id="library" level="project" name="Maven: org.w3c.css:sac:1.3" />
           <element id="library" level="project" name="Maven: com.vaadin.external.flute:flute:1.3.0.gg2" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/com/vaadin/vaadin-shared/8.3-SNAPSHOT/vaadin-shared-8.3-20171129.115643-14.jar" output-file-name="vaadin-shared-8.3-SNAPSHOT.jar" />
+          <element id="library" level="project" name="Maven: com.vaadin:vaadin-shared:8.3-SNAPSHOT" />
           <element id="library" level="project" name="Maven: org.jsoup:jsoup:1.11.2" />
           <element id="library" level="project" name="Maven: com.vaadin.external:gentyref:1.2.0.vaadin1" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/com/vaadin/vaadin-push/8.3-SNAPSHOT/vaadin-push-8.3-20171129.115651-14.jar" output-file-name="vaadin-push-8.3-SNAPSHOT.jar" />
+          <element id="library" level="project" name="Maven: com.vaadin:vaadin-push:8.3-SNAPSHOT" />
           <element id="library" level="project" name="Maven: com.vaadin.external.atmosphere:atmosphere-runtime:2.4.11.vaadin2" />
           <element id="library" level="project" name="Maven: com.vaadin.external.slf4j:vaadin-slf4j-jdk14:1.6.1" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/com/vaadin/vaadin-client-compiled/8.3-SNAPSHOT/vaadin-client-compiled-8.3-20171129.120102-14.jar" output-file-name="vaadin-client-compiled-8.3-SNAPSHOT.jar" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/com/vaadin/vaadin-themes/8.3-SNAPSHOT/vaadin-themes-8.3-20171129.120110-14.jar" output-file-name="vaadin-themes-8.3-SNAPSHOT.jar" />
+          <element id="library" level="project" name="Maven: com.vaadin:vaadin-client-compiled:8.3-SNAPSHOT" />
+          <element id="library" level="project" name="Maven: com.vaadin:vaadin-themes:8.3-SNAPSHOT" />
           <element id="library" level="project" name="Maven: org.vaadin.addons:drop-or-choose-upload:2.0" />
           <element id="library" level="project" name="Maven: org.vaadin.blackbluegl:calendar-component:2.0-BETA3" />
           <element id="library" level="project" name="Maven: com.github.appreciated:app-layout-addon:0.9.8" />
@@ -69,15 +69,14 @@
           <element id="library" level="project" name="Maven: stax:stax:1.2.0" />
           <element id="library" level="project" name="Maven: stax:stax-api:1.0.1" />
           <element id="library" level="project" name="Maven: javax.xml.stream:stax-api:1.0-2" />
-          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.1.4" />
-          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.1.4" />
-          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.1.4" />
-          <element id="library" level="project" name="Maven: org.apache.lucene:lucene-core:4.5.1" />
-          <element id="library" level="project" name="Maven: org.apache.lucene:lucene-analyzers-common:4.5.1" />
-          <element id="library" level="project" name="Maven: org.apache.lucene:lucene-queryparser:4.5.1" />
-          <element id="library" level="project" name="Maven: org.apache.lucene:lucene-queries:4.5.1" />
-          <element id="library" level="project" name="Maven: org.apache.lucene:lucene-sandbox:4.5.1" />
-          <element id="library" level="project" name="Maven: jakarta-regexp:jakarta-regexp:1.4" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.7.4" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.7.4" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.7.4" />
+          <element id="library" level="project" name="Maven: org.apache.lucene:lucene-core:5.5.4" />
+          <element id="library" level="project" name="Maven: org.apache.lucene:lucene-analyzers-common:5.5.4" />
+          <element id="library" level="project" name="Maven: org.apache.lucene:lucene-queryparser:5.5.4" />
+          <element id="library" level="project" name="Maven: org.apache.lucene:lucene-queries:5.5.4" />
+          <element id="library" level="project" name="Maven: org.apache.lucene:lucene-sandbox:5.5.4" />
           <element id="library" level="project" name="Maven: org.olap4j:olap4j:0.9.7.309-JS-3" />
           <element id="library" level="project" name="Maven: com.google.zxing:core:3.2.1" />
           <element id="library" level="project" name="Maven: com.ibm.icu:icu4j:57.1" />
@@ -108,6 +107,26 @@
           <element id="library" level="project" name="Maven: org.apache.avalon.framework:avalon-framework-api:4.3.1" />
           <element id="library" level="project" name="Maven: org.apache.avalon.framework:avalon-framework-impl:4.3.1" />
           <element id="library" level="project" name="Maven: org.apache.pdfbox:fontbox:2.0.4" />
+          <element id="library" level="project" name="Maven: org.hibernate.ogm:hibernate-ogm-mongodb:5.2.0.Beta1" />
+          <element id="library" level="project" name="Maven: org.hibernate.ogm:hibernate-ogm-core:5.2.0.Beta1" />
+          <element id="library" level="project" name="Maven: org.hibernate:hibernate-core:5.1.10.Final" />
+          <element id="library" level="project" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Final" />
+          <element id="library" level="project" name="Maven: antlr:antlr:2.7.7" />
+          <element id="library" level="project" name="Maven: org.jboss:jandex:2.0.3.Final" />
+          <element id="library" level="project" name="Maven: dom4j:dom4j:1.6.1" />
+          <element id="library" level="project" name="Maven: org.hibernate:hibernate-entitymanager:5.1.10.Final" />
+          <element id="library" level="project" name="Maven: org.javassist:javassist:3.18.1-GA" />
+          <element id="library" level="project" name="Maven: org.hibernate.common:hibernate-commons-annotations:5.0.1.Final" />
+          <element id="library" level="project" name="Maven: org.hibernate.hql:hibernate-hql-parser:1.4.0.Final" />
+          <element id="library" level="project" name="Maven: org.antlr:antlr-runtime:3.4" />
+          <element id="library" level="project" name="Maven: org.antlr:stringtemplate:3.2.1" />
+          <element id="library" level="project" name="Maven: org.mongodb:mongo-java-driver:3.5.0" />
+          <element id="library" level="project" name="Maven: org.parboiled:parboiled-java:1.1.7" />
+          <element id="library" level="project" name="Maven: org.parboiled:parboiled-core:1.1.7" />
+          <element id="library" level="project" name="Maven: org.ow2.asm:asm:5.0.3" />
+          <element id="library" level="project" name="Maven: org.ow2.asm:asm-tree:5.0.3" />
+          <element id="library" level="project" name="Maven: org.ow2.asm:asm-analysis:5.0.3" />
+          <element id="library" level="project" name="Maven: org.ow2.asm:asm-util:5.0.3" />
         </element>
       </element>
       <element id="directory" name="META-INF">
