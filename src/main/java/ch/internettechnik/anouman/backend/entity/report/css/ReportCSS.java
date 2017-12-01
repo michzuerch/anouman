@@ -19,6 +19,9 @@ public class ReportCSS extends AbstractEntity {
     @Basic(fetch = FetchType.LAZY)
     private byte[] html;
 
+    @Column
+    private String filename;
+
     @Transient
     private int sizeCSS;
 
@@ -63,5 +66,13 @@ public class ReportCSS extends AbstractEntity {
 
     public void setHtml(byte[] html) {
         this.html = html;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 }

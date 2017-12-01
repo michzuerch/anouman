@@ -9,19 +9,19 @@ import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 @Entity
-public class ReportFOPXsl extends AbstractEntity {
+public class ReportFOP extends AbstractEntity {
     @Column
     @NotNull
     private String bezeichnung;
 
     @Lob
-    private byte[] xslfile;
+    private byte[] template;
 
     @Transient
     private int size;
 
     public int getSize() {
-        return xslfile.length;
+        return template.length;
     }
 
     public void setSize(int size) {
@@ -37,11 +37,11 @@ public class ReportFOPXsl extends AbstractEntity {
         this.bezeichnung = bezeichnung;
     }
 
-    public byte[] getXslfile() {
-        return xslfile;
+    public byte[] getTemplate() {
+        return template;
     }
 
-    public void setXslfile(byte[] xslfile) {
-        this.xslfile = xslfile;
+    public void setTemplate(byte[] xslfile) {
+        this.template = xslfile;
     }
 }

@@ -1,7 +1,7 @@
 package ch.internettechnik.anouman.presentation.ui.report.fop;
 
-import ch.internettechnik.anouman.backend.entity.report.fop.ReportFOPXsl;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ReportFOPXslFacade;
+import ch.internettechnik.anouman.backend.entity.report.fop.ReportFOP;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ReportFOPFacade;
 import ch.internettechnik.anouman.presentation.ui.Menu;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
@@ -10,6 +10,7 @@ import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
+import com.vaadin.ui.themes.ValoTheme;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +27,7 @@ public class ReportFOPView extends VerticalLayout implements View, Upload.Receiv
     File tempFile;
     String filename;
 
-    Grid<ReportFOPXsl> grid = new Grid<>();
+    Grid<ReportFOP> grid = new Grid<>();
     TextField filterTextBezeichnung = new TextField();
 
     TextField newReportBezeichnung = new TextField();
@@ -36,7 +37,10 @@ public class ReportFOPView extends VerticalLayout implements View, Upload.Receiv
     private Menu menu;
 
     @Inject
-    private ReportFOPXslFacade facade;
+    private ReportFOPFacade facade;
+
+    @Inject
+    private ReportFOPForm form;
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
@@ -66,22 +70,36 @@ public class ReportFOPView extends VerticalLayout implements View, Upload.Receiv
             filterTextBezeichnung.clear();
         });
 
+        Button addBtn = new Button(VaadinIcons.PLUS);
+        addBtn.addClickListener(event -> {
+            grid.asSingleSelect().clear();
+            ReportFOP reportFOP = new ReportFOP();
+            form.setEntity(reportFOP);
+            form.openInModalPopup();
+            form.setSavedHandler(val -> {
+                facade.save(val);
+                updateList();
+                grid.select(val);
+                form.closePopup();
+            });
+        });
 
-        HorizontalLayout tools = new HorizontalLayout();
-        tools.addComponents(filterTextBezeichnung, clearFilterTextBtn, newReportBezeichnung, upload);
-        //tools.setWidth(50, Unit.PERCENTAGE);
 
-        grid.setCaption("Report Template");
+        CssLayout tools = new CssLayout();
+        tools.addComponents(filterTextBezeichnung, clearFilterTextBtn, addBtn, newReportBezeichnung, upload);
+        tools.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+
+        grid.setCaption("Report FOP");
         grid.setCaptionAsHtml(true);
-        grid.addColumn(ReportFOPXsl::getId).setCaption("id");
-        grid.addColumn(ReportFOPXsl::getBezeichnung).setCaption("Bezeichnung");
-        grid.addColumn(ReportFOPXsl::getSize).setCaption("Report Grösse");
+        grid.addColumn(ReportFOP::getId).setCaption("id");
+        grid.addColumn(ReportFOP::getBezeichnung).setCaption("Bezeichnung");
+        grid.addColumn(ReportFOP::getSize).setCaption("Report Grösse");
 
         // Render a button that deletes the data row (item)
         grid.addColumn(report -> "löschen",
                 new ButtonRenderer(event -> {
                     Notification.show("Lösche id:" + event.getItem(), Notification.Type.HUMANIZED_MESSAGE);
-                    facade.delete((ReportFOPXsl) event.getItem());
+                    facade.delete((ReportFOP) event.getItem());
                     updateList();
                 })
         );
@@ -119,10 +137,10 @@ public class ReportFOPView extends VerticalLayout implements View, Upload.Receiv
     @Override
     public void uploadSucceeded(Upload.SucceededEvent succeededEvent) {
         try {
-            ReportFOPXsl reportFOP = new ReportFOPXsl();
+            ReportFOP reportFOP = new ReportFOP();
             byte[] bytes = FileUtils.readFileToByteArray(tempFile);
             reportFOP.setBezeichnung(newReportBezeichnung.getValue());
-            reportFOP.setXslfile(bytes);
+            reportFOP.setTemplate(bytes);
             facade.save(reportFOP);
 
             updateList();

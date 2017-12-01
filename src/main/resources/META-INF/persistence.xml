@@ -33,7 +33,7 @@
         <class>ch.internettechnik.anouman.backend.entity.UzerRole</class>
         <class>ch.internettechnik.anouman.backend.entity.report.css.ReportCSS</class>
         <class>ch.internettechnik.anouman.backend.entity.report.css.ReportHtml</class>
-        <class>ch.internettechnik.anouman.backend.entity.report.fop.ReportFOPXsl</class>
+        <class>ch.internettechnik.anouman.backend.entity.report.fop.ReportFOP</class>
         <properties>
             <property name="hibernate.connection.autocommit" value="false"/>
             <property name="hibernate.cache.use_second_level_cache" value="true"/>

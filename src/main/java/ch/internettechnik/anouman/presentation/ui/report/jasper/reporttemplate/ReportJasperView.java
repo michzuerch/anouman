@@ -78,11 +78,6 @@ public class ReportJasperView extends VerticalLayout implements View, Upload.Rec
             form.setEntity(reportJasper);
             form.openInModalPopup();
             form.setSavedHandler(val -> {
-                if (val.getTemplate() == null) {
-                    System.err.println("saveHandler val ist null");
-                } else {
-                    System.err.println("saveHandler len:" + val.getTemplate().length);
-                }
                 facade.save(val);
                 updateList();
                 grid.select(val);
@@ -95,7 +90,7 @@ public class ReportJasperView extends VerticalLayout implements View, Upload.Rec
         tools.addComponents(filterTextBezeichnung, clearFilterTextBtn, addBtn, newReportBezeichnung, upload);
         tools.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 
-        grid.setCaption("Report Template");
+        grid.setCaption("Report Jasper");
         grid.setCaptionAsHtml(true);
         grid.addColumn(ReportJasper::getId).setCaption("id");
         grid.addColumn(ReportJasper::getBezeichnung).setCaption("Bezeichnung");
@@ -171,7 +166,7 @@ public class ReportJasperView extends VerticalLayout implements View, Upload.Rec
             facade.save(reportJasper);
 
             updateList();
-            Notification.show("Report Template erstellt: " + reportJasper.toString());
+            Notification.show("Report Jasper erstellt: " + reportJasper.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
