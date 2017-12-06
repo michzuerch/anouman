@@ -83,7 +83,7 @@ public class RechnungReportTool implements Serializable {
 
         byte[] bytes = new byte[0];
         try {
-            byte[] template = reportJasper.getTemplate();
+            byte[] template = reportJasper.getTemplateSource();
 
             JasperDesign jasperDesign = JRXmlLoader.load(new ByteArrayInputStream(template));
             report = JasperCompileManager.compileReport(jasperDesign);

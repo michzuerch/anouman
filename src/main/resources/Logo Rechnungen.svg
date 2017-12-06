@@ -446,7 +446,7 @@
         </g>
         <text
        xml:space="preserve"
-       style="font-size:29.80897713px;font-style:normal;font-variant:normal;font-weight:900;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Hiruko;-inkscape-font-specification:Hiruko Heavy"
+       style="font-sizeSource:29.80897713px;font-style:normal;font-variant:normal;font-weight:900;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Hiruko;-inkscape-font-specification:Hiruko Heavy"
        x="622.64484"
        y="344.87204"
        id="text3067"
@@ -456,16 +456,16 @@
          id="tspan3069"
          x="622.64484"
          y="344.87204"
-         style="font-size:34.2950058px">internettechnik m.zürcher GmbH</tspan><tspan
+         style="font-sizeSource:34.2950058px">internettechnik m.zürcher GmbH</tspan><tspan
          sodipodi:role="line"
          x="622.64484"
          y="379.70291"
          id="tspan3071"
-         style="font-size:25.72125626px;font-weight:900;-inkscape-font-specification:Hiruko Heavy">Bösch 23</tspan><tspan
+         style="font-sizeSource:25.72125626px;font-weight:900;-inkscape-font-specification:Hiruko Heavy">Bösch 23</tspan><tspan
          sodipodi:role="line"
          x="622.64484"
          y="411.85449"
          id="tspan3073"
-         style="font-size:25.72125626px;font-weight:900;-inkscape-font-specification:Hiruko Heavy">6331 Hünenberg</tspan></text>
+         style="font-sizeSource:25.72125626px;font-weight:900;-inkscape-font-specification:Hiruko Heavy">6331 Hünenberg</tspan></text>
     </g>
 </svg>

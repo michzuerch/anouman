@@ -95,7 +95,8 @@ public class ReportJasperView extends VerticalLayout implements View, Upload.Rec
         grid.addColumn(ReportJasper::getId).setCaption("id");
         grid.addColumn(ReportJasper::getBezeichnung).setCaption("Bezeichnung");
         grid.addColumn(ReportJasper::getFilename).setCaption("Dateiname");
-        grid.addColumn(ReportJasper::getSize).setCaption("Report Grösse");
+        grid.addColumn(ReportJasper::getSizeSource).setCaption("Source Size");
+        grid.addColumn(ReportJasper::getSizeCompiled).setCaption("Compiled Size");
 
         // Render a button that deletes the data row (item)
         grid.addColumn(report -> "löschen",
@@ -159,8 +160,9 @@ public class ReportJasperView extends VerticalLayout implements View, Upload.Rec
         try {
             ReportJasper reportJasper = new ReportJasper();
             byte[] bytes = FileUtils.readFileToByteArray(tempFile);
+
             reportJasper.setBezeichnung(newReportBezeichnung.getValue());
-            reportJasper.setTemplate(bytes);
+            reportJasper.setTemplateSource(bytes);
             reportJasper.setFilename(this.filename);
 
             facade.save(reportJasper);

@@ -20,24 +20,44 @@ public class ReportJasper extends AbstractEntity {
     @Column
     @Lob
     @Basic
-    private byte[] template;
+    private byte[] templateSource;
+
+    @Column
+    @Lob
+    @Basic
+    private byte[] templateCompiled;
 
     @Column
     private String filename;
 
     @Transient
-    private int size;
+    private int sizeSource;
 
-    public int getSize() {
-        if (template == null) {
+    @Transient
+    private int sizeCompiled;
+
+    public int getSizeSource() {
+        if (templateSource == null) {
             return 0;
         } else {
-            return template.length;
+            return templateSource.length;
         }
     }
 
-    public void setSize(int size) {
-        this.size = size;
+    public void setSizeSource(int sizeSource) {
+        this.sizeSource = sizeSource;
+    }
+
+    public int getSizeCompiled() {
+        if (templateCompiled == null) {
+            return 0;
+        } else {
+            return templateCompiled.length;
+        }
+    }
+
+    public void setSizeCompiled(int sizeCompiled) {
+        this.sizeCompiled = sizeCompiled;
     }
 
     public String getBezeichnung() {
@@ -48,12 +68,20 @@ public class ReportJasper extends AbstractEntity {
         this.bezeichnung = bezeichnung;
     }
 
-    public byte[] getTemplate() {
-        return template;
+    public byte[] getTemplateSource() {
+        return templateSource;
     }
 
-    public void setTemplate(byte[] template) {
-        this.template = template;
+    public void setTemplateSource(byte[] template) {
+        this.templateSource = template;
+    }
+
+    public byte[] getTemplateCompiled() {
+        return templateCompiled;
+    }
+
+    public void setTemplateCompiled(byte[] templateCompiled) {
+        this.templateCompiled = templateCompiled;
     }
 
     public String getFilename() {
@@ -64,19 +92,11 @@ public class ReportJasper extends AbstractEntity {
         this.filename = filename;
     }
 
-    private String getTemplateString() {
-        return template.toString();
-    }
-
-    private void setTemplateString(String val) {
-        setTemplate(val.getBytes());
-    }
-
     @Override
     public String toString() {
         return "ReportJasper{" +
                 "bezeichnung='" + bezeichnung + '\'' +
-                ", template=" + Arrays.toString(template) +
+                ", templateSource=" + Arrays.toString(templateSource) +
                 ", filename='" + filename + '\'' +
                 ", id=" + id +
                 '}';
