@@ -1,11 +1,9 @@
 package ch.internettechnik.anouman.backend.entity.report.fop;
 
 import ch.internettechnik.anouman.backend.entity.AbstractEntity;
+import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Lob;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -14,7 +12,9 @@ public class ReportFOP extends AbstractEntity {
     @NotNull
     private String bezeichnung;
 
-    @Lob
+    @Column
+    @Basic(fetch = FetchType.LAZY)
+    @NotEmpty
     private byte[] template;
 
     @Transient

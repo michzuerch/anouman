@@ -25,7 +25,9 @@
     </task>
     <task id="3" name="UI f&#xFC;r Reports fertigstellen" note="" work="57600" start="20171201T000000Z" end="20171201T170000Z" work-start="20171201T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work">
       <task id="4" name="Funktionalit&#xE4;t Jasperreport einbauen" note="" work="28800" start="20171201T000000Z" end="20171201T170000Z" work-start="20171201T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work"/>
-      <task id="5" name="Funktionalit&#xE4;t CSS Report einbauen" note="" work="28800" start="20171201T000000Z" end="20171201T170000Z" work-start="20171201T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work"/>
+      <task id="5" name="Funktionalit&#xE4;t CSS Report einbauen" note="" work="28800" start="20171201T000000Z" end="20171201T170000Z" work-start="20171201T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work">
+        <task id="6" name="Validator f&#xFC;r Schema" note="" work="28800" start="20171201T000000Z" end="20171201T170000Z" work-start="20171201T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work"/>
+      </task>
     </task>
   </tasks>
   <resource-groups/>

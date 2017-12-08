@@ -11,27 +11,16 @@ import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.themes.ValoTheme;
-import org.apache.commons.io.FileUtils;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 
 @CDIView(value = "ReportFOP")
-public class ReportFOPView extends VerticalLayout implements View, Upload.Receiver, Upload.SucceededListener {
+public class ReportFOPView extends VerticalLayout implements View {
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(ReportFOPView.class.getName());
-
-    File tempFile;
-    String filename;
 
     Grid<ReportFOP> grid = new Grid<>();
     TextField filterTextBezeichnung = new TextField();
-
-    TextField newReportBezeichnung = new TextField();
-    Upload upload = new Upload();
 
     @Inject
     private Menu menu;
@@ -45,20 +34,6 @@ public class ReportFOPView extends VerticalLayout implements View, Upload.Receiv
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
         setStyleName("anouman-background");
-
-        upload.setEnabled(false);
-        upload.setReceiver(this);
-        upload.addSucceededListener(this::uploadSucceeded);
-
-        newReportBezeichnung.setPlaceholder("Bezeichnung für neuen FOP Report");
-        newReportBezeichnung.setWidth(350, Unit.PIXELS);
-        newReportBezeichnung.addValueChangeListener(event -> {
-            if (event.getValue().isEmpty()) {
-                upload.setEnabled(false);
-            } else {
-                upload.setEnabled(true);
-            }
-        });
 
         filterTextBezeichnung.setPlaceholder("Filter für Bezeichnung");
         filterTextBezeichnung.addValueChangeListener(e -> updateList());
@@ -86,7 +61,7 @@ public class ReportFOPView extends VerticalLayout implements View, Upload.Receiv
 
 
         CssLayout tools = new CssLayout();
-        tools.addComponents(filterTextBezeichnung, clearFilterTextBtn, addBtn, newReportBezeichnung, upload);
+        tools.addComponents(filterTextBezeichnung, clearFilterTextBtn, addBtn);
         tools.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 
         grid.setCaption("Report FOP");
@@ -103,6 +78,23 @@ public class ReportFOPView extends VerticalLayout implements View, Upload.Receiv
                     updateList();
                 })
         );
+        grid.addColumn(report -> "ändern",
+                new ButtonRenderer(event -> {
+                    form.setEntity((ReportFOP) event.getItem());
+                    form.openInModalPopup();
+                    form.setSavedHandler(val -> {
+                        facade.save(val);
+                        updateList();
+                        grid.select(val);
+                        form.closePopup();
+                    });
+                    form.setResetHandler(val -> {
+                        updateList();
+                        grid.select(val);
+                        form.closePopup();
+                    });
+                }));
+
 
         //@todo Downloadbutton für Report
         grid.setSizeFull();
@@ -120,35 +112,4 @@ public class ReportFOPView extends VerticalLayout implements View, Upload.Receiv
         }
         grid.setItems(facade.findAll());
     }
-
-    @Override
-    public OutputStream receiveUpload(String filename, String s1) {
-        OutputStream outputStream = null;
-        this.filename = filename;
-        try {
-            tempFile = File.createTempFile(this.filename, ".tmp");
-            outputStream = new FileOutputStream(tempFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return outputStream;
-    }
-
-    @Override
-    public void uploadSucceeded(Upload.SucceededEvent succeededEvent) {
-        try {
-            ReportFOP reportFOP = new ReportFOP();
-            byte[] bytes = FileUtils.readFileToByteArray(tempFile);
-            reportFOP.setBezeichnung(newReportBezeichnung.getValue());
-            reportFOP.setTemplate(bytes);
-            facade.save(reportFOP);
-
-            updateList();
-            Notification.show("Report FOP erstellt: " + reportFOP.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        tempFile.deleteOnExit();
-    }
-
 }

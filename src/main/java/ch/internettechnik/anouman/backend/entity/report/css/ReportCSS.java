@@ -1,6 +1,7 @@
 package ch.internettechnik.anouman.backend.entity.report.css;
 
 import ch.internettechnik.anouman.backend.entity.AbstractEntity;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -13,10 +14,12 @@ public class ReportCSS extends AbstractEntity {
 
     @Column
     @Basic(fetch = FetchType.LAZY)
+    @NotEmpty
     private byte[] css;
 
     @Column
     @Basic(fetch = FetchType.LAZY)
+    @NotEmpty
     private byte[] html;
 
     @Column

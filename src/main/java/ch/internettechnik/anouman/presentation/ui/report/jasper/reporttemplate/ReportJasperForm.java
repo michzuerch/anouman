@@ -4,19 +4,14 @@ import ch.internettechnik.anouman.backend.entity.report.jasper.ReportJasper;
 import ch.internettechnik.anouman.presentation.ui.converter.ByteToStringConverter;
 import ch.internettechnik.anouman.presentation.ui.report.jasper.reporttemplate.validation.ResourceResolver;
 import com.vaadin.cdi.ViewScoped;
-import com.vaadin.server.FileDownloader;
-import com.vaadin.server.StreamResource;
 import com.vaadin.server.UserError;
 import com.vaadin.ui.*;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperReport;
 import org.apache.commons.lang3.SerializationUtils;
-import org.vaadin.viritin.fields.LabelField;
 import org.vaadin.viritin.form.AbstractForm;
 import org.w3c.dom.Document;
-import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
 import server.droporchoose.UploadComponent;
 
 import javax.xml.XMLConstants;
@@ -29,7 +24,10 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -40,9 +38,8 @@ public class ReportJasperForm extends AbstractForm<ReportJasper> {
     UploadComponent upload = new UploadComponent();
     Button validateAndCompileButton = new Button("Validate and Compile");
     TextArea templateSource = new TextArea("Template JRXML");
-    LabelField<String> filename = new LabelField<>("Filename");
-    Button downloadButton = new Button("Download");
 
+    private String filename;
     private byte[] compiledReport;
 
     public ReportJasperForm() {
@@ -53,7 +50,6 @@ public class ReportJasperForm extends AbstractForm<ReportJasper> {
     public Window openInModalPopup() {
         final Window openInModalPopup = super.openInModalPopup();
         openInModalPopup.setCaption("Report Jasper");
-        //openInModalPopup.setWidth("500px");
         return openInModalPopup;
     }
 
@@ -61,9 +57,10 @@ public class ReportJasperForm extends AbstractForm<ReportJasper> {
     protected Component createContent() {
         getBinder().forField(templateSource).withConverter(new ByteToStringConverter()).withValidator(new ReportJasperValidator()).bind("templateSource");
 
-        StreamResource templateResource = createStreamResource();
-        FileDownloader fileDownloader = new FileDownloader(templateResource);
-        fileDownloader.extend(downloadButton);
+        //StreamResource templateResource = createStreamResource();
+        //FileDownloader fileDownloader = new FileDownloader(templateResource);
+        //fileDownloader.extend(downloadButton);
+
         validateAndCompileButton.addClickListener(event -> {
             if (verifyValidatesInternalXsd(getEntity().getTemplateSource())) {
                 Notification.show("XML valid", Notification.Type.TRAY_NOTIFICATION);
@@ -72,21 +69,12 @@ public class ReportJasperForm extends AbstractForm<ReportJasper> {
             }
         });
 
-        downloadButton.setEnabled(false);
         validateAndCompileButton.setEnabled(false);
-
-        if (getEntity().getTemplateSource() != null) {
-            if (getEntity().getTemplateSource().length > 1) {
-                validateAndCompileButton.setEnabled(true);
-                downloadButton.setEnabled(true);
-            }
-        }
 
         templateSource.addValueChangeListener(event -> {
             if (getEntity().getTemplateSource() != null) {
                 if (getEntity().getTemplateSource().length > 1) {
                     validateAndCompileButton.setEnabled(true);
-                    downloadButton.setEnabled(true);
                 }
             }
         });
@@ -98,8 +86,7 @@ public class ReportJasperForm extends AbstractForm<ReportJasper> {
         upload.setReceivedCallback(this::uploadReceived);
 
         return new VerticalLayout(new FormLayout(
-                bezeichnung, validateAndCompileButton, templateSource, upload, filename, downloadButton
-        ), getToolbar());
+                bezeichnung, validateAndCompileButton, templateSource, upload), getToolbar());
     }
 
     private void uploadReceived(String fileName, Path path) {
@@ -107,26 +94,13 @@ public class ReportJasperForm extends AbstractForm<ReportJasper> {
             byte[] data = Files.readAllBytes(Paths.get(path.toUri()));
 
             if (verifyValidatesInternalXsd(data)) {
-                System.err.println("validation erfolgreich...");
+                getEntity().setTemplateSource(data);
                 if (compileJRXML(data)) {
-                    System.err.println("compile start...");
                     getEntity().setTemplateSource(data);
-                    getEntity().setFilename(fileName);
-                    getEntity().setTemplateCompiled(this.compiledReport);
+                    setFilename(fileName);
                     templateSource.setValue(new String(data, "UTF-8"));
-                    filename.setValue(fileName);
-                    System.err.println("compile end...");
                 }
             }
-/*
-            StreamResource.StreamSource streamSource = new StreamResource.StreamSource() {
-                public InputStream getStream() {
-                    return (data == null) ? null : new ByteArrayInputStream(data);
-                }
-            };
-            StreamResource imageResource = new StreamResource(streamSource, fileName);
-*/
-
         } catch (IOException e) {
             Notification.show(e.getLocalizedMessage(), Notification.Type.ERROR_MESSAGE);
             e.printStackTrace();
@@ -138,7 +112,7 @@ public class ReportJasperForm extends AbstractForm<ReportJasper> {
         try {
             jasperReport = JasperCompileManager
                     .compileReport(new ByteArrayInputStream(getEntity().getTemplateSource()));
-            getEntity().setTemplateCompiled(SerializationUtils.serialize(jasperReport));
+            setCompiledReport(SerializationUtils.serialize(jasperReport));
             Notification.show("Report erfolgreich compiliert: " + jasperReport.getCompilerClass(), Notification.Type.TRAY_NOTIFICATION);
         } catch (Exception e) {
             e.printStackTrace();
@@ -148,28 +122,26 @@ public class ReportJasperForm extends AbstractForm<ReportJasper> {
         return true;
     }
 
-    private StreamResource createStreamResource() {
-        return new StreamResource(new StreamResource.StreamSource() {
-            @Override
-            public InputStream getStream() {
-                try {
-                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                    bos.write(getEntity().getTemplateSource());
-                    return new ByteArrayInputStream(bos.toByteArray());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return null;
-                }
-
-            }
-        }, getEntity().getFilename());
-    }
+//    private StreamResource createStreamResource() {
+//        return new StreamResource(new StreamResource.StreamSource() {
+//            @Override
+//            public InputStream getStream() {
+//                try {
+//                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+//                    bos.write(getEntity().getTemplateSource());
+//                    return new ByteArrayInputStream(bos.toByteArray());
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                    return null;
+//                }
+//
+//            }
+//        }, getEntity().getFilename());
+//    }
 
     private boolean verifyValidatesInternalXsd(byte[] val) {
         InputStream xmlStream = null;
         try {
-
-            System.err.println("Start validate...");
             DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
             builderFactory.setNamespaceAware(true);
 
@@ -192,9 +164,7 @@ public class ReportJasperForm extends AbstractForm<ReportJasper> {
             Schema schema = factory.newSchema(schemaFile);
 
             Validator validator = schema.newValidator();
-            validator.setErrorHandler(new RaiseOnErrorHandler());
             validator.validate(new DOMSource(document));
-            System.err.println("End validate...");
 
             return true;
         } catch (FileNotFoundException e) {
@@ -220,20 +190,21 @@ public class ReportJasperForm extends AbstractForm<ReportJasper> {
         }
     }
 
-    public class RaiseOnErrorHandler implements ErrorHandler {
-        public void warning(SAXParseException e) {
-            templateSource.setComponentError(new UserError(e.getLocalizedMessage()));
-            Notification.show(e.getLocalizedMessage(), Notification.Type.ERROR_MESSAGE);
-        }
-
-        public void error(SAXParseException e) {
-            templateSource.setComponentError(new UserError(e.getLocalizedMessage()));
-            Notification.show(e.getLocalizedMessage(), Notification.Type.ERROR_MESSAGE);
-        }
-
-        public void fatalError(SAXParseException e) {
-            templateSource.setComponentError(new UserError(e.getLocalizedMessage()));
-            Notification.show(e.getLocalizedMessage(), Notification.Type.ERROR_MESSAGE);
-        }
+    public byte[] getCompiledReport() {
+        return compiledReport;
     }
+
+    public void setCompiledReport(byte[] compiledReport) {
+        this.compiledReport = compiledReport;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+
+
 }
