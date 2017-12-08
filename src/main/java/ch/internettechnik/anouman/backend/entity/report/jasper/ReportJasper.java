@@ -6,7 +6,6 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Arrays;
 
 /**
  * Created by michzuerch on 10.06.15.
@@ -91,15 +90,5 @@ public class ReportJasper extends AbstractEntity {
 
     public void setFilename(String filename) {
         this.filename = filename;
-    }
-
-    @Override
-    public String toString() {
-        return "ReportJasper{" +
-                "bezeichnung='" + bezeichnung + '\'' +
-                ", templateSource=" + Arrays.toString(templateSource) +
-                ", filename='" + filename + '\'' +
-                ", id=" + id +
-                '}';
     }
 }
