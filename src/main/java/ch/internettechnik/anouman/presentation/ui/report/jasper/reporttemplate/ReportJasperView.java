@@ -52,7 +52,7 @@ public class ReportJasperView extends VerticalLayout implements View {
             form.setEntity(reportJasper);
             form.openInModalPopup();
             form.setSavedHandler(val -> {
-                val.setTemplateCompiled(form.getCompiledReport());
+                //val.setTemplateCompiled(form.getCompiledReport());
                 val.setFilename(form.getFilename());
                 facade.save(val);
                 updateList();
@@ -87,7 +87,7 @@ public class ReportJasperView extends VerticalLayout implements View {
                     form.setEntity((ReportJasper) event.getItem());
                     form.openInModalPopup();
                     form.setSavedHandler(val -> {
-                        val.setTemplateCompiled(form.getCompiledReport());
+                        //val.setTemplateCompiled(form.getCompiledReport());
                         val.setFilename(form.getFilename());
                         facade.save(val);
                         updateList();

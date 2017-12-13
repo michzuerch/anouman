@@ -2,7 +2,6 @@ package ch.internettechnik.anouman.presentation.ui.report.jasper.reporttemplate;
 
 import ch.internettechnik.anouman.backend.entity.report.jasper.ReportJasper;
 import ch.internettechnik.anouman.presentation.ui.converter.ByteToStringConverter;
-import ch.internettechnik.anouman.presentation.ui.report.jasper.reporttemplate.validation.ResourceResolver;
 import com.vaadin.cdi.ViewScoped;
 import com.vaadin.server.UserError;
 import com.vaadin.ui.*;
@@ -10,24 +9,10 @@ import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperReport;
 import org.apache.commons.lang3.SerializationUtils;
 import org.vaadin.viritin.form.AbstractForm;
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
 import server.droporchoose.UploadComponent;
 
-import javax.xml.XMLConstants;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Source;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamSource;
-import javax.xml.validation.Schema;
-import javax.xml.validation.SchemaFactory;
-import javax.xml.validation.Validator;
 import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -38,9 +23,9 @@ public class ReportJasperForm extends AbstractForm<ReportJasper> {
     UploadComponent upload = new UploadComponent();
     Button validateAndCompileButton = new Button("Validate and Compile");
     TextArea templateSource = new TextArea("Template JRXML");
+    TextArea templateCompiled = new TextArea("Compiled Source");
 
     private String filename;
-    private byte[] compiledReport;
 
     public ReportJasperForm() {
         super(ReportJasper.class);
@@ -56,17 +41,19 @@ public class ReportJasperForm extends AbstractForm<ReportJasper> {
     @Override
     protected Component createContent() {
         getBinder().forField(templateSource).withConverter(new ByteToStringConverter()).withValidator(new ReportJasperValidator()).bind("templateSource");
+        getBinder().forField(templateCompiled).withConverter(new ByteToStringConverter()).bind("templateCompiled");
 
         //StreamResource templateResource = createStreamResource();
         //FileDownloader fileDownloader = new FileDownloader(templateResource);
         //fileDownloader.extend(downloadButton);
 
         validateAndCompileButton.addClickListener(event -> {
-            if (verifyValidatesInternalXsd(getEntity().getTemplateSource())) {
-                Notification.show("XML valid", Notification.Type.TRAY_NOTIFICATION);
+            if (compileJRXML(getEntity().getTemplateSource())) {
+                Notification.show("Compiling verfolgreich", Notification.Type.TRAY_NOTIFICATION);
             } else {
-                Notification.show("XML NOT valid", Notification.Type.TRAY_NOTIFICATION);
+                Notification.show("Fehler beim Compilieren", Notification.Type.ERROR_MESSAGE);
             }
+
         });
 
         validateAndCompileButton.setEnabled(false);
@@ -92,18 +79,10 @@ public class ReportJasperForm extends AbstractForm<ReportJasper> {
     private void uploadReceived(String fileName, Path path) {
         try {
             byte[] data = Files.readAllBytes(Paths.get(path.toUri()));
-
-            if (verifyValidatesInternalXsd(data)) {
-                getEntity().setTemplateSource(data);
-                if (compileJRXML(data)) {
-                    getEntity().setTemplateSource(data);
-                    setFilename(fileName);
-                    templateSource.setValue(new String(data, "UTF-8"));
-                }
-            }
-        } catch (IOException e) {
-            Notification.show(e.getLocalizedMessage(), Notification.Type.ERROR_MESSAGE);
-            e.printStackTrace();
+            setFilename(fileName);
+            templateSource.setValue(new String(data, "UTF-8"));
+        } catch (IOException e1) {
+            e1.printStackTrace();
         }
     }
 
@@ -111,12 +90,14 @@ public class ReportJasperForm extends AbstractForm<ReportJasper> {
         JasperReport jasperReport = null;
         try {
             jasperReport = JasperCompileManager
-                    .compileReport(new ByteArrayInputStream(getEntity().getTemplateSource()));
-            setCompiledReport(SerializationUtils.serialize(jasperReport));
+                    .compileReport(new ByteArrayInputStream(val));
+            templateCompiled.setValue(new String(SerializationUtils.serialize(jasperReport), "UTF-8"));
+            //templateCompiled.setValue(jasperReport.toString());
             Notification.show("Report erfolgreich compiliert: " + jasperReport.getCompilerClass(), Notification.Type.TRAY_NOTIFICATION);
         } catch (Exception e) {
             e.printStackTrace();
             templateSource.setComponentError(new UserError(e.getMessage()));
+            Notification.show("Fehler beim Compilieren: " + e.getLocalizedMessage(), Notification.Type.TRAY_NOTIFICATION);
             return false;
         }
         return true;
@@ -139,64 +120,56 @@ public class ReportJasperForm extends AbstractForm<ReportJasper> {
 //        }, getEntity().getFilename());
 //    }
 
-    private boolean verifyValidatesInternalXsd(byte[] val) {
-        InputStream xmlStream = null;
-        try {
-            DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
-            builderFactory.setNamespaceAware(true);
-
-            DocumentBuilder parser = builderFactory
-                    .newDocumentBuilder();
-
-            // parse the XML into a document object
-            Document document = parser.parse(new ByteArrayInputStream(val));
-
-            SchemaFactory factory = SchemaFactory
-                    .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-
-            // associate the schema factory with the resource resolver, which is responsible for resolving the imported XSD's
-            factory.setResourceResolver(new ResourceResolver());
-
-            // note that if your XML already declares the XSD to which it has to conform, then there's no need to create a validator from a Schema object
-            Source schemaFile = new StreamSource(getClass().getClassLoader()
-                    .getResourceAsStream("/schema/jasperreport.xsd"));
-
-            Schema schema = factory.newSchema(schemaFile);
-
-            Validator validator = schema.newValidator();
-            validator.validate(new DOMSource(document));
-
-            return true;
-        } catch (FileNotFoundException e) {
-            templateSource.setComponentError(new UserError(e.getLocalizedMessage()));
-            Notification.show(e.getLocalizedMessage(), Notification.Type.ERROR_MESSAGE);
-            e.printStackTrace();
-            return false;
-        } catch (ParserConfigurationException e) {
-            templateSource.setComponentError(new UserError(e.getLocalizedMessage()));
-            Notification.show(e.getLocalizedMessage(), Notification.Type.ERROR_MESSAGE);
-            e.printStackTrace();
-            return false;
-        } catch (IOException e) {
-            templateSource.setComponentError(new UserError(e.getLocalizedMessage()));
-            Notification.show(e.getLocalizedMessage(), Notification.Type.ERROR_MESSAGE);
-            e.printStackTrace();
-            return false;
-        } catch (SAXException e) {
-            templateSource.setComponentError(new UserError(e.getLocalizedMessage()));
-            Notification.show(e.getLocalizedMessage(), Notification.Type.ERROR_MESSAGE);
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    public byte[] getCompiledReport() {
-        return compiledReport;
-    }
-
-    public void setCompiledReport(byte[] compiledReport) {
-        this.compiledReport = compiledReport;
-    }
+//    private boolean verifyValidatesInternalXsd(byte[] val) {
+//        InputStream xmlStream = null;
+//        try {
+//            DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+//            builderFactory.setNamespaceAware(true);
+//
+//            DocumentBuilder parser = builderFactory
+//                    .newDocumentBuilder();
+//
+//            // parse the XML into a document object
+//            Document document = parser.parse(new ByteArrayInputStream(val));
+//
+//            SchemaFactory factory = SchemaFactory
+//                    .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+//
+//            // associate the schema factory with the resource resolver, which is responsible for resolving the imported XSD's
+//            factory.setResourceResolver(new ResourceResolver());
+//
+//            // note that if your XML already declares the XSD to which it has to conform, then there's no need to create a validator from a Schema object
+//            Source schemaFile = new StreamSource(getClass().getClassLoader()
+//                    .getResourceAsStream("/schema/jasperreport.xsd"));
+//
+//            Schema schema = factory.newSchema(schemaFile);
+//
+//            Validator validator = schema.newValidator();
+//            validator.validate(new DOMSource(document));
+//
+//            return true;
+//        } catch (FileNotFoundException e) {
+//            templateSource.setComponentError(new UserError(e.getLocalizedMessage()));
+//            Notification.show(e.getLocalizedMessage(), Notification.Type.ERROR_MESSAGE);
+//            e.printStackTrace();
+//            return false;
+//        } catch (ParserConfigurationException e) {
+//            templateSource.setComponentError(new UserError(e.getLocalizedMessage()));
+//            Notification.show(e.getLocalizedMessage(), Notification.Type.ERROR_MESSAGE);
+//            e.printStackTrace();
+//            return false;
+//        } catch (IOException e) {
+//            templateSource.setComponentError(new UserError(e.getLocalizedMessage()));
+//            Notification.show(e.getLocalizedMessage(), Notification.Type.ERROR_MESSAGE);
+//            e.printStackTrace();
+//            return false;
+//        } catch (SAXException e) {
+//            templateSource.setComponentError(new UserError(e.getLocalizedMessage()));
+//            Notification.show(e.getLocalizedMessage(), Notification.Type.ERROR_MESSAGE);
+//            e.printStackTrace();
+//            return false;
+//        }
+//    }
 
     public String getFilename() {
         return filename;

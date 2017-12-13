@@ -85,6 +85,7 @@
     <orderEntry type="library" name="Maven: org.vaadin.addons:inputmask:1.0.2" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.9.2" level="project" />
     <orderEntry type="library" name="Maven: org.vaadin.addons:floating-textfield:2.0.0-beta2" level="project" />
+    <orderEntry type="library" name="Maven: org.vaadin.community.addon:clickabletextrenderer-v8:1.0.0" level="project" />
     <orderEntry type="library" name="Maven: tm.kod:numberfield7:0.0.5" level="project" />
     <orderEntry type="library" name="Maven: com.vaadin:vaadin-cdi:2.0.0" level="project" />
     <orderEntry type="library" name="Maven: org.vaadin.addons.countryflag:country-flag:1.0.1" level="project" />
