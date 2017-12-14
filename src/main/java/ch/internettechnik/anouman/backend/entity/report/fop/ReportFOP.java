@@ -5,6 +5,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class ReportFOP extends AbstractEntity {
@@ -16,6 +18,10 @@ public class ReportFOP extends AbstractEntity {
     @Basic(fetch = FetchType.LAZY)
     @NotEmpty
     private byte[] template;
+
+    @OneToMany(mappedBy = "reportFOP", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ReportFOPImage> reportFOPImages = new ArrayList<>();
+
 
     @Transient
     private int size;
@@ -43,5 +49,13 @@ public class ReportFOP extends AbstractEntity {
 
     public void setTemplate(byte[] xslfile) {
         this.template = xslfile;
+    }
+
+    public List<ReportFOPImage> getReportFOPImages() {
+        return reportFOPImages;
+    }
+
+    public void setReportFOPImages(List<ReportFOPImage> reportFOPImages) {
+        this.reportFOPImages = reportFOPImages;
     }
 }

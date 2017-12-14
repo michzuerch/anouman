@@ -31,9 +31,12 @@
         <class>ch.internettechnik.anouman.backend.entity.Unterbuchung</class>
         <class>ch.internettechnik.anouman.backend.entity.Uzer</class>
         <class>ch.internettechnik.anouman.backend.entity.UzerRole</class>
+        <class>ch.internettechnik.anouman.backend.entity.report.jasper.ReportJasper</class>
+        <class>ch.internettechnik.anouman.backend.entity.report.jasper.ReportJasperImage</class>
         <class>ch.internettechnik.anouman.backend.entity.report.css.ReportCSS</class>
-        <class>ch.internettechnik.anouman.backend.entity.report.css.ReportHtml</class>
+        <class>ch.internettechnik.anouman.backend.entity.report.css.ReportCSSImage</class>
         <class>ch.internettechnik.anouman.backend.entity.report.fop.ReportFOP</class>
+        <class>ch.internettechnik.anouman.backend.entity.report.fop.ReportFOPImage</class>
         <properties>
             <property name="hibernate.connection.autocommit" value="false"/>
             <property name="hibernate.cache.use_second_level_cache" value="true"/>

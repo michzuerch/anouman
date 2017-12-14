@@ -58,12 +58,21 @@ public class Menu extends CustomComponent {
         });
 
         MenuBar.MenuItem reportingMenu = menuBar.addItem("Reporting", VaadinIcons.TAXI, null);
-        reportingMenu.addItem("Report Vorlagen (Jasperreports)", VaadinIcons.GAVEL, new MenuBar.Command() {
+        MenuBar.MenuItem reportJasper = reportingMenu.addItem("Report Vorlagen (Jasperreports)", VaadinIcons.GAVEL, new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem menuItem) {
                 getUI().getNavigator().navigateTo("ReportJasper");
             }
         });
+
+        reportJasper.addItem("Report Vorlagen Jasper Bilder", VaadinIcons.BULLSEYE, new MenuBar.Command() {
+            @Override
+            public void menuSelected(MenuBar.MenuItem selectedItem) {
+                getUI().getNavigator().navigateTo("ReportJasperImage");
+            }
+        });
+
+
         reportingMenu.addItem("Report Vorlagen (CSS)", VaadinIcons.GAVEL, new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem menuItem) {
@@ -234,6 +243,13 @@ public class Menu extends CustomComponent {
             @Override
             public void menuSelected(MenuBar.MenuItem selectedItem) {
                 getUI().getNavigator().navigateTo("EditorTestGridEdit");
+            }
+        });
+
+        testsComponents.addItem("Image Test", VaadinIcons.INFO, new MenuBar.Command() {
+            @Override
+            public void menuSelected(MenuBar.MenuItem selectedItem) {
+                getUI().getNavigator().navigateTo("ImageTest");
             }
         });
 

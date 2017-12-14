@@ -6,6 +6,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by michzuerch on 10.06.15.
@@ -27,6 +29,9 @@ public class ReportJasper extends AbstractEntity {
     @NotEmpty
     private byte[] templateCompiled;
 
+    @OneToMany(mappedBy = "reportJasper", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ReportJasperImage> reportJasperImages = new ArrayList<>();
+
     @Column
     private String filename;
 
@@ -35,6 +40,9 @@ public class ReportJasper extends AbstractEntity {
 
     @Transient
     private int sizeCompiled;
+
+    @Transient
+    private int anzahlReportJasperImages;
 
     public int getSizeSource() {
         if (templateSource == null) {
@@ -82,6 +90,22 @@ public class ReportJasper extends AbstractEntity {
 
     public void setTemplateCompiled(byte[] templateCompiled) {
         this.templateCompiled = templateCompiled;
+    }
+
+    public List<ReportJasperImage> getReportJasperImages() {
+        return reportJasperImages;
+    }
+
+    public void setReportJasperImages(List<ReportJasperImage> reportJasperImages) {
+        this.reportJasperImages = reportJasperImages;
+    }
+
+    public int getAnzahlReportJasperImages() {
+        return getReportJasperImages().size();
+    }
+
+    public void setAnzahlReportJasperImages(int anzahlReportJasperImages) {
+        this.anzahlReportJasperImages = anzahlReportJasperImages;
     }
 
     public String getFilename() {

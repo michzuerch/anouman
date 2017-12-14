@@ -2,7 +2,7 @@ package ch.internettechnik.anouman.presentation.ui.report.fop;
 
 import ch.internettechnik.anouman.backend.entity.report.fop.ReportFOP;
 import ch.internettechnik.anouman.presentation.ui.converter.ByteToStringConverter;
-import ch.internettechnik.anouman.presentation.ui.report.jasper.reporttemplate.validation.ResourceResolver;
+import ch.internettechnik.anouman.presentation.ui.report.jasper.reporttemplate.xmlvalidation.ResourceResolver;
 import com.vaadin.cdi.ViewScoped;
 import com.vaadin.server.UserError;
 import com.vaadin.ui.*;

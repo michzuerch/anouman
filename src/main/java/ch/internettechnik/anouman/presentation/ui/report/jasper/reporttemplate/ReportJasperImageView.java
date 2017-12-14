@@ -1,7 +1,7 @@
 package ch.internettechnik.anouman.presentation.ui.report.jasper.reporttemplate;
 
-import ch.internettechnik.anouman.backend.entity.report.jasper.ReportJasper;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ReportJasperFacade;
+import ch.internettechnik.anouman.backend.entity.report.jasper.ReportJasperImage;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ReportJasperImageFacade;
 import ch.internettechnik.anouman.presentation.ui.Menu;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
@@ -15,21 +15,21 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 
-@CDIView(value = "ReportJasper")
-public class ReportJasperView extends VerticalLayout implements View {
-    private static org.slf4j.Logger logger = LoggerFactory.getLogger(ReportJasperView.class.getName());
+@CDIView(value = "ReportJasperImage")
+public class ReportJasperImageView extends VerticalLayout implements View {
+    private static org.slf4j.Logger logger = LoggerFactory.getLogger(ReportJasperImageView.class.getName());
 
-    Grid<ReportJasper> grid = new Grid<>();
+    Grid<ReportJasperImage> grid = new Grid<>();
     TextField filterTextBezeichnung = new TextField();
 
     @Inject
     private Menu menu;
 
     @Inject
-    private ReportJasperFacade facade;
+    private ReportJasperImageFacade facade;
 
     @Inject
-    private ReportJasperForm form;
+    private ReportJasperImageForm form;
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
@@ -48,12 +48,11 @@ public class ReportJasperView extends VerticalLayout implements View {
         Button addBtn = new Button(VaadinIcons.PLUS);
         addBtn.addClickListener(event -> {
             grid.asSingleSelect().clear();
-            ReportJasper reportJasper = new ReportJasper();
-            form.setEntity(reportJasper);
+            ReportJasperImage reportJasperImage = new ReportJasperImage();
+            form.setEntity(reportJasperImage);
             form.openInModalPopup();
             form.setSavedHandler(val -> {
                 //val.setTemplateCompiled(form.getCompiledReport());
-                val.setFilename(form.getFilename());
                 facade.save(val);
                 updateList();
                 grid.select(val);
@@ -66,30 +65,26 @@ public class ReportJasperView extends VerticalLayout implements View {
         tools.addComponents(filterTextBezeichnung, clearFilterTextBtn, addBtn);
         tools.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 
-        grid.setCaption("Report Jasper");
+        grid.setCaption("Report Jasper Bild");
         grid.setCaptionAsHtml(true);
-        grid.addColumn(ReportJasper::getId).setCaption("id");
-        grid.addColumn(ReportJasper::getBezeichnung).setCaption("Bezeichnung");
-        grid.addColumn(ReportJasper::getFilename).setCaption("Dateiname");
-        grid.addColumn(ReportJasper::getSizeSource).setCaption("Source Size");
-        grid.addColumn(ReportJasper::getSizeCompiled).setCaption("Compiled Size");
-        grid.addColumn(ReportJasper::getAnzahlReportJasperImages).setCaption("Anzahl Bilder");
+        grid.addColumn(ReportJasperImage::getId).setCaption("id");
+        grid.addColumn(ReportJasperImage::getBezeichnung).setCaption("Bezeichnung");
+        grid.addColumn(ReportJasperImage::getSize).setCaption("Grösse");
 
         // Render a button that deletes the data row (item)
         grid.addColumn(report -> "löschen",
                 new ButtonRenderer(event -> {
                     Notification.show("Lösche id:" + event.getItem(), Notification.Type.HUMANIZED_MESSAGE);
-                    facade.delete((ReportJasper) event.getItem());
+                    facade.delete((ReportJasperImage) event.getItem());
                     updateList();
                 })
         );
         grid.addColumn(report -> "ändern",
                 new ButtonRenderer(event -> {
-                    form.setEntity((ReportJasper) event.getItem());
+                    form.setEntity((ReportJasperImage) event.getItem());
                     form.openInModalPopup();
                     form.setSavedHandler(val -> {
                         //val.setTemplateCompiled(form.getCompiledReport());
-                        val.setFilename(form.getFilename());
                         facade.save(val);
                         updateList();
                         grid.select(val);

@@ -5,6 +5,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class ReportCSS extends AbstractEntity {
@@ -24,6 +26,10 @@ public class ReportCSS extends AbstractEntity {
 
     @Column
     private String filename;
+
+    @OneToMany(mappedBy = "reportCSS", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ReportCSSImage> reportCSSImages = new ArrayList<>();
+
 
     @Transient
     private int sizeCSS;
@@ -77,5 +83,13 @@ public class ReportCSS extends AbstractEntity {
 
     public void setFilename(String filename) {
         this.filename = filename;
+    }
+
+    public List<ReportCSSImage> getReportCSSImages() {
+        return reportCSSImages;
+    }
+
+    public void setReportCSSImages(List<ReportCSSImage> reportCSSImages) {
+        this.reportCSSImages = reportCSSImages;
     }
 }

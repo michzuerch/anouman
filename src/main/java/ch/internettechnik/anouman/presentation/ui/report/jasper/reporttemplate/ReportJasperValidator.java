@@ -1,6 +1,6 @@
 package ch.internettechnik.anouman.presentation.ui.report.jasper.reporttemplate;
 
-import ch.internettechnik.anouman.presentation.ui.report.jasper.reporttemplate.validation.ResourceResolver;
+import ch.internettechnik.anouman.presentation.ui.report.jasper.reporttemplate.xmlvalidation.ResourceResolver;
 import com.vaadin.data.ValidationResult;
 import com.vaadin.data.Validator;
 import com.vaadin.data.ValueContext;

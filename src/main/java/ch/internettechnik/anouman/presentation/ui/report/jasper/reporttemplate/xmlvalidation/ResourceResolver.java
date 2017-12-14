@@ -1,4 +1,4 @@
-package ch.internettechnik.anouman.presentation.ui.report.jasper.reporttemplate.validation;
+package ch.internettechnik.anouman.presentation.ui.report.jasper.reporttemplate.xmlvalidation;
 
 import org.w3c.dom.ls.LSInput;
 import org.w3c.dom.ls.LSResourceResolver;
