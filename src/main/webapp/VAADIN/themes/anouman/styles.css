@@ -1081,7 +1081,7 @@
  */
 
 .v-vaadin-version:after {
-    content: "8.3-SNAPSHOT";
+	content: "8.3-SNAPSHOT";
 }
 
 .v-widget {
@@ -1655,2100 +1655,2579 @@ div.v-layout.v-horizontal.v-widget {
  * @group calendar
  */
 
-@media only screen and (min-width: 641px) {
-    .app-layout-behaviour-left-responsive-hybrid app-header app-toolbar paper-icon-button#toggle {
-        display: none;
-    }
-
-    .app-layout-behaviour-left-responsive-hybrid .app-bar-content {
-        left: 10px !important;
-    }
-}
-
-@media only screen and (min-width: 641px) and (max-width: 768px) {
-    .app-layout-behaviour-left-responsive-hybrid {
-        --app-drawer-width: 64px !important;
-    }
-
-    .app-layout-behaviour-left-responsive-hybrid .app-layout-menu-button-badge {
-        background: #197de1;
-        color: transparent !important;
-        height: 5px !important;
-        width: 5px;
-        margin: 11px !important;
-        border-radius: 100% !important;
-        padding: 0 !important;
-    }
-
-    .app-layout-behaviour-left-responsive-hybrid .app-layout-menu-button span.v-button-caption {
-        opacity: 0;
-    }
-
-    .app-layout-behaviour-left-responsive-hybrid .app-layout-menu-bar-element {
-        padding-left: 0px !important;
-        padding-right: 0px !important;
-    }
-
-    .app-layout-behaviour-left-responsive-hybrid .app-layout-menu-bar-element .app-layout-round-image {
-        width: 64px !important;
-        height: 64px !important;
-        padding: 7px;
-    }
-
-    .app-layout-behaviour-left-responsive-hybrid .app-layout-menu-bar-element .app-layout-menu-header-title {
-        display: none;
-    }
-
-    .app-layout-behaviour-left-responsive-hybrid .app-layout-menu-bar-element .app-layout-menu-header-title {
-        display: none;
-    }
-
-    .app-layout-behaviour-left-responsive-hybrid .app-layout-menu-button {
-        font-size: 20px;
-    }
-
-    .app-layout-behaviour-left-responsive-hybrid .app-layout-menu-button .v-icon {
-        width: 100%;
-        text-align: center;
-    }
-
-    .app-layout-behaviour-left-responsive-hybrid .app-layout-menu-button .v-button-caption {
-        display: none;
-    }
-
-    .app-layout-behaviour-left-responsive-hybrid .app-layout-expanding-menu-container-button:after {
-        opacity: 0 !important;
-    }
-}
+/**
+ * Flexbox for Vaadin
+ */
 
 @media only screen and (min-width: 641px) {
-    .app-layout-behaviour-left-responsive-hybrid-no-app-bar app-header app-toolbar {
-        display: none !important;
-    }
-
-    .app-layout-behaviour-left-responsive-hybrid-no-app-bar .app-bar-application-content {
-        height: 100vh !important;
-    }
+	.app-layout-behaviour-left-responsive-hybrid app-header app-toolbar paper-icon-button#toggle, .app-layout-behaviour-left-responsive-hybrid app-header-layout app-toolbar paper-icon-button#toggle {
+		display: none;
+	}
+	.app-layout-behaviour-left-responsive-hybrid .app-bar-content {
+		left: 10px !important;
+	}
 }
 
-@media only screen and (min-width: 641px) and (max-width: 768px) {
-    .app-layout-behaviour-left-responsive-hybrid-no-app-bar {
-        --app-drawer-width: 64px !important;
-    }
-
-    .app-layout-behaviour-left-responsive-hybrid-no-app-bar .app-layout-menu-button-badge {
-        background: #197de1;
-        color: transparent !important;
-        height: 5px !important;
-        width: 5px;
-        margin: 11px !important;
-        border-radius: 100% !important;
-        padding: 0 !important;
-    }
-
-    .app-layout-behaviour-left-responsive-hybrid-no-app-bar .app-layout-menu-button span.v-button-caption {
-        opacity: 0;
-    }
-
-    .app-layout-behaviour-left-responsive-hybrid-no-app-bar .app-layout-menu-bar-element {
-        padding-left: 0px !important;
-        padding-right: 0px !important;
-    }
-
-    .app-layout-behaviour-left-responsive-hybrid-no-app-bar .app-layout-menu-bar-element .app-layout-round-image {
-        width: 64px !important;
-        height: 64px !important;
-        padding: 7px;
-    }
-
-    .app-layout-behaviour-left-responsive-hybrid-no-app-bar .app-layout-menu-bar-element .app-layout-menu-header-title {
-        display: none;
-    }
-
-    .app-layout-behaviour-left-responsive-hybrid-no-app-bar .app-layout-menu-bar-element .app-layout-menu-header-title {
-        display: none;
-    }
-
-    .app-layout-behaviour-left-responsive-hybrid-no-app-bar .app-layout-menu-button {
-        font-size: 20px;
-    }
-
-    .app-layout-behaviour-left-responsive-hybrid-no-app-bar .app-layout-menu-button .v-icon {
-        width: 100%;
-        text-align: center;
-    }
-
-    .app-layout-behaviour-left-responsive-hybrid-no-app-bar .app-layout-menu-button .v-button-caption {
-        display: none;
-    }
-
-    .app-layout-behaviour-left-responsive-hybrid-no-app-bar .app-layout-expanding-menu-container-button:after {
-        opacity: 0 !important;
-    }
+@media only screen and (min-width: 641px) and (max-width: 1024px) {
+	.app-layout-behaviour-left-responsive-hybrid {
+		--app-drawer-width: 64px !important;
+	}
+	.app-layout-behaviour-left-responsive-hybrid app-drawer[persistent].app-drawer-1 {
+		width: 64px !important;
+	}
+	.app-layout-behaviour-left-responsive-hybrid .app-bar-application-content {
+		left: 64px !important;
+	}
+	.app-layout-behaviour-left-responsive-hybrid .app-layout-menu-button-badge {
+		background: #197de1;
+		color: transparent !important;
+		height: 5px !important;
+		width: 5px;
+		border-radius: 100% !important;
+		padding: 0 !important;
+	}
+	.app-layout-behaviour-left-responsive-hybrid .app-layout-menu-button span.v-button-caption {
+		opacity: 0;
+	}
+	.app-layout-behaviour-left-responsive-hybrid .app-layout-menu-bar-element {
+		padding-left: 0px !important;
+		padding-right: 0px !important;
+	}
+	.app-layout-behaviour-left-responsive-hybrid .app-layout-menu-bar-element .app-layout-round-image {
+		width: 64px !important;
+		height: 64px !important;
+		padding: 7px;
+	}
+	.app-layout-behaviour-left-responsive-hybrid .app-layout-menu-bar-element .app-layout-menu-header-title {
+		display: none;
+	}
+	.app-layout-behaviour-left-responsive-hybrid .app-layout-menu-bar-element .app-layout-menu-header-title {
+		display: none;
+	}
+	.app-layout-behaviour-left-responsive-hybrid .app-layout-menu-button {
+		font-size: 20px;
+	}
+	.app-layout-behaviour-left-responsive-hybrid .app-layout-menu-button .v-icon {
+		width: 100%;
+		text-align: center;
+	}
+	.app-layout-behaviour-left-responsive-hybrid .app-layout-menu-button .v-button-caption {
+		display: none;
+	}
+	.app-layout-behaviour-left-responsive-hybrid .app-layout-expanding-menu-container-button:after {
+		opacity: 0 !important;
+	}
+	.app-layout-behaviour-left-responsive-hybrid .app-bar-application-content {
+		margin-bottom: -64px !important;
+		padding-bottom: 64px !important;
+		margin-right: -64px !important;
+		padding-right: 64px !important;
+	}
+	.app-layout-behaviour-left-responsive-hybrid .app-layout-submenu-container {
+		padding-left: 0px !important;
+	}
 }
 
 @media only screen and (min-width: 641px) {
-    .app-layout-behaviour-left-responsive-hybrid-overlay-no-app-bar app-toolbar {
-        display: none !important;
-    }
-
-    .app-layout-behaviour-left-responsive-hybrid-overlay-no-app-bar .app-bar-application-content {
-        height: 100vh !important;
-    }
+	.app-layout-behaviour-left-responsive-hybrid-no-app-bar app-header app-toolbar {
+		display: none !important;
+	}
+	.app-layout-behaviour-left-responsive-hybrid-no-app-bar .app-bar-application-content {
+		margin-bottom: 0px !important;
+		padding-bottom: 0px !important;
+	}
 }
 
-@media only screen and (min-width: 641px) and (max-width: 768px) {
-    .app-layout-behaviour-left-responsive-hybrid-overlay-no-app-bar {
-        --app-drawer-width: 64px !important;
-    }
-
-    .app-layout-behaviour-left-responsive-hybrid-overlay-no-app-bar .app-layout-menu-button-badge {
-        background: #197de1;
-        color: transparent !important;
-        height: 5px !important;
-        width: 5px;
-        margin: 11px !important;
-        border-radius: 100% !important;
-        padding: 0 !important;
-    }
-
-    .app-layout-behaviour-left-responsive-hybrid-overlay-no-app-bar .app-layout-menu-button span.v-button-caption {
-        opacity: 0;
-    }
-
-    .app-layout-behaviour-left-responsive-hybrid-overlay-no-app-bar .app-layout-menu-bar-element {
-        padding-left: 0px !important;
-        padding-right: 0px !important;
-    }
-
-    .app-layout-behaviour-left-responsive-hybrid-overlay-no-app-bar .app-layout-menu-bar-element .app-layout-round-image {
-        width: 64px !important;
-        height: 64px !important;
-        padding: 7px;
-    }
-
-    .app-layout-behaviour-left-responsive-hybrid-overlay-no-app-bar .app-layout-menu-bar-element .app-layout-menu-header-title {
-        display: none;
-    }
-
-    .app-layout-behaviour-left-responsive-hybrid-overlay-no-app-bar .app-layout-menu-bar-element .app-layout-menu-header-title {
-        display: none;
-    }
-
-    .app-layout-behaviour-left-responsive-hybrid-overlay-no-app-bar .app-layout-menu-button {
-        font-size: 20px;
-    }
-
-    .app-layout-behaviour-left-responsive-hybrid-overlay-no-app-bar .app-layout-menu-button .v-icon {
-        width: 100%;
-        text-align: center;
-    }
-
-    .app-layout-behaviour-left-responsive-hybrid-overlay-no-app-bar .app-layout-menu-button .v-button-caption {
-        display: none;
-    }
-
-    .app-layout-behaviour-left-responsive-hybrid-overlay-no-app-bar .app-layout-expanding-menu-container-button:after {
-        opacity: 0 !important;
-    }
+@media only screen and (max-width: 640px) {
+	.app-layout-behaviour-left-responsive-hybrid-no-app-bar .drawer-content {
+		margin-top: 64px;
+		box-sizing: border-box;
+		height: 100%;
+		margin-bottom: -64px;
+		padding-bottom: 64px;
+	}
 }
 
-@media only screen and (min-width: 641px) {
-    .app-layout-behaviour-left-responsive-small {
-        --app-drawer-width: 64px !important;
-    }
-
-    .app-layout-behaviour-left-responsive-small app-header app-toolbar paper-icon-button#toggle {
-        display: none;
-    }
-
-    .app-layout-behaviour-left-responsive-small .app-bar-content {
-        left: 10px !important;
-    }
-
-    .app-layout-behaviour-left-responsive-small .app-bar-application-content {
-        height: 100vh !important;
-    }
-
-    .app-layout-behaviour-left-responsive-small .app-layout-menu-button-badge {
-        background: #197de1;
-        color: transparent !important;
-        height: 5px !important;
-        width: 5px;
-        margin: 11px !important;
-        border-radius: 100% !important;
-        padding: 0 !important;
-    }
-
-    .app-layout-behaviour-left-responsive-small .app-layout-menu-button span.v-button-caption {
-        opacity: 0;
-    }
-
-    .app-layout-behaviour-left-responsive-small .app-layout-menu-bar-element {
-        padding-left: 0px !important;
-        padding-right: 0px !important;
-    }
-
-    .app-layout-behaviour-left-responsive-small .app-layout-menu-bar-element .app-layout-round-image {
-        width: 64px !important;
-        height: 64px !important;
-        padding: 7px;
-    }
-
-    .app-layout-behaviour-left-responsive-small .app-layout-menu-bar-element .app-layout-menu-header-title {
-        display: none;
-    }
-
-    .app-layout-behaviour-left-responsive-small .app-layout-menu-bar-element .app-layout-menu-header-title {
-        display: none;
-    }
-
-    .app-layout-behaviour-left-responsive-small .app-layout-menu-button {
-        font-size: 20px;
-    }
-
-    .app-layout-behaviour-left-responsive-small .app-layout-menu-button .v-icon {
-        width: 100%;
-        text-align: center;
-    }
-
-    .app-layout-behaviour-left-responsive-small .app-layout-menu-button .v-button-caption {
-        display: none;
-    }
-
-    .app-layout-behaviour-left-responsive-small .app-layout-expanding-menu-container-button:after {
-        opacity: 0 !important;
-    }
+@media only screen and (min-width: 641px) and (max-width: 1024px) {
+	.app-layout-behaviour-left-responsive-hybrid-no-app-bar {
+		--app-drawer-width: 64px !important;
+	}
+	.app-layout-behaviour-left-responsive-hybrid-no-app-bar app-drawer[persistent].app-drawer-1 {
+		width: 64px !important;
+	}
+	.app-layout-behaviour-left-responsive-hybrid-no-app-bar .app-bar-application-content {
+		left: 64px !important;
+	}
+	.app-layout-behaviour-left-responsive-hybrid-no-app-bar .app-layout-menu-button-badge {
+		background: #197de1;
+		color: transparent !important;
+		height: 5px !important;
+		width: 5px;
+		border-radius: 100% !important;
+		padding: 0 !important;
+	}
+	.app-layout-behaviour-left-responsive-hybrid-no-app-bar .app-layout-menu-button span.v-button-caption {
+		opacity: 0;
+	}
+	.app-layout-behaviour-left-responsive-hybrid-no-app-bar .app-layout-menu-bar-element {
+		padding-left: 0px !important;
+		padding-right: 0px !important;
+	}
+	.app-layout-behaviour-left-responsive-hybrid-no-app-bar .app-layout-menu-bar-element .app-layout-round-image {
+		width: 64px !important;
+		height: 64px !important;
+		padding: 7px;
+	}
+	.app-layout-behaviour-left-responsive-hybrid-no-app-bar .app-layout-menu-bar-element .app-layout-menu-header-title {
+		display: none;
+	}
+	.app-layout-behaviour-left-responsive-hybrid-no-app-bar .app-layout-menu-bar-element .app-layout-menu-header-title {
+		display: none;
+	}
+	.app-layout-behaviour-left-responsive-hybrid-no-app-bar .app-layout-menu-button {
+		font-size: 20px;
+	}
+	.app-layout-behaviour-left-responsive-hybrid-no-app-bar .app-layout-menu-button .v-icon {
+		width: 100%;
+		text-align: center;
+	}
+	.app-layout-behaviour-left-responsive-hybrid-no-app-bar .app-layout-menu-button .v-button-caption {
+		display: none;
+	}
+	.app-layout-behaviour-left-responsive-hybrid-no-app-bar .app-layout-expanding-menu-container-button:after {
+		opacity: 0 !important;
+	}
+	.app-layout-behaviour-left-responsive-hybrid-no-app-bar .app-bar-application-content {
+		margin-bottom: 0px !important;
+		padding-bottom: 0px !important;
+		margin-right: -64px !important;
+		padding-right: 64px !important;
+	}
+	.app-layout-behaviour-left-responsive-hybrid-no-app-bar .app-layout-submenu-container {
+		padding-left: 0px !important;
+	}
 }
 
 @media only screen and (min-width: 641px) {
-    .app-layout-behaviour-left-responsive-small-no-app-bar {
-        --app-drawer-width: 64px !important;
-    }
+	.app-layout-behaviour-left-responsive-hybrid-overlay-no-app-bar app-toolbar {
+		display: none !important;
+	}
+	.app-layout-behaviour-left-responsive-hybrid-overlay-no-app-bar .app-bar-application-content {
+		margin-bottom: 0px !important;
+		padding-bottom: 0px !important;
+		margin-right: -256px !important;
+		padding-right: 256px !important;
+	}
+}
 
-    .app-layout-behaviour-left-responsive-small-no-app-bar app-header app-toolbar {
-        display: none !important;
-    }
+@media only screen and (min-width: 641px) and (max-width: 1024px) {
+	.app-layout-behaviour-left-responsive-hybrid-overlay-no-app-bar {
+		--app-drawer-width: 64px !important;
+	}
+	.app-layout-behaviour-left-responsive-hybrid-overlay-no-app-bar app-drawer[persistent].app-drawer-1 {
+		width: 64px !important;
+	}
+	.app-layout-behaviour-left-responsive-hybrid-overlay-no-app-bar .app-bar-application-content {
+		left: 64px !important;
+	}
+	.app-layout-behaviour-left-responsive-hybrid-overlay-no-app-bar .app-layout-menu-button-badge {
+		background: #197de1;
+		color: transparent !important;
+		height: 5px !important;
+		width: 5px;
+		border-radius: 100% !important;
+		padding: 0 !important;
+	}
+	.app-layout-behaviour-left-responsive-hybrid-overlay-no-app-bar .app-layout-menu-button span.v-button-caption {
+		opacity: 0;
+	}
+	.app-layout-behaviour-left-responsive-hybrid-overlay-no-app-bar .app-layout-menu-bar-element {
+		padding-left: 0px !important;
+		padding-right: 0px !important;
+	}
+	.app-layout-behaviour-left-responsive-hybrid-overlay-no-app-bar .app-layout-menu-bar-element .app-layout-round-image {
+		width: 64px !important;
+		height: 64px !important;
+		padding: 7px;
+	}
+	.app-layout-behaviour-left-responsive-hybrid-overlay-no-app-bar .app-layout-menu-bar-element .app-layout-menu-header-title {
+		display: none;
+	}
+	.app-layout-behaviour-left-responsive-hybrid-overlay-no-app-bar .app-layout-menu-bar-element .app-layout-menu-header-title {
+		display: none;
+	}
+	.app-layout-behaviour-left-responsive-hybrid-overlay-no-app-bar .app-layout-menu-button {
+		font-size: 20px;
+	}
+	.app-layout-behaviour-left-responsive-hybrid-overlay-no-app-bar .app-layout-menu-button .v-icon {
+		width: 100%;
+		text-align: center;
+	}
+	.app-layout-behaviour-left-responsive-hybrid-overlay-no-app-bar .app-layout-menu-button .v-button-caption {
+		display: none;
+	}
+	.app-layout-behaviour-left-responsive-hybrid-overlay-no-app-bar .app-layout-expanding-menu-container-button:after {
+		opacity: 0 !important;
+	}
+	.app-layout-behaviour-left-responsive-hybrid-overlay-no-app-bar .app-bar-application-content {
+		margin-bottom: 0px !important;
+		padding-bottom: 0px !important;
+		margin-right: -64px !important;
+		padding-right: 64px !important;
+	}
+	.app-layout-behaviour-left-responsive-hybrid-overlay-no-app-bar .app-layout-submenu-container {
+		padding-left: 0px !important;
+	}
+}
 
-    .app-layout-behaviour-left-responsive-small-no-app-bar .app-bar-application-content {
-        height: 100vh !important;
-    }
+@media only screen and (max-width: 640px) {
+	.app-layout-behaviour-left-responsive-overlay .drawer-content {
+		margin-top: 0px !important;
+	}
+}
 
-    .app-layout-behaviour-left-responsive-small-no-app-bar .app-layout-menu-button-badge {
-        background: #197de1;
-        color: transparent !important;
-        height: 5px !important;
-        width: 5px;
-        margin: 11px !important;
-        border-radius: 100% !important;
-        padding: 0 !important;
-    }
+@media only screen and (min-width: 641px) {
+	.app-layout-behaviour-left-responsive-overlay .app-bar-application-content {
+		margin-bottom: -64px !important;
+		padding-bottom: 64px !important;
+		margin-right: -256px !important;
+		padding-right: 256px !important;
+	}
+}
 
-    .app-layout-behaviour-left-responsive-small-no-app-bar .app-layout-menu-button span.v-button-caption {
-        opacity: 0;
-    }
+@media only screen and (max-width: 640px) {
+	.app-layout-behaviour-left-responsive-overlay-no-app-bar .app-bar-application-content {
+		margin-bottom: -64px !important;
+		padding-bottom: 64px !important;
+		margin-right: 0px !important;
+		padding-right: 0px !important;
+	}
+}
 
-    .app-layout-behaviour-left-responsive-small-no-app-bar .app-layout-menu-bar-element {
-        padding-left: 0px !important;
-        padding-right: 0px !important;
-    }
+@media only screen and (min-width: 641px) {
+	.app-layout-behaviour-left-responsive-overlay-no-app-bar .app-bar-application-content {
+		margin-bottom: 0px !important;
+		padding-bottom: 0px !important;
+		margin-right: -256px !important;
+		padding-right: 256px !important;
+	}
+}
 
-    .app-layout-behaviour-left-responsive-small-no-app-bar .app-layout-menu-bar-element .app-layout-round-image {
-        width: 64px !important;
-        height: 64px !important;
-        padding: 7px;
-    }
+@media only screen and (min-width: 641px) {
+	.app-layout-behaviour-left-responsive-small {
+		--app-drawer-width: 64px !important;
+	}
+	.app-layout-behaviour-left-responsive-small app-drawer[persistent].app-drawer-1 {
+		width: 64px !important;
+	}
+	.app-layout-behaviour-left-responsive-small .app-bar-application-content {
+		left: 64px !important;
+	}
+	.app-layout-behaviour-left-responsive-small app-header app-toolbar paper-icon-button#toggle {
+		display: none;
+	}
+	.app-layout-behaviour-left-responsive-small .app-bar-content {
+		left: 10px !important;
+	}
+	.app-layout-behaviour-left-responsive-small .app-layout-menu-button-badge {
+		background: #197de1;
+		color: transparent !important;
+		height: 5px !important;
+		width: 5px;
+		border-radius: 100% !important;
+		padding: 0 !important;
+	}
+	.app-layout-behaviour-left-responsive-small .app-layout-menu-button span.v-button-caption {
+		opacity: 0;
+	}
+	.app-layout-behaviour-left-responsive-small .app-layout-menu-bar-element {
+		padding-left: 0px !important;
+		padding-right: 0px !important;
+	}
+	.app-layout-behaviour-left-responsive-small .app-layout-menu-bar-element .app-layout-round-image {
+		width: 64px !important;
+		height: 64px !important;
+		padding: 7px;
+	}
+	.app-layout-behaviour-left-responsive-small .app-layout-menu-bar-element .app-layout-menu-header-title {
+		display: none;
+	}
+	.app-layout-behaviour-left-responsive-small .app-layout-menu-bar-element .app-layout-menu-header-title {
+		display: none;
+	}
+	.app-layout-behaviour-left-responsive-small .app-layout-menu-button {
+		font-size: 20px;
+	}
+	.app-layout-behaviour-left-responsive-small .app-layout-menu-button .v-icon {
+		width: 100%;
+		text-align: center;
+	}
+	.app-layout-behaviour-left-responsive-small .app-layout-menu-button .v-button-caption {
+		display: none;
+	}
+	.app-layout-behaviour-left-responsive-small .app-layout-expanding-menu-container-button:after {
+		opacity: 0 !important;
+	}
+	.app-layout-behaviour-left-responsive-small .app-bar-application-content {
+		margin-bottom: -64px !important;
+		padding-bottom: 64px !important;
+		margin-right: -64px !important;
+		padding-right: 64px !important;
+	}
+}
 
-    .app-layout-behaviour-left-responsive-small-no-app-bar .app-layout-menu-bar-element .app-layout-menu-header-title {
-        display: none;
-    }
+@media only screen and (min-width: 641px) {
+	.app-layout-behaviour-left-responsive-small-no-app-bar {
+		--app-drawer-width: 64px !important;
+	}
+	.app-layout-behaviour-left-responsive-small-no-app-bar app-drawer[persistent].app-drawer-1 {
+		width: 64px !important;
+	}
+	.app-layout-behaviour-left-responsive-small-no-app-bar .app-bar-application-content {
+		left: 64px !important;
+	}
+	.app-layout-behaviour-left-responsive-small-no-app-bar app-header app-toolbar {
+		display: none !important;
+	}
+	.app-layout-behaviour-left-responsive-small-no-app-bar .app-bar-application-content {
+		margin-bottom: 0px !important;
+		padding-bottom: 0px !important;
+		margin-right: -64px !important;
+		padding-right: 64px !important;
+	}
+	.app-layout-behaviour-left-responsive-small-no-app-bar .app-layout-menu-button-badge {
+		background: #197de1;
+		color: transparent !important;
+		height: 5px !important;
+		width: 5px;
+		border-radius: 100% !important;
+		padding: 0 !important;
+	}
+	.app-layout-behaviour-left-responsive-small-no-app-bar .app-layout-menu-button span.v-button-caption {
+		opacity: 0;
+	}
+	.app-layout-behaviour-left-responsive-small-no-app-bar .app-layout-menu-bar-element {
+		padding-left: 0px !important;
+		padding-right: 0px !important;
+	}
+	.app-layout-behaviour-left-responsive-small-no-app-bar .app-layout-menu-bar-element .app-layout-round-image {
+		width: 64px !important;
+		height: 64px !important;
+		padding: 7px;
+	}
+	.app-layout-behaviour-left-responsive-small-no-app-bar .app-layout-menu-bar-element .app-layout-menu-header-title {
+		display: none;
+	}
+	.app-layout-behaviour-left-responsive-small-no-app-bar .app-layout-menu-bar-element .app-layout-menu-header-title {
+		display: none;
+	}
+	.app-layout-behaviour-left-responsive-small-no-app-bar .app-layout-menu-button {
+		font-size: 20px;
+	}
+	.app-layout-behaviour-left-responsive-small-no-app-bar .app-layout-menu-button .v-icon {
+		width: 100%;
+		text-align: center;
+	}
+	.app-layout-behaviour-left-responsive-small-no-app-bar .app-layout-menu-button .v-button-caption {
+		display: none;
+	}
+	.app-layout-behaviour-left-responsive-small-no-app-bar .app-layout-expanding-menu-container-button:after {
+		opacity: 0 !important;
+	}
+	.app-layout-behaviour-left-responsive-small-no-app-bar .drawer-content {
+		margin-top: 0px !important;
+		margin-bottom: 0px !important;
+		padding-bottom: 0px !important;
+	}
+}
 
-    .app-layout-behaviour-left-responsive-small-no-app-bar .app-layout-menu-bar-element .app-layout-menu-header-title {
-        display: none;
-    }
+@media only screen and (min-width: 641px) {
+	.app-layout-behaviour-top app-toolbar paper-icon-button#toggle {
+		opacity: 0;
+		pointer-events: none;
+	}
+	.app-layout-behaviour-top .app-bar-content {
+		left: 10px !important;
+	}
+	.app-layout-behaviour-top app-drawer {
+		display: none;
+	}
+	.app-layout-behaviour-top .app-layout-bar-menu-holder {
+		display: flex !important;
+	}
+}
 
-    .app-layout-behaviour-left-responsive-small-no-app-bar .app-layout-menu-button {
-        font-size: 20px;
-    }
-
-    .app-layout-behaviour-left-responsive-small-no-app-bar .app-layout-menu-button .v-icon {
-        width: 100%;
-        text-align: center;
-    }
-
-    .app-layout-behaviour-left-responsive-small-no-app-bar .app-layout-menu-button .v-button-caption {
-        display: none;
-    }
-
-    .app-layout-behaviour-left-responsive-small-no-app-bar .app-layout-expanding-menu-container-button:after {
-        opacity: 0 !important;
-    }
+@media only screen and (min-width: 641px) {
+	.app-layout-behaviour-top-large {
+		--app-bar-height: 128px !important;
+	}
+	.app-layout-behaviour-top-large app-toolbar paper-icon-button#toggle {
+		opacity: 0;
+		pointer-events: none;
+	}
+	.app-layout-behaviour-top-large .app-bar-content {
+		left: 10px !important;
+	}
+	.app-layout-behaviour-top-large .app-bar-menu-content {
+		left: 64px;
+		position: absolute;
+		top: 64px !important;
+		right: 0px;
+		bottom: 0px;
+	}
+	.app-layout-behaviour-top-large app-drawer {
+		display: none;
+	}
+	.app-layout-behaviour-top-large .app-bar-menu-content {
+		opacity: 1 !important;
+		pointer-events: auto !important;
+	}
+	.app-layout-behaviour-top-large .app-bar-application-content {
+		box-sizing: border-box;
+		height: 100vh;
+		margin-bottom: -128px !important;
+		padding-bottom: 128px !important;
+	}
+	.app-layout-behaviour-top-large .app-toolbar-1 {
+		height: 128px;
+	}
 }
 
 .anouman .v-calendar-month-day-extended {
-    overflow-y: scroll;
+	overflow-y: scroll;
 }
 
 .anouman .v-calendar-week-wrapper {
-    position: relative;
-    overflow: hidden;
+	position: relative;
+	overflow: hidden;
 }
 
 .anouman .v-calendar-current-time {
-    position: absolute;
-    left: 0;
-    width: 100%;
-    height: 1px;
-    background: red;
-    z-index: 2;
+	position: absolute;
+	left: 0;
+	width: 100%;
+	height: 1px;
+	background: red;
+	z-index: 2;
 }
 
 .anouman .v-calendar-event-resizetop, .anouman .v-calendar-event-resizebottom {
-    position: absolute;
-    height: 5%;
-    min-height: 3px;
-    width: 100%;
-    z-index: 1;
+	position: absolute;
+	height: 5%;
+	min-height: 3px;
+	width: 100%;
+	z-index: 1;
 }
 
 .anouman .v-calendar-event-resizetop {
-    cursor: row-resize;
-    top: 0;
+	cursor: row-resize;
+	top: 0;
 }
 
 .anouman .v-calendar-event-resizebottom {
-    cursor: row-resize;
-    bottom: 0;
+	cursor: row-resize;
+	bottom: 0;
 }
 
 .anouman .v-calendar-header-month td:first-child {
-    padding-left: 0;
+	padding-left: 0;
 }
 
 .anouman .v-calendar-month-sizedheight .v-calendar-month-day {
-    height: 100px;
+	height: 100px;
 }
 
 .anouman .v-calendar-month-sizedwidth .v-calendar-month-day {
-    width: 100px;
+	width: 100px;
 }
 
 .anouman .v-calendar-header-month-Hsized .v-calendar-header-day {
-    width: 101px;
+	width: 101px;
 }
 
 .anouman .v-calendar-header-month-Hsized td:first-child {
-    padding-left: 1px;
+	padding-left: 1px;
 }
 
 .anouman .v-calendar-header-day-Hsized {
-    width: 200px;
+	width: 200px;
 }
 
 .anouman .v-calendar-week-numbers-Vsized .v-calendar-week-number {
-    height: 100px;
-    line-height: 100px;
+	height: 100px;
+	line-height: 100px;
 }
 
 .anouman .v-calendar-week-wrapper-Vsized {
-    height: 400px;
-    overflow-x: hidden !important;
+	height: 400px;
+	overflow-x: hidden !important;
 }
 
 .anouman .v-calendar-times-Vsized .v-calendar-time {
-    height: 38px;
+	height: 38px;
 }
 
 .anouman .v-calendar-times-Hsized .v-calendar-time {
-    width: 42px;
+	width: 42px;
 }
 
 .anouman .v-calendar-day-times-Vsized .v-datecellslot, .anouman .v-calendar-day-times-Vsized .v-datecellslot-even, .anouman .v-calendar-day-times-Vsized .v-datecellslot-blocked, .anouman .v-calendar-day-times-Vsized .v-datecellslot-blocked-even {
-    height: 18px;
+	height: 18px;
 }
 
 .anouman .v-calendar-day-times-Hsized, .anouman .v-calendar-day-times-Hsized .v-datecellslot, .anouman .v-calendar-day-times-Hsized .v-datecellslot-even, .anouman .v-calendar-day-times-Hsized .v-datecellslot-blocked, .anouman .v-calendar-day-times-Hsized .v-datecellslot-blocked-even {
-    width: 200px;
+	width: 200px;
 }
 
 .anouman .v-calendar-header-day {
-    font-weight: 400;
-    text-align: center;
-    padding: 7px 0;
+	font-weight: 400;
+	text-align: center;
+	padding: 7px 0;
 }
 
 .anouman .v-calendar-header-week .v-calendar-back, .anouman .v-calendar-header-week .v-calendar-next, .anouman .v-calendar-header-month .v-calendar-back, .anouman .v-calendar-header-month .v-calendar-next {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    -ms-appearance: none;
-    -o-appearance: none;
-    appearance: none;
-    background: transparent;
-    border: none;
-    padding: 7px 2px;
-    margin: 0;
-    cursor: pointer;
-    outline: none;
-    color: inherit;
-    opacity: 0.5;
-    filter: alpha(opacity=50);
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	-ms-appearance: none;
+	-o-appearance: none;
+	appearance: none;
+	background: transparent;
+	border: none;
+	padding: 7px 2px;
+	margin: 0;
+	cursor: pointer;
+	outline: none;
+	color: inherit;
+	opacity: 0.5;
+	filter: alpha(opacity=50) ;
 }
 
 .anouman .v-calendar-header-week .v-calendar-back:focus, .anouman .v-calendar-header-week .v-calendar-next:focus, .anouman .v-calendar-header-month .v-calendar-back:focus, .anouman .v-calendar-header-month .v-calendar-next:focus {
-    outline: none;
+	outline: none;
 }
 
 .anouman .v-calendar-header-week .v-calendar-back:hover, .anouman .v-calendar-header-week .v-calendar-next:hover, .anouman .v-calendar-header-month .v-calendar-back:hover, .anouman .v-calendar-header-month .v-calendar-next:hover {
-    opacity: 1;
-    filter: none;
+	opacity: 1;
+	filter: none ;
 }
 
 .anouman .v-calendar-header-week .v-calendar-back:active, .anouman .v-calendar-header-week .v-calendar-next:active, .anouman .v-calendar-header-month .v-calendar-back:active, .anouman .v-calendar-header-month .v-calendar-next:active {
-    opacity: 0.5;
-    filter: alpha(opacity=50);
+	opacity: 0.5;
+	filter: alpha(opacity=50) ;
 }
 
 .anouman .v-calendar-header-week .v-calendar-back:before, .anouman .v-calendar-header-month .v-calendar-back:before {
-    font-family: ThemeIcons;
-    content: "\f053";
+	font-family: ThemeIcons;
+	content: "\f053";
 }
 
 .anouman .v-calendar-header-week .v-calendar-next:before, .anouman .v-calendar-header-month .v-calendar-next:before {
-    font-family: ThemeIcons;
-    content: "\f054";
+	font-family: ThemeIcons;
+	content: "\f054";
 }
 
 .anouman .v-calendar-month {
-    outline: none;
-    overflow: hidden;
+	outline: none;
+	overflow: hidden;
 }
 
 .anouman .v-calendar-month td {
-    vertical-align: top;
+	vertical-align: top;
 }
 
 .anouman .v-calendar-week-number {
-    cursor: pointer;
-    width: 20px;
-    text-align: center;
-    font-size: 0.8em;
-    opacity: 0.5;
-    filter: alpha(opacity=50);
+	cursor: pointer;
+	width: 20px;
+	text-align: center;
+	font-size: 0.8em;
+	opacity: 0.5;
+	filter: alpha(opacity=50) ;
 }
 
 .anouman .v-calendar-week-number:hover {
-    opacity: 1;
-    filter: none;
+	opacity: 1;
+	filter: none ;
 }
 
 .anouman .v-calendar-month-day {
-    outline: none;
-    box-sizing: border-box;
-    line-height: 1.2;
+	outline: none;
+	box-sizing: border-box;
+	line-height: 1.2;
 }
 
 .anouman .v-calendar-month-day.firstDay .v-calendar-day-number {
-    color: #1463b3;
-    background: #f9fbfd;
+	color: #1463b3;
+	background: #f9fbfd;
 }
 
 .anouman .v-calendar-bottom-spacer, .anouman .v-calendar-bottom-spacer-expanded, .anouman .v-calendar-spacer, .anouman .v-calendar-bottom-spacer-empty {
-    height: 19px;
+	height: 19px;
 }
 
 .anouman .v-calendar-bottom-spacer, .anouman .v-calendar-bottom-spacer-expanded {
-    font-size: 0.8em;
-    padding: 0 5px;
-    cursor: pointer;
-    width: 3em;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
+	font-size: 0.8em;
+	padding: 0 5px;
+	cursor: pointer;
+	width: 3em;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
 }
 
 .anouman .v-calendar-bottom-spacer:hover, .anouman .v-calendar-bottom-spacer-expanded:hover {
-    color: #197de1;
+	color: #197de1;
 }
 
 .anouman .v-calendar-bottom-spacer > span:before {
-    content: "+";
-    margin-right: 0.2em;
-    color: #197de1;
+	content: "+";
+	margin-right: 0.2em;
+	color: #197de1;
 }
 
 .anouman .v-calendar-bottom-spacer-expanded > span:before {
-    content: "-";
-    margin-right: 0.2em;
-    color: #197de1;
+	content: "-";
+	margin-right: 0.2em;
+	color: #197de1;
 }
 
 .anouman .v-calendar-day-number {
-    line-height: 25px;
-    font-size: 16px;
-    text-align: right;
-    margin: 0;
-    padding-right: 5px;
-    white-space: nowrap;
-    border-top: 1px solid #f2f2f2;
-    cursor: pointer;
+	line-height: 25px;
+	font-size: 16px;
+	text-align: right;
+	margin: 0;
+	padding-right: 5px;
+	white-space: nowrap;
+	border-top: 1px solid #f2f2f2;
+	cursor: pointer;
 }
 
 .anouman .v-calendar-day-number:hover {
-    color: #197de1;
+	color: #197de1;
 }
 
 .anouman .v-calendar-month-day-today .v-calendar-day-number {
-    background: #eef3f8;
-    font-weight: 400;
-    color: #197de1;
-    border-top: 2px solid #197de1;
-    line-height: 24px;
-    margin: 0;
-    padding: 0 5px;
+	background: #eef3f8;
+	font-weight: 400;
+	color: #197de1;
+	border-top: 2px solid #197de1;
+	line-height: 24px;
+	margin: 0;
+	padding: 0 5px;
 }
 
 .anouman .v-calendar-month-day-selected {
-    background-color: #e3edf7;
+	background-color: #e3edf7;
 }
 
 .anouman .v-calendar-month-day-dragemphasis {
-    background-color: #a8a8a8;
+	background-color: #a8a8a8;
 }
 
 .anouman .v-calendar-month-day-extended {
-    overflow-y: scroll;
+	overflow-y: scroll;
 }
 
 .anouman .v-calendar-weekly-longevents {
-    margin-left: 50px;
-    margin-bottom: 3px;
-    border-bottom: 3px solid #e0e0e0;
+	margin-left: 50px;
+	margin-bottom: 3px;
+	border-bottom: 3px solid #e0e0e0;
 }
 
 .anouman .v-calendar-weekly-longevents .v-calendar-event-all-day {
-    height: 22px;
-    line-height: 1.6;
-    border-top: 1px solid #FFF;
-    border-bottom: 1px solid #fff;
+	height: 22px;
+	line-height: 1.6;
+	border-top: 1px solid #FFF;
+	border-bottom: 1px solid #fff;
 }
 
 .anouman .v-calendar-header-week td {
-    vertical-align: middle !important;
+	vertical-align: middle !important;
 }
 
 .anouman .v-calendar-header-week .v-calendar-header-day {
-    cursor: pointer;
+	cursor: pointer;
 }
 
 .anouman .v-calendar-times {
-    width: 50px;
-    font-size: 0.77em;
-    line-height: 1;
-    white-space: nowrap;
+	width: 50px;
+	font-size: 0.77em;
+	line-height: 1;
+	white-space: nowrap;
 }
 
 .anouman .v-calendar-time {
-    text-align: right;
-    padding-right: 9px;
-    margin-top: -6px;
-    padding-bottom: 6px;
+	text-align: right;
+	padding-right: 9px;
+	margin-top: -6px;
+	padding-bottom: 6px;
 }
 
 .anouman .v-calendar-day-times, .anouman .v-calendar-day-times-today {
-    outline: none;
-    border-right: 1px solid transparent;
+	outline: none;
+	border-right: 1px solid transparent;
 }
 
 .anouman .v-calendar-day-times:focus, .anouman .v-calendar-day-times-today:focus {
-    outline: none;
+	outline: none;
 }
 
 .anouman .v-calendar-day-times-today {
-    background: #f5f5f5;
+	background: #f5f5f5;
 }
 
 .anouman .v-calendar .v-datecellslot, .anouman .v-calendar .v-datecellslot-even, .anouman .v-calendar .v-datecellslot-blocked, .anouman .v-calendar .v-datecellslot-blocked-even {
-    border-top: 1px solid #dfdfdf;
+	border-top: 1px solid #dfdfdf;
 }
 
 .anouman .v-calendar .v-datecellslot:first-child, .anouman .v-calendar .v-datecellslot-even:first-child, .anouman .v-calendar .v-datecellslot-blocked:first-child, .anouman .v-calendar .v-datecellslot-blocked-even:first-child {
-    border-top-color: transparent;
+	border-top-color: transparent;
 }
 
 .anouman .v-calendar .v-datecellslot, .anouman .v-calendar .v-datecellslot-blocked {
-    border-top-style: dotted;
+	border-top-style: dotted;
 }
 
 .anouman .v-calendar .v-datecellslot-blocked, .anouman .v-calendar .v-datecellslot-blocked-even {
-    background: #d6d6d6;
-    border-color: #cecece;
+	background: #d6d6d6;
+	border-color: #cecece;
 }
 
 .anouman .v-calendar-current-time {
-    background: #197de1;
-    line-height: 1px;
-    pointer-events: none;
-    opacity: 0.5;
-    filter: alpha(opacity=50);
+	background: #197de1;
+	line-height: 1px;
+	pointer-events: none;
+	opacity: 0.5;
+	filter: alpha(opacity=50) ;
 }
 
 .anouman .v-calendar-current-time:before {
-    content: "\2022";
-    color: #197de1;
-    font-size: 22px;
-    margin-left: -0.07em;
+	content: "\2022";
+	color: #197de1;
+	font-size: 22px;
+	margin-left: -0.07em;
 }
 
 .anouman .v-calendar .v-daterange {
-    position: relative;
+	position: relative;
 }
 
 .anouman .v-calendar .v-daterange:before {
-    content: "";
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: -1px;
-    left: 0;
-    background: #197de1;
-    opacity: 0.5;
-    filter: alpha(opacity=50);
-    border-radius: 4px 4px 0 0;
+	content: "";
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: -1px;
+	left: 0;
+	background: #197de1;
+	opacity: 0.5;
+	filter: alpha(opacity=50) ;
+	border-radius: 4px 4px 0 0;
 }
 
-.anouman .v-calendar .v-daterange + .v-daterange {
-    border-color: transparent;
+.anouman .v-calendar .v-daterange  + .v-daterange {
+	border-color: transparent;
 }
 
-.anouman .v-calendar .v-daterange + .v-daterange:before {
-    border-radius: 0;
+.anouman .v-calendar .v-daterange  + .v-daterange:before {
+	border-radius: 0;
 }
 
 .anouman .v-calendar-event {
-    font-size: 0.85em;
-    overflow: hidden;
-    cursor: pointer;
-    outline: none;
-    border-radius: 4px;
+	font-size: 0.85em;
+	overflow: hidden;
+	cursor: pointer;
+	outline: none;
+	border-radius: 4px;
 }
 
 .anouman .v-calendar-event:focus {
-    outline: none;
+	outline: none;
 }
 
 .anouman .v-calendar-event-month {
-    padding: 0 5px;
-    box-sizing: border-box;
-    border-bottom: 1px solid #FFF;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    height: 19px;
-    line-height: 19px;
+	padding: 0 5px;
+	box-sizing: border-box;
+	border-bottom: 1px solid #FFF;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	height: 19px;
+	line-height: 19px;
 }
 
 .anouman .v-calendar-event-month .v-calendar-event-time {
-    float: right;
-    font-size: 0.9em;
-    line-height: 19px;
-    opacity: 0.5;
-    filter: alpha(opacity=50);
+	float: right;
+	font-size: 0.9em;
+	line-height: 19px;
+	opacity: 0.5;
+	filter: alpha(opacity=50) ;
 }
 
 .anouman .v-calendar-event-month:before {
-    content: "\25cf";
-    margin-right: 0.2em;
+	content: "\25cf";
+	margin-right: 0.2em;
 }
 
 .anouman .v-calendar-event-all-day {
-    padding: 0 5px;
-    box-sizing: border-box;
-    height: 19px;
-    line-height: 19px;
-    border-radius: 0;
-    margin-left: -1px;
-    white-space: nowrap;
+	padding: 0 5px;
+	box-sizing: border-box;
+	height: 19px;
+	line-height: 19px;
+	border-radius: 0;
+	margin-left: -1px;
+	white-space: nowrap;
 }
 
 .anouman .v-calendar-event-all-day:before {
-    content: "";
+	content: "";
 }
 
 .anouman .v-calendar-event-start {
-    overflow: visible;
-    margin-left: 0;
+	overflow: visible;
+	margin-left: 0;
 }
 
 .anouman .v-calendar-event-start.v-calendar-event-continued-to, .anouman .v-calendar-event-start.v-calendar-event-end {
-    overflow: hidden;
-    text-overflow: ellipsis;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .anouman .v-calendar-event-start {
-    border-top-left-radius: 4px;
-    border-bottom-left-radius: 4px;
-    margin-left: 5px;
+	border-top-left-radius: 4px;
+	border-bottom-left-radius: 4px;
+	margin-left: 5px;
 }
 
 .anouman .v-calendar-event-end {
-    border-top-right-radius: 4px;
-    border-bottom-right-radius: 4px;
-    margin-right: 5px;
+	border-top-right-radius: 4px;
+	border-bottom-right-radius: 4px;
+	margin-right: 5px;
 }
 
 .anouman .v-calendar-event-caption {
-    font-weight: 500;
-    line-height: 1.2;
-    padding: 5px 0;
-    position: absolute;
-    overflow: hidden;
-    right: 9px;
-    left: 5px;
-    bottom: 0;
-    top: 0;
+	font-weight: 500;
+	line-height: 1.2;
+	padding: 5px 0;
+	position: absolute;
+	overflow: hidden;
+	right: 9px;
+	left: 5px;
+	bottom: 0;
+	top: 0;
 }
 
 .anouman .v-calendar-event-caption span {
-    font-weight: 300;
-    white-space: nowrap;
+	font-weight: 300;
+	white-space: nowrap;
 }
 
 .anouman .v-calendar-week-wrapper .v-calendar-event {
-    overflow: visible;
+	overflow: visible;
 }
 
 .anouman .v-calendar-week-wrapper .v-calendar-event-content {
-    margin-top: -1px;
-    border-radius: 5px;
-    border: 1px solid #fafafa;
-    padding-top: 3px;
-    margin-right: 2px;
-    margin-left: 2px;
+	margin-top: -1px;
+	border-radius: 5px;
+	border: 1px solid #fafafa;
+	padding-top: 3px;
+	margin-right: 2px;
+	margin-left: 2px;
 }
 
 .anouman .v-calendar-event-month:before {
-    border-color: #00ace0;
-    color: #00ace0;
+	border-color: #00ace0;
+	color: #00ace0;
 }
 
 .anouman .v-calendar-event-all-day {
-    background-color: #c8eaf4;
-    background-color: rgba(200, 234, 244, 0.8);
-    color: #00ace0;
+	background-color: #c8eaf4;
+	background-color: rgba(200, 234, 244, 0.8);
+	color: #00ace0;
 }
 
 .anouman .v-calendar-week-wrapper .v-calendar-event {
-    color: #00ace0;
+	color: #00ace0;
 }
 
 .anouman .v-calendar-week-wrapper .v-calendar-event .v-calendar-event-content {
-    background-color: #c8eaf4;
-    background-color: rgba(200, 234, 244, 0.8);
+	background-color: #c8eaf4;
+	background-color: rgba(200, 234, 244, 0.8);
 }
 
 .anouman .v-calendar-event-month[class*="color2"]:before {
-    border-color: #2d9f19;
-    color: #2d9f19;
+	border-color: #2d9f19;
+	color: #2d9f19;
 }
 
 .anouman .v-calendar-event-all-day[class*="color2"] {
-    background-color: #d1e7cd;
-    background-color: rgba(209, 231, 205, 0.8);
-    color: #2d9f19;
+	background-color: #d1e7cd;
+	background-color: rgba(209, 231, 205, 0.8);
+	color: #2d9f19;
 }
 
 .anouman .v-calendar-week-wrapper .v-calendar-event[class*="color2"] {
-    color: #2d9f19;
+	color: #2d9f19;
 }
 
 .anouman .v-calendar-week-wrapper .v-calendar-event[class*="color2"] .v-calendar-event-content {
-    background-color: #d1e7cd;
-    background-color: rgba(209, 231, 205, 0.8);
+	background-color: #d1e7cd;
+	background-color: rgba(209, 231, 205, 0.8);
 }
 
 .anouman .v-calendar-event-month[class*="color3"]:before {
-    border-color: #d18100;
-    color: #d18100;
+	border-color: #d18100;
+	color: #d18100;
 }
 
 .anouman .v-calendar-event-all-day[class*="color3"] {
-    background-color: #f1e1c8;
-    background-color: rgba(241, 225, 200, 0.8);
-    color: #d18100;
+	background-color: #f1e1c8;
+	background-color: rgba(241, 225, 200, 0.8);
+	color: #d18100;
 }
 
 .anouman .v-calendar-week-wrapper .v-calendar-event[class*="color3"] {
-    color: #d18100;
+	color: #d18100;
 }
 
 .anouman .v-calendar-week-wrapper .v-calendar-event[class*="color3"] .v-calendar-event-content {
-    background-color: #f1e1c8;
-    background-color: rgba(241, 225, 200, 0.8);
+	background-color: #f1e1c8;
+	background-color: rgba(241, 225, 200, 0.8);
 }
 
 .anouman .v-calendar-event-month[class*="color4"]:before {
-    border-color: #ce3812;
-    color: #ce3812;
+	border-color: #ce3812;
+	color: #ce3812;
 }
 
 .anouman .v-calendar-event-all-day[class*="color4"] {
-    background-color: #f1d3cb;
-    background-color: rgba(241, 211, 203, 0.8);
-    color: #ce3812;
+	background-color: #f1d3cb;
+	background-color: rgba(241, 211, 203, 0.8);
+	color: #ce3812;
 }
 
 .anouman .v-calendar-week-wrapper .v-calendar-event[class*="color4"] {
-    color: #ce3812;
+	color: #ce3812;
 }
 
 .anouman .v-calendar-week-wrapper .v-calendar-event[class*="color4"] .v-calendar-event-content {
-    background-color: #f1d3cb;
-    background-color: rgba(241, 211, 203, 0.8);
+	background-color: #f1d3cb;
+	background-color: rgba(241, 211, 203, 0.8);
 }
 
 .anouman .v-calendar-event-month[class*="color5"]:before {
-    border-color: #2d55cd;
-    color: #2d55cd;
+	border-color: #2d55cd;
+	color: #2d55cd;
 }
 
 .anouman .v-calendar-event-all-day[class*="color5"] {
-    background-color: #d1d9f1;
-    background-color: rgba(209, 217, 241, 0.8);
-    color: #2d55cd;
+	background-color: #d1d9f1;
+	background-color: rgba(209, 217, 241, 0.8);
+	color: #2d55cd;
 }
 
 .anouman .v-calendar-week-wrapper .v-calendar-event[class*="color5"] {
-    color: #2d55cd;
+	color: #2d55cd;
 }
 
 .anouman .v-calendar-week-wrapper .v-calendar-event[class*="color5"] .v-calendar-event-content {
-    background-color: #d1d9f1;
-    background-color: rgba(209, 217, 241, 0.8);
+	background-color: #d1d9f1;
+	background-color: rgba(209, 217, 241, 0.8);
 }
 
 .anouman .v-calendar.v-disabled * {
-    cursor: default;
+	cursor: default;
 }
 
 .anouman paper-icon-button {
-    width: 44px;
-    height: 44px;
-    margin: 10px;
-    padding: 6px;
+	width: 44px;
+	height: 44px;
+	margin: 10px;
+	padding: 6px;
+}
+
+.anouman .app-layout-menu-element {
+	height: 48px !important;
+}
+
+.anouman .drawer-content .v-spacing {
+	height: 12px !important;
+}
+
+.anouman .drawer-content .v-margin-bottom {
+	padding-bottom: 37px !important;
+}
+
+.anouman .drawer-content .v-margin-top {
+	padding-top: 37px !important;
 }
 
 .anouman .app-bar-application-content {
-    width: 100%;
-    height: calc(100vh - 64px);
+	position: fixed;
+	width: 100%;
+	box-sizing: border-box;
+	height: 100%;
+	transition: margin 0.2s ease, padding 0.2s ease;
+}
+
+.anouman app-drawer[opened][persistent] + .app-bar-application-content, .anouman app-drawer[opened][persistent] + #contentContainer .app-bar-application-content {
+	margin-bottom: -64px;
+	padding-bottom: 64px;
+	margin-right: -256px;
+	padding-right: 256px;
+}
+
+.anouman app-header-layout.small app-drawer[opened] + .app-bar-application-content, .anouman app-header-layout.small app-drawer[opened] + #contentContainer .app-bar-application-content {
+	margin-bottom: -64px;
+	padding-bottom: 64px;
+	margin-right: -64px;
+	padding-right: 64px;
+}
+
+.anouman .app-bar-application-content {
+	margin-bottom: -64px;
+	padding-bottom: 64px;
+	margin-right: 0px;
+	padding-right: 0px;
 }
 
 .anouman .app-layout-menu-bar-element {
-    padding-left: 16px;
-    padding-right: 16px;
+	padding-left: 16px;
+	padding-right: 16px;
 }
 
 .anouman .v-absolutelayout-wrapper-app-layout-menu-button-badge {
-    pointer-events: none;
+	pointer-events: none;
+}
+
+.anouman app-drawer:not([persistent]):not([opened]) .drawer-content * {
+	overflow: hidden;
+}
+
+.anouman .app-drawer-1 {
+	width: 256px;
 }
 
 .anouman .app-layout-default-design .app-layout-menu-button-badge {
-    padding: 0 10px;
-    background: #197de1;
-    color: white;
-    font-size: 13px;
-    height: 20px;
-    line-height: 20px;
-    margin: 15px;
-    text-align: center;
-    border-radius: 10px;
+	padding: 0 10px;
+	background: #197de1;
+	color: white;
+	font-size: 13px;
+	height: 20px;
+	line-height: 20px;
+	margin: 15px 5px;
+	margin-left: -50px;
+	text-align: center;
+	border-radius: 10px;
+}
+
+.anouman .app-layout-default-design .v-absolutelayout-wrapper-app-bar-badge {
+	pointer-events: none;
 }
 
 .anouman .app-layout-default-design .app-bar-badge {
-    background: #197de1;
-    color: #c8dbed;
-    font-size: 11px;
-    min-width: 18px;
-    min-height: 18px;
-    text-align: center;
-    line-height: 18px;
-    margin: 7px;
-    padding-right: 4px;
-    padding-left: 3px;
-    border-radius: 17px;
+	background: #197de1;
+	color: #c8dbed;
+	font-size: 11px;
+	min-width: 18px;
+	min-height: 18px;
+	text-align: center;
+	line-height: 18px;
+	margin: 7px;
+	padding-right: 4px;
+	padding-left: 3px;
+	border-radius: 17px;
 }
 
 .anouman .app-layout-default-design .app-layout-menu-button {
-    text-align: left !important;
-    transition: background 0.3s ease, color 0.3s ease;
-    border-radius: 0px;
-    transition: border 0.5s;
+	text-align: left !important;
+	transition: background 0.3s ease, color 0.3s ease;
+	border-radius: 0px;
+	transition: border 0.5s;
+	padding: 0px 16px;
+	height: 48px !important;
 }
 
 .anouman .app-layout-default-design .app-layout-menu-button .v-icon + .v-captiontext, .anouman .app-layout-default-design .app-layout-menu-button .v-icon + span {
-    margin-left: 16px;
+	margin-left: 16px;
+}
+
+.anouman .app-layout-default-design .app-layout-menu-badge-button {
+	padding-right: 55px;
 }
 
 .anouman .app-layout-default-design .app-layout-menu-element {
-    border-left: 5px transparent solid !important;
-    position: relative;
-    transition: border 0.3s;
-    position: relative;
+	border-left: 5px transparent solid !important;
+	position: relative;
+	transition: border 0.3s;
+	position: relative;
 }
 
 .anouman .app-layout-default-design .app-layout-menu-element:after {
-    position: absolute;
-    margin-left: -5px;
-    content: "";
-    left: 0px;
-    top: 0px !important;
-    bottom: 0px !important;
-    width: 5px;
-    box-shadow: 0px 0px 20px 4px rgba(25, 125, 225, 0);
-    transition: box-shadow 0.3s;
-    overflow: visible;
+	position: absolute;
+	margin-left: -5px;
+	content: "";
+	left: 0px;
+	top: 0px !important;
+	bottom: 0px !important;
+	width: 5px;
+	box-shadow: 0px 0px 20px 4px rgba(25, 125, 225, 0);
+	transition: box-shadow 0.3s;
+	overflow: visible;
 }
 
 .anouman .app-layout-default-design .app-layout-menu-element-active {
-    color: #197de1 !important;
-    border-left: 5px #197de1 solid !important;
+	color: #197de1 !important;
+	border-left: 5px #197de1 solid !important;
 }
 
 .anouman .app-layout-default-design .app-layout-menu-element-active:after {
-    box-shadow: 0px 0px 20px 4px rgba(25, 125, 225, 0.3);
+	box-shadow: 0px 0px 20px 4px rgba(25, 125, 225, 0.3);
 }
 
 .anouman .app-layout-default-design .app-layout-menu-button:after {
-    box-shadow: none !important;
-    border-left: none;
+	box-shadow: none !important;
+	border-left: none;
+}
+
+.anouman .app-layout-default-design.app-layout-behaviour-top .app-layout-menu-element-active, .anouman .app-layout-default-design.app-layout-behaviour-top-large .app-layout-menu-element-active {
+	border-bottom: 2px solid #d3dff3;
+}
+
+.anouman .app-layout-default-design.app-layout-behaviour-top .app-layout-menu-element-active .app-layout-menu-button, .anouman .app-layout-default-design.app-layout-behaviour-top-large .app-layout-menu-element-active .app-layout-menu-button {
+	background: rgba(70, 70, 70, 0) !important;
+	color: #d3dff3 !important;
 }
 
 .anouman .app-layout-default-design .app-layout-round-image {
-    border-radius: 100%;
+	border-radius: 100%;
 }
 
 .anouman .app-layout-default-design .app-layout-menu-bar-element {
-    padding-left: 21px;
+	padding-left: 21px;
 }
 
 .anouman .app-layout-material-design .app-layout-menu-button-badge {
-    padding: 0 10px;
-    background: #197de1;
-    color: white;
-    font-size: 13px;
-    height: 20px;
-    line-height: 20px;
-    margin: 15px;
-    text-align: center;
-    border-radius: 10px;
+	padding: 0 10px;
+	background: #197de1;
+	color: white;
+	font-size: 13px;
+	height: 20px;
+	line-height: 20px;
+	margin: 14px 15px;
+	margin-left: -50px;
+	text-align: center;
+	border-radius: 10px;
+}
+
+.anouman .app-layout-material-design.app-layout-behaviour-top .app-layout-menu-button-badge, .anouman .app-layout-material-design.app-layout-behaviour-top-large .app-layout-menu-button-badge {
+	margin: 15px 5px;
+	margin-left: -40px;
+}
+
+.anouman .app-layout-material-design .v-absolutelayout-wrapper-app-bar-badge {
+	pointer-events: none;
 }
 
 .anouman .app-layout-material-design .app-bar-badge {
-    background: #197de1;
-    color: #c8dbed;
-    font-size: 11px;
-    min-width: 18px;
-    min-height: 18px;
-    text-align: center;
-    line-height: 18px;
-    margin: 7px;
-    padding-right: 4px;
-    padding-left: 3px;
-    border-radius: 17px;
+	background: #197de1;
+	color: #c8dbed;
+	font-size: 13px;
+	min-width: 18px;
+	min-height: 18px;
+	text-align: center;
+	line-height: 18px;
+	margin: 7px;
+	padding-right: 4px;
+	padding-left: 3px;
+	border-radius: 17px;
+	box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.5);
 }
 
 .anouman .app-layout-material-design .app-layout-menu-button {
-    text-align: left !important;
-    transition: background 0.3s ease, color 0.3s ease;
-    border-radius: 0px;
+	text-align: left !important;
+	transition: background 0.3s ease, color 0.3s ease;
+	border-radius: 0px;
+	padding: 0px 16px;
+	height: 48px !important;
 }
 
 .anouman .app-layout-material-design .app-layout-menu-button .v-icon + .v-captiontext, .anouman .app-layout-material-design .app-layout-menu-button .v-icon + span {
-    margin-left: 16px;
+	margin-left: 16px;
+}
+
+.anouman .app-layout-material-design .app-layout-menu-badge-button {
+	padding-right: 50px;
 }
 
 .anouman .app-layout-material-design .app-layout-menu-element-active .app-layout-menu-button {
-    background: rgba(71, 71, 71, 0.1) !important;
-    color: #197de1 !important;
+	background: rgba(71, 71, 71, 0.1) !important;
+	color: #197de1 !important;
 }
 
 .anouman .app-layout-material-design .app-layout-menu-button:after {
-    box-shadow: none !important;
-    border-left: none;
+	box-shadow: none !important;
+	border-left: none;
+}
+
+.anouman .app-layout-material-design.app-layout-behaviour-top .app-layout-menu-element-active, .anouman .app-layout-material-design.app-layout-behaviour-top-large .app-layout-menu-element-active {
+	border-bottom: 2px solid #d3dff3;
+}
+
+.anouman .app-layout-material-design.app-layout-behaviour-top .app-layout-menu-element-active .app-layout-menu-button, .anouman .app-layout-material-design.app-layout-behaviour-top-large .app-layout-menu-element-active .app-layout-menu-button {
+	background: rgba(70, 70, 70, 0) !important;
+	color: #d3dff3 !important;
 }
 
 .anouman .app-layout-material-design .app-layout-round-image {
-    border-radius: 100%;
+	border-radius: 100%;
 }
 
 .anouman .app-layout-custom-design .app-layout-menu-button-badge {
-    padding: 0 10px;
-    background: #197de1;
-    color: white;
-    height: 20px;
-    line-height: 20px;
-    margin: 15px;
-    text-align: center;
-    border-radius: 10px;
+	padding: 0 10px;
+	background: #197de1;
+	color: white;
+	height: 20px;
+	line-height: 20px;
+	margin: 15px;
+	text-align: center;
+	border-radius: 10px;
+}
+
+.anouman .app-layout-custom-design .v-absolutelayout-wrapper-app-bar-badge {
+	pointer-events: none;
 }
 
 .anouman .app-layout-custom-design .app-bar-badge {
-    background: #197de1;
-    color: transparent;
-    height: 5px;
-    width: 5px;
-    margin: 11px;
-    border-radius: 100%;
-    padding: 0;
+	background: #197de1;
+	color: transparent;
+	height: 5px;
+	width: 5px;
+	margin: 11px;
+	border-radius: 100%;
+	padding: 0;
 }
 
 .anouman .app-layout-custom-design .app-layout-menu-button {
-    text-align: left !important;
-    transition: background 0.3s ease, color 0.3s ease;
-    border-radius: 0px;
+	text-align: left !important;
+	transition: background 0.3s ease, color 0.3s ease;
+	border-radius: 0px;
+	padding: 0px 16px;
+	height: 48px !important;
 }
 
 .anouman .app-layout-custom-design .app-layout-menu-button .v-icon + .v-captiontext, .anouman .app-layout-custom-design .app-layout-menu-button .v-icon + span {
-    margin-left: 16px;
+	margin-left: 16px;
 }
 
 .anouman .app-layout-custom-design .app-layout-menu-button-active {
-    background: rgba(71, 71, 71, 0.1) !important;
-    color: #197de1 !important;
+	background: rgba(71, 71, 71, 0.1) !important;
+	color: #197de1 !important;
 }
 
 .anouman .app-layout-custom-design .app-layout-menu-button:after {
-    box-shadow: none !important;
-    border-left: none;
+	box-shadow: none !important;
+	border-left: none;
 }
 
 .anouman .app-layout-custom-design .app-layout-menu-round-button img.v-icon {
-    width: 100%;
-    height: 100%;
-    border-radius: 100%;
-    vertical-align: unset !important;
+	width: 100%;
+	height: 100%;
+	border-radius: 100%;
+	vertical-align: unset !important;
 }
 
 .anouman .app-layout-custom-design .app-layout-menu-section {
-    padding-left: 14px;
+	padding-left: 14px;
 }
 
 .anouman .app-layout-notification-window .v-margin-left {
-    padding-left: 10px;
+	padding-left: 10px !important;
 }
 
 .anouman .app-layout-notification-window .v-margin-bottom {
-    padding-bottom: 10px;
+	padding-bottom: 10px !important;
 }
 
 .anouman .app-layout-notification-window .v-margin-right {
-    padding-right: 10px;
+	padding-right: 10px !important;
 }
 
 .anouman .app-layout-notification-window .v-margin-top {
-    padding-top: 10px;
+	padding-top: 10px !important;
 }
 
 .anouman .v-window .v-window-outerheader:after {
-    border-top: 1px solid transparent;
+	border-top: 1px solid transparent;
 }
 
 .anouman .v-window-contents > .v-scrollable:before {
-    border-top: 1px solid transparent;
+	border-top: 1px solid transparent !important;
 }
 
 .anouman .v-window.translucent {
-    background-color: transparent;
-    box-shadow: none;
-    overflow: visible !important;
+	background-color: transparent;
+	box-shadow: none;
+	overflow: visible !important;
 }
 
 .anouman .v-window.translucent * :not(.app-layout-notification):not(.v-panel-content) {
-    background-color: transparent !important;
-    overflow: visible !important;
+	background-color: transparent !important;
+	overflow: visible !important;
 }
 
 .anouman .v-window.translucent .app-layout-notification {
-    box-shadow: 0px 8px 9px -4px rgba(0, 0, 0, 0.4);
-    border-radius: 3px;
+	transition: border 0.3s ease;
+	box-shadow: 0px 5px 11px -1px rgba(0, 0, 0, 0.4);
+	border-radius: 3px;
 }
 
 .anouman .v-window.translucent .app-layout-notification .app-layout-notification-time {
-    position: relative;
-    font-size: 12px;
-    line-height: 24px;
-    margin-left: 4px;
+	position: relative;
+	font-size: 12px;
+	line-height: 24px;
+	margin-left: 4px;
 }
 
 .anouman .v-window.translucent .app-layout-notification .app-layout-notification-time::before {
-    content: "\2022";
-    font-size: 17px;
-    line-height: 24px;
-    left: -11px;
-    color: #197de1;
-    position: absolute;
+	content: "\2022";
+	font-size: 17px;
+	line-height: 24px;
+	left: -11px;
+	color: #197de1;
+	position: absolute;
 }
 
 .anouman .v-window.translucent .app-layout-notification .app-layout-notification-title {
-    font-weight: 500;
-    color: #197de1;
+	font-weight: 500;
+	color: #197de1;
 }
 
 .anouman .v-window.translucent .app-layout-notification .app-layout-notification-subtitle {
-    font-size: 14px;
+	font-size: 14px;
+	text-overflow: ellipsis;
+	overflow: hidden !important;
 }
 
 .anouman .v-window.translucent .app-layout-notification.app-layout-notification-priority-high {
-    background: #197de1 !important;
+	background: #197de1 !important;
+}
+
+.anouman .v-window.translucent .app-layout-notification.app-layout-notification-priority-high:not(.app-layout-notification-read) {
+	border-left: 3px solid white;
+}
+
+.anouman .v-window.translucent .app-layout-notification.app-layout-notification-priority-high.app-layout-notification-read {
+	border-left: 3px solid transparent;
 }
 
 .anouman .v-window.translucent .app-layout-notification.app-layout-notification-priority-high .app-layout-notification-subtitle {
-    color: #d9e5f1;
+	color: #d9e5f1;
 }
 
 .anouman .v-window.translucent .app-layout-notification.app-layout-notification-priority-high .app-layout-notification-title {
-    font-weight: 500;
-    color: white;
+	font-weight: 500;
+	color: white;
 }
 
 .anouman .v-window.translucent .app-layout-notification.app-layout-notification-priority-high .app-layout-notification-time {
-    color: #c4d8ec;
+	color: #c4d8ec;
 }
 
 .anouman .v-window.translucent .app-layout-notification.app-layout-notification-priority-high .app-layout-notification-time::before {
-    color: white;
+	color: white;
 }
 
 .anouman .v-window.translucent .app-layout-notification.app-layout-notification-priority-medium {
-    background: white !important;
+	background: white !important;
+}
+
+.anouman .v-window.translucent .app-layout-notification.app-layout-notification-priority-medium:not(.app-layout-notification-read) {
+	border-left: 3px solid #197de1;
+}
+
+.anouman .v-window.translucent .app-layout-notification.app-layout-notification-priority-medium.app-layout-notification-read {
+	border-left: 3px solid transparent;
 }
 
 .anouman .v-window.translucent .app-layout-notification.app-layout-notification-priority-medium .app-layout-notification-subtitle {
-    color: #333333;
+	color: #333333;
 }
 
 .anouman .v-window.translucent .app-layout-notification.app-layout-notification-priority-medium .app-layout-notification-time {
-    color: #4d4d4d;
+	color: #4d4d4d;
 }
 
 .anouman .v-window.translucent .app-layout-notification.app-layout-notification-priority-low {
-    background: #f5f5f5 !important;
+	background: #f5f5f5 !important;
+}
+
+.anouman .v-window.translucent .app-layout-notification.app-layout-notification-priority-low:not(.app-layout-notification-read) {
+	border-left: 3px solid #c4c4c4;
+}
+
+.anouman .v-window.translucent .app-layout-notification.app-layout-notification-priority-low.app-layout-notification-read {
+	border-left: 3px solid transparent;
 }
 
 .anouman .v-window.translucent .app-layout-notification.app-layout-notification-priority-low .app-layout-notification-subtitle {
-    color: #313131;
+	color: #313131;
 }
 
 .anouman .v-window.translucent .app-layout-notification.app-layout-notification-priority-low .app-layout-notification-time {
-    color: #494949;
+	color: #494949;
 }
 
 .anouman .v-window.translucent .v-window-contents {
-    animation: valo-animate-in-fade 0.4s;
+	animation: valo-animate-in-fade 0.4s;
 }
 
 .anouman .app-layout-expanding-menu-container {
-    transition: max-height 0.4s;
-    overflow: hidden;
-    max-height: 48px;
+	transition: max-height 0.4s;
+	overflow: hidden;
+	max-height: 48px;
 }
 
 .anouman .app-layout-expanding-menu-container-open {
-    max-height: 300px;
+	max-height: 999px;
 }
 
 .anouman .app-layout-expanding-menu-container-button {
-    position: relative;
+	position: relative;
 }
 
 .anouman .app-layout-expanding-menu-container-button:after {
-    position: absolute;
-    content: "\E967";
-    font-family: "Vaadin-Icons";
-    line-height: 48px;
-    text-align: center;
-    width: 48px;
-    right: 0px;
-    top: 0px;
-    bottom: 0px;
-    transform: rotate(0deg);
-    transition: transform 0.3s;
-    pointer-events: none;
+	position: absolute;
+	content: "\E967";
+	font-family: "Vaadin-Icons";
+	line-height: 48px;
+	text-align: center;
+	width: 48px;
+	right: 0px;
+	top: 0px;
+	bottom: 0px;
+	transform: rotate(0deg);
+	transition: opacity 0.3s, transform 0.3s !important;
+	pointer-events: none;
 }
 
-.anouman .app-layout-expanding-menu-container-open .app-layout-expanding-menu-container-button:after {
-    transform: rotate(90deg);
+.anouman .app-layout-expanding-menu-container-open > div > .app-layout-expanding-menu-container-button:after {
+	transform: rotate(90deg);
 }
 
 .anouman .app-layout-submenu-container {
-    background: rgba(71, 71, 71, 0.05);
+	background: rgba(71, 71, 71, 0.05);
+	padding-left: 0px;
+}
+
+.anouman .app-layout-top-menu.v-menubar * {
+	color: #d3dff3 !important;
+}
+
+.anouman .v-csslayout.flex-row {
+	display: -webkit-box;
+	display: -moz-box;
+	display: box;
+	display: -webkit-flex;
+	display: -moz-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: horizontal;
+	-moz-box-orient: horizontal;
+	box-orient: horizontal;
+	-webkit-flex-direction: row;
+	-moz-flex-direction: row;
+	flex-direction: row;
+	-ms-flex-direction: row;
+}
+
+.anouman .v-csslayout.flex-column {
+	display: -webkit-box;
+	display: -moz-box;
+	display: box;
+	display: -webkit-flex;
+	display: -moz-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-moz-box-orient: vertical;
+	box-orient: vertical;
+	-webkit-flex-direction: column;
+	-moz-flex-direction: column;
+	flex-direction: column;
+	-ms-flex-direction: column;
+}
+
+.anouman .v-csslayout.flex-row.overflow-auto {
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+.anouman .v-csslayout.flex-column.overflow-auto {
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+.anouman .v-csslayout.flex-row :not(.shrink):not(.grow), .anouman .v-csslayout.flex-column :not(.shrink):not(.grow) {
+	-webkit-flex-grow: 0;
+	-moz-flex-grow: 0;
+	flex-grow: 0;
+	-ms-flex-positive: 0;
+	-webkit-flex-shrink: 0;
+	-moz-flex-shrink: 0;
+	flex-shrink: 0;
+	-ms-flex-negative: 0;
+}
+
+.anouman .v-csslayout.flex-row .grow:not(.shrink), .anouman .v-csslayout.flex-column .grow:not(.shrink) {
+	-webkit-flex-grow: 1;
+	-moz-flex-grow: 1;
+	flex-grow: 1;
+	-ms-flex-positive: 1;
+}
+
+.anouman .v-csslayout.flex-row .shrink:not(.grow), .anouman .v-csslayout.flex-column .shrink:not(.grow) {
+	-webkit-flex-shrink: 1;
+	-moz-flex-shrink: 1;
+	flex-shrink: 1;
+	-ms-flex-negative: 1;
+	overflow: auto;
+}
+
+.anouman .v-csslayout.flex-row .grow.shrink, .anouman .v-csslayout.flex-column .grow.shrink {
+	-webkit-flex-grow: 1;
+	-moz-flex-grow: 1;
+	flex-grow: 1;
+	-ms-flex-positive: 1;
+	-webkit-flex-shrink: 1;
+	-moz-flex-shrink: 1;
+	flex-shrink: 1;
+	-ms-flex-negative: 1;
+	overflow: auto;
+}
+
+.anouman .v-csslayout.flex-row.justify-flex-start, .anouman .v-csslayout.flex-column.justify-flex-start {
+	justify-content: flex-start;
+}
+
+.anouman .v-csslayout.flex-row.justify-center, .anouman .v-csslayout.flex-column.justify-center {
+	justify-content: center;
+}
+
+.anouman .v-csslayout.flex-row.justify-flex-end, .anouman .v-csslayout.flex-column.justify-flex-end {
+	justify-content: flex-end;
+}
+
+.anouman .v-csslayout.flex-row.justify-space-between, .anouman .v-csslayout.flex-column.justify-space-between {
+	justify-content: space-between;
+}
+
+.anouman .v-csslayout.flex-row.justify-space-around, .anouman .v-csslayout.flex-column.justify-space-around {
+	justify-content: space-around;
+}
+
+.anouman .v-csslayout.flex-row.align-flex-start, .anouman .v-csslayout.flex-column.align-flex-start {
+	align-items: flex-start;
+}
+
+.anouman .v-csslayout.flex-row.align-flex-end, .anouman .v-csslayout.flex-column.align-flex-end {
+	align-items: flex-end;
+}
+
+.anouman .v-csslayout.flex-row.align-center, .anouman .v-csslayout.flex-column.align-center {
+	align-items: center;
+}
+
+.anouman .v-csslayout.flex-row.align-baseline, .anouman .v-csslayout.flex-column.align-baseline {
+	align-items: baseline;
+}
+
+.anouman .v-csslayout.flex-row.align-stretch, .anouman .v-csslayout.flex-column.align-stretch {
+	align-items: stretch;
 }
 
 .anouman .app-layout-behaviour-left {
-    --app-drawer-width: 256px;
-    --app-bar-height: 64px;
+	--app-drawer-width: 256px;
+	--app-bar-height: 64px;
 }
 
 .anouman .app-layout-behaviour-left .app-bar-content {
-    left: 64px;
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    bottom: 0px;
+	left: 64px;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	bottom: 0px;
 }
 
 .anouman .app-layout-behaviour-left app-toolbar {
-    background-color: #4285f4;
-    color: #d3dff3;
-    position: relative;
-    z-index: 11;
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.5);
-    padding: 0px;
+	background-color: #4285f4;
+	color: #d3dff3;
+	position: relative;
+	z-index: 11;
+	box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.5);
+	padding: 0px;
 }
 
 .anouman .app-layout-behaviour-left app-toolbar .v-button {
-    color: #d3dff3 !important;
+	color: #d3dff3 !important;
 }
 
 .anouman .app-layout-behaviour-left app-drawer {
-    --app-drawer-scrim-background: rgba(0, 0, 100, 0);
+	--app-drawer-scrim-background: rgba(0, 0, 100, 0);
 }
 
 .anouman .app-layout-behaviour-left app-drawer[opened] {
-    z-index: 10;
+	z-index: 10;
 }
 
 .anouman .app-layout-behaviour-left .drawer-content {
-    margin-top: 64px;
-    height: calc(100% - 64px);
-    overflow: visible;
-    box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.3);
-    background: white;
-    color: #474747 !important;
+	margin-top: 64px;
+	box-sizing: border-box;
+	height: 100%;
+	margin-bottom: -64px;
+	padding-bottom: 64px;
+	overflow: visible;
+	box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.3);
+	background: white;
+	color: #474747 !important;
 }
 
 .anouman .app-layout-behaviour-left-hybrid {
-    --app-drawer-width: 256px;
-    --app-bar-height: 64px;
+	--app-drawer-width: 256px;
+	--app-bar-height: 64px;
 }
 
 .anouman .app-layout-behaviour-left-hybrid .app-layout-menu-button span.v-button-caption, .anouman .app-layout-behaviour-left-hybrid .app-layout-expanding-menu-container-button:after {
-    opacity: 1;
-    transition: opacity 0.3s;
+	opacity: 1;
+	transition: opacity 0.3s;
 }
 
 .anouman .app-layout-behaviour-left-hybrid .app-layout-round-image {
-    transition: width 0.3s, height 0.3s;
+	transition: width 0.3s, height 0.3s;
 }
 
 .anouman .app-layout-behaviour-left-hybrid .app-layout-menu-button {
-    transition: font-size 0.3s;
+	transition: font-size 0.3s;
 }
 
 .anouman .app-layout-behaviour-left-hybrid .app-layout-menu-button-badge {
-    transition: color 0.3s, height 0.2s, width 0.3s;
+	transition: color 0.3s, height 0.2s, width 0.3s;
 }
 
-.anouman .app-layout-behaviour-left-hybrid .small {
-    --app-drawer-width: 64px;
+.anouman .app-layout-behaviour-left-hybrid.small {
+	--app-drawer-width: 64px;
 }
 
-.anouman .app-layout-behaviour-left-hybrid .small .app-layout-menu-button-badge {
-    background: #197de1;
-    color: transparent;
-    height: 5px;
-    width: 5px;
-    margin: 11px;
-    border-radius: 100%;
-    padding: 0;
+.anouman .app-layout-behaviour-left-hybrid.small app-drawer[persistent] + .app-bar-application-content, .anouman .app-layout-behaviour-left-hybrid.small app-drawer[persistent] + #contentContainer .app-bar-application-content {
+	margin-bottom: -64px;
+	padding-bottom: 64px;
+	margin-right: -64px;
+	padding-right: 64px;
 }
 
-.anouman .app-layout-behaviour-left-hybrid .small .app-layout-menu-button span.v-button-caption {
-    opacity: 0;
+.anouman .app-layout-behaviour-left-hybrid.small app-drawer[persistent].app-drawer-1 {
+	width: 64px !important;
 }
 
-.anouman .app-layout-behaviour-left-hybrid .small .app-layout-menu-bar-element {
-    padding-left: 0px;
-    padding-right: 0px;
+.anouman .app-layout-behaviour-left-hybrid.small app-drawer[persistent] .app-bar-application-content {
+	left: 64px !important;
 }
 
-.anouman .app-layout-behaviour-left-hybrid .small .app-layout-menu-bar-element .app-layout-round-image {
-    width: 64px !important;
-    height: 64px !important;
-    padding: 7px;
+.anouman .app-layout-behaviour-left-hybrid.small .app-layout-menu-button-badge {
+	background: #197de1;
+	color: transparent;
+	height: 5px;
+	width: 5px;
+	border-radius: 100%;
+	padding: 0;
 }
 
-.anouman .app-layout-behaviour-left-hybrid .small .app-layout-menu-bar-element .app-layout-menu-header-title {
-    display: none;
+.anouman .app-layout-behaviour-left-hybrid.small .app-layout-menu-button span.v-button-caption {
+	opacity: 0;
 }
 
-.anouman .app-layout-behaviour-left-hybrid .small .app-layout-menu-bar-element .app-layout-menu-header-title {
-    display: none;
+.anouman .app-layout-behaviour-left-hybrid.small .app-layout-menu-bar-element {
+	padding-left: 0px;
+	padding-right: 0px;
 }
 
-.anouman .app-layout-behaviour-left-hybrid .small .app-layout-menu-button {
-    font-size: 20px;
+.anouman .app-layout-behaviour-left-hybrid.small .app-layout-menu-bar-element .app-layout-round-image {
+	width: 64px !important;
+	height: 64px !important;
+	padding: 7px;
 }
 
-.anouman .app-layout-behaviour-left-hybrid .small .app-layout-menu-button .v-icon {
-    width: 100%;
-    text-align: center;
+.anouman .app-layout-behaviour-left-hybrid.small .app-layout-menu-bar-element .app-layout-menu-header-title {
+	display: none;
 }
 
-.anouman .app-layout-behaviour-left-hybrid .small .app-layout-menu-button .v-button-caption {
-    display: none;
+.anouman .app-layout-behaviour-left-hybrid.small .app-layout-menu-bar-element .app-layout-menu-header-title {
+	display: none;
 }
 
-.anouman .app-layout-behaviour-left-hybrid .small .app-layout-expanding-menu-container-button:after {
-    opacity: 0;
+.anouman .app-layout-behaviour-left-hybrid.small .app-layout-menu-button {
+	font-size: 20px;
+}
+
+.anouman .app-layout-behaviour-left-hybrid.small .app-layout-menu-button .v-icon {
+	width: 100%;
+	text-align: center;
+}
+
+.anouman .app-layout-behaviour-left-hybrid.small .app-layout-menu-button .v-button-caption {
+	display: none;
+}
+
+.anouman .app-layout-behaviour-left-hybrid.small .app-layout-expanding-menu-container-button:after {
+	opacity: 0;
+}
+
+.anouman .app-layout-behaviour-left-hybrid.small .app-layout-submenu-container {
+	padding-left: 0px;
 }
 
 .anouman .app-layout-behaviour-left-hybrid .app-bar-content {
-    left: 64px;
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    bottom: 0px;
+	left: 64px;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	bottom: 0px;
 }
 
 .anouman .app-layout-behaviour-left-hybrid app-header app-toolbar {
-    background-color: #4285f4;
-    color: #d3dff3;
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.5);
-    position: relative;
-    z-index: 11;
-    padding: 0px;
+	background-color: #4285f4;
+	color: #d3dff3;
+	box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.5);
+	position: relative;
+	z-index: 11;
+	padding: 0px;
 }
 
 .anouman .app-layout-behaviour-left-hybrid app-header app-toolbar .v-button {
-    color: #d3dff3 !important;
+	color: #d3dff3 !important;
 }
 
 .anouman .app-layout-behaviour-left-hybrid app-header paper-icon-button {
-    --paper-icon-button-ink-color: #fff;
+	--paper-icon-button-ink-color: #fff;
 }
 
 .anouman .app-layout-behaviour-left-hybrid app-drawer-layout {
-    --app-drawer-layout-content-transition: margin 0.2s;
+	--app-drawer-layout-content-transition: margin 0.2s;
 }
 
 .anouman .app-layout-behaviour-left-hybrid app-drawer[opened] {
-    z-index: 10;
+	z-index: 10;
 }
 
 .anouman .app-layout-behaviour-left-hybrid app-drawer {
-    --app-drawer-content-container-background-color: #eee;
-    transition: all 0.5s;
-    --app-drawer-scrim-background: rgba(0, 0, 100, 0);
+	--app-drawer-content-container-background-color: #eee;
+	transition: all 0.5s;
+	--app-drawer-scrim-background: rgba(0, 0, 100, 0);
 }
 
 .anouman .app-layout-behaviour-left-hybrid .drawer-content {
-    margin-top: 64px;
-    height: calc(100% - 64px);
-    overflow: visible;
-    box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.3);
-    background: white;
-    color: #474747 !important;
+	margin-top: 64px;
+	box-sizing: border-box;
+	height: 100%;
+	margin-bottom: -64px;
+	padding-bottom: 64px;
+	overflow: visible;
+	box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.3);
+	background: white;
+	color: #474747 !important;
 }
 
 .anouman .app-layout-behaviour-left-hybrid app-drawer[persistent] .drawer-content {
-    box-shadow: none;
+	box-shadow: none;
 }
 
 .anouman .app-layout-behaviour-left-hybrid app-drawer[persistent] .drawer-content:after {
-    position: absolute;
-    box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.15);
-    content: "";
-    top: 0px;
-    bottom: 0px;
-    right: 0px;
-    left: 0px;
-    pointer-events: none;
+	position: absolute;
+	box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.15);
+	content: "";
+	top: 0px;
+	bottom: 0px;
+	right: 0px;
+	left: 0px;
+	pointer-events: none;
 }
 
 .anouman .app-layout-behaviour-left-responsive-hybrid {
-    --app-drawer-width: 256px;
-    --app-bar-height: 64px;
+	--app-drawer-width: 256px;
+	--app-bar-height: 64px;
 }
 
 .anouman .app-layout-behaviour-left-responsive-hybrid .app-layout-menu-button span.v-button-caption, .anouman .app-layout-behaviour-left-responsive-hybrid .app-layout-expanding-menu-container-button:after {
-    opacity: 1;
-    transition: opacity 0.3s;
+	opacity: 1;
+	transition: opacity 0.3s;
 }
 
 .anouman .app-layout-behaviour-left-responsive-hybrid .app-layout-round-image {
-    transition: width 0.3s, height 0.3s;
+	transition: width 0.3s, height 0.3s;
 }
 
 .anouman .app-layout-behaviour-left-responsive-hybrid .app-layout-menu-button {
-    transition: font-size 0.3s;
+	transition: font-size 0.3s;
 }
 
 .anouman .app-layout-behaviour-left-responsive-hybrid .app-layout-menu-button-badge {
-    transition: color 0.3s, height 0.2s, width 0.3s;
+	transition: color 0.3s, height 0.2s, width 0.3s;
 }
 
 .anouman .app-layout-behaviour-left-responsive-hybrid app-drawer[persistent] + app-toolbar, .anouman .app-layout-behaviour-left-responsive-hybrid app-drawer[persistent] + #contentContainer app-toolbar {
-    display: none;
+	display: none;
 }
 
 .anouman .app-layout-behaviour-left-responsive-hybrid .app-bar-content {
-    left: 64px;
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    bottom: 0px;
+	left: 64px;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	bottom: 0px;
 }
 
 .anouman .app-layout-behaviour-left-responsive-hybrid app-header app-toolbar {
-    background-color: #4285f4;
-    color: #d3dff3;
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.5);
-    position: relative;
-    z-index: 11;
-    padding: 0px;
+	background-color: #4285f4;
+	color: #d3dff3;
+	box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.5);
+	position: relative;
+	z-index: 11;
+	padding: 0px;
 }
 
 .anouman .app-layout-behaviour-left-responsive-hybrid app-header app-toolbar .v-button {
-    color: #d3dff3 !important;
+	color: #d3dff3 !important;
 }
 
 .anouman .app-layout-behaviour-left-responsive-hybrid app-header paper-icon-button {
-    --paper-icon-button-ink-color: #fff;
+	--paper-icon-button-ink-color: #fff;
 }
 
 .anouman .app-layout-behaviour-left-responsive-hybrid app-drawer-layout {
-    --app-drawer-layout-content-transition: margin 0.2s;
+	--app-drawer-layout-content-transition: margin 0.2s;
 }
 
 .anouman .app-layout-behaviour-left-responsive-hybrid app-drawer[opened] {
-    z-index: 10;
+	z-index: 10;
 }
 
 .anouman .app-layout-behaviour-left-responsive-hybrid app-drawer {
-    --app-drawer-content-container-background-color: #eee;
-    transition: all 0.5s;
-    --app-drawer-scrim-background: rgba(0, 0, 100, 0);
+	--app-drawer-content-container-background-color: #eee;
+	transition: all 0.5s;
+	--app-drawer-scrim-background: rgba(0, 0, 100, 0);
 }
 
 .anouman .app-layout-behaviour-left-responsive-hybrid .drawer-content {
-    margin-top: 64px;
-    height: calc(100% - 64px);
-    overflow: visible;
-    box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.3);
-    background: white;
-    color: #474747 !important;
+	margin-top: 64px;
+	box-sizing: border-box;
+	height: 100%;
+	margin-bottom: -64px;
+	padding-bottom: 64px;
+	overflow: visible;
+	box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.3);
+	background: white;
+	color: #474747 !important;
 }
 
 .anouman .app-layout-behaviour-left-responsive-hybrid app-drawer[persistent] .drawer-content {
-    box-shadow: none;
+	box-shadow: none;
 }
 
 .anouman .app-layout-behaviour-left-responsive-hybrid app-drawer[persistent] .drawer-content:after {
-    position: absolute;
-    box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.15);
-    content: "";
-    top: 0px;
-    bottom: 0px;
-    right: 0px;
-    left: 0px;
-    pointer-events: none;
+	position: absolute;
+	box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.15);
+	content: "";
+	top: 0px;
+	bottom: 0px;
+	right: 0px;
+	left: 0px;
+	pointer-events: none;
 }
 
 .anouman .app-layout-behaviour-left-responsive-hybrid-no-app-bar {
-    --app-drawer-width: 256px;
-    --app-bar-height: 64px;
+	--app-drawer-width: 256px;
+	--app-bar-height: 64px;
 }
 
 .anouman .app-layout-behaviour-left-responsive-hybrid-no-app-bar .app-layout-menu-button span.v-button-caption, .anouman .app-layout-behaviour-left-responsive-hybrid-no-app-bar .app-layout-expanding-menu-container-button:after {
-    opacity: 1;
-    transition: opacity 0.3s;
+	opacity: 1;
+	transition: opacity 0.3s;
 }
 
 .anouman .app-layout-behaviour-left-responsive-hybrid-no-app-bar .app-layout-round-image {
-    transition: width 0.3s, height 0.3s;
+	transition: width 0.3s, height 0.3s;
 }
 
 .anouman .app-layout-behaviour-left-responsive-hybrid-no-app-bar .app-layout-menu-button {
-    transition: font-size 0.3s;
+	transition: font-size 0.3s;
 }
 
 .anouman .app-layout-behaviour-left-responsive-hybrid-no-app-bar .app-layout-menu-button-badge {
-    transition: color 0.3s, height 0.2s, width 0.3s;
+	transition: color 0.3s, height 0.2s, width 0.3s;
 }
 
 .anouman .app-layout-behaviour-left-responsive-hybrid-no-app-bar app-drawer[persistent] + app-toolbar, .anouman .app-layout-behaviour-left-responsive-hybrid-no-app-bar app-drawer[persistent] + #contentContainer app-toolbar {
-    display: none;
+	display: none;
 }
 
 .anouman .app-layout-behaviour-left-responsive-hybrid-no-app-bar .app-bar-content {
-    left: 64px;
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    bottom: 0px;
+	left: 64px;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	bottom: 0px;
 }
 
 .anouman .app-layout-behaviour-left-responsive-hybrid-no-app-bar app-header app-toolbar {
-    background-color: #4285f4;
-    color: #d3dff3;
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.5);
-    position: relative;
-    z-index: 11;
-    padding: 0px;
+	background-color: #4285f4;
+	color: #d3dff3;
+	box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.5);
+	position: relative;
+	z-index: 11;
+	padding: 0px;
 }
 
 .anouman .app-layout-behaviour-left-responsive-hybrid-no-app-bar app-header app-toolbar .v-button {
-    color: #d3dff3 !important;
+	color: #d3dff3 !important;
 }
 
 .anouman .app-layout-behaviour-left-responsive-hybrid-no-app-bar app-header paper-icon-button {
-    --paper-icon-button-ink-color: #fff;
+	--paper-icon-button-ink-color: #fff;
 }
 
 .anouman .app-layout-behaviour-left-responsive-hybrid-no-app-bar app-drawer-layout {
-    --app-drawer-layout-content-transition: margin 0.2s;
+	--app-drawer-layout-content-transition: margin 0.2s;
 }
 
 .anouman .app-layout-behaviour-left-responsive-hybrid-no-app-bar app-drawer[opened] {
-    z-index: 10;
+	z-index: 10;
 }
 
 .anouman .app-layout-behaviour-left-responsive-hybrid-no-app-bar app-drawer {
-    --app-drawer-content-container-background-color: #eee;
-    transition: all 0.5s;
-    --app-drawer-scrim-background: rgba(0, 0, 100, 0);
+	--app-drawer-content-container-background-color: #eee;
+	transition: all 0.5s;
+	--app-drawer-scrim-background: rgba(0, 0, 100, 0);
 }
 
 .anouman .app-layout-behaviour-left-responsive-hybrid-no-app-bar .drawer-content {
-    margin-top: 64px;
-    height: calc(100% - 64px);
-    overflow: visible;
-    box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.3);
-    background: white;
-    color: #474747 !important;
+	height: 100%;
+	overflow: visible;
+	box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.3);
+	background: white;
+	color: #474747 !important;
 }
 
 .anouman .app-layout-behaviour-left-responsive-hybrid-no-app-bar app-drawer[persistent] .drawer-content {
-    box-shadow: none;
+	box-shadow: none;
 }
 
 .anouman .app-layout-behaviour-left-responsive-hybrid-no-app-bar app-drawer[persistent] .drawer-content:after {
-    position: absolute;
-    box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.15);
-    content: "";
-    top: 0px;
-    bottom: 0px;
-    right: 0px;
-    left: 0px;
-    pointer-events: none;
+	position: absolute;
+	box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.15);
+	content: "";
+	top: 0px;
+	bottom: 0px;
+	right: 0px;
+	left: 0px;
+	pointer-events: none;
 }
 
 .anouman .app-layout-behaviour-left-responsive-hybrid-overlay-no-app-bar {
-    --app-drawer-width: 256px;
-    --app-bar-height: 64px;
+	--app-drawer-width: 256px;
+	--app-bar-height: 64px;
 }
 
 .anouman .app-layout-behaviour-left-responsive-hybrid-overlay-no-app-bar .app-layout-menu-button span.v-button-caption, .anouman .app-layout-behaviour-left-responsive-hybrid-overlay-no-app-bar .app-layout-expanding-menu-container-button:after {
-    opacity: 1;
-    transition: opacity 0.3s;
+	opacity: 1;
+	transition: opacity 0.3s;
 }
 
 .anouman .app-layout-behaviour-left-responsive-hybrid-overlay-no-app-bar .app-layout-round-image {
-    transition: width 0.3s, height 0.3s;
+	transition: width 0.3s, height 0.3s;
 }
 
 .anouman .app-layout-behaviour-left-responsive-hybrid-overlay-no-app-bar .app-layout-menu-button {
-    transition: font-size 0.3s;
+	transition: font-size 0.3s;
 }
 
 .anouman .app-layout-behaviour-left-responsive-hybrid-overlay-no-app-bar .app-layout-menu-button-badge {
-    transition: color 0.3s, height 0.2s, width 0.3s;
+	transition: color 0.3s, height 0.2s, width 0.3s;
 }
 
 .anouman .app-layout-behaviour-left-responsive-hybrid-overlay-no-app-bar app-drawer[persistent] + app-toolbar, .anouman .app-layout-behaviour-left-responsive-hybrid-overlay-no-app-bar app-drawer[persistent] + #contentContainer app-toolbar {
-    display: none;
+	display: none;
 }
 
 .anouman .app-layout-behaviour-left-responsive-hybrid-overlay-no-app-bar .app-bar-content {
-    left: 64px;
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    bottom: 0px;
+	left: 64px;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	bottom: 0px;
 }
 
 .anouman .app-layout-behaviour-left-responsive-hybrid-overlay-no-app-bar app-toolbar {
-    background-color: #4285f4;
-    color: #d3dff3;
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.5);
-    position: relative;
-    z-index: 9;
-    padding: 0px;
+	background-color: #4285f4;
+	color: #d3dff3;
+	box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.5);
+	position: relative;
+	z-index: 9;
+	padding: 0px;
 }
 
 .anouman .app-layout-behaviour-left-responsive-hybrid-overlay-no-app-bar app-toolbar .v-button {
-    color: #d3dff3 !important;
+	color: #d3dff3 !important;
 }
 
 .anouman .app-layout-behaviour-left-responsive-hybrid-overlay-no-app-bar app-toolbar paper-icon-button {
-    --paper-icon-button-ink-color: #fff;
+	--paper-icon-button-ink-color: #fff;
 }
 
 .anouman .app-layout-behaviour-left-responsive-hybrid-overlay-no-app-bar app-drawer-layout {
-    --app-drawer-layout-content-transition: margin 0.2s;
+	--app-drawer-layout-content-transition: margin 0.2s;
 }
 
 .anouman .app-layout-behaviour-left-responsive-hybrid-overlay-no-app-bar app-drawer[opened] {
-    z-index: 10;
+	z-index: 10;
 }
 
 .anouman .app-layout-behaviour-left-responsive-hybrid-overlay-no-app-bar app-drawer {
-    --app-drawer-content-container-background-color: #eee;
-    transition: all 0.5s;
+	--app-drawer-content-container-background-color: #eee;
+	transition: all 0.5s;
 }
 
 .anouman .app-layout-behaviour-left-responsive-hybrid-overlay-no-app-bar .drawer-content {
-    height: 100%;
-    overflow: visible;
-    box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.3);
-    background: white;
-    color: #474747 !important;
+	height: 100%;
+	overflow: visible;
+	box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.3);
+	background: white;
+	color: #474747 !important;
 }
 
 .anouman .app-layout-behaviour-left-responsive-hybrid-overlay-no-app-bar app-drawer[persistent] .drawer-content {
-    box-shadow: none;
+	box-shadow: none;
 }
 
 .anouman .app-layout-behaviour-left-responsive-hybrid-overlay-no-app-bar app-drawer[persistent] .drawer-content:after {
-    position: absolute;
-    box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.15);
-    content: "";
-    top: 0px;
-    bottom: 0px;
-    right: 0px;
-    left: 0px;
-    pointer-events: none;
+	position: absolute;
+	box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.15);
+	content: "";
+	top: 0px;
+	bottom: 0px;
+	right: 0px;
+	left: 0px;
+	pointer-events: none;
 }
 
 .anouman .app-layout-behaviour-left-overlay {
-    --app-drawer-width: 256px;
-    --app-bar-height: 64px;
+	--app-drawer-width: 256px;
+	--app-bar-height: 64px;
 }
 
 .anouman .app-layout-behaviour-left-overlay .app-bar-content {
-    left: 64px;
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    bottom: 0px;
+	left: 64px;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	bottom: 0px;
 }
 
 .anouman .app-layout-behaviour-left-overlay app-toolbar {
-    background-color: #4285f4;
-    color: #d3dff3;
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.5);
-    padding: 0px;
+	background-color: #4285f4;
+	color: #d3dff3;
+	box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.5);
+	padding: 0px;
 }
 
 .anouman .app-layout-behaviour-left-overlay app-toolbar .v-button {
-    color: #d3dff3 !important;
+	color: #d3dff3 !important;
 }
 
 .anouman .app-layout-behaviour-left-overlay app-drawer[opened] {
-    z-index: 10;
+	z-index: 10;
 }
 
 .anouman .app-layout-behaviour-left-overlay .drawer-content {
-    box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.3);
-    height: 100%;
-    overflow: visible;
-    background: white;
-    color: #474747 !important;
+	box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.3);
+	height: 100%;
+	margin-top: 0px !important;
+	overflow: visible;
+	background: white;
+	color: #474747 !important;
 }
 
 .anouman .app-layout-behaviour-left-responsive {
-    --app-drawer-width: 256px;
-    --app-bar-height: 64px;
+	--app-drawer-width: 256px;
+	--app-bar-height: 64px;
 }
 
 .anouman .app-layout-behaviour-left-responsive .app-bar-content {
-    left: 64px;
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    bottom: 0px;
+	left: 64px;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	bottom: 0px;
 }
 
 .anouman .app-layout-behaviour-left-responsive app-header app-toolbar {
-    background-color: #4285f4;
-    color: #d3dff3;
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.5);
-    position: relative;
-    z-index: 11;
-    padding: 0px;
+	background-color: #4285f4;
+	color: #d3dff3;
+	box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.5);
+	position: relative;
+	z-index: 11;
+	padding: 0px;
 }
 
 .anouman .app-layout-behaviour-left-responsive app-header app-toolbar .v-button {
-    color: #d3dff3 !important;
+	color: #d3dff3 !important;
 }
 
 .anouman .app-layout-behaviour-left-responsive app-header paper-icon-button {
-    --paper-icon-button-ink-color: #fff;
+	--paper-icon-button-ink-color: #fff;
 }
 
 .anouman .app-layout-behaviour-left-responsive app-drawer-layout {
-    --app-drawer-layout-content-transition: margin 0.2s;
+	--app-drawer-layout-content-transition: margin 0.2s;
 }
 
 .anouman .app-layout-behaviour-left-responsive app-drawer[opened] {
-    z-index: 10;
+	z-index: 10;
 }
 
 .anouman .app-layout-behaviour-left-responsive app-drawer {
-    --app-drawer-content-container-background-color: #eee;
-    --app-drawer-scrim-background: rgba(0, 0, 100, 0);
+	--app-drawer-content-container-background-color: #eee;
+	--app-drawer-scrim-background: rgba(0, 0, 100, 0);
 }
 
 .anouman .app-layout-behaviour-left-responsive .drawer-content {
-    margin-top: 64px;
-    height: calc(100% - 64px);
-    overflow: visible;
-    box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.3);
-    background: white;
-    color: #474747 !important;
+	margin-top: 64px;
+	box-sizing: border-box;
+	height: 100%;
+	margin-bottom: -64px;
+	padding-bottom: 64px;
+	overflow: visible;
+	box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.3);
+	background: white;
+	color: #474747 !important;
 }
 
 .anouman .app-layout-behaviour-left-responsive app-drawer[persistent] .drawer-content {
-    box-shadow: none;
+	box-shadow: none;
 }
 
 .anouman .app-layout-behaviour-left-responsive app-drawer[persistent] .drawer-content:after {
-    position: absolute;
-    box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.15);
-    content: "";
-    top: 0px;
-    bottom: 0px;
-    right: 0px;
-    left: 0px;
-    pointer-events: none;
-}
-
-.anouman .app-layout-behaviour-left-fallback .app-bar-content {
-    left: 64px;
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    bottom: 0px;
-}
-
-.anouman .app-layout-behaviour-left-fallback .app-toolbar {
-    background-color: #4285f4;
-    color: #d3dff3;
-    position: relative;
-    z-index: 11;
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.5);
-    padding-left: 10px;
-}
-
-.anouman .app-layout-behaviour-left-fallback .app-toolbar .v-button {
-    color: #d3dff3 !important;
-}
-
-.anouman .app-layout-behaviour-left-fallback .drawer-content {
-    overflow: visible;
-    box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.3);
-    background: white;
-    color: #474747 !important;
-}
-
-.anouman .app-layout-behaviour-left-fallback .drawer-content.small .app-layout-menu-button {
-    height: 64px;
-    font-size: 20px;
-}
-
-.anouman .app-layout-behaviour-left-fallback .drawer-content.small .app-layout-menu-button .v-icon {
-    width: 100%;
-    text-align: center;
-}
-
-.anouman .app-layout-behaviour-left-fallback .drawer-content.small .app-layout-menu-button .v-button-caption {
-    display: none;
-}
-
-.anouman .app-layout-behaviour-left-fallback .drawer-content.small .app-layout-menu-button-badge {
-    background: #197de1;
-    color: transparent;
-    height: 5px;
-    width: 5px;
-    margin: 11px;
-    border-radius: 100%;
-    padding: 0;
+	position: absolute;
+	box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.15);
+	content: "";
+	top: 0px;
+	bottom: 0px;
+	right: 0px;
+	left: 0px;
+	pointer-events: none;
 }
 
 .anouman .app-layout-behaviour-left-responsive-overlay {
-    --app-drawer-width: 256px;
-    --app-bar-height: 64px;
+	--app-drawer-width: 256px;
+	--app-bar-height: 64px;
 }
 
 .anouman .app-layout-behaviour-left-responsive-overlay app-drawer[persistent] + app-toolbar paper-icon-button, .anouman .app-layout-behaviour-left-responsive-overlay app-drawer[persistent] + #contentContainer app-toolbar paper-icon-button {
-    display: none;
+	display: none;
 }
 
 .anouman .app-layout-behaviour-left-responsive-overlay app-drawer + app-toolbar .app-bar-content, .anouman .app-layout-behaviour-left-responsive-overlay app-drawer + #contentContainer app-toolbar .app-bar-content {
-    left: 64px;
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    bottom: 0px;
+	left: 64px;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	bottom: 0px;
 }
 
 .anouman .app-layout-behaviour-left-responsive-overlay app-drawer[persistent] + app-toolbar .app-bar-content, .anouman .app-layout-behaviour-left-responsive-overlay app-drawer[persistent] + #contentContainer app-toolbar .app-bar-content {
-    left: 16px;
-    position: absolute;
-    top: 0px;
-    right: 0px;
+	left: 16px;
+	position: absolute;
+	top: 0px;
+	right: 0px;
 }
 
 .anouman .app-layout-behaviour-left-responsive-overlay app-toolbar {
-    background-color: #4285f4;
-    color: #d3dff3;
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.5);
-    padding: 0px;
+	background-color: #4285f4;
+	color: #d3dff3;
+	box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.5);
+	padding: 0px;
 }
 
 .anouman .app-layout-behaviour-left-responsive-overlay app-toolbar .v-button {
-    color: #d3dff3 !important;
+	color: #d3dff3 !important;
 }
 
 .anouman .app-layout-behaviour-left-responsive-overlay .drawer-content {
-    box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.3);
-    height: 100%;
-    overflow: visible;
-    background: white;
-    color: #474747 !important;
+	box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.3);
+	height: 100%;
+	overflow: visible;
+	background: white;
+	color: #474747 !important;
 }
 
 .anouman .app-layout-behaviour-left-responsive-overlay app-drawer[persistent] .drawer-content {
-    box-shadow: none;
+	box-shadow: none;
 }
 
 .anouman .app-layout-behaviour-left-responsive-overlay app-drawer[persistent] .drawer-content:after {
-    position: absolute;
-    box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.15);
-    content: "";
-    top: 0px;
-    bottom: 0px;
-    right: 0px;
-    left: 0px;
-    pointer-events: none;
+	position: absolute;
+	box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.15);
+	content: "";
+	top: 0px;
+	bottom: 0px;
+	right: 0px;
+	left: 0px;
+	pointer-events: none;
 }
 
 .anouman .app-layout-behaviour-left-responsive-overlay app-drawer[opened] {
-    z-index: 10;
+	z-index: 10;
 }
 
 .anouman .app-layout-behaviour-left-responsive-overlay-no-app-bar {
-    --app-drawer-width: 256px;
-    --app-bar-height: 64px;
-}
-
-.anouman .app-layout-behaviour-left-responsive-overlay-no-app-bar .app-bar-application-content {
-    height: 100vh;
+	--app-drawer-width: 256px;
+	--app-bar-height: 64px;
 }
 
 .anouman .app-layout-behaviour-left-responsive-overlay-no-app-bar .app-bar-content {
-    left: 64px;
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    bottom: 0px;
+	left: 64px;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	bottom: 0px;
 }
 
 .anouman .app-layout-behaviour-left-responsive-overlay-no-app-bar app-drawer[persistent] + app-toolbar, .anouman .app-layout-behaviour-left-responsive-overlay-no-app-bar app-drawer[persistent] + #contentContainer app-toolbar {
-    display: none;
+	display: none;
 }
 
 .anouman .app-layout-behaviour-left-responsive-overlay-no-app-bar app-toolbar {
-    background-color: #4285f4;
-    color: #d3dff3;
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.5);
-    padding: 0px;
+	background-color: #4285f4;
+	color: #d3dff3;
+	box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.5);
+	padding: 0px;
 }
 
 .anouman .app-layout-behaviour-left-responsive-overlay-no-app-bar app-toolbar .v-button {
-    color: #d3dff3 !important;
+	color: #d3dff3 !important;
 }
 
 .anouman .app-layout-behaviour-left-responsive-overlay-no-app-bar .drawer-content {
-    box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.3);
-    height: 100%;
-    overflow: visible;
-    background: white;
-    color: #474747 !important;
+	box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.3);
+	height: 100%;
+	overflow: visible;
+	background: white;
+	color: #474747 !important;
 }
 
 .anouman .app-layout-behaviour-left-responsive-overlay-no-app-bar app-drawer[persistent] .drawer-content {
-    box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.15);
+	box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.15);
 }
 
 .anouman .app-layout-behaviour-left-responsive-overlay-no-app-bar app-drawer[opened] {
-    z-index: 10;
+	z-index: 10;
 }
 
 .anouman .app-layout-behaviour-left-responsive-small {
-    --app-drawer-width: 256px;
-    --app-bar-height: 64px;
+	--app-drawer-width: 256px;
+	--app-bar-height: 64px;
 }
 
 .anouman .app-layout-behaviour-left-responsive-small .app-bar-content {
-    left: 64px;
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    bottom: 0px;
+	left: 64px;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	bottom: 0px;
 }
 
 .anouman .app-layout-behaviour-left-responsive-small app-header app-toolbar {
-    background-color: #4285f4;
-    color: #d3dff3;
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.5);
-    position: relative;
-    z-index: 11;
-    padding: 0px;
+	background-color: #4285f4;
+	color: #d3dff3;
+	box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.5);
+	position: relative;
+	z-index: 11;
+	padding: 0px;
 }
 
 .anouman .app-layout-behaviour-left-responsive-small app-header app-toolbar .v-button {
-    color: #d3dff3 !important;
+	color: #d3dff3 !important;
 }
 
 .anouman .app-layout-behaviour-left-responsive-small app-header paper-icon-button {
-    --paper-icon-button-ink-color: #fff;
+	--paper-icon-button-ink-color: #fff;
 }
 
 .anouman .app-layout-behaviour-left-responsive-small app-drawer-layout {
-    --app-drawer-layout-content-transition: margin 0.2s;
+	--app-drawer-layout-content-transition: margin 0.2s;
 }
 
 .anouman .app-layout-behaviour-left-responsive-small app-drawer[opened] {
-    z-index: 10;
+	z-index: 10;
 }
 
 .anouman .app-layout-behaviour-left-responsive-small app-drawer {
-    --app-drawer-content-container-background-color: #eee;
-    transition: all 0.5s;
-    --app-drawer-scrim-background: rgba(0, 0, 100, 0);
+	--app-drawer-content-container-background-color: #eee;
+	transition: all 0.5s;
+	--app-drawer-scrim-background: rgba(0, 0, 100, 0);
 }
 
 .anouman .app-layout-behaviour-left-responsive-small .drawer-content {
-    margin-top: 64px;
-    height: calc(100% - 64px);
-    overflow: visible;
-    box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.3);
-    background: white;
-    color: #474747 !important;
+	margin-top: 64px;
+	box-sizing: border-box;
+	height: 100vh;
+	margin-bottom: -64px;
+	padding-bottom: 64px;
+	overflow: visible;
+	box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.3);
+	background: white;
+	color: #474747 !important;
 }
 
 .anouman .app-layout-behaviour-left-responsive-small app-drawer[persistent] .drawer-content {
-    box-shadow: none;
+	box-shadow: none;
 }
 
 .anouman .app-layout-behaviour-left-responsive-small app-drawer[persistent] .drawer-content:after {
-    position: absolute;
-    box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.15);
-    content: "";
-    top: 0px;
-    bottom: 0px;
-    right: 0px;
-    left: 0px;
-    pointer-events: none;
+	position: absolute;
+	box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.15);
+	content: "";
+	top: 0px;
+	bottom: 0px;
+	right: 0px;
+	left: 0px;
+	pointer-events: none;
+}
+
+.anouman .app-layout-behaviour-left-responsive-small .app-layout-submenu-container {
+	padding-left: 0px;
 }
 
 .anouman .app-layout-behaviour-left-responsive-small-no-app-bar {
-    --app-drawer-width: 256px;
-    --app-bar-height: 64px;
+	--app-drawer-width: 256px;
+	--app-bar-height: 64px;
 }
 
 .anouman .app-layout-behaviour-left-responsive-small-no-app-bar .app-layout-menu-button span.v-button-caption, .anouman .app-layout-behaviour-left-responsive-small-no-app-bar .app-layout-expanding-menu-container-button:after {
-    opacity: 1;
-    transition: opacity 0.3s;
+	opacity: 1;
+	transition: opacity 0.3s;
 }
 
 .anouman .app-layout-behaviour-left-responsive-small-no-app-bar .app-layout-round-image {
-    transition: width 0.3s, height 0.3s;
+	transition: width 0.3s, height 0.3s;
 }
 
 .anouman .app-layout-behaviour-left-responsive-small-no-app-bar .app-layout-menu-button {
-    transition: font-size 0.3s;
+	transition: font-size 0.3s;
 }
 
 .anouman .app-layout-behaviour-left-responsive-small-no-app-bar .app-layout-menu-button-badge {
-    transition: color 0.3s, height 0.2s, width 0.3s;
+	transition: color 0.3s, height 0.2s, width 0.3s;
 }
 
 .anouman .app-layout-behaviour-left-responsive-small-no-app-bar app-drawer[persistent] + app-toolbar, .anouman .app-layout-behaviour-left-responsive-small-no-app-bar app-drawer[persistent] + #contentContainer app-toolbar {
-    display: none;
+	display: none;
 }
 
 .anouman .app-layout-behaviour-left-responsive-small-no-app-bar .app-bar-content {
-    left: 64px;
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    bottom: 0px;
+	left: 64px;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	bottom: 0px;
 }
 
 .anouman .app-layout-behaviour-left-responsive-small-no-app-bar app-header app-toolbar {
-    background-color: #4285f4;
-    color: #d3dff3;
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.5);
-    position: relative;
-    z-index: 11;
-    padding: 0px;
+	background-color: #4285f4;
+	color: #d3dff3;
+	box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.5);
+	position: relative;
+	z-index: 11;
+	padding: 0px;
 }
 
 .anouman .app-layout-behaviour-left-responsive-small-no-app-bar app-header app-toolbar .v-button {
-    color: #d3dff3 !important;
+	color: #d3dff3 !important;
 }
 
 .anouman .app-layout-behaviour-left-responsive-small-no-app-bar app-header paper-icon-button {
-    --paper-icon-button-ink-color: #fff;
+	--paper-icon-button-ink-color: #fff;
 }
 
 .anouman .app-layout-behaviour-left-responsive-small-no-app-bar app-drawer-layout {
-    --app-drawer-layout-content-transition: margin 0.2s;
+	--app-drawer-layout-content-transition: margin 0.2s;
 }
 
 .anouman .app-layout-behaviour-left-responsive-small-no-app-bar app-drawer[opened] {
-    z-index: 10;
+	z-index: 10;
 }
 
 .anouman .app-layout-behaviour-left-responsive-small-no-app-bar app-drawer {
-    --app-drawer-content-container-background-color: #eee;
-    transition: all 0.5s;
-    --app-drawer-scrim-background: rgba(0, 0, 100, 0);
+	--app-drawer-content-container-background-color: #eee;
+	transition: all 0.5s;
+	--app-drawer-scrim-background: rgba(0, 0, 100, 0);
 }
 
 .anouman .app-layout-behaviour-left-responsive-small-no-app-bar .drawer-content {
-    margin-top: 64px;
-    height: calc(100% - 64px);
-    overflow: visible;
-    box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.3);
-    background: white;
-    color: #474747 !important;
+	margin-top: 64px;
+	box-sizing: border-box;
+	height: 100%;
+	margin-bottom: -64px;
+	padding-bottom: 64px;
+	overflow: visible;
+	box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.3);
+	background: white;
+	color: #474747 !important;
 }
 
 .anouman .app-layout-behaviour-left-responsive-small-no-app-bar app-drawer[persistent] .drawer-content {
-    box-shadow: none;
+	box-shadow: none;
 }
 
 .anouman .app-layout-behaviour-left-responsive-small-no-app-bar app-drawer[persistent] .drawer-content:after {
-    position: absolute;
-    box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.15);
-    content: "";
-    top: 0px;
-    bottom: 0px;
-    right: 0px;
-    left: 0px;
-    pointer-events: none;
+	position: absolute;
+	box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.15);
+	content: "";
+	top: 0px;
+	bottom: 0px;
+	right: 0px;
+	left: 0px;
+	pointer-events: none;
+}
+
+.anouman .app-layout-behaviour-left-responsive-small-no-app-bar .app-layout-submenu-container {
+	padding-left: 0px;
+}
+
+.anouman .app-layout-behaviour-top {
+	--app-drawer-width: 256px;
+	--app-bar-height: 64px;
+}
+
+.anouman .app-layout-behaviour-top .app-bar-content {
+	left: 64px;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	bottom: 0px;
+	transition: left 0.3s;
+}
+
+.anouman .app-layout-behaviour-top .app-bar-content .app-layout-menu-bar-element {
+	display: none;
+}
+
+.anouman .app-layout-behaviour-top .app-layout-bar-menu-holder {
+	padding-left: 10px;
+	display: none;
+}
+
+.anouman .app-layout-behaviour-top app-toolbar paper-icon-button {
+	transition: opacity 0.3s;
+	opacity: 1;
+	position: absolute;
+	top: 0px;
+}
+
+.anouman .app-layout-behaviour-top app-toolbar {
+	background-color: #4285f4;
+	color: #d3dff3;
+	position: relative;
+	z-index: 11;
+	box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.5);
+	padding: 0px;
+	transition: height 0.3s ease;
+}
+
+.anouman .app-layout-behaviour-top app-toolbar .v-button {
+	color: #d3dff3 !important;
+}
+
+.anouman .app-layout-behaviour-top app-drawer {
+	--app-drawer-scrim-background: rgba(0, 0, 100, 0);
+}
+
+.anouman .app-layout-behaviour-top app-drawer[opened] {
+	z-index: 10;
+}
+
+.anouman .app-layout-behaviour-top .drawer-content {
+	margin-top: 64px;
+	box-sizing: border-box;
+	height: 100%;
+	margin-bottom: -64px;
+	padding-bottom: 64px;
+	overflow: visible;
+	box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.3);
+	background: white;
+	color: #474747 !important;
+}
+
+.anouman .app-layout-behaviour-top-large {
+	--app-drawer-width: 256px;
+	--app-bar-height: 64px;
+}
+
+.anouman .app-layout-behaviour-top-large .app-bar-content {
+	left: 64px;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	height: 64px;
+	transition: left 0.3s;
+}
+
+.anouman .app-layout-behaviour-top-large .app-bar-menu-content .app-layout-menu-bar-element {
+	display: none;
+}
+
+.anouman .app-layout-behaviour-top-large app-toolbar paper-icon-button {
+	transition: opacity 0.3s;
+	opacity: 1;
+	position: absolute;
+	top: 0px;
+}
+
+.anouman .app-layout-behaviour-top-large .app-bar-menu-content {
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.3s ease;
+}
+
+.anouman .app-layout-behaviour-top-large app-toolbar {
+	background-color: #4285f4;
+	color: #d3dff3;
+	position: relative;
+	z-index: 11;
+	box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.5);
+	padding: 0px;
+	transition: height 0.3s ease;
+}
+
+.anouman .app-layout-behaviour-top-large app-toolbar .v-button {
+	color: #d3dff3 !important;
+}
+
+.anouman .app-layout-behaviour-top-large app-drawer {
+	--app-drawer-scrim-background: rgba(0, 0, 100, 0);
+}
+
+.anouman .app-layout-behaviour-top-large app-drawer[opened] {
+	z-index: 10;
+}
+
+.anouman .app-layout-behaviour-top-large .drawer-content {
+	margin-top: 64px;
+	box-sizing: border-box;
+	height: 100%;
+	margin-bottom: -64px;
+	padding-bottom: 64px;
+	overflow: visible;
+	box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.3);
+	background: white;
+	color: #474747 !important;
 }
 
 .anouman.v-app, .anouman.v-app-loading {
@@ -3872,58 +4351,58 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .anouman .v-errorindicator-info {
-    color: #00a7f5;
-    font-weight: 600;
-    width: 19px;
-    text-align: center;
+	color: #00a7f5;
+	font-weight: 600;
+	width: 19px;
+	text-align: center;
 }
 
 .anouman .v-errorindicator-info:before {
-    content: "!";
+	content: "!";
 }
 
 .anouman .v-errorindicator-warning {
-    color: #fc9c00;
-    font-weight: 600;
-    width: 19px;
-    text-align: center;
+	color: #fc9c00;
+	font-weight: 600;
+	width: 19px;
+	text-align: center;
 }
 
 .anouman .v-errorindicator-warning:before {
-    content: "!";
+	content: "!";
 }
 
 .anouman .v-errorindicator-error {
-    color: #ed473b;
-    font-weight: 600;
-    width: 19px;
-    text-align: center;
+	color: #ed473b;
+	font-weight: 600;
+	width: 19px;
+	text-align: center;
 }
 
 .anouman .v-errorindicator-error:before {
-    content: "!";
+	content: "!";
 }
 
 .anouman .v-errorindicator-critical {
-    color: #fa007d;
-    font-weight: 600;
-    width: 19px;
-    text-align: center;
+	color: #fa007d;
+	font-weight: 600;
+	width: 19px;
+	text-align: center;
 }
 
 .anouman .v-errorindicator-critical:before {
-    content: "!";
+	content: "!";
 }
 
 .anouman .v-errorindicator-system {
-    color: #bb00ff;
-    font-weight: 600;
-    width: 19px;
-    text-align: center;
+	color: #bb00ff;
+	font-weight: 600;
+	width: 19px;
+	text-align: center;
 }
 
 .anouman .v-errorindicator-system:before {
-    content: "!";
+	content: "!";
 }
 
 .anouman .v-required-field-indicator {
@@ -4006,23 +4485,23 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .anouman .v-tooltip .v-errormessage-info {
-    color: #00a7f5;
+	color: #00a7f5;
 }
 
 .anouman .v-tooltip .v-errormessage-warning {
-    color: #fc9c00;
+	color: #fc9c00;
 }
 
 .anouman .v-tooltip .v-errormessage-error {
-    color: #ed473b;
+	color: #ed473b;
 }
 
 .anouman .v-tooltip .v-errormessage-critical {
-    color: #fa007d;
+	color: #fa007d;
 }
 
 .anouman .v-tooltip .v-errormessage-system {
-    color: #bb00ff;
+	color: #bb00ff;
 }
 
 .anouman .v-tooltip .v-tooltip-text {
@@ -5283,58 +5762,58 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .anouman .v-filterselect-error-info .v-filterselect-input {
-    border-color: #00a7f5 !important;
-    background: #fafdff;
-    color: #195774;
+	border-color: #00a7f5 !important;
+	background: #fafdff;
+	color: #195774;
 }
 
 .anouman .v-filterselect-error-info .v-filterselect-button {
-    color: #00a7f5;
-    border-color: #00a7f5;
+	color: #00a7f5;
+	border-color: #00a7f5;
 }
 
 .anouman .v-filterselect-error-warning .v-filterselect-input {
-    border-color: #fc9c00 !important;
-    background: #fffdfa;
-    color: #745119;
+	border-color: #fc9c00 !important;
+	background: #fffdfa;
+	color: #745119;
 }
 
 .anouman .v-filterselect-error-warning .v-filterselect-button {
-    color: #fc9c00;
-    border-color: #fc9c00;
+	color: #fc9c00;
+	border-color: #fc9c00;
 }
 
 .anouman .v-filterselect-error-error .v-filterselect-input {
-    border-color: #ed473b !important;
-    background: #fffbfb;
-    color: #6c2621;
+	border-color: #ed473b !important;
+	background: #fffbfb;
+	color: #6c2621;
 }
 
 .anouman .v-filterselect-error-error .v-filterselect-button {
-    color: #ed473b;
-    border-color: #ed473b;
+	color: #ed473b;
+	border-color: #ed473b;
 }
 
 .anouman .v-filterselect-error-critical .v-filterselect-input {
-    border-color: #fa007d !important;
-    background: #fffafc;
-    color: #741947;
+	border-color: #fa007d !important;
+	background: #fffafc;
+	color: #741947;
 }
 
 .anouman .v-filterselect-error-critical .v-filterselect-button {
-    color: #fa007d;
-    border-color: #fa007d;
+	color: #fa007d;
+	border-color: #fa007d;
 }
 
 .anouman .v-filterselect-error-system .v-filterselect-input {
-    border-color: #bb00ff !important;
-    background: #fefaff;
-    color: #5c1974;
+	border-color: #bb00ff !important;
+	background: #fefaff;
+	color: #5c1974;
 }
 
 .anouman .v-filterselect-error-system .v-filterselect-button {
-    color: #bb00ff;
-    border-color: #bb00ff;
+	color: #bb00ff;
+	border-color: #bb00ff;
 }
 
 .anouman .v-filterselect-suggestpopup {
@@ -7368,33 +7847,33 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .anouman .v-textfield-error-info {
-    border-color: #00a7f5 !important;
-    background: #fafdff;
-    color: #195774;
+	border-color: #00a7f5 !important;
+	background: #fafdff;
+	color: #195774;
 }
 
 .anouman .v-textfield-error-warning {
-    border-color: #fc9c00 !important;
-    background: #fffdfa;
-    color: #745119;
+	border-color: #fc9c00 !important;
+	background: #fffdfa;
+	color: #745119;
 }
 
 .anouman .v-textfield-error-error {
-    border-color: #ed473b !important;
-    background: #fffbfb;
-    color: #6c2621;
+	border-color: #ed473b !important;
+	background: #fffbfb;
+	color: #6c2621;
 }
 
 .anouman .v-textfield-error-critical {
-    border-color: #fa007d !important;
-    background: #fffafc;
-    color: #741947;
+	border-color: #fa007d !important;
+	background: #fffafc;
+	color: #741947;
 }
 
 .anouman .v-textfield-error-system {
-    border-color: #bb00ff !important;
-    background: #fefaff;
-    color: #5c1974;
+	border-color: #bb00ff !important;
+	background: #fefaff;
+	color: #5c1974;
 }
 
 .anouman .v-textfield-borderless {
@@ -8144,58 +8623,58 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .anouman .v-datefield-error-info .v-datefield-textfield {
-    border-color: #00a7f5 !important;
-    background: #fafdff;
-    color: #195774;
+	border-color: #00a7f5 !important;
+	background: #fafdff;
+	color: #195774;
 }
 
 .anouman .v-datefield-error-info .v-datefield-button {
-    color: #00a7f5;
-    border-color: #00a7f5;
+	color: #00a7f5;
+	border-color: #00a7f5;
 }
 
 .anouman .v-datefield-error-warning .v-datefield-textfield {
-    border-color: #fc9c00 !important;
-    background: #fffdfa;
-    color: #745119;
+	border-color: #fc9c00 !important;
+	background: #fffdfa;
+	color: #745119;
 }
 
 .anouman .v-datefield-error-warning .v-datefield-button {
-    color: #fc9c00;
-    border-color: #fc9c00;
+	color: #fc9c00;
+	border-color: #fc9c00;
 }
 
 .anouman .v-datefield-error-error .v-datefield-textfield {
-    border-color: #ed473b !important;
-    background: #fffbfb;
-    color: #6c2621;
+	border-color: #ed473b !important;
+	background: #fffbfb;
+	color: #6c2621;
 }
 
 .anouman .v-datefield-error-error .v-datefield-button {
-    color: #ed473b;
-    border-color: #ed473b;
+	color: #ed473b;
+	border-color: #ed473b;
 }
 
 .anouman .v-datefield-error-critical .v-datefield-textfield {
-    border-color: #fa007d !important;
-    background: #fffafc;
-    color: #741947;
+	border-color: #fa007d !important;
+	background: #fffafc;
+	color: #741947;
 }
 
 .anouman .v-datefield-error-critical .v-datefield-button {
-    color: #fa007d;
-    border-color: #fa007d;
+	color: #fa007d;
+	border-color: #fa007d;
 }
 
 .anouman .v-datefield-error-system .v-datefield-textfield {
-    border-color: #bb00ff !important;
-    background: #fefaff;
-    color: #5c1974;
+	border-color: #bb00ff !important;
+	background: #fefaff;
+	color: #5c1974;
 }
 
 .anouman .v-datefield-error-system .v-datefield-button {
-    color: #bb00ff;
-    border-color: #bb00ff;
+	color: #bb00ff;
+	border-color: #bb00ff;
 }
 
 .anouman .v-datefield-full {
@@ -10695,27 +11174,27 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .anouman .v-window-closebox:focus::after {
-    content: "";
-    position: absolute;
-    top: 6px;
-    right: 6px;
-    bottom: 6px;
-    left: 2px;
-    border-radius: 4px;
-    -webkit-box-shadow: 0 0 0 2px rgba(25, 125, 225, 0.5);
-    box-shadow: 0 0 0 2px rgba(25, 125, 225, 0.5);
+	content: "";
+	position: absolute;
+	top: 6px;
+	right: 6px;
+	bottom: 6px;
+	left: 2px;
+	border-radius: 4px;
+	-webkit-box-shadow: 0 0 0 2px rgba(25, 125, 225, 0.5);
+	box-shadow: 0 0 0 2px rgba(25, 125, 225, 0.5);
 }
 
 .anouman .v-window-maximizebox:focus::after, .anouman .v-window-restorebox:focus::after {
-    content: "";
-    position: absolute;
-    top: 6px;
-    right: 2px;
-    bottom: 6px;
-    left: 6px;
-    border-radius: 4px;
-    -webkit-box-shadow: 0 0 0 2px rgba(25, 125, 225, 0.5);
-    box-shadow: 0 0 0 2px rgba(25, 125, 225, 0.5);
+	content: "";
+	position: absolute;
+	top: 6px;
+	right: 2px;
+	bottom: 6px;
+	left: 6px;
+	border-radius: 4px;
+	-webkit-box-shadow: 0 0 0 2px rgba(25, 125, 225, 0.5);
+	box-shadow: 0 0 0 2px rgba(25, 125, 225, 0.5);
 }
 
 .anouman .v-window-closebox {
@@ -10747,8 +11226,8 @@ div.v-layout.v-horizontal.v-widget {
 	border-bottom-left-radius: 4px;
 }
 
-.anouman .v-window-closebox-disabled + .v-window-closebox:focus::after, .anouman .v-window-resizebox-disabled + .v-window-closebox:focus::after, .anouman .v-window-restorebox-disabled + .v-window-closebox:focus::after, .anouman .v-window-maximizebox-disabled + .v-window-closebox:focus::after {
-    left: 6px;
+.anouman .v-window-closebox-disabled  + .v-window-closebox:focus::after, .anouman .v-window-resizebox-disabled  + .v-window-closebox:focus::after, .anouman .v-window-restorebox-disabled  + .v-window-closebox:focus::after, .anouman .v-window-maximizebox-disabled  + .v-window-closebox:focus::after {
+	left: 6px;
 }
 
 .anouman .v-window-maximizebox:before {
@@ -15100,33 +15579,33 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .anouman .v-select-twincol-error-info .v-select-twincol-options, .anouman .v-select-twincol-error-info .v-select-twincol-selections {
-    border-color: #00a7f5 !important;
-    background: #fafdff;
-    color: #195774;
+	border-color: #00a7f5 !important;
+	background: #fafdff;
+	color: #195774;
 }
 
 .anouman .v-select-twincol-error-warning .v-select-twincol-options, .anouman .v-select-twincol-error-warning .v-select-twincol-selections {
-    border-color: #fc9c00 !important;
-    background: #fffdfa;
-    color: #745119;
+	border-color: #fc9c00 !important;
+	background: #fffdfa;
+	color: #745119;
 }
 
 .anouman .v-select-twincol-error-error .v-select-twincol-options, .anouman .v-select-twincol-error-error .v-select-twincol-selections {
-    border-color: #ed473b !important;
-    background: #fffbfb;
-    color: #6c2621;
+	border-color: #ed473b !important;
+	background: #fffbfb;
+	color: #6c2621;
 }
 
 .anouman .v-select-twincol-error-critical .v-select-twincol-options, .anouman .v-select-twincol-error-critical .v-select-twincol-selections {
-    border-color: #fa007d !important;
-    background: #fffafc;
-    color: #741947;
+	border-color: #fa007d !important;
+	background: #fffafc;
+	color: #741947;
 }
 
 .anouman .v-select-twincol-error-system .v-select-twincol-options, .anouman .v-select-twincol-error-system .v-select-twincol-selections {
-    border-color: #bb00ff !important;
-    background: #fefaff;
-    color: #5c1974;
+	border-color: #bb00ff !important;
+	background: #fefaff;
+	color: #5c1974;
 }
 
 .anouman .v-select select {
@@ -15177,7 +15656,7 @@ div.v-layout.v-horizontal.v-widget {
 	appearance: none;
 	background: transparent;
 	border: none;
-    padding: 7px 2px;
+	padding: 7px 2px;
 	margin: 0;
 	cursor: pointer;
 	outline: none;
@@ -15240,8 +15719,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .anouman .v-calendar-month-day.firstDay .v-calendar-day-number {
-    color: #1463b3;
-    background: #f9fbfd;
+	color: #1463b3;
+	background: #f9fbfd;
 }
 
 .anouman .v-calendar-bottom-spacer, .anouman .v-calendar-bottom-spacer-expanded, .anouman .v-calendar-spacer, .anouman .v-calendar-bottom-spacer-empty {
@@ -15252,25 +15731,25 @@ div.v-layout.v-horizontal.v-widget {
 	font-size: 0.8em;
 	padding: 0 5px;
 	cursor: pointer;
-    width: 3em;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
+	width: 3em;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
 }
 
 .anouman .v-calendar-bottom-spacer:hover, .anouman .v-calendar-bottom-spacer-expanded:hover {
-    color: #197de1;
+	color: #197de1;
 }
 
 .anouman .v-calendar-bottom-spacer > span:before {
-    content: "+";
-    margin-right: 0.2em;
-    color: #197de1;
+	content: "+";
+	margin-right: 0.2em;
+	color: #197de1;
 }
 
 .anouman .v-calendar-bottom-spacer-expanded > span:before {
-    content: "-";
-    margin-right: 0.2em;
+	content: "-";
+	margin-right: 0.2em;
 	color: #197de1;
 }
 
@@ -15278,8 +15757,8 @@ div.v-layout.v-horizontal.v-widget {
 	line-height: 25px;
 	font-size: 16px;
 	text-align: right;
-    margin: 0;
-    padding-right: 5px;
+	margin: 0;
+	padding-right: 5px;
 	white-space: nowrap;
 	border-top: 1px solid #f2f2f2;
 	cursor: pointer;
@@ -15313,15 +15792,15 @@ div.v-layout.v-horizontal.v-widget {
 
 .anouman .v-calendar-weekly-longevents {
 	margin-left: 50px;
-    margin-bottom: 3px;
+	margin-bottom: 3px;
 	border-bottom: 3px solid #e0e0e0;
 }
 
 .anouman .v-calendar-weekly-longevents .v-calendar-event-all-day {
 	height: 22px;
 	line-height: 1.6;
-    border-top: 1px solid #FFF;
-    border-bottom: 1px solid #fff;
+	border-top: 1px solid #FFF;
+	border-bottom: 1px solid #fff;
 }
 
 .anouman .v-calendar-header-week td {
@@ -15356,7 +15835,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .anouman .v-calendar-day-times-today {
-    background: #f5f5f5;
+	background: #f5f5f5;
 }
 
 .anouman .v-calendar .v-datecellslot, .anouman .v-calendar .v-datecellslot-even, .anouman .v-calendar .v-datecellslot-blocked, .anouman .v-calendar .v-datecellslot-blocked-even {
@@ -15372,8 +15851,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .anouman .v-calendar .v-datecellslot-blocked, .anouman .v-calendar .v-datecellslot-blocked-even {
-    background: #d6d6d6;
-    border-color: #cecece;
+	background: #d6d6d6;
+	border-color: #cecece;
 }
 
 .anouman .v-calendar-current-time {
@@ -15431,7 +15910,7 @@ div.v-layout.v-horizontal.v-widget {
 .anouman .v-calendar-event-month {
 	padding: 0 5px;
 	box-sizing: border-box;
-    border-bottom: 1px solid #FFF;
+	border-bottom: 1px solid #FFF;
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	height: 19px;
@@ -15513,12 +15992,12 @@ div.v-layout.v-horizontal.v-widget {
 	border-radius: 5px;
 	border: 1px solid #fafafa;
 	padding-top: 3px;
-    margin-right: 2px;
-    margin-left: 2px;
+	margin-right: 2px;
+	margin-left: 2px;
 }
 
 .anouman .v-calendar-event-month:before {
-    border-color: #00ace0;
+	border-color: #00ace0;
 	color: #00ace0;
 }
 
@@ -15538,7 +16017,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .anouman .v-calendar-event-month[class*="color2"]:before {
-    border-color: #2d9f19;
+	border-color: #2d9f19;
 	color: #2d9f19;
 }
 
@@ -15558,7 +16037,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .anouman .v-calendar-event-month[class*="color3"]:before {
-    border-color: #d18100;
+	border-color: #d18100;
 	color: #d18100;
 }
 
@@ -15578,7 +16057,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .anouman .v-calendar-event-month[class*="color4"]:before {
-    border-color: #ce3812;
+	border-color: #ce3812;
 	color: #ce3812;
 }
 
@@ -15598,7 +16077,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .anouman .v-calendar-event-month[class*="color5"]:before {
-    border-color: #2d55cd;
+	border-color: #2d55cd;
 	color: #2d55cd;
 }
 

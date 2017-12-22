@@ -1,6 +1,8 @@
 package ch.internettechnik.anouman.presentation.ui.report.jasper.reporttemplate;
 
+import ch.internettechnik.anouman.backend.entity.report.jasper.ReportJasper;
 import ch.internettechnik.anouman.backend.entity.report.jasper.ReportJasperImage;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ReportJasperFacade;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ReportJasperImageFacade;
 import ch.internettechnik.anouman.presentation.ui.Menu;
 import com.vaadin.cdi.CDIView;
@@ -26,7 +28,10 @@ public class ReportJasperImageView extends VerticalLayout implements View {
     private Menu menu;
 
     @Inject
-    private ReportJasperImageFacade facade;
+    private ReportJasperFacade reportJasperFacade;
+
+    @Inject
+    private ReportJasperImageFacade reportJasperImageFacade;
 
     @Inject
     private ReportJasperImageForm form;
@@ -52,8 +57,7 @@ public class ReportJasperImageView extends VerticalLayout implements View {
             form.setEntity(reportJasperImage);
             form.openInModalPopup();
             form.setSavedHandler(val -> {
-                //val.setTemplateCompiled(form.getCompiledReport());
-                facade.save(val);
+                reportJasperImageFacade.save(val);
                 updateList();
                 grid.select(val);
                 form.closePopup();
@@ -74,9 +78,13 @@ public class ReportJasperImageView extends VerticalLayout implements View {
         // Render a button that deletes the data row (item)
         grid.addColumn(report -> "löschen",
                 new ButtonRenderer(event -> {
-                    Notification.show("Lösche id:" + event.getItem(), Notification.Type.HUMANIZED_MESSAGE);
-                    facade.delete((ReportJasperImage) event.getItem());
+                    ReportJasperImage reportJasperImage = (ReportJasperImage) event.getItem();
+                    ReportJasper reportJasper = reportJasperFacade.findBy(reportJasperImage.getReportJasper().getId());
+                    reportJasper.getReportJasperImages().remove(reportJasperImage);
+                    reportJasperFacade.save(reportJasper);
+                    reportJasperImageFacade.delete((ReportJasperImage) event.getItem());
                     updateList();
+                    Notification.show("Lösche id:" + reportJasperImage.getId(), Notification.Type.HUMANIZED_MESSAGE);
                 })
         );
         grid.addColumn(report -> "ändern",
@@ -85,7 +93,7 @@ public class ReportJasperImageView extends VerticalLayout implements View {
                     form.openInModalPopup();
                     form.setSavedHandler(val -> {
                         //val.setTemplateCompiled(form.getCompiledReport());
-                        facade.save(val);
+                        reportJasperImageFacade.save(val);
                         updateList();
                         grid.select(val);
                         form.closePopup();
@@ -108,9 +116,9 @@ public class ReportJasperImageView extends VerticalLayout implements View {
         if (!filterTextBezeichnung.isEmpty()) {
             //Suche mit Bezeichnung
             logger.debug("Suche mit Bezeichnung:" + filterTextBezeichnung.getValue());
-            grid.setItems(facade.findByBezeichnungLikeIgnoreCase(filterTextBezeichnung.getValue() + "%"));
+            grid.setItems(reportJasperImageFacade.findByBezeichnungLikeIgnoreCase(filterTextBezeichnung.getValue() + "%"));
             return;
         }
-        grid.setItems(facade.findAll());
+        grid.setItems(reportJasperImageFacade.findAll());
     }
 }

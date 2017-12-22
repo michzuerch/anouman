@@ -253,6 +253,13 @@ public class Menu extends CustomComponent {
             }
         });
 
+        testsComponents.addItem("GridCrud Test", VaadinIcons.MAGIC, new MenuBar.Command() {
+            @Override
+            public void menuSelected(MenuBar.MenuItem selectedItem) {
+                getUI().getNavigator().navigateTo("GridCrudTest");
+            }
+        });
+
         layout.addComponent(menuBar);
         setCompositionRoot(layout);
     }

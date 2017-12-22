@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class ImageStreamSource implements StreamResource.StreamSource {
-    ByteArrayOutputStream imagebuffer = new ByteArrayOutputStream();
+    private ByteArrayOutputStream imagebuffer = new ByteArrayOutputStream();
 
     public ImageStreamSource(byte[] val) {
         try {
