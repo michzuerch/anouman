@@ -4,10 +4,7 @@ import ch.internettechnik.anouman.backend.entity.report.jasper.ReportJasper;
 import ch.internettechnik.anouman.backend.entity.report.jasper.ReportJasperImage;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ReportJasperFacade;
 import ch.internettechnik.anouman.presentation.ui.ImageField;
-import ch.internettechnik.anouman.presentation.ui.ImageStreamSource;
 import com.vaadin.cdi.ViewScoped;
-import com.vaadin.server.FileDownloader;
-import com.vaadin.server.StreamResource;
 import com.vaadin.ui.*;
 import org.vaadin.viritin.form.AbstractForm;
 
@@ -21,7 +18,7 @@ public class ReportJasperImageForm extends AbstractForm<ReportJasperImage> {
     NativeSelect<ReportJasper> reportJasper = new NativeSelect<>("Report Jasper");
     TextField bezeichnung = new TextField("Bezeichnung");
     ImageField image = new ImageField();
-    Button downloadButton = new Button("Download Image");
+    //Button downloadButton = new Button("Download Image");
 
     private String filename;
 
@@ -38,22 +35,22 @@ public class ReportJasperImageForm extends AbstractForm<ReportJasperImage> {
 
     @Override
     protected Component createContent() {
-        //getBinder().forField(image).withValidator(new RrValidator()).bind("image");
+        getBinder().forField(image).bind("image");
         //getBinder().forField(templateCompiled).withConverter(new ByteToStringConverter()).bind("templateCompiled");
 
-        StreamResource templateResource = new StreamResource(new ImageStreamSource(image.getValue()), "image.jpg");
-        FileDownloader fileDownloader = new FileDownloader(templateResource);
-        fileDownloader.extend(downloadButton);
+        //StreamResource templateResource = new StreamResource(new ImageStreamSource(image.getValue()), "image.jpg");
+        //FileDownloader fileDownloader = new FileDownloader(templateResource);
+        //fileDownloader.extend(downloadButton);
 
         reportJasper.setItems(reportJasperFacade.findAll());
         reportJasper.setItemCaptionGenerator(item -> item.getBezeichnung() + " " + item.getId());
 
         image.setCaption("Bild");
-        image.setHeight(100, Unit.PIXELS);
-        image.setWidth(300, Unit.PIXELS);
+        image.setHeight(300, Unit.PIXELS);
+        image.setWidth(400, Unit.PIXELS);
 
         return new VerticalLayout(new FormLayout(
-                reportJasper, bezeichnung, image, downloadButton), getToolbar());
+                reportJasper, bezeichnung, image), getToolbar());
     }
 
     public String getFilename() {

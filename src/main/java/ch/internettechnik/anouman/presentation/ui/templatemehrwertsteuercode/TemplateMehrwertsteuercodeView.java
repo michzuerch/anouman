@@ -116,7 +116,7 @@ public class TemplateMehrwertsteuercodeView extends VerticalLayout implements Vi
 
         grid.addColumn(buchhaltung -> "ändern",
                 new ButtonRenderer(event -> {
-                    System.err.println((TemplateMehrwertsteuercode) event.getItem());
+                    System.err.println(event.getItem());
                     form.setEntity((TemplateMehrwertsteuercode) event.getItem());
                     form.openInModalPopup();
                     form.setSavedHandler(val -> {
@@ -143,7 +143,7 @@ public class TemplateMehrwertsteuercodeView extends VerticalLayout implements Vi
             templateKontoklasse.getTemplateKontohauptgruppes().stream().forEach(templateKontohauptgruppe -> {
                 templateKontohauptgruppe.getTemplateKontogruppes().stream().forEach(templateKontogruppe -> {
                     templateKontogruppe.getTemplateKontos().stream().forEach(templateKonto -> {
-                            list.add(templateKonto);
+                        list.add(templateKonto);
                     });
                 });
             });

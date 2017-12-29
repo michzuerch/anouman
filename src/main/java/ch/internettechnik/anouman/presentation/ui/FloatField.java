@@ -13,6 +13,10 @@ public class FloatField extends AbstractNumberField<FloatField, Float> {
         setSizeUndefined();
     }
 
+    public FloatField(String caption) {
+        setCaption(caption);
+    }
+
     @Override
     protected void configureHtmlElement() {
         s.setProperty("type", getHtmlFieldType());
@@ -21,9 +25,6 @@ public class FloatField extends AbstractNumberField<FloatField, Float> {
                 "function(e) {var c = viritin.getChar(e); return c==null || /^[.\\d\\n\\t\\r]+$/.test(c);}");
     }
 
-    public FloatField(String caption) {
-        setCaption(caption);
-    }
     @Override
     protected void userInputToValue(String str) {
         if (StringUtils.isNotBlank(str)) {

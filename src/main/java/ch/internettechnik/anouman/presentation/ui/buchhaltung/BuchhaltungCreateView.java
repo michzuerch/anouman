@@ -20,12 +20,6 @@ import java.time.LocalDate;
 @CDIView(value = "BuchhaltungCreate")
 public class BuchhaltungCreateView extends VerticalLayout implements View {
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(TemplateBuchhaltungTreeView.class.getName());
-    private BeanValidationBinder<Buchhaltung> binder = new BeanValidationBinder<>(Buchhaltung.class);
-    private TextField bezeichnungField = new TextField("Bezeichnung");
-    private IntegerField jahrField = new IntegerField("Jahr");
-    private NativeSelect<TemplateBuchhaltung> templateBuchhaltungSelect = new NativeSelect<>();
-    private Button createBuchhaltungBtn = new Button("Erstelle Buchhaltung");
-
     @Inject
     BuchhaltungFacade buchhaltungFacade;
     @Inject
@@ -40,6 +34,11 @@ public class BuchhaltungCreateView extends VerticalLayout implements View {
     TemplateBuchhaltungFacade templateBuchhaltungFacade;
     @Inject
     BuchhaltungForm buchhaltungForm;
+    private BeanValidationBinder<Buchhaltung> binder = new BeanValidationBinder<>(Buchhaltung.class);
+    private TextField bezeichnungField = new TextField("Bezeichnung");
+    private IntegerField jahrField = new IntegerField("Jahr");
+    private NativeSelect<TemplateBuchhaltung> templateBuchhaltungSelect = new NativeSelect<>();
+    private Button createBuchhaltungBtn = new Button("Erstelle Buchhaltung");
     @Inject
     private Menu menu;
 

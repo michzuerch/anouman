@@ -57,6 +57,7 @@ public class ReportJasperImageView extends VerticalLayout implements View {
             form.setEntity(reportJasperImage);
             form.openInModalPopup();
             form.setSavedHandler(val -> {
+                System.err.println("Save:" + val);
                 reportJasperImageFacade.save(val);
                 updateList();
                 grid.select(val);

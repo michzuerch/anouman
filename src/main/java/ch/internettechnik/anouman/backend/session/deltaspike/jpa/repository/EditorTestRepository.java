@@ -10,5 +10,6 @@ import java.util.List;
 @Repository(forEntity = EditorTest.class)
 public interface EditorTestRepository extends EntityRepository<EditorTest, Long> {
     List<EditorTest> findByErster(String erster);
+
     List<EditorTest> findByErsterLikeIgnoreCase(String filter);
 }

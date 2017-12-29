@@ -31,9 +31,6 @@ public class RechnungDetailView extends VerticalLayout implements View {
     RechnungspositionFacade rechnungspositionFacade;
     @Inject
     AufwandFacade aufwandFacade;
-    @Inject
-    private Menu menu;
-
     Long idRechnung = new Long(0);
     TextField fieldId = new TextField("id");
     TextField fieldAdresseFirma = new TextField("Adresse Firma");
@@ -51,6 +48,8 @@ public class RechnungDetailView extends VerticalLayout implements View {
     Button btnAddRechnungsposition = new Button("Add Rechnungsposition");
     Button btnAddAufwand = new Button("Add Aufwand");
     Button btnBack = new Button("Zurück", clickEvent -> getUI().getNavigator().navigateTo("Rechnung/id/" + getIdRechnung()));
+    @Inject
+    private Menu menu;
 
     private void update() {
         Rechnung val = rechnungFacade.findBy(getIdRechnung());

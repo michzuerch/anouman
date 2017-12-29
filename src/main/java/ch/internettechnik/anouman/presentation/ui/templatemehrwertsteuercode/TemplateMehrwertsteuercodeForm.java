@@ -53,7 +53,7 @@ public class TemplateMehrwertsteuercodeForm extends AbstractForm<TemplateMehrwer
             templateKontoklasse.getTemplateKontohauptgruppes().stream().forEach(templateKontohauptgruppe -> {
                 templateKontohauptgruppe.getTemplateKontogruppes().stream().forEach(templateKontogruppe -> {
                     templateKontogruppe.getTemplateKontos().stream().forEach(templateKonto -> {
-                            list.add(templateKonto);
+                        list.add(templateKonto);
                     });
                 });
             });

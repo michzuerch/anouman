@@ -54,7 +54,7 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax:javaee-api:8.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.sun.mail:javax.mail:1.6.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.activation:activation:1.1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: org.slf4j:slf4j-api:1.7.25" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.slf4j:slf4j-api:1.8.0-beta0" level="project" />
     <orderEntry type="library" name="Maven: javax.validation:validation-api:2.0.1.Final" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.hibernate:hibernate-validator:5.3.5.Final" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.jboss.logging:jboss-logging:3.3.0.Final" level="project" />
@@ -90,7 +90,7 @@
     <orderEntry type="library" name="Maven: org.vaadin.addons:floating-textfield:2.0.0-beta2" level="project" />
     <orderEntry type="library" name="Maven: org.vaadin.community.addon:clickabletextrenderer-v8:1.0.0" level="project" />
     <orderEntry type="library" name="Maven: tm.kod:numberfield7:0.0.5" level="project" />
-    <orderEntry type="library" name="Maven: org.vaadin.reports:report-ui:1.0" level="project" />
+    <orderEntry type="library" name="Maven: org.vaadin.reports:report-ui:1.1" level="project" />
     <orderEntry type="library" name="Maven: ar.com.fdvs:DynamicJasper:5.1.0" level="project" />
     <orderEntry type="library" name="Maven: net.sf.jasperreports:jasperreports:6.3.0" level="project" />
     <orderEntry type="library" name="Maven: commons-digester:commons-digester:2.1" level="project" />
@@ -141,7 +141,7 @@
     <orderEntry type="library" name="Maven: com.mysema.commons:mysema-commons-lang:0.2.4" level="project" />
     <orderEntry type="library" name="Maven: com.infradna.tool:bridge-method-annotation:1.13" level="project" />
     <orderEntry type="library" name="Maven: com.querydsl:querydsl-jpa:4.1.4" level="project" />
-    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:2.4.13" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:3.0.0-alpha-1" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.jdt.core.compiler:ecj:4.6.1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.xmlgraphics:fop:2.2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.xmlgraphics:xmlgraphics-commons:2.2" level="project" />

@@ -12,6 +12,7 @@ import java.util.List;
 @Repository(forEntity = TemplateMehrwertsteuercode.class)
 public interface TemplateMehrwertsteuercodeRepository extends EntityRepository<TemplateMehrwertsteuercode, Long> {
     List<TemplateMehrwertsteuercode> findByTemplateBuchhaltung(TemplateBuchhaltung templateBuchhaltung);
+
     List<TemplateMehrwertsteuercode> findByBezeichnungLikeIgnoreCase(String bezeichnung);
 
     TemplateMehrwertsteuercode findByTemplateKonto(TemplateKonto templateKonto);

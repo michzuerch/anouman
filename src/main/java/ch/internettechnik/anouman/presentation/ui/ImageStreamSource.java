@@ -1,6 +1,7 @@
 package ch.internettechnik.anouman.presentation.ui;
 
 import com.vaadin.server.StreamResource;
+import org.apache.commons.io.IOUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -12,10 +13,24 @@ public class ImageStreamSource implements StreamResource.StreamSource {
 
     public ImageStreamSource(byte[] val) {
         try {
-            imagebuffer.write(val);
+            if (val == null) {
+                imagebuffer.write(getEmptyImage());
+            } else {
+                imagebuffer.write(val);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private byte[] getEmptyImage() {
+        try {
+            byte[] val = IOUtils.toByteArray(getClass().getClassLoader().getResourceAsStream("/images/EmptyImage.jpg"));
+            return val;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override

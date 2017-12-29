@@ -108,16 +108,16 @@ public class TemplateBuchhaltungenUploadReceiver implements Serializable, Upload
                                 templateKontogruppe = templateKontogruppeFacade.save(templateKontogruppe);
 
                                 for (BackupTemplateMehrwertsteuercode backupTemplateMehrwertsteuercode : backupTemplateKonto.getBackupTemplateMehrwertsteuercodes()) {
-                                        TemplateMehrwertsteuercode templateMehrwertsteuercode = new TemplateMehrwertsteuercode();
-                                        templateMehrwertsteuercode.setCode(backupTemplateMehrwertsteuercode.getCode());
-                                        templateMehrwertsteuercode.setBezeichnung(backupTemplateMehrwertsteuercode.getBezeichnung());
-                                        templateMehrwertsteuercode.setProzent(backupTemplateMehrwertsteuercode.getProzent());
-                                        templateMehrwertsteuercode.setVerkauf(backupTemplateMehrwertsteuercode.isVerkauf());
-                                        templateMehrwertsteuercode.setTemplateBuchhaltung(templateBuchhaltung);
-                                        templateMehrwertsteuercode = templateMehrwertsteuercodeFacade.save(templateMehrwertsteuercode);
-                                        templateKonto.getTemplateMehrwertsteuercode().add(templateMehrwertsteuercode);
-                                        templateKonto = templateKontoFacade.save(templateKonto);
-                                    }
+                                    TemplateMehrwertsteuercode templateMehrwertsteuercode = new TemplateMehrwertsteuercode();
+                                    templateMehrwertsteuercode.setCode(backupTemplateMehrwertsteuercode.getCode());
+                                    templateMehrwertsteuercode.setBezeichnung(backupTemplateMehrwertsteuercode.getBezeichnung());
+                                    templateMehrwertsteuercode.setProzent(backupTemplateMehrwertsteuercode.getProzent());
+                                    templateMehrwertsteuercode.setVerkauf(backupTemplateMehrwertsteuercode.isVerkauf());
+                                    templateMehrwertsteuercode.setTemplateBuchhaltung(templateBuchhaltung);
+                                    templateMehrwertsteuercode = templateMehrwertsteuercodeFacade.save(templateMehrwertsteuercode);
+                                    templateKonto.getTemplateMehrwertsteuercode().add(templateMehrwertsteuercode);
+                                    templateKonto = templateKontoFacade.save(templateKonto);
+                                }
                             }
                         }
                     }

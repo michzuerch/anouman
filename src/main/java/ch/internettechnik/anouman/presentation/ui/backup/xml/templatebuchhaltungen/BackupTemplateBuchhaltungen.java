@@ -13,6 +13,11 @@ import java.util.Set;
 public class BackupTemplateBuchhaltungen {
     @XmlAttribute
     private Date datum;
+    @XmlElement(name = "buchhaltung")
+    private Set<BackupTemplateBuchhaltung> buchhaltungen = new HashSet<>();
+
+    public BackupTemplateBuchhaltungen() {
+    }
 
     public Date getDatum() {
         return datum;
@@ -20,12 +25,6 @@ public class BackupTemplateBuchhaltungen {
 
     public void setDatum(Date datum) {
         this.datum = datum;
-    }
-
-    @XmlElement(name = "buchhaltung")
-    private Set<BackupTemplateBuchhaltung> buchhaltungen = new HashSet<>();
-
-    public BackupTemplateBuchhaltungen() {
     }
 
     public Set<BackupTemplateBuchhaltung> getBuchhaltungen() {

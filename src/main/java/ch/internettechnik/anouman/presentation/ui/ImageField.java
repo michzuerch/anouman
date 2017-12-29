@@ -1,7 +1,6 @@
 package ch.internettechnik.anouman.presentation.ui;
 
 import com.vaadin.server.StreamResource;
-import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.*;
 import server.droporchoose.UploadComponent;
 
@@ -19,38 +18,26 @@ public class ImageField extends CustomField<byte[]> {
     private String mimeType;
 
 
-//    @Override
-//    public byte[] getEmptyValue() {
-//        ThemeResource themeResource = new ThemeResource("img/EmptyImage.jpg");
-//        themeResource.
-//        return new byte[0];
-//    }
-
     @Override
     protected void doSetValue(byte[] value) {
         this.imageData = value;
-        if (value == null) {
-            image.setSource(new ThemeResource("img/EmptyImage.jpg"));
-            image.markAsDirty();
-            System.err.println("Empty Image");
-        } else {
-            StreamResource imageResource = new StreamResource(new ImageStreamSource(getValue()), "image.jpg");
-            imageResource.setCacheTime(0);
-            image.setSource(imageResource);
-            image.markAsDirty();
-            System.err.println("Image from DB:" + getValue().length);
-        }
+        StreamResource imageResource = new StreamResource(new ImageStreamSource(value), "image.jpg");
+        imageResource.setCacheTime(0);
+        image.setSource(imageResource);
+        image.markAsDirty();
+        System.err.println("doSetValue:" + imageData.length);
     }
 
     @Override
     public byte[] getValue() {
+        if (imageData == null) doSetValue(getEmptyValue());
+        System.err.println("getValue:" + imageData.length);
         return imageData;
     }
 
     @Override
     protected Component initContent() {
         upload.setReceivedCallback(this::uploadReceived);
-        image.setWidth(400, Unit.PIXELS);
         VerticalLayout layout = new VerticalLayout();
         layout.setMargin(false);
         layout.setSpacing(false);

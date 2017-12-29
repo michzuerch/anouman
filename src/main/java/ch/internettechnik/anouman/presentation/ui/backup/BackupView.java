@@ -232,14 +232,14 @@ public class BackupView extends VerticalLayout implements View {
                                 backupTemplateKonto.setKontonummer(templateKonto.getKontonummer());
                                 backupTemplateKontogruppe.getBackupTemplateKontos().add(backupTemplateKonto);
 
-                                    templateKonto.getTemplateMehrwertsteuercode().stream().forEach(templateMehrwertsteuercode -> {
-                                        BackupTemplateMehrwertsteuercode backupTemplateMehrwertsteuercode = new BackupTemplateMehrwertsteuercode();
-                                        backupTemplateMehrwertsteuercode.setId(templateMehrwertsteuercode.getId());
-                                        backupTemplateMehrwertsteuercode.setBezeichnung(templateMehrwertsteuercode.getBezeichnung());
-                                        backupTemplateMehrwertsteuercode.setProzent(templateMehrwertsteuercode.getProzent());
-                                        backupTemplateMehrwertsteuercode.setCode(templateMehrwertsteuercode.getCode());
-                                        backupTemplateKonto.getBackupTemplateMehrwertsteuercodes().add(backupTemplateMehrwertsteuercode);
-                                    });
+                                templateKonto.getTemplateMehrwertsteuercode().stream().forEach(templateMehrwertsteuercode -> {
+                                    BackupTemplateMehrwertsteuercode backupTemplateMehrwertsteuercode = new BackupTemplateMehrwertsteuercode();
+                                    backupTemplateMehrwertsteuercode.setId(templateMehrwertsteuercode.getId());
+                                    backupTemplateMehrwertsteuercode.setBezeichnung(templateMehrwertsteuercode.getBezeichnung());
+                                    backupTemplateMehrwertsteuercode.setProzent(templateMehrwertsteuercode.getProzent());
+                                    backupTemplateMehrwertsteuercode.setCode(templateMehrwertsteuercode.getCode());
+                                    backupTemplateKonto.getBackupTemplateMehrwertsteuercodes().add(backupTemplateMehrwertsteuercode);
+                                });
                             });
                         });
                     });
@@ -305,12 +305,12 @@ public class BackupView extends VerticalLayout implements View {
                             backupTemplateKontogruppe.getBackupTemplateKontos().add(backupTemplateKonto);
 
                             backupTemplateKonto.getBackupTemplateMehrwertsteuercodes().stream().forEach(templateMehrwertsteuercode -> {
-                                    BackupTemplateMehrwertsteuercode backupTemplateMehrwertsteuercode = new BackupTemplateMehrwertsteuercode();
-                                    backupTemplateMehrwertsteuercode.setId(templateMehrwertsteuercode.getId());
-                                    backupTemplateMehrwertsteuercode.setCode(templateMehrwertsteuercode.getCode());
-                                    backupTemplateMehrwertsteuercode.setBezeichnung(templateMehrwertsteuercode.getBezeichnung());
-                                    backupTemplateMehrwertsteuercode.setProzent(templateMehrwertsteuercode.getProzent());
-                                    backupTemplateMehrwertsteuercode.setVerkauf(templateMehrwertsteuercode.isVerkauf());
+                                BackupTemplateMehrwertsteuercode backupTemplateMehrwertsteuercode = new BackupTemplateMehrwertsteuercode();
+                                backupTemplateMehrwertsteuercode.setId(templateMehrwertsteuercode.getId());
+                                backupTemplateMehrwertsteuercode.setCode(templateMehrwertsteuercode.getCode());
+                                backupTemplateMehrwertsteuercode.setBezeichnung(templateMehrwertsteuercode.getBezeichnung());
+                                backupTemplateMehrwertsteuercode.setProzent(templateMehrwertsteuercode.getProzent());
+                                backupTemplateMehrwertsteuercode.setVerkauf(templateMehrwertsteuercode.isVerkauf());
                                 backupTemplateKonto.getBackupTemplateMehrwertsteuercodes().add(backupTemplateMehrwertsteuercode);
                             });
                         });

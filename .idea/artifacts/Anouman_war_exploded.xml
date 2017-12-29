@@ -39,7 +39,7 @@
           <element id="library" level="project" name="Maven: org.vaadin.addons:floating-textfield:2.0.0-beta2" />
           <element id="library" level="project" name="Maven: org.vaadin.community.addon:clickabletextrenderer-v8:1.0.0" />
           <element id="library" level="project" name="Maven: tm.kod:numberfield7:0.0.5" />
-          <element id="library" level="project" name="Maven: org.vaadin.reports:report-ui:1.0" />
+          <element id="library" level="project" name="Maven: org.vaadin.reports:report-ui:1.1" />
           <element id="library" level="project" name="Maven: ar.com.fdvs:DynamicJasper:5.1.0" />
           <element id="library" level="project" name="Maven: net.sf.jasperreports:jasperreports:6.3.0" />
           <element id="library" level="project" name="Maven: commons-digester:commons-digester:2.1" />
@@ -90,7 +90,7 @@
           <element id="library" level="project" name="Maven: com.mysema.commons:mysema-commons-lang:0.2.4" />
           <element id="library" level="project" name="Maven: com.infradna.tool:bridge-method-annotation:1.13" />
           <element id="library" level="project" name="Maven: com.querydsl:querydsl-jpa:4.1.4" />
-          <element id="library" level="project" name="Maven: org.codehaus.groovy:groovy-all:2.4.13" />
+          <element id="library" level="project" name="Maven: org.codehaus.groovy:groovy-all:3.0.0-alpha-1" />
           <element id="library" level="project" name="Maven: org.eclipse.jdt.core.compiler:ecj:4.6.1" />
           <element id="library" level="project" name="Maven: org.apache.xmlgraphics:fop:2.2" />
           <element id="library" level="project" name="Maven: org.apache.xmlgraphics:xmlgraphics-commons:2.2" />
