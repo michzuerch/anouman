@@ -1,7 +1,6 @@
 package ch.internettechnik.anouman.backend.entity.report.jasper;
 
 import ch.internettechnik.anouman.backend.entity.AbstractEntity;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 
@@ -19,8 +18,7 @@ public class ReportJasperImage extends AbstractEntity {
 
     @Column
     @Basic(fetch = FetchType.LAZY)
-    @NotEmpty
-    private byte[] image;
+    private Byte[] image;
 
     @Transient
     private int size;
@@ -50,11 +48,11 @@ public class ReportJasperImage extends AbstractEntity {
         this.mimeType = mimeType;
     }
 
-    public byte[] getImage() {
+    public Byte[] getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(Byte[] image) {
         this.image = image;
     }
 
@@ -65,5 +63,16 @@ public class ReportJasperImage extends AbstractEntity {
 
     public void setSize(int size) {
         this.size = size;
+    }
+
+    @Override
+    public String toString() {
+        return "ReportJasperImage{" +
+                "bezeichnung='" + bezeichnung + '\'' +
+                ", reportJasper=" + reportJasper +
+                ", mimeType='" + mimeType + '\'' +
+                ", size=" + size +
+                ", id=" + id +
+                '}';
     }
 }

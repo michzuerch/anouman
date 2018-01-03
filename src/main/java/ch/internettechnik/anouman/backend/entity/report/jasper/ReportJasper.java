@@ -115,4 +115,16 @@ public class ReportJasper extends AbstractEntity {
     public void setFilename(String filename) {
         this.filename = filename;
     }
+
+    @Override
+    public String toString() {
+        return "ReportJasper{" +
+                "bezeichnung='" + bezeichnung + '\'' +
+                ", reportJasperImages=" + reportJasperImages +
+                ", filename='" + filename + '\'' +
+                ", sizeSource=" + sizeSource +
+                ", sizeCompiled=" + sizeCompiled +
+                ", anzahlReportJasperImages=" + anzahlReportJasperImages +
+                '}';
+    }
 }

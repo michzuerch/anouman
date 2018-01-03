@@ -35,9 +35,7 @@ public class ReportJasperImageForm extends AbstractForm<ReportJasperImage> {
 
     @Override
     protected Component createContent() {
-        getBinder().forField(image).bind("image");
-        //getBinder().forField(templateCompiled).withConverter(new ByteToStringConverter()).bind("templateCompiled");
-
+        //getBinder().forField(image).bind("image");
         //StreamResource templateResource = new StreamResource(new ImageStreamSource(image.getValue()), "image.jpg");
         //FileDownloader fileDownloader = new FileDownloader(templateResource);
         //fileDownloader.extend(downloadButton);

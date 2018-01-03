@@ -54,6 +54,7 @@ public class ReportJasperView extends VerticalLayout implements View {
             form.setSavedHandler(val -> {
                 //val.setTemplateCompiled(form.getCompiledReport());
                 val.setFilename(form.getFilename());
+                System.err.println("ReportJasper:" + val);
                 facade.save(val);
                 updateList();
                 grid.select(val);

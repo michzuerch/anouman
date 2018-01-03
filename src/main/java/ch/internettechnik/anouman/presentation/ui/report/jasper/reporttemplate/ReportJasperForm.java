@@ -1,6 +1,7 @@
 package ch.internettechnik.anouman.presentation.ui.report.jasper.reporttemplate;
 
 import ch.internettechnik.anouman.backend.entity.report.jasper.ReportJasper;
+import ch.internettechnik.anouman.presentation.ui.TestTextField;
 import ch.internettechnik.anouman.presentation.ui.converter.ByteToStringConverter;
 import com.vaadin.cdi.ViewScoped;
 import com.vaadin.server.UserError;
@@ -19,7 +20,7 @@ import java.nio.file.Paths;
 
 @ViewScoped
 public class ReportJasperForm extends AbstractForm<ReportJasper> {
-    TextField bezeichnung = new TextField("Bezeichnung");
+    TestTextField bezeichnung = new TestTextField();
     UploadComponent upload = new UploadComponent();
     Button validateAndCompileButton = new Button("Validate and Compile");
     TextArea templateSource = new TextArea("Template JRXML");
