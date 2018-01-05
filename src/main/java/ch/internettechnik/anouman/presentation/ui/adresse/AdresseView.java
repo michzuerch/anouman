@@ -133,7 +133,7 @@ public class AdresseView extends VerticalLayout implements View {
                     form.openInModalPopup();
                     form.setSavedHandler(val -> {
                         facade.save(val);
-                        //service.saveOrPersist(val);
+                        System.err.println("Adr:" + val);
                         updateList();
                         grid.select(val);
                         form.closePopup();

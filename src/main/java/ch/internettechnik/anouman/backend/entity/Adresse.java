@@ -26,7 +26,7 @@ public class Adresse extends AbstractEntity {
 
     @Column
     @NotNull
-    @Pattern(regexp = "[a-z-A-Z]*", message = "Nachname enthält ungültige Zeichen")
+    //@Pattern(regexp = "[a-z-A-Z]*", message = "Nachname enthält ungültige Zeichen")
     private String nachname;
 
     @Column
@@ -151,5 +151,19 @@ public class Adresse extends AbstractEntity {
 
     public void setStundensatz(Double stundensatz) {
         this.stundensatz = stundensatz;
+    }
+
+    @Override
+    public String toString() {
+        return "Adresse{" +
+                "firma='" + firma + '\'' +
+                ", anrede='" + anrede + '\'' +
+                ", vorname='" + vorname + '\'' +
+                ", nachname='" + nachname + '\'' +
+                ", strasse='" + strasse + '\'' +
+                ", postleitzahl='" + postleitzahl + '\'' +
+                ", ort='" + ort + '\'' +
+                ", stundensatz=" + stundensatz +
+                '}';
     }
 }

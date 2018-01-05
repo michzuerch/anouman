@@ -20,7 +20,7 @@ import java.nio.file.Paths;
 
 @ViewScoped
 public class ReportJasperForm extends AbstractForm<ReportJasper> {
-    TestTextField bezeichnung = new TestTextField();
+    TestTextField bezeichnung = new TestTextField("Bezeichnung");
     UploadComponent upload = new UploadComponent();
     Button validateAndCompileButton = new Button("Validate and Compile");
     TextArea templateSource = new TextArea("Template JRXML");

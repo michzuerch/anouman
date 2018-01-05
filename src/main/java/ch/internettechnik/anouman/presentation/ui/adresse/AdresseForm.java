@@ -1,6 +1,7 @@
 package ch.internettechnik.anouman.presentation.ui.adresse;
 
 import ch.internettechnik.anouman.backend.entity.Adresse;
+import ch.internettechnik.anouman.presentation.ui.TestTextField;
 import com.vaadin.cdi.ViewScoped;
 import com.vaadin.data.converter.StringToDoubleConverter;
 import com.vaadin.ui.*;
@@ -19,7 +20,7 @@ import java.util.Locale;
 public class AdresseForm extends AbstractForm<Adresse> {
     private static Logger logger = LoggerFactory.getLogger(AdresseForm.class.getName());
 
-    TextField firma = new TextField("Firma");
+    TestTextField firma = new TestTextField("Firma");
     TextField anrede = new TextField("Anrede");
     TextField vorname = new TextField("Vorname");
     TextField nachname = new TextField("Nachname");
