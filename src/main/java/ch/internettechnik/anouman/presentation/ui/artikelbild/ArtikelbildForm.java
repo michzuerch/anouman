@@ -2,10 +2,10 @@ package ch.internettechnik.anouman.presentation.ui.artikelbild;
 
 import ch.internettechnik.anouman.backend.entity.Artikel;
 import ch.internettechnik.anouman.backend.entity.Artikelbild;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ArtikelFacade;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ArtikelbildFacade;
-import com.vaadin.cdi.ViewScoped;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ArtikelDeltaspikeFacade;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ArtikelbildDeltaspikeFacade;
 import com.vaadin.server.StreamResource;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import org.vaadin.viritin.form.AbstractForm;
 import server.droporchoose.UploadComponent;
@@ -18,13 +18,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-@ViewScoped
+@UIScope
 public class ArtikelbildForm extends AbstractForm<Artikelbild> {
     @Inject
-    ArtikelFacade artikelFacade;
+    ArtikelDeltaspikeFacade artikelDeltaspikeFacade;
 
     @Inject
-    ArtikelbildFacade artikelbildFacade;
+    ArtikelbildDeltaspikeFacade artikelbildDeltaspikeFacade;
 
     NativeSelect<Artikel> artikel = new NativeSelect<>();
     TextField titel = new TextField("Titel");
@@ -51,7 +51,7 @@ public class ArtikelbildForm extends AbstractForm<Artikelbild> {
     protected Component createContent() {
         artikel.setCaption("Artikel");
         artikel.setItemCaptionGenerator(artikel1 -> artikel1.getBezeichnung() + " id:" + artikel1.getId());
-        artikel.setItems(artikelFacade.findAll());
+        artikel.setItems(artikelDeltaspikeFacade.findAll());
         artikel.setEmptySelectionAllowed(false);
         bild.setWidth(100, Unit.PIXELS);
         bild.setHeight(60, Unit.PIXELS);

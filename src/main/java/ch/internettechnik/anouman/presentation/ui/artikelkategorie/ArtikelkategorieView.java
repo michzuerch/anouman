@@ -1,13 +1,14 @@
 package ch.internettechnik.anouman.presentation.ui.artikelkategorie;
 
 import ch.internettechnik.anouman.backend.entity.Artikelkategorie;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ArtikelkategorieFacade;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ArtikelkategorieDeltaspikeFacade;
 import ch.internettechnik.anouman.presentation.ui.Menu;
-import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.shared.ui.ValueChangeMode;
+import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.themes.ValoTheme;
@@ -18,7 +19,8 @@ import javax.inject.Inject;
 
 // @todo : java.lang.IllegalStateException: Property type 'java.util.Date' doesn't match the field type 'java.time.LocalDateTime'.
 // Binding should be configured manually using converter.
-@CDIView(value = "Artikelkategorie")
+@UIScope
+@SpringView(name = "ArtikelkategorieView")
 public class ArtikelkategorieView extends VerticalLayout implements View {
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(ArtikelkategorieView.class.getName());
 
@@ -29,7 +31,7 @@ public class ArtikelkategorieView extends VerticalLayout implements View {
     private Menu menu;
 
     @Inject
-    private ArtikelkategorieFacade artikelkategorieFacade;
+    private ArtikelkategorieDeltaspikeFacade artikelkategorieDeltaspikeFacade;
 
     @Inject
     private ArtikelkategorieForm artikelkategorieForm;
@@ -54,7 +56,7 @@ public class ArtikelkategorieView extends VerticalLayout implements View {
                 }
             }
             if (target.equals("id")) {
-                grid.select(artikelkategorieFacade.findBy(id));
+                grid.select(artikelkategorieDeltaspikeFacade.findBy(id));
             }
         }
 
@@ -71,7 +73,7 @@ public class ArtikelkategorieView extends VerticalLayout implements View {
             artikelkategorieForm.setEntity(artikelkategorie);
             artikelkategorieForm.openInModalPopup();
             artikelkategorieForm.setSavedHandler(val -> {
-                artikelkategorieFacade.save(val);
+                artikelkategorieDeltaspikeFacade.save(val);
                 updateList();
                 grid.select(val);
                 artikelkategorieForm.closePopup();
@@ -101,7 +103,7 @@ public class ArtikelkategorieView extends VerticalLayout implements View {
         grid.addColumn(aufwand -> "löschen",
                 new ButtonRenderer(event -> {
                     Notification.show("Lösche Artikelkategorie id:" + event.getItem(), Notification.Type.HUMANIZED_MESSAGE);
-                    artikelkategorieFacade.delete((Artikelkategorie) event.getItem());
+                    artikelkategorieDeltaspikeFacade.delete((Artikelkategorie) event.getItem());
                     updateList();
                 })
         );
@@ -111,7 +113,7 @@ public class ArtikelkategorieView extends VerticalLayout implements View {
                     artikelkategorieForm.setEntity((Artikelkategorie) event.getItem());
                     artikelkategorieForm.openInModalPopup();
                     artikelkategorieForm.setSavedHandler(val -> {
-                        artikelkategorieFacade.save(val);
+                        artikelkategorieDeltaspikeFacade.save(val);
                         updateList();
                         grid.select(val);
                         artikelkategorieForm.closePopup();
@@ -132,10 +134,10 @@ public class ArtikelkategorieView extends VerticalLayout implements View {
         if (!filterTextBezeichnung.isEmpty()) {
             //Suche mit Bezeichnung
             logger.debug("Suche mit Bezeichnung:" + filterTextBezeichnung.getValue());
-            grid.setItems(artikelkategorieFacade.findByBezeichnungLikeIgnoreCase(filterTextBezeichnung.getValue() + "%"));
+            grid.setItems(artikelkategorieDeltaspikeFacade.findByBezeichnungLikeIgnoreCase(filterTextBezeichnung.getValue() + "%"));
             return;
         }
-        grid.setItems(artikelkategorieFacade.findAll());
+        grid.setItems(artikelkategorieDeltaspikeFacade.findAll());
     }
 
 }

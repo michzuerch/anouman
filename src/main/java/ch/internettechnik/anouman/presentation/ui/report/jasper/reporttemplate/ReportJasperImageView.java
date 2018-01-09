@@ -2,14 +2,15 @@ package ch.internettechnik.anouman.presentation.ui.report.jasper.reporttemplate;
 
 import ch.internettechnik.anouman.backend.entity.report.jasper.ReportJasper;
 import ch.internettechnik.anouman.backend.entity.report.jasper.ReportJasperImage;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ReportJasperFacade;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ReportJasperImageFacade;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ReportJasperDeltaspikeFacade;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ReportJasperImageDeltaspikeFacade;
 import ch.internettechnik.anouman.presentation.ui.Menu;
-import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.shared.ui.ValueChangeMode;
+import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.themes.ValoTheme;
@@ -17,7 +18,8 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 
-@CDIView(value = "ReportJasperImage")
+@UIScope
+@SpringView(name = "ReportJasperImageView")
 public class ReportJasperImageView extends VerticalLayout implements View {
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(ReportJasperImageView.class.getName());
 
@@ -28,10 +30,10 @@ public class ReportJasperImageView extends VerticalLayout implements View {
     private Menu menu;
 
     @Inject
-    private ReportJasperFacade reportJasperFacade;
+    private ReportJasperDeltaspikeFacade reportJasperDeltaspikeFacade;
 
     @Inject
-    private ReportJasperImageFacade reportJasperImageFacade;
+    private ReportJasperImageDeltaspikeFacade reportJasperImageDeltaspikeFacade;
 
     @Inject
     private ReportJasperImageForm form;
@@ -58,7 +60,7 @@ public class ReportJasperImageView extends VerticalLayout implements View {
             form.openInModalPopup();
             form.setSavedHandler(val -> {
                 System.err.println("Save:" + val);
-                //reportJasperImageFacade.save(val);
+                //reportJasperImageDeltaspikeFacade.save(val);
                 updateList();
                 grid.select(val);
                 form.closePopup();
@@ -80,10 +82,10 @@ public class ReportJasperImageView extends VerticalLayout implements View {
         grid.addColumn(report -> "löschen",
                 new ButtonRenderer(event -> {
                     ReportJasperImage reportJasperImage = (ReportJasperImage) event.getItem();
-                    ReportJasper reportJasper = reportJasperFacade.findBy(reportJasperImage.getReportJasper().getId());
+                    ReportJasper reportJasper = reportJasperDeltaspikeFacade.findBy(reportJasperImage.getReportJasper().getId());
                     reportJasper.getReportJasperImages().remove(reportJasperImage);
-                    reportJasperFacade.save(reportJasper);
-                    reportJasperImageFacade.delete((ReportJasperImage) event.getItem());
+                    reportJasperDeltaspikeFacade.save(reportJasper);
+                    reportJasperImageDeltaspikeFacade.delete((ReportJasperImage) event.getItem());
                     updateList();
                     Notification.show("Lösche id:" + reportJasperImage.getId(), Notification.Type.HUMANIZED_MESSAGE);
                 })
@@ -94,7 +96,7 @@ public class ReportJasperImageView extends VerticalLayout implements View {
                     form.openInModalPopup();
                     form.setSavedHandler(val -> {
                         //val.setTemplateCompiled(form.getCompiledReport());
-                        reportJasperImageFacade.save(val);
+                        reportJasperImageDeltaspikeFacade.save(val);
                         updateList();
                         grid.select(val);
                         form.closePopup();
@@ -117,9 +119,9 @@ public class ReportJasperImageView extends VerticalLayout implements View {
         if (!filterTextBezeichnung.isEmpty()) {
             //Suche mit Bezeichnung
             logger.debug("Suche mit Bezeichnung:" + filterTextBezeichnung.getValue());
-            grid.setItems(reportJasperImageFacade.findByBezeichnungLikeIgnoreCase(filterTextBezeichnung.getValue() + "%"));
+            grid.setItems(reportJasperImageDeltaspikeFacade.findByBezeichnungLikeIgnoreCase(filterTextBezeichnung.getValue() + "%"));
             return;
         }
-        grid.setItems(reportJasperImageFacade.findAll());
+        grid.setItems(reportJasperImageDeltaspikeFacade.findAll());
     }
 }

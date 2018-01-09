@@ -3,8 +3,8 @@ package ch.internettechnik.anouman.presentation.ui.report.jasper.reporttemplate;
 import ch.internettechnik.anouman.backend.entity.report.jasper.ReportJasper;
 import ch.internettechnik.anouman.presentation.ui.TestTextField;
 import ch.internettechnik.anouman.presentation.ui.converter.ByteToStringConverter;
-import com.vaadin.cdi.ViewScoped;
 import com.vaadin.server.UserError;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperReport;
@@ -18,7 +18,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-@ViewScoped
+@UIScope
 public class ReportJasperForm extends AbstractForm<ReportJasper> {
     TestTextField bezeichnung = new TestTextField("Bezeichnung");
     UploadComponent upload = new UploadComponent();

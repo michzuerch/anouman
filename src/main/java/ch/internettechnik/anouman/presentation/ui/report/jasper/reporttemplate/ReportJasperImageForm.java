@@ -2,18 +2,18 @@ package ch.internettechnik.anouman.presentation.ui.report.jasper.reporttemplate;
 
 import ch.internettechnik.anouman.backend.entity.report.jasper.ReportJasper;
 import ch.internettechnik.anouman.backend.entity.report.jasper.ReportJasperImage;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ReportJasperFacade;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ReportJasperDeltaspikeFacade;
 import ch.internettechnik.anouman.presentation.ui.ImageField;
-import com.vaadin.cdi.ViewScoped;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import org.vaadin.viritin.form.AbstractForm;
 
 import javax.inject.Inject;
 
-@ViewScoped
+@UIScope
 public class ReportJasperImageForm extends AbstractForm<ReportJasperImage> {
     @Inject
-    ReportJasperFacade reportJasperFacade;
+    ReportJasperDeltaspikeFacade reportJasperDeltaspikeFacade;
 
     NativeSelect<ReportJasper> reportJasper = new NativeSelect<>("Report Jasper");
     TextField bezeichnung = new TextField("Bezeichnung");
@@ -40,7 +40,7 @@ public class ReportJasperImageForm extends AbstractForm<ReportJasperImage> {
         //FileDownloader fileDownloader = new FileDownloader(templateResource);
         //fileDownloader.extend(downloadButton);
 
-        reportJasper.setItems(reportJasperFacade.findAll());
+        reportJasper.setItems(reportJasperDeltaspikeFacade.findAll());
         reportJasper.setItemCaptionGenerator(item -> item.getBezeichnung() + " " + item.getId());
 
         image.setCaption("Bild");

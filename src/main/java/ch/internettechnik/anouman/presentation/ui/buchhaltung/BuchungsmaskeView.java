@@ -4,32 +4,34 @@ import ch.internettechnik.anouman.backend.entity.*;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.*;
 import ch.internettechnik.anouman.presentation.ui.FloatField;
 import ch.internettechnik.anouman.presentation.ui.Menu;
-import com.vaadin.cdi.CDIView;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 
-@CDIView("Buchungsmaske")
+@UIScope
+@SpringView(name = "BuchungsmaskeView")
 public class BuchungsmaskeView extends VerticalLayout implements View {
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(BuchungsmaskeView.class.getName());
     @Inject
     Menu menu;
     @Inject
-    BuchhaltungFacade buchhaltungFacade;
+    BuchhaltungDeltaspikeFacade buchhaltungDeltaspikeFacade;
     @Inject
-    KontoklasseFacade kontoklasseFacade;
+    KontoklasseDeltaspikeFacade kontoklasseDeltaspikeFacade;
     @Inject
-    KontohauptgruppeFacade kontohauptgruppeFacade;
+    KontohauptgruppeDeltaspikeFacade kontohauptgruppeDeltaspikeFacade;
     @Inject
-    KontogruppeFacade kontogruppeFacade;
+    KontogruppeDeltaspikeFacade kontogruppeDeltaspikeFacade;
     @Inject
-    KontoFacade kontoFacade;
+    KontoDeltaspikeFacade kontoDeltaspikeFacade;
     @Inject
-    MehrwertsteuercodeFacade mehrwertsteuercodeFacade;
+    MehrwertsteuercodeDeltaspikeFacade mehrwertsteuercodeDeltaspikeFacade;
     private NativeSelect<Buchhaltung> buchhaltungNativeSelect = new NativeSelect<>();
     private Panel sollPanel = new Panel("Sollkonto");
     private NativeSelect<Kontoklasse> sollKontoklasse = new NativeSelect<>();
@@ -56,8 +58,8 @@ public class BuchungsmaskeView extends VerticalLayout implements View {
         buchhaltungNativeSelect.setCaption("Buchhaltung");
         buchhaltungNativeSelect.setEmptySelectionAllowed(false);
         buchhaltungNativeSelect.setItemCaptionGenerator(buchhaltung -> buchhaltung.getBezeichnung() + " " + buchhaltung.getJahr() + " " + buchhaltung.getId());
-        buchhaltungNativeSelect.setItems(buchhaltungFacade.findAll());
-        buchhaltungNativeSelect.setSelectedItem(buchhaltungFacade.findAll().get(0));
+        buchhaltungNativeSelect.setItems(buchhaltungDeltaspikeFacade.findAll());
+        buchhaltungNativeSelect.setSelectedItem(buchhaltungDeltaspikeFacade.findAll().get(0));
 
         sollKontoklasse.setCaption("Kontoklasse");
         sollKontoklasse.setItemCaptionGenerator(kontoklasse -> kontoklasse.getBezeichnung() + " " + kontoklasse.getShowKontonummer());
@@ -106,24 +108,24 @@ public class BuchungsmaskeView extends VerticalLayout implements View {
         addComponent(new HorizontalLayout(sollPanel, habenPanel));
 
 
-        sollKontoklasse.setItems(kontoklasseFacade.findByBuchhaltung(buchhaltungNativeSelect.getValue()));
-        sollKontoklasse.setSelectedItem(kontoklasseFacade.findAll().get(0));
+        sollKontoklasse.setItems(kontoklasseDeltaspikeFacade.findByBuchhaltung(buchhaltungNativeSelect.getValue()));
+        sollKontoklasse.setSelectedItem(kontoklasseDeltaspikeFacade.findAll().get(0));
 
         sollKontoklasse.addValueChangeListener(
                 valueChangeEvent -> {
-                    sollKontohauptgruppe.setItems(kontohauptgruppeFacade.findByKontoklasse(valueChangeEvent.getValue()));
-                    sollKontohauptgruppe.setSelectedItem(kontohauptgruppeFacade.findByKontoklasse(valueChangeEvent.getValue()).get(0));
+                    sollKontohauptgruppe.setItems(kontohauptgruppeDeltaspikeFacade.findByKontoklasse(valueChangeEvent.getValue()));
+                    sollKontohauptgruppe.setSelectedItem(kontohauptgruppeDeltaspikeFacade.findByKontoklasse(valueChangeEvent.getValue()).get(0));
                 });
         sollKontohauptgruppe.addValueChangeListener(
                 valueChangeEvent -> {
-                    sollKontogruppe.setItems(kontogruppeFacade.findByKontohauptgruppe(valueChangeEvent.getValue()));
-                    sollKontogruppe.setSelectedItem(kontogruppeFacade.findByKontohauptgruppe(valueChangeEvent.getValue()).get(0));
+                    sollKontogruppe.setItems(kontogruppeDeltaspikeFacade.findByKontohauptgruppe(valueChangeEvent.getValue()));
+                    sollKontogruppe.setSelectedItem(kontogruppeDeltaspikeFacade.findByKontohauptgruppe(valueChangeEvent.getValue()).get(0));
                 });
 
         sollKontogruppe.addValueChangeListener(
                 valueChangeEvent -> {
-                    sollKonto.setItems(kontoFacade.findByKontogruppe(valueChangeEvent.getValue()));
-                    sollKonto.setSelectedItem(kontoFacade.findByKontogruppe(valueChangeEvent.getValue()).get(0));
+                    sollKonto.setItems(kontoDeltaspikeFacade.findByKontogruppe(valueChangeEvent.getValue()));
+                    sollKonto.setSelectedItem(kontoDeltaspikeFacade.findByKontogruppe(valueChangeEvent.getValue()).get(0));
                 });
 
         sollKonto.addValueChangeListener(
@@ -132,24 +134,24 @@ public class BuchungsmaskeView extends VerticalLayout implements View {
                 });
 
 
-        habenKontoklasse.setItems(kontoklasseFacade.findByBuchhaltung(buchhaltungNativeSelect.getValue()));
-        habenKontoklasse.setSelectedItem(kontoklasseFacade.findAll().get(0));
+        habenKontoklasse.setItems(kontoklasseDeltaspikeFacade.findByBuchhaltung(buchhaltungNativeSelect.getValue()));
+        habenKontoklasse.setSelectedItem(kontoklasseDeltaspikeFacade.findAll().get(0));
 
         habenKontoklasse.addValueChangeListener(
                 valueChangeEvent -> {
-                    habenKontohauptgruppe.setItems(kontohauptgruppeFacade.findByKontoklasse(valueChangeEvent.getValue()));
-                    habenKontohauptgruppe.setSelectedItem(kontohauptgruppeFacade.findByKontoklasse(valueChangeEvent.getValue()).get(0));
+                    habenKontohauptgruppe.setItems(kontohauptgruppeDeltaspikeFacade.findByKontoklasse(valueChangeEvent.getValue()));
+                    habenKontohauptgruppe.setSelectedItem(kontohauptgruppeDeltaspikeFacade.findByKontoklasse(valueChangeEvent.getValue()).get(0));
                 });
         habenKontohauptgruppe.addValueChangeListener(
                 valueChangeEvent -> {
-                    habenKontogruppe.setItems(kontogruppeFacade.findByKontohauptgruppe(valueChangeEvent.getValue()));
-                    habenKontogruppe.setSelectedItem(kontogruppeFacade.findByKontohauptgruppe(valueChangeEvent.getValue()).get(0));
+                    habenKontogruppe.setItems(kontogruppeDeltaspikeFacade.findByKontohauptgruppe(valueChangeEvent.getValue()));
+                    habenKontogruppe.setSelectedItem(kontogruppeDeltaspikeFacade.findByKontohauptgruppe(valueChangeEvent.getValue()).get(0));
                 });
 
         habenKontogruppe.addValueChangeListener(
                 valueChangeEvent -> {
-                    habenKonto.setItems(kontoFacade.findByKontogruppe(valueChangeEvent.getValue()));
-                    habenKonto.setSelectedItem(kontoFacade.findByKontogruppe(valueChangeEvent.getValue()).get(0));
+                    habenKonto.setItems(kontoDeltaspikeFacade.findByKontogruppe(valueChangeEvent.getValue()));
+                    habenKonto.setSelectedItem(kontoDeltaspikeFacade.findByKontogruppe(valueChangeEvent.getValue()).get(0));
                 });
 
         habenKonto.addValueChangeListener(
@@ -159,7 +161,7 @@ public class BuchungsmaskeView extends VerticalLayout implements View {
 
         mehrwertsteuercodeNativeSelect.setItemCaptionGenerator(mehrwertsteuercode -> mehrwertsteuercode.getBezeichnung());
         mehrwertsteuercodeNativeSelect.setEmptySelectionAllowed(false);
-        mehrwertsteuercodeNativeSelect.setItems(mehrwertsteuercodeFacade.findByBuchhaltung(buchhaltungNativeSelect.getValue()));
+        mehrwertsteuercodeNativeSelect.setItems(mehrwertsteuercodeDeltaspikeFacade.findByBuchhaltung(buchhaltungNativeSelect.getValue()));
         mehrwertsteuercodeNativeSelect.setCaption("Mehrwertsteuercode");
 
 

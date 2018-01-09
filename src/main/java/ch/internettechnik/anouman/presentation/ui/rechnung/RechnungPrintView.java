@@ -2,15 +2,16 @@ package ch.internettechnik.anouman.presentation.ui.rechnung;
 
 import ch.internettechnik.anouman.backend.entity.Rechnung;
 import ch.internettechnik.anouman.backend.entity.report.jasper.ReportJasper;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.AufwandFacade;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.RechnungFacade;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ReportJasperFacade;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.AufwandDeltaspikeFacade;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.RechnungDeltaspikeFacade;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ReportJasperDeltaspikeFacade;
 import ch.internettechnik.anouman.presentation.reports.rechnung.RechnungReportTool;
 import ch.internettechnik.anouman.presentation.ui.Menu;
-import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import org.apache.commons.io.IOUtils;
 import org.vaadin.viritin.button.DownloadButton;
@@ -19,14 +20,15 @@ import javax.inject.Inject;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
-@CDIView("RechnungPrint")
+@UIScope
+@SpringView(name = "RechnungPrintView")
 public class RechnungPrintView extends VerticalLayout implements View {
     @Inject
-    RechnungFacade rechnungFacade;
+    RechnungDeltaspikeFacade rechnungDeltaspikeFacade;
     @Inject
-    ReportJasperFacade reportJasperFacade;
+    ReportJasperDeltaspikeFacade reportJasperDeltaspikeFacade;
     @Inject
-    AufwandFacade aufwandFacade;
+    AufwandDeltaspikeFacade aufwandDeltaspikeFacade;
 
     Long idRechnung = new Long(0);
     TextField fieldId = new TextField("id");
@@ -50,9 +52,9 @@ public class RechnungPrintView extends VerticalLayout implements View {
                 stream -> {
                     try {
                         ByteArrayInputStream in = new ByteArrayInputStream(
-                                RechnungReportTool.getPdf(rechnungFacade.findBy(this.idRechnung), selectReport.getValue()));
+                                RechnungReportTool.getPdf(rechnungDeltaspikeFacade.findBy(this.idRechnung), selectReport.getValue()));
                         IOUtils.copy(
-                                new ByteArrayInputStream(RechnungReportTool.getPdf(rechnungFacade.findBy(this.idRechnung), selectReport.getValue())),
+                                new ByteArrayInputStream(RechnungReportTool.getPdf(rechnungDeltaspikeFacade.findBy(this.idRechnung), selectReport.getValue())),
                                 stream);
                         IOUtils.closeQuietly(in);
                         IOUtils.closeQuietly(stream);
@@ -65,7 +67,7 @@ public class RechnungPrintView extends VerticalLayout implements View {
 
 
     private void update() {
-        Rechnung val = rechnungFacade.findBy(this.idRechnung);
+        Rechnung val = rechnungDeltaspikeFacade.findBy(this.idRechnung);
         fieldId.setValue(val.getId().toString());
         fieldAdresseFirma.setValue(val.getAdresse().getFirma());
         fieldAdresseNachname.setValue(val.getAdresse().getNachname());
@@ -78,7 +80,7 @@ public class RechnungPrintView extends VerticalLayout implements View {
         fieldZwischentotal.setValue(val.getZwischentotal().toString());
         fieldRechnungstotal.setValue(val.getRechnungstotal().toString());
 
-        selectReport.setItems(reportJasperFacade.findAll());
+        selectReport.setItems(reportJasperDeltaspikeFacade.findAll());
         selectReport.setItemCaptionGenerator(reportTemplate -> reportTemplate.getBezeichnung());
     }
 
@@ -115,7 +117,7 @@ public class RechnungPrintView extends VerticalLayout implements View {
 
         update();
         selectReport.setEmptySelectionAllowed(false);
-        selectReport.setSelectedItem(reportJasperFacade.findAll().get(0));
+        selectReport.setSelectedItem(reportJasperDeltaspikeFacade.findAll().get(0));
 
         btnPrint = getPrintButton();
 

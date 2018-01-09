@@ -4,11 +4,12 @@ import ch.internettechnik.anouman.backend.entity.*;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.*;
 import ch.internettechnik.anouman.presentation.ui.Menu;
 import ch.internettechnik.anouman.presentation.ui.templatebuchhaltung.form.TemplateBuchhaltungForm;
-import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.shared.ui.ValueChangeMode;
+import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.themes.ValoTheme;
@@ -16,7 +17,8 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 
-@CDIView(value = "TemplateBuchhaltung")
+@UIScope
+@SpringView(name = "TemplateBuchhaltungView")
 public class TemplateBuchhaltungView extends VerticalLayout implements View {
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(TemplateBuchhaltungView.class.getName());
 
@@ -27,28 +29,28 @@ public class TemplateBuchhaltungView extends VerticalLayout implements View {
     private Menu menu;
 
     @Inject
-    private TemplateBuchhaltungFacade facade;
+    private TemplateBuchhaltungDeltaspikeFacade facade;
 
     @Inject
     private TemplateBuchhaltungForm form;
 
     @Inject
-    private BuchhaltungFacade buchhaltungFacade;
+    private BuchhaltungDeltaspikeFacade buchhaltungDeltaspikeFacade;
 
     @Inject
-    private KontoklasseFacade kontoklasseFacade;
+    private KontoklasseDeltaspikeFacade kontoklasseDeltaspikeFacade;
 
     @Inject
-    private KontohauptgruppeFacade kontohauptgruppeFacade;
+    private KontohauptgruppeDeltaspikeFacade kontohauptgruppeDeltaspikeFacade;
 
     @Inject
-    private KontogruppeFacade kontogruppeFacade;
+    private KontogruppeDeltaspikeFacade kontogruppeDeltaspikeFacade;
 
     @Inject
-    private KontoFacade kontoFacade;
+    private KontoDeltaspikeFacade kontoDeltaspikeFacade;
 
     @Inject
-    private MehrwertsteuercodeFacade mehrwertsteuercodeFacade;
+    private MehrwertsteuercodeDeltaspikeFacade mehrwertsteuercodeDeltaspikeFacade;
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
@@ -122,33 +124,33 @@ public class TemplateBuchhaltungView extends VerticalLayout implements View {
                     Buchhaltung buchhaltung = new Buchhaltung();
                     buchhaltung.setBezeichnung(templateBuchhaltung.getBezeichnung());
                     buchhaltung.setJahr(2000);
-                    buchhaltung = buchhaltungFacade.save(buchhaltung);
+                    buchhaltung = buchhaltungDeltaspikeFacade.save(buchhaltung);
 
                     for (TemplateKontoklasse templateKontoklasse : templateBuchhaltung.getTemplateKontoklasses()) {
                         Kontoklasse kontoklasse = new Kontoklasse();
                         kontoklasse.setBuchhaltung(buchhaltung);
                         kontoklasse.setBezeichnung(templateKontoklasse.getBezeichnung());
                         kontoklasse.setKontonummer(templateKontoklasse.getKontonummer());
-                        kontoklasse = kontoklasseFacade.save(kontoklasse);
+                        kontoklasse = kontoklasseDeltaspikeFacade.save(kontoklasse);
 
                         for (TemplateKontohauptgruppe templateKontohauptgruppe : templateKontoklasse.getTemplateKontohauptgruppes()) {
                             Kontohauptgruppe kontohauptgruppe = new Kontohauptgruppe();
                             kontohauptgruppe.setBezeichnung(templateKontohauptgruppe.getBezeichnung());
                             kontohauptgruppe.setKontonummer(templateKontohauptgruppe.getKontonummer());
-                            kontohauptgruppe = kontohauptgruppeFacade.save(kontohauptgruppe);
+                            kontohauptgruppe = kontohauptgruppeDeltaspikeFacade.save(kontohauptgruppe);
 
                             for (TemplateKontogruppe templateKontogruppe : templateKontohauptgruppe.getTemplateKontogruppes()) {
                                 Kontogruppe kontogruppe = new Kontogruppe();
                                 kontogruppe.setBezeichnung(templateKontogruppe.getBezeichnung());
                                 kontogruppe.setKontonummer(templateKontogruppe.getKontonummer());
-                                kontogruppe = kontogruppeFacade.save(kontogruppe);
+                                kontogruppe = kontogruppeDeltaspikeFacade.save(kontogruppe);
 
                                 for (TemplateKonto templateKonto : templateKontogruppe.getTemplateKontos()) {
                                     Konto konto = new Konto();
                                     konto.setBezeichnung(templateKonto.getBezeichnung());
                                     konto.setKontonummer(templateKonto.getKontonummer());
                                     konto.setBemerkung(templateKonto.getBemerkung());
-                                    konto = kontoFacade.save(konto);
+                                    konto = kontoDeltaspikeFacade.save(konto);
                                 }
                             }
                         }

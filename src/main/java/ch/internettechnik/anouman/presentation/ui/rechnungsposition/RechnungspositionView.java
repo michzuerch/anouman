@@ -2,14 +2,15 @@ package ch.internettechnik.anouman.presentation.ui.rechnungsposition;
 
 import ch.internettechnik.anouman.backend.entity.Rechnung;
 import ch.internettechnik.anouman.backend.entity.Rechnungsposition;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.RechnungFacade;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.RechnungspositionFacade;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.RechnungDeltaspikeFacade;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.RechnungspositionDeltaspikeFacade;
 import ch.internettechnik.anouman.presentation.ui.Menu;
-import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.shared.ui.ValueChangeMode;
+import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.themes.ValoTheme;
@@ -17,7 +18,8 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 
-@CDIView(value = "Rechnungsposition")
+@UIScope
+@SpringView(name = "RechnungspositionView")
 public class RechnungspositionView extends VerticalLayout implements View {
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(RechnungspositionView.class.getName());
 
@@ -29,10 +31,10 @@ public class RechnungspositionView extends VerticalLayout implements View {
     private Menu menu;
 
     @Inject
-    private RechnungspositionFacade rechnungspositionFacade;
+    private RechnungspositionDeltaspikeFacade rechnungspositionDeltaspikeFacade;
 
     @Inject
-    private RechnungFacade rechnungFacade;
+    private RechnungDeltaspikeFacade rechnungDeltaspikeFacade;
 
     @Inject
     private RechnungspositionForm form;
@@ -45,7 +47,7 @@ public class RechnungspositionView extends VerticalLayout implements View {
         filterTextBezeichnung.addValueChangeListener(e -> updateList());
         filterTextBezeichnung.setValueChangeMode(ValueChangeMode.LAZY);
         filterRechnung.setPlaceholder("Filter für Rechnung");
-        filterRechnung.setItems(rechnungFacade.findAll());
+        filterRechnung.setItems(rechnungDeltaspikeFacade.findAll());
         filterRechnung.setItemCaptionGenerator(item -> item.getBezeichnung() + " " + item.getAdresse().getFirma() + " " + item.getAdresse().getOrt() + " id:" + item.getId());
         filterRechnung.addValueChangeListener(valueChangeEvent -> updateList());
 
@@ -61,10 +63,10 @@ public class RechnungspositionView extends VerticalLayout implements View {
                 }
             }
             if (target.equals("rechnungId")) {
-                filterRechnung.setSelectedItem(rechnungFacade.findBy(id));
+                filterRechnung.setSelectedItem(rechnungDeltaspikeFacade.findBy(id));
                 updateList();
             } else if (target.equals("id")) {
-                grid.select(rechnungspositionFacade.findBy(id));
+                grid.select(rechnungspositionDeltaspikeFacade.findBy(id));
             }
         }
 
@@ -79,14 +81,14 @@ public class RechnungspositionView extends VerticalLayout implements View {
         addBtn.addClickListener(event -> {
             grid.asSingleSelect().clear();
             Rechnungsposition rp = new Rechnungsposition();
-            rp.setRechnung(rechnungFacade.findAll().get(0));
+            rp.setRechnung(rechnungDeltaspikeFacade.findAll().get(0));
             rp.setAnzahl(0d);
             rp.setStueckpreis(0d);
             if (!filterRechnung.isEmpty()) rp.setRechnung(filterRechnung.getValue());
             form.setEntity(rp);
             form.openInModalPopup();
             form.setSavedHandler(rechnungsposition -> {
-                rechnungspositionFacade.save(rechnungsposition);
+                rechnungspositionDeltaspikeFacade.save(rechnungsposition);
                 updateList();
                 grid.select(rechnungsposition);
                 form.closePopup();
@@ -121,7 +123,7 @@ public class RechnungspositionView extends VerticalLayout implements View {
                 new ButtonRenderer(event -> {
                     Rechnungsposition rechnungsposition = (Rechnungsposition) event.getItem();
                     Notification.show("Lösche Rechnungsposition id:" + rechnungsposition, Notification.Type.HUMANIZED_MESSAGE);
-                    rechnungspositionFacade.delete(rechnungsposition);
+                    rechnungspositionDeltaspikeFacade.delete(rechnungsposition);
                     //rechnungspositionService.delete((Rechnungsposition) event.getItem());
                     updateList();
                 })
@@ -132,7 +134,7 @@ public class RechnungspositionView extends VerticalLayout implements View {
                     form.setEntity((Rechnungsposition) event.getItem());
                     form.openInModalPopup();
                     form.setSavedHandler(rechnungsposition -> {
-                        rechnungspositionFacade.save(rechnungsposition);
+                        rechnungspositionDeltaspikeFacade.save(rechnungsposition);
                         updateList();
                         grid.select(rechnungsposition);
                         form.closePopup();
@@ -153,19 +155,19 @@ public class RechnungspositionView extends VerticalLayout implements View {
         if ((!filterRechnung.isEmpty()) && (!filterTextBezeichnung.isEmpty())) {
             // Such mit Rechnung und Bezeichnung
             logger.debug("Suche mit Rechnung und Bezeichnung:" + filterRechnung.getValue().getId() + "," + filterTextBezeichnung.getValue());
-            grid.setItems(rechnungspositionFacade.findByRechnungAndBezeichnungLikeIgnoreCase(filterRechnung.getValue(), filterTextBezeichnung.getValue() + "%"));
+            grid.setItems(rechnungspositionDeltaspikeFacade.findByRechnungAndBezeichnungLikeIgnoreCase(filterRechnung.getValue(), filterTextBezeichnung.getValue() + "%"));
             return;
         } else if ((!filterRechnung.isEmpty()) && (filterTextBezeichnung.isEmpty())) {
             // Suche mit Rechnung
             logger.debug("Suche mit Rechnung:" + filterRechnung.getValue().getId());
-            grid.setItems(rechnungspositionFacade.findByRechnung(filterRechnung.getValue()));
+            grid.setItems(rechnungspositionDeltaspikeFacade.findByRechnung(filterRechnung.getValue()));
             return;
         } else if ((filterRechnung.isEmpty()) && (!filterTextBezeichnung.isEmpty())) {
             // Suche mit Bezeichnung
             logger.debug("Suche mit Bezeichnung:" + filterTextBezeichnung.getValue());
-            grid.setItems(rechnungspositionFacade.findByBezeichnungLikeIgnoreCase(filterTextBezeichnung.getValue() + "%"));
+            grid.setItems(rechnungspositionDeltaspikeFacade.findByBezeichnungLikeIgnoreCase(filterTextBezeichnung.getValue() + "%"));
             return;
         }
-        grid.setItems(rechnungspositionFacade.findAll());
+        grid.setItems(rechnungspositionDeltaspikeFacade.findAll());
     }
 }

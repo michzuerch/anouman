@@ -3,10 +3,10 @@ package ch.internettechnik.anouman.presentation.ui.templatemehrwertsteuercode;
 import ch.internettechnik.anouman.backend.entity.TemplateBuchhaltung;
 import ch.internettechnik.anouman.backend.entity.TemplateKonto;
 import ch.internettechnik.anouman.backend.entity.TemplateMehrwertsteuercode;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.TemplateBuchhaltungFacade;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.TemplateKontoFacade;
-import com.vaadin.cdi.ViewScoped;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.TemplateBuchhaltungDeltaspikeFacade;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.TemplateKontoDeltaspikeFacade;
 import com.vaadin.data.converter.StringToFloatConverter;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import org.vaadin.viritin.form.AbstractForm;
 
@@ -14,14 +14,14 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
-@ViewScoped
+@UIScope
 public class TemplateMehrwertsteuercodeForm extends AbstractForm<TemplateMehrwertsteuercode> {
 
     @Inject
-    TemplateBuchhaltungFacade templateBuchhaltungFacade;
+    TemplateBuchhaltungDeltaspikeFacade templateBuchhaltungDeltaspikeFacade;
 
     @Inject
-    TemplateKontoFacade templateKontoFacade;
+    TemplateKontoDeltaspikeFacade templateKontoDeltaspikeFacade;
 
     NativeSelect<TemplateBuchhaltung> templateBuchhaltung = new NativeSelect<>();
     NativeSelect<TemplateKonto> templateMehrwertsteuerKonto = new NativeSelect<>();
@@ -66,8 +66,8 @@ public class TemplateMehrwertsteuercodeForm extends AbstractForm<TemplateMehrwer
         templateBuchhaltung.setCaption("Template Buchhaltung");
         templateBuchhaltung.setEmptySelectionAllowed(false);
         templateBuchhaltung.setItemCaptionGenerator(item -> item.getBezeichnung() + " " + item.getId());
-        templateBuchhaltung.setItems(templateBuchhaltungFacade.findAll());
-        templateBuchhaltung.setSelectedItem(templateBuchhaltungFacade.findAll().get(0));
+        templateBuchhaltung.setItems(templateBuchhaltungDeltaspikeFacade.findAll());
+        templateBuchhaltung.setSelectedItem(templateBuchhaltungDeltaspikeFacade.findAll().get(0));
 
         templateMehrwertsteuerKonto.setCaption("Template Konto");
         templateMehrwertsteuerKonto.setEmptySelectionAllowed(false);

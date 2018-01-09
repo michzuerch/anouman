@@ -1,7 +1,7 @@
 package ch.internettechnik.anouman.presentation.ui.buchhaltung;
 
 import ch.internettechnik.anouman.backend.entity.Buchhaltung;
-import com.vaadin.cdi.ViewScoped;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +11,7 @@ import org.vaadin.viritin.form.AbstractForm;
 /**
  * Created by michzuerch on 09.08.15.
  */
-@ViewScoped
+@UIScope
 public class BuchhaltungForm extends AbstractForm<Buchhaltung> {
     private static Logger logger = LoggerFactory.getLogger(BuchhaltungForm.class.getName());
 

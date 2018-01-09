@@ -6,11 +6,12 @@ import ch.internettechnik.anouman.backend.entity.Rechnung;
 import ch.internettechnik.anouman.backend.entity.Rechnungsposition;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.*;
 import ch.internettechnik.anouman.presentation.ui.Menu;
-import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.shared.ui.ValueChangeMode;
+import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.themes.ValoTheme;
@@ -18,7 +19,8 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 
-@CDIView(value = "Rechnung")
+@UIScope
+@SpringView(name = "RechnungView")
 public class RechnungView extends VerticalLayout implements View {
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(RechnungView.class.getName());
 
@@ -30,19 +32,19 @@ public class RechnungView extends VerticalLayout implements View {
     private Menu menu;
 
     @Inject
-    private RechnungFacade rechnungFacade;
+    private RechnungDeltaspikeFacade rechnungDeltaspikeFacade;
 
     @Inject
-    private RechnungspositionFacade rechnungspositionFacade;
+    private RechnungspositionDeltaspikeFacade rechnungspositionDeltaspikeFacade;
 
     @Inject
-    private AufwandFacade aufwandFacade;
+    private AufwandDeltaspikeFacade aufwandDeltaspikeFacade;
 
     @Inject
-    private AdresseFacade adresseFacade;
+    private AdresseDeltaspikeFacade adresseDeltaspikeFacade;
 
     @Inject
-    private ReportJasperFacade reportJasperFacade;
+    private ReportJasperDeltaspikeFacade reportJasperDeltaspikeFacade;
 
     @Inject
     private RechnungForm form;
@@ -58,7 +60,7 @@ public class RechnungView extends VerticalLayout implements View {
         filterTextBezeichnung.addValueChangeListener(e -> updateList());
         filterTextBezeichnung.setValueChangeMode(ValueChangeMode.LAZY);
         filterAdresse.setPlaceholder("Filter für Adresse");
-        filterAdresse.setItems(adresseFacade.findAll());
+        filterAdresse.setItems(adresseDeltaspikeFacade.findAll());
         filterAdresse.setItemCaptionGenerator(item -> item.getFirma() + " " + item.getNachname() + " " + item.getOrt() + " id:" + item.getId());
         filterAdresse.addValueChangeListener(valueChangeEvent -> updateList());
 
@@ -74,10 +76,10 @@ public class RechnungView extends VerticalLayout implements View {
                 }
             }
             if (target.equals("adresseId")) {
-                filterAdresse.setSelectedItem(adresseFacade.findBy(id));
+                filterAdresse.setSelectedItem(adresseDeltaspikeFacade.findBy(id));
                 updateList();
             } else if (target.equals("id")) {
-                grid.select(rechnungFacade.findBy(id));
+                grid.select(rechnungDeltaspikeFacade.findBy(id));
             }
         }
 
@@ -92,13 +94,13 @@ public class RechnungView extends VerticalLayout implements View {
         addBtn.addClickListener(event -> {
             grid.asSingleSelect().clear();
             Rechnung val = new Rechnung();
-            val.setAdresse(adresseFacade.findAll().get(0));
+            val.setAdresse(adresseDeltaspikeFacade.findAll().get(0));
             if (!filterAdresse.isEmpty()) val.setAdresse(filterAdresse.getValue());
             val.setFaelligInTagen(30);
             form.setEntity(val);
             form.openInModalPopup();
             form.setSavedHandler(rechnung -> {
-                rechnungFacade.save(rechnung);
+                rechnungDeltaspikeFacade.save(rechnung);
                 updateList();
                 grid.select(rechnung);
                 form.closePopup();
@@ -143,18 +145,18 @@ public class RechnungView extends VerticalLayout implements View {
         grid.addColumn(rechnung -> "löschen",
                 new ButtonRenderer(event -> {
                     Rechnung rechnung = (Rechnung) event.getItem();
-                    rechnung = rechnungFacade.findBy(rechnung.getId());
+                    rechnung = rechnungDeltaspikeFacade.findBy(rechnung.getId());
 
                     for (Rechnungsposition rp : rechnung.getRechnungspositionen()) {
-                        rechnungspositionFacade.delete(rp);
+                        rechnungspositionDeltaspikeFacade.delete(rp);
 
                     }
 
                     for (Aufwand aw : rechnung.getAufwands()) {
-                        aufwandFacade.delete(aw);
+                        aufwandDeltaspikeFacade.delete(aw);
                     }
 
-                    rechnungFacade.delete(rechnung);
+                    rechnungDeltaspikeFacade.delete(rechnung);
 
                     Notification.show("Lösche Rechnung id:" + event.getItem(), Notification.Type.HUMANIZED_MESSAGE);
                     updateList();
@@ -166,7 +168,7 @@ public class RechnungView extends VerticalLayout implements View {
                     form.setEntity((Rechnung) event.getItem());
                     form.openInModalPopup();
                     form.setSavedHandler(rechnung -> {
-                        rechnungFacade.save(rechnung);
+                        rechnungDeltaspikeFacade.save(rechnung);
                         updateList();
                         grid.select(rechnung);
                         form.closePopup();
@@ -207,20 +209,20 @@ public class RechnungView extends VerticalLayout implements View {
             //Suche mit Adresse und Bezeichnung
             logger.debug("Suche mit Adresse und Bezeichnung:" + filterAdresse.getValue().getId() + "," + filterTextBezeichnung.getValue());
             grid.setItems(
-                    rechnungFacade.findByAdresseAndBezeichnungLikeIgnoreCase(
+                    rechnungDeltaspikeFacade.findByAdresseAndBezeichnungLikeIgnoreCase(
                             filterAdresse.getValue(), filterTextBezeichnung.getValue() + "%"));
             return;
         } else if ((filterAdresse.isEmpty()) && (!filterTextBezeichnung.isEmpty())) {
             //Suche mit Bezeichnung
             logger.debug("Suche mit Bezeichnung:" + filterTextBezeichnung.getValue());
-            grid.setItems(rechnungFacade.findByBezeichnungLikeIgnoreCase(filterTextBezeichnung.getValue() + "%"));
+            grid.setItems(rechnungDeltaspikeFacade.findByBezeichnungLikeIgnoreCase(filterTextBezeichnung.getValue() + "%"));
             return;
         } else if ((!filterAdresse.isEmpty()) && (filterTextBezeichnung.isEmpty())) {
             //Suche mit Adresse
             logger.debug("Suche mit Adresse:" + filterAdresse.getValue());
-            grid.setItems(rechnungFacade.findByAdresse(filterAdresse.getValue()));
+            grid.setItems(rechnungDeltaspikeFacade.findByAdresse(filterAdresse.getValue()));
             return;
         }
-        grid.setItems(rechnungFacade.findAll());
+        grid.setItems(rechnungDeltaspikeFacade.findAll());
     }
 }

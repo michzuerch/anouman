@@ -3,8 +3,8 @@ package ch.internettechnik.anouman.presentation.ui.report.fop;
 import ch.internettechnik.anouman.backend.entity.report.fop.ReportFOP;
 import ch.internettechnik.anouman.presentation.ui.converter.ByteToStringConverter;
 import ch.internettechnik.anouman.presentation.ui.report.jasper.reporttemplate.xmlvalidation.ResourceResolver;
-import com.vaadin.cdi.ViewScoped;
 import com.vaadin.server.UserError;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import org.vaadin.viritin.form.AbstractForm;
 import org.w3c.dom.Document;
@@ -29,7 +29,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-@ViewScoped
+@UIScope
 public class ReportFOPForm extends AbstractForm<ReportFOP> {
     TextField bezeichnung = new TextField("Bezeichnung");
     UploadComponent upload = new UploadComponent();

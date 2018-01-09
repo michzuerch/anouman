@@ -1,13 +1,14 @@
 package ch.internettechnik.anouman.presentation.ui.report.css;
 
 import ch.internettechnik.anouman.backend.entity.report.css.ReportCSS;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ReportCSSFacade;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ReportCSSDeltaspikeFacade;
 import ch.internettechnik.anouman.presentation.ui.Menu;
-import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.shared.ui.ValueChangeMode;
+import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.themes.ValoTheme;
@@ -16,7 +17,8 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 import java.io.File;
 
-@CDIView(value = "ReportCSS")
+@UIScope
+@SpringView(name = "ReportCSSView")
 public class ReportCSSView extends VerticalLayout implements View {
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(ReportCSSView.class.getName());
 
@@ -30,7 +32,7 @@ public class ReportCSSView extends VerticalLayout implements View {
     private Menu menu;
 
     @Inject
-    private ReportCSSFacade facade;
+    private ReportCSSDeltaspikeFacade facade;
 
     @Inject
     private ReportCSSForm form;

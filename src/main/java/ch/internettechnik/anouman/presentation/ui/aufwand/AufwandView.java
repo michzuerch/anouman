@@ -2,14 +2,15 @@ package ch.internettechnik.anouman.presentation.ui.aufwand;
 
 import ch.internettechnik.anouman.backend.entity.Aufwand;
 import ch.internettechnik.anouman.backend.entity.Rechnung;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.AufwandFacade;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.RechnungFacade;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.AufwandDeltaspikeFacade;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.RechnungDeltaspikeFacade;
 import ch.internettechnik.anouman.presentation.ui.Menu;
-import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.shared.ui.ValueChangeMode;
+import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.themes.ValoTheme;
@@ -20,7 +21,8 @@ import javax.inject.Inject;
 
 // @todo : java.lang.IllegalStateException: Property type 'java.util.Date' doesn't match the field type 'java.time.LocalDateTime'.
 // Binding should be configured manually using converter.
-@CDIView(value = "Aufwand")
+@UIScope
+@SpringView(name = "AufwandView")
 public class AufwandView extends VerticalLayout implements View {
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(Aufwand.class.getName());
 
@@ -32,10 +34,10 @@ public class AufwandView extends VerticalLayout implements View {
     private Menu menu;
 
     @Inject
-    private AufwandFacade facade;
+    private AufwandDeltaspikeFacade facade;
 
     @Inject
-    private RechnungFacade rechnungFacade;
+    private RechnungDeltaspikeFacade rechnungDeltaspikeFacade;
 
     @Inject
     private AufwandForm form;
@@ -48,7 +50,7 @@ public class AufwandView extends VerticalLayout implements View {
         filterTextTitel.addValueChangeListener(e -> updateList());
         filterTextTitel.setValueChangeMode(ValueChangeMode.LAZY);
         filterRechnung.setPlaceholder("Filter Rechnung");
-        filterRechnung.setItems(rechnungFacade.findAll());
+        filterRechnung.setItems(rechnungDeltaspikeFacade.findAll());
         filterRechnung.setItemCaptionGenerator(rechnung -> rechnung.getBezeichnung() + " id:" + rechnung.getId());
         filterRechnung.setEmptySelectionAllowed(false);
         filterRechnung.addValueChangeListener(valueChangeEvent -> updateList());
@@ -65,7 +67,7 @@ public class AufwandView extends VerticalLayout implements View {
                 }
             }
             if (target.equals("rechnungId")) {
-                filterRechnung.setSelectedItem(rechnungFacade.findBy(id));
+                filterRechnung.setSelectedItem(rechnungDeltaspikeFacade.findBy(id));
                 updateList();
             } else if (target.equals("id")) {
                 grid.select(facade.findBy(id));
@@ -83,7 +85,7 @@ public class AufwandView extends VerticalLayout implements View {
         addBtn.addClickListener(event -> {
             grid.asSingleSelect().clear();
             Aufwand aufwand = new Aufwand();
-            aufwand.setRechnung(rechnungFacade.findAll().get(0));
+            aufwand.setRechnung(rechnungDeltaspikeFacade.findAll().get(0));
             if (!filterRechnung.isEmpty()) aufwand.setRechnung(filterRechnung.getValue());
             form.setEntity(aufwand);
             form.openInModalPopup();

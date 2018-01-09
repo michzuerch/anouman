@@ -4,10 +4,10 @@ import ch.internettechnik.anouman.backend.entity.Adresse;
 import ch.internettechnik.anouman.backend.entity.Aufwand;
 import ch.internettechnik.anouman.backend.entity.Rechnung;
 import ch.internettechnik.anouman.backend.entity.Rechnungsposition;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.AdresseFacade;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.AufwandFacade;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.RechnungFacade;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.RechnungspositionFacade;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.AdresseDeltaspikeFacade;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.AufwandDeltaspikeFacade;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.RechnungDeltaspikeFacade;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.RechnungspositionDeltaspikeFacade;
 import ch.internettechnik.anouman.presentation.ui.backup.BackupView;
 import ch.internettechnik.anouman.presentation.ui.backup.xml.adressen.*;
 import com.vaadin.ui.Notification;
@@ -27,16 +27,16 @@ public class AdressenUploadReceiver implements Serializable, Upload.Receiver, Up
     File tempFile;
 
     @Inject
-    AdresseFacade adresseFacade;
+    AdresseDeltaspikeFacade adresseDeltaspikeFacade;
 
     @Inject
-    RechnungFacade rechnungFacade;
+    RechnungDeltaspikeFacade rechnungDeltaspikeFacade;
 
     @Inject
-    RechnungspositionFacade rechnungspositionFacade;
+    RechnungspositionDeltaspikeFacade rechnungspositionDeltaspikeFacade;
 
     @Inject
-    AufwandFacade aufwandFacade;
+    AufwandDeltaspikeFacade aufwandDeltaspikeFacade;
 
 
     public AdressenUploadReceiver() {
@@ -75,7 +75,7 @@ public class AdressenUploadReceiver implements Serializable, Upload.Receiver, Up
                 adresse.setPostleitzahl(backupAdresse.getPostleitzahl());
                 adresse.setStrasse(backupAdresse.getStrasse());
                 adresse.setStundensatz(backupAdresse.getStundensatz());
-                adresse = adresseFacade.save(adresse);
+                adresse = adresseDeltaspikeFacade.save(adresse);
                 for (BackupRechnung backupRechnung : backupAdresse.getRechnungen()) {
                     Rechnung rechnung = new Rechnung();
                     rechnung.setRechnungsdatum(backupRechnung.getRechnungsdatum());
@@ -84,8 +84,8 @@ public class AdressenUploadReceiver implements Serializable, Upload.Receiver, Up
                     rechnung.setBezahlt(backupRechnung.isBezahlt());
                     rechnung.setFaelligInTagen(backupRechnung.getFaelligInTagen());
                     rechnung.setAdresse(adresse);
-                    adresse = adresseFacade.save(adresse);
-                    rechnung = rechnungFacade.save(rechnung);
+                    adresse = adresseDeltaspikeFacade.save(adresse);
+                    rechnung = rechnungDeltaspikeFacade.save(rechnung);
 
                     for (BackupRechnungsposition backupRechnungsposition : backupRechnung.getRechnungspositions()) {
                         Rechnungsposition rechnungsposition = new Rechnungsposition();
@@ -95,8 +95,8 @@ public class AdressenUploadReceiver implements Serializable, Upload.Receiver, Up
                         rechnungsposition.setMengeneinheit(backupRechnungsposition.getMengeneinheit());
                         rechnungsposition.setStueckpreis(backupRechnungsposition.getStueckpreis());
                         rechnungsposition.setRechnung(rechnung);
-                        rechnung = rechnungFacade.save(rechnung);
-                        rechnungsposition = rechnungspositionFacade.save(rechnungsposition);
+                        rechnung = rechnungDeltaspikeFacade.save(rechnung);
+                        rechnungsposition = rechnungspositionDeltaspikeFacade.save(rechnungsposition);
                     }
 
                     for (BackupAufwand backupAufwand : backupRechnung.getAufwands()) {
@@ -106,8 +106,8 @@ public class AdressenUploadReceiver implements Serializable, Upload.Receiver, Up
                         aufwand.setStart(backupAufwand.getStart());
                         aufwand.setEnde(backupAufwand.getEnde());
                         aufwand.setRechnung(rechnung);
-                        rechnung = rechnungFacade.save(rechnung);
-                        aufwand = aufwandFacade.save(aufwand);
+                        rechnung = rechnungDeltaspikeFacade.save(rechnung);
+                        aufwand = aufwandDeltaspikeFacade.save(aufwand);
                     }
 
                 }

@@ -1,11 +1,11 @@
 package ch.internettechnik.anouman.presentation.ui.templatebuchhaltung.form;
 
 import ch.internettechnik.anouman.backend.entity.TemplateKontoklasse;
-import com.vaadin.cdi.ViewScoped;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import org.vaadin.viritin.form.AbstractForm;
 
-@ViewScoped
+@UIScope
 public class TemplateKontoklasseForm extends AbstractForm<TemplateKontoklasse> {
     TextField bezeichnung = new TextField("Bezeichnung");
     TextField kontonummer = new TextField("Kontonummer");

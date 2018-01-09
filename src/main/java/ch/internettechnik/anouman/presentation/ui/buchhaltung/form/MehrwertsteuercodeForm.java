@@ -3,10 +3,10 @@ package ch.internettechnik.anouman.presentation.ui.buchhaltung.form;
 import ch.internettechnik.anouman.backend.entity.Buchhaltung;
 import ch.internettechnik.anouman.backend.entity.Konto;
 import ch.internettechnik.anouman.backend.entity.Mehrwertsteuercode;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.BuchhaltungFacade;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.KontoFacade;
-import com.vaadin.cdi.ViewScoped;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.BuchhaltungDeltaspikeFacade;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.KontoDeltaspikeFacade;
 import com.vaadin.data.converter.StringToFloatConverter;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import org.vaadin.viritin.form.AbstractForm;
 
@@ -14,14 +14,14 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
-@ViewScoped
+@UIScope
 public class MehrwertsteuercodeForm extends AbstractForm<Mehrwertsteuercode> {
 
     @Inject
-    BuchhaltungFacade buchhaltungFacade;
+    BuchhaltungDeltaspikeFacade buchhaltungDeltaspikeFacade;
 
     @Inject
-    KontoFacade kontoFacade;
+    KontoDeltaspikeFacade kontoDeltaspikeFacade;
 
     NativeSelect<Buchhaltung> buchhaltungNativeSelect = new NativeSelect<>();
     NativeSelect<Konto> kontoNativeSelect = new NativeSelect<>();
@@ -66,8 +66,8 @@ public class MehrwertsteuercodeForm extends AbstractForm<Mehrwertsteuercode> {
         buchhaltungNativeSelect.setCaption("Buchhaltung");
         buchhaltungNativeSelect.setEmptySelectionAllowed(false);
         buchhaltungNativeSelect.setItemCaptionGenerator(item -> item.getBezeichnung() + " " + item.getId());
-        buchhaltungNativeSelect.setItems(buchhaltungFacade.findAll());
-        buchhaltungNativeSelect.setSelectedItem(buchhaltungFacade.findAll().get(0));
+        buchhaltungNativeSelect.setItems(buchhaltungDeltaspikeFacade.findAll());
+        buchhaltungNativeSelect.setSelectedItem(buchhaltungDeltaspikeFacade.findAll().get(0));
 
         kontoNativeSelect.setCaption("Konto");
         kontoNativeSelect.setEmptySelectionAllowed(false);

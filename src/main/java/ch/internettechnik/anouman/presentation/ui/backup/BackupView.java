@@ -1,10 +1,10 @@
 package ch.internettechnik.anouman.presentation.ui.backup;
 
 import ch.internettechnik.anouman.backend.entity.*;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.AdresseFacade;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.BuchhaltungFacade;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.RechnungFacade;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.TemplateBuchhaltungFacade;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.AdresseDeltaspikeFacade;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.BuchhaltungDeltaspikeFacade;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.RechnungDeltaspikeFacade;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.TemplateBuchhaltungDeltaspikeFacade;
 import ch.internettechnik.anouman.presentation.ui.Menu;
 import ch.internettechnik.anouman.presentation.ui.backup.uploadreceiver.AdressenUploadReceiver;
 import ch.internettechnik.anouman.presentation.ui.backup.uploadreceiver.BuchhaltungenUploadReceiver;
@@ -12,10 +12,11 @@ import ch.internettechnik.anouman.presentation.ui.backup.uploadreceiver.Template
 import ch.internettechnik.anouman.presentation.ui.backup.xml.adressen.*;
 import ch.internettechnik.anouman.presentation.ui.backup.xml.buchhaltungen.*;
 import ch.internettechnik.anouman.presentation.ui.backup.xml.templatebuchhaltungen.*;
-import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +37,8 @@ import java.util.List;
 /**
  * Created by michzuerch on 25.07.15.
  */
-@CDIView(value = "Backup")
+@UIScope
+@SpringView(name = "BackkupView")
 public class BackupView extends VerticalLayout implements View {
     private static Logger logger = LoggerFactory.getLogger(BackupView.class.getName());
 
@@ -44,16 +46,16 @@ public class BackupView extends VerticalLayout implements View {
     Menu menu;
 
     @Inject
-    AdresseFacade adresseFacade;
+    AdresseDeltaspikeFacade adresseDeltaspikeFacade;
 
     @Inject
-    RechnungFacade rechnungFacade;
+    RechnungDeltaspikeFacade rechnungDeltaspikeFacade;
 
     @Inject
-    BuchhaltungFacade buchhaltungFacade;
+    BuchhaltungDeltaspikeFacade buchhaltungDeltaspikeFacade;
 
     @Inject
-    TemplateBuchhaltungFacade templateBuchhaltungFacade;
+    TemplateBuchhaltungDeltaspikeFacade templateBuchhaltungDeltaspikeFacade;
 
     @Inject
     TemplateBuchhaltungenUploadReceiver templateBuchhaltungenUploadReceiver;
@@ -75,7 +77,7 @@ public class BackupView extends VerticalLayout implements View {
             BackupAdressen backupAdressen = new BackupAdressen();
             backupAdressen.setBackupdatum(new Date());
 
-            adresseFacade.findAll().stream().forEach(adresse -> {
+            adresseDeltaspikeFacade.findAll().stream().forEach(adresse -> {
                 BackupAdresse backupAdresse = new BackupAdresse();
                 backupAdresse.setAnrede(adresse.getAnrede());
                 backupAdresse.setFirma(adresse.getFirma());
@@ -143,7 +145,7 @@ public class BackupView extends VerticalLayout implements View {
             BackupBuchhaltungen backupBuchhaltungen = new BackupBuchhaltungen();
             backupBuchhaltungen.setDatum(new Date());
 
-            buchhaltungFacade.findAll().stream().forEach(buchhaltung -> {
+            buchhaltungDeltaspikeFacade.findAll().stream().forEach(buchhaltung -> {
                 BackupBuchhaltung backupBuchhaltung = new BackupBuchhaltung(buchhaltung.getBezeichnung(), buchhaltung.getJahr());
 
                 buchhaltung.getKontoklasse().stream().forEach(kontoklasse -> {
@@ -205,7 +207,7 @@ public class BackupView extends VerticalLayout implements View {
                     true);
             BackupTemplateBuchhaltungen backupBuchhaltungen = new BackupTemplateBuchhaltungen();
             backupBuchhaltungen.setDatum(new Date());
-            templateBuchhaltungFacade.findAll().stream().forEach(buchhaltung -> {
+            templateBuchhaltungDeltaspikeFacade.findAll().stream().forEach(buchhaltung -> {
                 BackupTemplateBuchhaltung backupBuchhaltung = new BackupTemplateBuchhaltung(buchhaltung.getBezeichnung());
                 backupBuchhaltung.getMehrwertsteuercodes().stream().forEach(mehrwertsteuercode -> {
                     BackupTemplateMehrwertsteuercode backupMehrwertsteuercode = new BackupTemplateMehrwertsteuercode();
@@ -478,42 +480,42 @@ public class BackupView extends VerticalLayout implements View {
         uploadTemplateBuchhaltungen.addSucceededListener(templateBuchhaltungenUploadReceiver);
         uploadTemplateBuchhaltungen.setReceiver(templateBuchhaltungenUploadReceiver);
 
-        List<TemplateBuchhaltung> templateBuchhaltungen = templateBuchhaltungFacade.findAll();
+        List<TemplateBuchhaltung> templateBuchhaltungen = templateBuchhaltungDeltaspikeFacade.findAll();
         if (templateBuchhaltungen.size() == 0) {
             listTemplateBuchhaltungen.setEnabled(false);
             downloaderTemplateBuchhaltungen.setEnabled(false);
             downloaderTemplateBuchhaltung.setEnabled(false);
         } else {
-            listTemplateBuchhaltungen.setItems(templateBuchhaltungFacade.findAll());
+            listTemplateBuchhaltungen.setItems(templateBuchhaltungDeltaspikeFacade.findAll());
             listTemplateBuchhaltungen.setItemCaptionGenerator(templateBuchhaltung -> templateBuchhaltung.getBezeichnung());
             listTemplateBuchhaltungen.setEmptySelectionAllowed(false);
-            listTemplateBuchhaltungen.setSelectedItem(templateBuchhaltungFacade.findAll().get(0));
+            listTemplateBuchhaltungen.setSelectedItem(templateBuchhaltungDeltaspikeFacade.findAll().get(0));
         }
         listTemplateBuchhaltungen.setWidth(20, Unit.EM);
 
-        List<Buchhaltung> buchhaltungen = buchhaltungFacade.findAll();
+        List<Buchhaltung> buchhaltungen = buchhaltungDeltaspikeFacade.findAll();
         if (buchhaltungen.size() == 0) {
             listBuchhaltungen.setEnabled(false);
             downloaderBuchhaltungen.setEnabled(false);
             downloaderBuchhaltung.setEnabled(false);
         } else {
-            listBuchhaltungen.setItems(buchhaltungFacade.findAll());
+            listBuchhaltungen.setItems(buchhaltungDeltaspikeFacade.findAll());
             listBuchhaltungen.setItemCaptionGenerator(buchhaltung -> buchhaltung.getBezeichnung() + " " + buchhaltung.getJahr());
             listBuchhaltungen.setEmptySelectionAllowed(false);
-            listBuchhaltungen.setSelectedItem(buchhaltungFacade.findAll().get(0));
+            listBuchhaltungen.setSelectedItem(buchhaltungDeltaspikeFacade.findAll().get(0));
         }
         listBuchhaltungen.setWidth(20, Unit.EM);
 
-        List<Adresse> adressen = adresseFacade.findAll();
+        List<Adresse> adressen = adresseDeltaspikeFacade.findAll();
         if (adressen.size() == 0) {
             listAdressen.setEnabled(false);
             downloaderAdressen.setEnabled(false);
             downloaderAdresse.setEnabled(false);
         } else {
-            listAdressen.setItems(adresseFacade.findAll());
+            listAdressen.setItems(adresseDeltaspikeFacade.findAll());
             listAdressen.setItemCaptionGenerator(adresse -> adresse.getFirma() + " " + adresse.getNachname() + " " + adresse.getOrt());
             listAdressen.setEmptySelectionAllowed(false);
-            listAdressen.setSelectedItem(adresseFacade.findAll().get(0));
+            listAdressen.setSelectedItem(adresseDeltaspikeFacade.findAll().get(0));
         }
         listAdressen.setWidth(20, Unit.EM);
 

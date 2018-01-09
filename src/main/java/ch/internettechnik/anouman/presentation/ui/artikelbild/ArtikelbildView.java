@@ -2,14 +2,15 @@ package ch.internettechnik.anouman.presentation.ui.artikelbild;
 
 import ch.internettechnik.anouman.backend.entity.Artikel;
 import ch.internettechnik.anouman.backend.entity.Artikelbild;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ArtikelFacade;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ArtikelbildFacade;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ArtikelDeltaspikeFacade;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ArtikelbildDeltaspikeFacade;
 import ch.internettechnik.anouman.presentation.ui.Menu;
-import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.shared.ui.ValueChangeMode;
+import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.themes.ValoTheme;
@@ -20,7 +21,8 @@ import javax.inject.Inject;
 
 // @todo : java.lang.IllegalStateException: Property type 'java.util.Date' doesn't match the field type 'java.time.LocalDateTime'.
 // Binding should be configured manually using converter.
-@CDIView(value = "Artikelbild")
+@UIScope
+@SpringView(name = "ArtikelbildView")
 public class ArtikelbildView extends VerticalLayout implements View {
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(ArtikelbildView.class.getName());
 
@@ -31,10 +33,10 @@ public class ArtikelbildView extends VerticalLayout implements View {
     private Menu menu;
 
     @Inject
-    private ArtikelbildFacade artikelbildFacade;
+    private ArtikelbildDeltaspikeFacade artikelbildDeltaspikeFacade;
 
     @Inject
-    private ArtikelFacade artikelFacade;
+    private ArtikelDeltaspikeFacade artikelDeltaspikeFacade;
 
     @Inject
     private ArtikelbildForm artikelbildForm;
@@ -59,7 +61,7 @@ public class ArtikelbildView extends VerticalLayout implements View {
                 }
             }
             if (target.equals("id")) {
-                grid.select(artikelbildFacade.findBy(id));
+                grid.select(artikelbildDeltaspikeFacade.findBy(id));
             }
         }
 
@@ -76,7 +78,7 @@ public class ArtikelbildView extends VerticalLayout implements View {
             artikelbildForm.setEntity(artikelbild);
             artikelbildForm.openInModalPopup();
             artikelbildForm.setSavedHandler(val -> {
-                artikelbildFacade.save(val);
+                artikelbildDeltaspikeFacade.save(val);
                 updateList();
                 grid.select(val);
                 artikelbildForm.closePopup();
@@ -109,11 +111,11 @@ public class ArtikelbildView extends VerticalLayout implements View {
                     Artikelbild bild = (Artikelbild) event.getItem();
                     Notification.show("Lösche Artikelbild id:" + bild, Notification.Type.HUMANIZED_MESSAGE);
 
-                    Artikel artikel = artikelFacade.findBy(bild.getArtikel().getId());
+                    Artikel artikel = artikelDeltaspikeFacade.findBy(bild.getArtikel().getId());
                     artikel.getArtikelbilds().remove(bild);
-                    artikelFacade.save(artikel);
+                    artikelDeltaspikeFacade.save(artikel);
 
-                    artikelbildFacade.delete(bild);
+                    artikelbildDeltaspikeFacade.delete(bild);
                     updateList();
                 })
         );
@@ -123,7 +125,7 @@ public class ArtikelbildView extends VerticalLayout implements View {
                     artikelbildForm.setEntity((Artikelbild) event.getItem());
                     artikelbildForm.openInModalPopup();
                     artikelbildForm.setSavedHandler(val -> {
-                        artikelbildFacade.save(val);
+                        artikelbildDeltaspikeFacade.save(val);
                         updateList();
                         grid.select(val);
                         artikelbildForm.closePopup();
@@ -144,10 +146,10 @@ public class ArtikelbildView extends VerticalLayout implements View {
         if (!filterTextTitel.isEmpty()) {
             //Suche mit Titel
             logger.debug("Suche mit Titel:" + filterTextTitel.getValue());
-            grid.setItems(artikelbildFacade.findByTitelLikeIgnoreCase(filterTextTitel.getValue() + "%"));
+            grid.setItems(artikelbildDeltaspikeFacade.findByTitelLikeIgnoreCase(filterTextTitel.getValue() + "%"));
             return;
         }
-        grid.setItems(artikelbildFacade.findAll());
+        grid.setItems(artikelbildDeltaspikeFacade.findAll());
     }
 
 }

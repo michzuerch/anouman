@@ -3,11 +3,11 @@ package ch.internettechnik.anouman.presentation.ui.testdata;
 import ch.internettechnik.anouman.backend.entity.*;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.*;
 import ch.internettechnik.anouman.presentation.ui.Menu;
-import com.vaadin.annotations.Theme;
-import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.VerticalLayout;
@@ -17,8 +17,8 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.util.Date;
 
-@Theme("anouman")
-@CDIView("TestDataCreate")
+@UIScope
+@SpringView(name = "TestDataCreateView")
 public class TestDataCreateView extends VerticalLayout implements View {
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(TestDataCreateView.class.getName());
 
@@ -26,46 +26,46 @@ public class TestDataCreateView extends VerticalLayout implements View {
     Menu menu;
 
     @Inject
-    RechnungFacade rechnungFacade;
+    RechnungDeltaspikeFacade rechnungDeltaspikeFacade;
 
     @Inject
-    RechnungspositionFacade rechnungspositionFacade;
+    RechnungspositionDeltaspikeFacade rechnungspositionDeltaspikeFacade;
 
     @Inject
-    AdresseFacade adresseFacade;
+    AdresseDeltaspikeFacade adresseDeltaspikeFacade;
 
     @Inject
-    AufwandFacade aufwandFacade;
+    AufwandDeltaspikeFacade aufwandDeltaspikeFacade;
 
     @Inject
-    UzerFacade uzerFacade;
+    UzerDeltaspikeFacade uzerDeltaspikeFacade;
 
     @Inject
-    UzerRoleFacade uzerRoleFacade;
+    UzerRoleDeltaspikeFacade uzerRoleDeltaspikeFacade;
 
     @Inject
-    TemplateBuchhaltungFacade templateBuchhaltungFacade;
+    TemplateBuchhaltungDeltaspikeFacade templateBuchhaltungDeltaspikeFacade;
 
     @Inject
-    TemplateKontoklasseFacade templateKontoklasseFacade;
+    TemplateKontoklasseDeltaspikeFacade templateKontoklasseDeltaspikeFacade;
 
     @Inject
-    TemplateKontohauptgruppeFacade templateKontohauptgruppeFacade;
+    TemplateKontohauptgruppeDeltaspikeFacade templateKontohauptgruppeDeltaspikeFacade;
 
     @Inject
-    TemplateKontogruppeFacade templateKontogruppeFacade;
+    TemplateKontogruppeDeltaspikeFacade templateKontogruppeDeltaspikeFacade;
 
     @Inject
-    TemplateKontoFacade templateKontoFacade;
+    TemplateKontoDeltaspikeFacade templateKontoDeltaspikeFacade;
 
     @Inject
-    TemplateMehrwertsteuercodeFacade templateMehrwertsteuercodeFacade;
+    TemplateMehrwertsteuercodeDeltaspikeFacade templateMehrwertsteuercodeDeltaspikeFacade;
 
     @Inject
-    ArtikelkategorieFacade artikelkategorieFacade;
+    ArtikelkategorieDeltaspikeFacade artikelkategorieDeltaspikeFacade;
 
     @Inject
-    ArtikelFacade artikelFacade;
+    ArtikelDeltaspikeFacade artikelDeltaspikeFacade;
 
     private void createTestDataUzer() {
         UzerRole roleAdmin = new UzerRole();
@@ -80,9 +80,9 @@ public class TestDataCreateView extends VerticalLayout implements View {
         roleBuchhaltung.setRole("buchhaltung");
         roleAdmin.setRoleGroup("group");
 
-        uzerRoleFacade.save(roleAdmin);
-        uzerRoleFacade.save(roleRechnung);
-        uzerRoleFacade.save(roleBuchhaltung);
+        uzerRoleDeltaspikeFacade.save(roleAdmin);
+        uzerRoleDeltaspikeFacade.save(roleRechnung);
+        uzerRoleDeltaspikeFacade.save(roleBuchhaltung);
 
         Uzer uzerAdmin = new Uzer();
         uzerAdmin.setDescription("Administrator");
@@ -91,7 +91,7 @@ public class TestDataCreateView extends VerticalLayout implements View {
         uzerAdmin.getRoles().add(roleAdmin);
         uzerAdmin.getRoles().add(roleRechnung);
         uzerAdmin.getRoles().add(roleBuchhaltung);
-        uzerFacade.save(uzerAdmin);
+        uzerDeltaspikeFacade.save(uzerAdmin);
 
         Uzer uzerKevin = new Uzer();
         uzerKevin.setDescription("Allerweltsuser");
@@ -99,13 +99,13 @@ public class TestDataCreateView extends VerticalLayout implements View {
         uzerKevin.setPrincipal("passpass");
         uzerKevin.getRoles().add(roleRechnung);
         uzerKevin.getRoles().add(roleBuchhaltung);
-        uzerFacade.save(uzerKevin);
+        uzerDeltaspikeFacade.save(uzerKevin);
 
         Uzer uzerAnonymous = new Uzer();
         uzerAnonymous.setDescription("Keine Rollen");
         uzerAnonymous.setPrincipal("anoymous");
         uzerAnonymous.setPrincipal("passpass");
-        uzerFacade.save(uzerAnonymous);
+        uzerDeltaspikeFacade.save(uzerAnonymous);
 
         Notification.show("Testdaten User erstellt", Notification.Type.TRAY_NOTIFICATION);
 
@@ -114,7 +114,7 @@ public class TestDataCreateView extends VerticalLayout implements View {
     private void createArtikelstamm() {
         Artikelkategorie artikelkategorie = new Artikelkategorie();
         artikelkategorie.setBezeichnung("Futtermittel");
-        artikelkategorie = artikelkategorieFacade.save(artikelkategorie);
+        artikelkategorie = artikelkategorieDeltaspikeFacade.save(artikelkategorie);
 
         Artikel artikel = new Artikel();
         artikel.setArtikelkategorie(artikelkategorie);
@@ -124,9 +124,9 @@ public class TestDataCreateView extends VerticalLayout implements View {
         artikel.setMengeneinheit("Stück");
         artikel.setStueckpreis(975d);
 
-        artikel = artikelFacade.save(artikel);
+        artikel = artikelDeltaspikeFacade.save(artikel);
         artikelkategorie.getArtikels().add(artikel);
-        artikelkategorie = artikelkategorieFacade.save(artikelkategorie);
+        artikelkategorie = artikelkategorieDeltaspikeFacade.save(artikelkategorie);
 
         Notification.show("Testdaten Artikelstamm und Artikel erstellt", Notification.Type.TRAY_NOTIFICATION);
     }
@@ -148,10 +148,10 @@ public class TestDataCreateView extends VerticalLayout implements View {
         adresse.setPostleitzahl("0000");
         adresse.setStundensatz(130d);
         adresse.setStrasse("Keine Strasse");
-        adresse = adresseFacade.save(adresse);
+        adresse = adresseDeltaspikeFacade.save(adresse);
 
         rechnung.setAdresse(adresse);
-        rechnung = rechnungFacade.save(rechnung);
+        rechnung = rechnungDeltaspikeFacade.save(rechnung);
 
         Rechnungsposition rechnungsposition = new Rechnungsposition();
         rechnungsposition.setBezeichnung("Laptop");
@@ -160,7 +160,7 @@ public class TestDataCreateView extends VerticalLayout implements View {
         rechnungsposition.setMengeneinheit("Stück");
         rechnungsposition.setStueckpreis(1235.45d);
         rechnungsposition.setRechnung(rechnung);
-        rechnungsposition = rechnungspositionFacade.save(rechnungsposition);
+        rechnungsposition = rechnungspositionDeltaspikeFacade.save(rechnungsposition);
 
 
         Aufwand aufwand = new Aufwand();
@@ -171,7 +171,7 @@ public class TestDataCreateView extends VerticalLayout implements View {
         aufwand.setStart(new Date());
         aufwand.setEnde(new Date());
         aufwand.setRechnung(rechnung);
-        aufwand = aufwandFacade.save(aufwand);
+        aufwand = aufwandDeltaspikeFacade.save(aufwand);
 
         Notification.show("Testdaten Rechnung erstellt", Notification.Type.TRAY_NOTIFICATION);
     }
@@ -179,103 +179,103 @@ public class TestDataCreateView extends VerticalLayout implements View {
     private void createTestDataTemplateBuchhaltung() {
         TemplateBuchhaltung buchhaltung = new TemplateBuchhaltung();
         buchhaltung.setBezeichnung("Testdaten Template Buchhaltung");
-        buchhaltung = templateBuchhaltungFacade.save(buchhaltung);
+        buchhaltung = templateBuchhaltungDeltaspikeFacade.save(buchhaltung);
         TemplateKontoklasse templateKontoklasse1 = new TemplateKontoklasse("Aktiven", "1", buchhaltung);
-        templateKontoklasse1 = templateKontoklasseFacade.save(templateKontoklasse1);
+        templateKontoklasse1 = templateKontoklasseDeltaspikeFacade.save(templateKontoklasse1);
         TemplateKontoklasse templateKontoklasse2 = new TemplateKontoklasse("Passive", "2", buchhaltung);
-        templateKontoklasse2 = templateKontoklasseFacade.save(templateKontoklasse2);
+        templateKontoklasse2 = templateKontoklasseDeltaspikeFacade.save(templateKontoklasse2);
         TemplateKontoklasse templateKontoklasse3 = new TemplateKontoklasse("Aufwand", "3", buchhaltung);
-        templateKontoklasse3 = templateKontoklasseFacade.save(templateKontoklasse3);
+        templateKontoklasse3 = templateKontoklasseDeltaspikeFacade.save(templateKontoklasse3);
         TemplateKontoklasse templateKontoklasse4 = new TemplateKontoklasse("Ertrag", "4", buchhaltung);
-        templateKontoklasse4 = templateKontoklasseFacade.save(templateKontoklasse4);
+        templateKontoklasse4 = templateKontoklasseDeltaspikeFacade.save(templateKontoklasse4);
 
         TemplateKontohauptgruppe templateKontohauptgruppe1 = new TemplateKontohauptgruppe("Hauptgruppe 1", "1", templateKontoklasse1);
-        templateKontohauptgruppe1 = templateKontohauptgruppeFacade.save(templateKontohauptgruppe1);
+        templateKontohauptgruppe1 = templateKontohauptgruppeDeltaspikeFacade.save(templateKontohauptgruppe1);
         TemplateKontohauptgruppe templateKontohauptgruppe2 = new TemplateKontohauptgruppe("Hauptgruppe 2", "2", templateKontoklasse1);
-        templateKontohauptgruppe2 = templateKontohauptgruppeFacade.save(templateKontohauptgruppe2);
+        templateKontohauptgruppe2 = templateKontohauptgruppeDeltaspikeFacade.save(templateKontohauptgruppe2);
         TemplateKontohauptgruppe templateKontohauptgruppe3 = new TemplateKontohauptgruppe("Hauptgruppe 3", "3", templateKontoklasse2);
-        templateKontohauptgruppe3 = templateKontohauptgruppeFacade.save(templateKontohauptgruppe3);
+        templateKontohauptgruppe3 = templateKontohauptgruppeDeltaspikeFacade.save(templateKontohauptgruppe3);
         TemplateKontohauptgruppe templateKontohauptgruppe4 = new TemplateKontohauptgruppe("Hauptgruppe 4", "4", templateKontoklasse2);
-        templateKontohauptgruppe4 = templateKontohauptgruppeFacade.save(templateKontohauptgruppe4);
+        templateKontohauptgruppe4 = templateKontohauptgruppeDeltaspikeFacade.save(templateKontohauptgruppe4);
         TemplateKontohauptgruppe templateKontohauptgruppe5 = new TemplateKontohauptgruppe("Hauptgruppe 5", "5", templateKontoklasse3);
-        templateKontohauptgruppe5 = templateKontohauptgruppeFacade.save(templateKontohauptgruppe5);
+        templateKontohauptgruppe5 = templateKontohauptgruppeDeltaspikeFacade.save(templateKontohauptgruppe5);
         TemplateKontohauptgruppe templateKontohauptgruppe6 = new TemplateKontohauptgruppe("Hauptgruppe 6", "6", templateKontoklasse4);
-        templateKontohauptgruppe6 = templateKontohauptgruppeFacade.save(templateKontohauptgruppe6);
+        templateKontohauptgruppe6 = templateKontohauptgruppeDeltaspikeFacade.save(templateKontohauptgruppe6);
 
         TemplateKontogruppe templateKontogruppe1 = new TemplateKontogruppe("Kontogruppe 1", "1", templateKontohauptgruppe1);
-        templateKontogruppe1 = templateKontogruppeFacade.save(templateKontogruppe1);
+        templateKontogruppe1 = templateKontogruppeDeltaspikeFacade.save(templateKontogruppe1);
         TemplateKontogruppe templateKontogruppe2 = new TemplateKontogruppe("Kontogruppe 2", "2", templateKontohauptgruppe1);
-        templateKontogruppe2 = templateKontogruppeFacade.save(templateKontogruppe2);
+        templateKontogruppe2 = templateKontogruppeDeltaspikeFacade.save(templateKontogruppe2);
         TemplateKontogruppe templateKontogruppe3 = new TemplateKontogruppe("Kontogruppe 3", "3", templateKontohauptgruppe2);
-        templateKontogruppe3 = templateKontogruppeFacade.save(templateKontogruppe3);
+        templateKontogruppe3 = templateKontogruppeDeltaspikeFacade.save(templateKontogruppe3);
         TemplateKontogruppe templateKontogruppe4 = new TemplateKontogruppe("Kontogruppe 4", "4", templateKontohauptgruppe2);
-        templateKontogruppe4 = templateKontogruppeFacade.save(templateKontogruppe4);
+        templateKontogruppe4 = templateKontogruppeDeltaspikeFacade.save(templateKontogruppe4);
         TemplateKontogruppe templateKontogruppe5 = new TemplateKontogruppe("Kontogruppe 5", "5", templateKontohauptgruppe3);
-        templateKontogruppe5 = templateKontogruppeFacade.save(templateKontogruppe5);
+        templateKontogruppe5 = templateKontogruppeDeltaspikeFacade.save(templateKontogruppe5);
         TemplateKontogruppe templateKontogruppe6 = new TemplateKontogruppe("Kontogruppe 6", "6", templateKontohauptgruppe3);
-        templateKontogruppe6 = templateKontogruppeFacade.save(templateKontogruppe6);
+        templateKontogruppe6 = templateKontogruppeDeltaspikeFacade.save(templateKontogruppe6);
         TemplateKontogruppe templateKontogruppe7 = new TemplateKontogruppe("Kontogruppe 7", "7", templateKontohauptgruppe4);
-        templateKontogruppe7 = templateKontogruppeFacade.save(templateKontogruppe7);
+        templateKontogruppe7 = templateKontogruppeDeltaspikeFacade.save(templateKontogruppe7);
         TemplateKontogruppe templateKontogruppe8 = new TemplateKontogruppe("Kontogruppe 8", "8", templateKontohauptgruppe4);
-        templateKontogruppe8 = templateKontogruppeFacade.save(templateKontogruppe8);
+        templateKontogruppe8 = templateKontogruppeDeltaspikeFacade.save(templateKontogruppe8);
         TemplateKontogruppe templateKontogruppe9 = new TemplateKontogruppe("Kontogruppe 9", "9", templateKontohauptgruppe5);
-        templateKontogruppe9 = templateKontogruppeFacade.save(templateKontogruppe9);
+        templateKontogruppe9 = templateKontogruppeDeltaspikeFacade.save(templateKontogruppe9);
         TemplateKontogruppe templateKontogruppe10 = new TemplateKontogruppe("Kontogruppe 10", "10", templateKontohauptgruppe5);
-        templateKontogruppe10 = templateKontogruppeFacade.save(templateKontogruppe10);
+        templateKontogruppe10 = templateKontogruppeDeltaspikeFacade.save(templateKontogruppe10);
         TemplateKontogruppe templateKontogruppe11 = new TemplateKontogruppe("Kontogruppe 11", "11", templateKontohauptgruppe6);
-        templateKontogruppe11 = templateKontogruppeFacade.save(templateKontogruppe11);
+        templateKontogruppe11 = templateKontogruppeDeltaspikeFacade.save(templateKontogruppe11);
         TemplateKontogruppe templateKontogruppe12 = new TemplateKontogruppe("Kontogruppe 12", "12", templateKontohauptgruppe6);
-        templateKontogruppe12 = templateKontogruppeFacade.save(templateKontogruppe12);
+        templateKontogruppe12 = templateKontogruppeDeltaspikeFacade.save(templateKontogruppe12);
 
 
         TemplateKonto konto1 = new TemplateKonto("Konto1", "Konto1", "1", templateKontogruppe1);
-        konto1 = templateKontoFacade.save(konto1);
+        konto1 = templateKontoDeltaspikeFacade.save(konto1);
         TemplateKonto konto2 = new TemplateKonto("Konto2", "Konto2", "2", templateKontogruppe1);
-        konto2 = templateKontoFacade.save(konto2);
+        konto2 = templateKontoDeltaspikeFacade.save(konto2);
         TemplateKonto konto3 = new TemplateKonto("Konto3", "Konto3", "3", templateKontogruppe2);
-        konto3 = templateKontoFacade.save(konto3);
+        konto3 = templateKontoDeltaspikeFacade.save(konto3);
         TemplateKonto konto4 = new TemplateKonto("Konto4", "Konto4", "4", templateKontogruppe2);
-        konto4 = templateKontoFacade.save(konto4);
+        konto4 = templateKontoDeltaspikeFacade.save(konto4);
         TemplateKonto konto5 = new TemplateKonto("Konto5", "Konto5", "5", templateKontogruppe3);
-        konto5 = templateKontoFacade.save(konto5);
+        konto5 = templateKontoDeltaspikeFacade.save(konto5);
         TemplateKonto konto6 = new TemplateKonto("Konto6", "Konto6", "6", templateKontogruppe3);
-        konto6 = templateKontoFacade.save(konto6);
+        konto6 = templateKontoDeltaspikeFacade.save(konto6);
         TemplateKonto konto7 = new TemplateKonto("Konto7", "Konto7", "7", templateKontogruppe4);
-        konto7 = templateKontoFacade.save(konto7);
+        konto7 = templateKontoDeltaspikeFacade.save(konto7);
         TemplateKonto konto8 = new TemplateKonto("Konto8", "Konto8", "8", templateKontogruppe4);
-        konto8 = templateKontoFacade.save(konto8);
+        konto8 = templateKontoDeltaspikeFacade.save(konto8);
         TemplateKonto konto9 = new TemplateKonto("Konto9", "Konto9", "9", templateKontogruppe5);
-        konto9 = templateKontoFacade.save(konto9);
+        konto9 = templateKontoDeltaspikeFacade.save(konto9);
         TemplateKonto konto10 = new TemplateKonto("Konto10", "Konto10", "10", templateKontogruppe5);
-        konto10 = templateKontoFacade.save(konto10);
+        konto10 = templateKontoDeltaspikeFacade.save(konto10);
         TemplateKonto konto11 = new TemplateKonto("Konto11", "Konto11", "11", templateKontogruppe6);
-        konto11 = templateKontoFacade.save(konto11);
+        konto11 = templateKontoDeltaspikeFacade.save(konto11);
         TemplateKonto konto12 = new TemplateKonto("Konto12", "Konto12", "12", templateKontogruppe6);
-        konto12 = templateKontoFacade.save(konto12);
+        konto12 = templateKontoDeltaspikeFacade.save(konto12);
         TemplateKonto konto13 = new TemplateKonto("Konto13", "Konto13", "13", templateKontogruppe7);
-        konto13 = templateKontoFacade.save(konto13);
+        konto13 = templateKontoDeltaspikeFacade.save(konto13);
         TemplateKonto konto14 = new TemplateKonto("Konto14", "Konto14", "14", templateKontogruppe7);
-        konto14 = templateKontoFacade.save(konto14);
+        konto14 = templateKontoDeltaspikeFacade.save(konto14);
         TemplateKonto konto15 = new TemplateKonto("Konto15", "Konto15", "15", templateKontogruppe8);
-        konto15 = templateKontoFacade.save(konto15);
+        konto15 = templateKontoDeltaspikeFacade.save(konto15);
         TemplateKonto konto16 = new TemplateKonto("Konto16", "Konto16", "16", templateKontogruppe8);
-        konto16 = templateKontoFacade.save(konto16);
+        konto16 = templateKontoDeltaspikeFacade.save(konto16);
         TemplateKonto konto17 = new TemplateKonto("Konto17", "Konto17", "17", templateKontogruppe9);
-        konto17 = templateKontoFacade.save(konto17);
+        konto17 = templateKontoDeltaspikeFacade.save(konto17);
         TemplateKonto konto18 = new TemplateKonto("Konto18", "Konto18", "18", templateKontogruppe9);
-        konto18 = templateKontoFacade.save(konto18);
+        konto18 = templateKontoDeltaspikeFacade.save(konto18);
         TemplateKonto konto19 = new TemplateKonto("Konto19", "Konto19", "19", templateKontogruppe10);
-        konto19 = templateKontoFacade.save(konto19);
+        konto19 = templateKontoDeltaspikeFacade.save(konto19);
         TemplateKonto konto20 = new TemplateKonto("Konto20", "Konto20", "20", templateKontogruppe10);
-        konto20 = templateKontoFacade.save(konto20);
+        konto20 = templateKontoDeltaspikeFacade.save(konto20);
         TemplateKonto konto21 = new TemplateKonto("Konto21", "Konto21", "21", templateKontogruppe11);
-        konto21 = templateKontoFacade.save(konto21);
+        konto21 = templateKontoDeltaspikeFacade.save(konto21);
         TemplateKonto konto22 = new TemplateKonto("Konto22", "Konto22", "22", templateKontogruppe11);
-        konto22 = templateKontoFacade.save(konto22);
+        konto22 = templateKontoDeltaspikeFacade.save(konto22);
         TemplateKonto konto23 = new TemplateKonto("Konto23", "Konto23", "23", templateKontogruppe12);
-        konto23 = templateKontoFacade.save(konto23);
+        konto23 = templateKontoDeltaspikeFacade.save(konto23);
         TemplateKonto konto24 = new TemplateKonto("Konto24", "Konto24", "24", templateKontogruppe12);
-        konto24 = templateKontoFacade.save(konto24);
+        konto24 = templateKontoDeltaspikeFacade.save(konto24);
 
         TemplateMehrwertsteuercode mehrwertsteuercode = new TemplateMehrwertsteuercode();
         mehrwertsteuercode.setBezeichnung("12%");
@@ -285,7 +285,7 @@ public class TestDataCreateView extends VerticalLayout implements View {
         mehrwertsteuercode.setTemplateMehrwertsteuerKonto(konto1);
         mehrwertsteuercode.setTemplateBuchhaltung(buchhaltung);
 
-        mehrwertsteuercode = templateMehrwertsteuercodeFacade.save(mehrwertsteuercode);
+        mehrwertsteuercode = templateMehrwertsteuercodeDeltaspikeFacade.save(mehrwertsteuercode);
 
         Notification.show("Testdaten Template Buchhaltung erstellt", Notification.Type.TRAY_NOTIFICATION);
     }

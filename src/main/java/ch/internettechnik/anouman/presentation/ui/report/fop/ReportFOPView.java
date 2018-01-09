@@ -1,13 +1,14 @@
 package ch.internettechnik.anouman.presentation.ui.report.fop;
 
 import ch.internettechnik.anouman.backend.entity.report.fop.ReportFOP;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ReportFOPFacade;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ReportFOPDeltaspikeFacade;
 import ch.internettechnik.anouman.presentation.ui.Menu;
-import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.shared.ui.ValueChangeMode;
+import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.themes.ValoTheme;
@@ -15,7 +16,8 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 
-@CDIView(value = "ReportFOP")
+@UIScope
+@SpringView(name = "ReportFOPView")
 public class ReportFOPView extends VerticalLayout implements View {
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(ReportFOPView.class.getName());
 
@@ -26,7 +28,7 @@ public class ReportFOPView extends VerticalLayout implements View {
     private Menu menu;
 
     @Inject
-    private ReportFOPFacade facade;
+    private ReportFOPDeltaspikeFacade facade;
 
     @Inject
     private ReportFOPForm form;

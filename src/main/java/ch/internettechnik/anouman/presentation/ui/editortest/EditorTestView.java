@@ -1,13 +1,14 @@
 package ch.internettechnik.anouman.presentation.ui.editortest;
 
 import ch.internettechnik.anouman.backend.entity.EditorTest;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.EditorTestFacade;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.EditorTestDeltaspikeFacade;
 import ch.internettechnik.anouman.presentation.ui.Menu;
-import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.shared.ui.ValueChangeMode;
+import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.themes.ValoTheme;
@@ -16,7 +17,8 @@ import javax.inject.Inject;
 import java.util.List;
 import java.util.logging.Logger;
 
-@CDIView(value = "EditorTest")
+@UIScope
+@SpringView(name = "EditorTestViewView")
 public class EditorTestView extends VerticalLayout implements View {
     private static final Logger LOGGER = Logger.getLogger(EditorTestView.class.getName());
 
@@ -27,7 +29,7 @@ public class EditorTestView extends VerticalLayout implements View {
     private Menu menu;
 
     @Inject
-    private EditorTestFacade editorTestFacade;
+    private EditorTestDeltaspikeFacade editorTestDeltaspikeFacade;
 
     @Inject
     private EditorTestForm form;
@@ -50,7 +52,7 @@ public class EditorTestView extends VerticalLayout implements View {
             form.setEntity(new EditorTest());
             form.openInModalPopup();
             form.setSavedHandler(val -> {
-                editorTestFacade.save(val);
+                editorTestDeltaspikeFacade.save(val);
                 updateList();
                 grid.select(val);
                 form.closePopup();
@@ -70,7 +72,7 @@ public class EditorTestView extends VerticalLayout implements View {
         grid.addColumn(editorTest -> "löschen",
                 new ButtonRenderer(event -> {
                     Notification.show("Lösche EditorTest id:" + event.getItem(), Notification.Type.HUMANIZED_MESSAGE);
-                    editorTestFacade.delete((EditorTest) event.getItem());
+                    editorTestDeltaspikeFacade.delete((EditorTest) event.getItem());
                     updateList();
                 })
         );
@@ -80,7 +82,7 @@ public class EditorTestView extends VerticalLayout implements View {
                     form.setEntity((EditorTest) event.getItem());
                     form.openInModalPopup();
                     form.setSavedHandler(val -> {
-                        editorTestFacade.save(val);
+                        editorTestDeltaspikeFacade.save(val);
                         updateList();
                         grid.select(val);
                         form.closePopup();
@@ -100,7 +102,7 @@ public class EditorTestView extends VerticalLayout implements View {
 
     public void updateList() {
         List<EditorTest> items;
-        items = editorTestFacade.findAll();
+        items = editorTestDeltaspikeFacade.findAll();
         grid.setItems(items);
     }
 

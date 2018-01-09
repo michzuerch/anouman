@@ -3,34 +3,36 @@ package ch.internettechnik.anouman.presentation.ui.rechnung;
 import ch.internettechnik.anouman.backend.entity.Aufwand;
 import ch.internettechnik.anouman.backend.entity.Rechnung;
 import ch.internettechnik.anouman.backend.entity.Rechnungsposition;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.AufwandFacade;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.RechnungFacade;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.RechnungspositionFacade;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.AufwandDeltaspikeFacade;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.RechnungDeltaspikeFacade;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.RechnungspositionDeltaspikeFacade;
 import ch.internettechnik.anouman.presentation.ui.Menu;
 import ch.internettechnik.anouman.presentation.ui.aufwand.AufwandForm;
 import ch.internettechnik.anouman.presentation.ui.rechnungsposition.RechnungspositionForm;
-import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 
 import javax.inject.Inject;
 
-@CDIView("RechnungDetail")
+@UIScope
+@SpringView(name = "RechnungDetailView")
 public class RechnungDetailView extends VerticalLayout implements View {
     @Inject
     RechnungspositionForm rechnungspositionForm;
     @Inject
-    RechnungFacade rechnungFacade;
+    RechnungDeltaspikeFacade rechnungDeltaspikeFacade;
     @Inject
     AufwandForm aufwandForm;
     @Inject
-    RechnungspositionFacade rechnungspositionFacade;
+    RechnungspositionDeltaspikeFacade rechnungspositionDeltaspikeFacade;
     @Inject
-    AufwandFacade aufwandFacade;
+    AufwandDeltaspikeFacade aufwandDeltaspikeFacade;
     Long idRechnung = new Long(0);
     TextField fieldId = new TextField("id");
     TextField fieldAdresseFirma = new TextField("Adresse Firma");
@@ -52,7 +54,7 @@ public class RechnungDetailView extends VerticalLayout implements View {
     private Menu menu;
 
     private void update() {
-        Rechnung val = rechnungFacade.findBy(getIdRechnung());
+        Rechnung val = rechnungDeltaspikeFacade.findBy(getIdRechnung());
         fieldId.setValue(val.getId().toString());
         fieldAdresseFirma.setValue(val.getAdresse().getFirma());
         fieldAdresseNachname.setValue(val.getAdresse().getNachname());
@@ -65,8 +67,8 @@ public class RechnungDetailView extends VerticalLayout implements View {
         fieldZwischentotal.setValue(val.getZwischentotal().toString());
         fieldRechnungstotal.setValue(val.getRechnungstotal().toString());
 
-        rechnungspositionGrid.setItems(rechnungspositionFacade.findByRechnung(val));
-        aufwandGrid.setItems(aufwandFacade.findByRechnung(val));
+        rechnungspositionGrid.setItems(rechnungspositionDeltaspikeFacade.findByRechnung(val));
+        aufwandGrid.setItems(aufwandDeltaspikeFacade.findByRechnung(val));
 
     }
 
@@ -112,7 +114,7 @@ public class RechnungDetailView extends VerticalLayout implements View {
         rechnungspositionGrid.addColumn(rechnungsposition -> "löschen",
                 new ButtonRenderer(event -> {
                     Notification.show("Lösche Rechnungsposition id:" + event.getItem(), Notification.Type.HUMANIZED_MESSAGE);
-                    rechnungspositionFacade.delete((Rechnungsposition) event.getItem());
+                    rechnungspositionDeltaspikeFacade.delete((Rechnungsposition) event.getItem());
                     update();
                 })
         );
@@ -125,7 +127,7 @@ public class RechnungDetailView extends VerticalLayout implements View {
                 new ButtonRenderer(event -> {
                     Aufwand aufwand = (Aufwand) event.getItem();
                     Notification.show("Lösche Aufwand id:" + aufwand, Notification.Type.HUMANIZED_MESSAGE);
-                    aufwandFacade.delete(aufwand);
+                    aufwandDeltaspikeFacade.delete(aufwand);
                     update();
                 })
         );
@@ -143,12 +145,12 @@ public class RechnungDetailView extends VerticalLayout implements View {
             val.setStueckpreis(0d);
             val.setMengeneinheit("Stück");
             val.setAnzahl(0d);
-            val.setRechnung(rechnungFacade.findBy(getIdRechnung()));
+            val.setRechnung(rechnungDeltaspikeFacade.findBy(getIdRechnung()));
             rechnungspositionForm.lockSelect();
             rechnungspositionForm.setEntity(val);
             rechnungspositionForm.openInModalPopup();
             rechnungspositionForm.setSavedHandler(rechnungsposition -> {
-                rechnungspositionFacade.save(rechnungsposition);
+                rechnungspositionDeltaspikeFacade.save(rechnungsposition);
                 rechnungspositionForm.closePopup();
                 update();
             });
@@ -157,12 +159,12 @@ public class RechnungDetailView extends VerticalLayout implements View {
         btnAddAufwand.addClickListener(event -> {
             aufwandGrid.asSingleSelect().clear();
             Aufwand val = new Aufwand();
-            val.setRechnung(rechnungFacade.findBy(getIdRechnung()));
+            val.setRechnung(rechnungDeltaspikeFacade.findBy(getIdRechnung()));
             aufwandForm.lockSelect();
             aufwandForm.setEntity(val);
             aufwandForm.openInModalPopup();
             aufwandForm.setSavedHandler(aufwand -> {
-                aufwandFacade.save(aufwand);
+                aufwandDeltaspikeFacade.save(aufwand);
                 aufwandForm.closePopup();
                 update();
             });

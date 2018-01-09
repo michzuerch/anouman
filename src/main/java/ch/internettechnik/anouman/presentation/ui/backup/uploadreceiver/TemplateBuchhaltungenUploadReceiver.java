@@ -4,7 +4,7 @@ import ch.internettechnik.anouman.backend.entity.*;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.*;
 import ch.internettechnik.anouman.presentation.ui.backup.BackupView;
 import ch.internettechnik.anouman.presentation.ui.backup.xml.templatebuchhaltungen.*;
-import com.vaadin.cdi.ViewScoped;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Upload;
 import org.slf4j.LoggerFactory;
@@ -16,29 +16,29 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.*;
 
-@ViewScoped
+@UIScope
 public class TemplateBuchhaltungenUploadReceiver implements Serializable, Upload.Receiver, Upload.SucceededListener {
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(BackupView.class.getName());
 
     File tempFile;
 
     @Inject
-    TemplateBuchhaltungFacade templateBuchhaltungFacade;
+    TemplateBuchhaltungDeltaspikeFacade templateBuchhaltungDeltaspikeFacade;
 
     @Inject
-    TemplateKontoklasseFacade templateKontoklasseFacade;
+    TemplateKontoklasseDeltaspikeFacade templateKontoklasseDeltaspikeFacade;
 
     @Inject
-    TemplateKontohauptgruppeFacade templateKontohauptgruppeFacade;
+    TemplateKontohauptgruppeDeltaspikeFacade templateKontohauptgruppeDeltaspikeFacade;
 
     @Inject
-    TemplateKontogruppeFacade templateKontogruppeFacade;
+    TemplateKontogruppeDeltaspikeFacade templateKontogruppeDeltaspikeFacade;
 
     @Inject
-    TemplateKontoFacade templateKontoFacade;
+    TemplateKontoDeltaspikeFacade templateKontoDeltaspikeFacade;
 
     @Inject
-    TemplateMehrwertsteuercodeFacade templateMehrwertsteuercodeFacade;
+    TemplateMehrwertsteuercodeDeltaspikeFacade templateMehrwertsteuercodeDeltaspikeFacade;
 
     public TemplateBuchhaltungenUploadReceiver() {
     }
@@ -69,43 +69,43 @@ public class TemplateBuchhaltungenUploadReceiver implements Serializable, Upload
                 TemplateBuchhaltung templateBuchhaltung = new TemplateBuchhaltung();
                 String bezeichnung = backupTemplateBuchhaltung.getBezeichnung();
                 templateBuchhaltung.setBezeichnung(bezeichnung);
-                templateBuchhaltung = templateBuchhaltungFacade.save(templateBuchhaltung);
+                templateBuchhaltung = templateBuchhaltungDeltaspikeFacade.save(templateBuchhaltung);
 
                 for (BackupTemplateKontoklasse backupTemplateKontoklasse : backupTemplateBuchhaltung.getKontoklasses()) {
                     TemplateKontoklasse templateKontoklasse = new TemplateKontoklasse();
                     templateKontoklasse.setBezeichnung(backupTemplateKontoklasse.getBezeichnung());
                     templateKontoklasse.setKontonummer(backupTemplateKontoklasse.getKontonummer());
                     templateKontoklasse.setTemplateBuchhaltung(templateBuchhaltung);
-                    templateKontoklasse = templateKontoklasseFacade.save(templateKontoklasse);
+                    templateKontoklasse = templateKontoklasseDeltaspikeFacade.save(templateKontoklasse);
                     templateBuchhaltung.getTemplateKontoklasses().add(templateKontoklasse);
-                    templateBuchhaltung = templateBuchhaltungFacade.save(templateBuchhaltung);
+                    templateBuchhaltung = templateBuchhaltungDeltaspikeFacade.save(templateBuchhaltung);
 
                     for (BackupTemplateKontohauptgruppe backupTemplateKontohauptgruppe : backupTemplateKontoklasse.getKontohauptgruppen()) {
                         TemplateKontohauptgruppe templateKontohauptgruppe = new TemplateKontohauptgruppe();
                         templateKontohauptgruppe.setBezeichnung(backupTemplateKontohauptgruppe.getBezeichnung());
                         templateKontohauptgruppe.setKontonummer(backupTemplateKontohauptgruppe.getKontonummer());
                         templateKontohauptgruppe.setTemplateKontoklasse(templateKontoklasse);
-                        templateKontohauptgruppe = templateKontohauptgruppeFacade.save(templateKontohauptgruppe);
+                        templateKontohauptgruppe = templateKontohauptgruppeDeltaspikeFacade.save(templateKontohauptgruppe);
                         templateKontoklasse.getTemplateKontohauptgruppes().add(templateKontohauptgruppe);
-                        templateKontoklasse = templateKontoklasseFacade.save(templateKontoklasse);
+                        templateKontoklasse = templateKontoklasseDeltaspikeFacade.save(templateKontoklasse);
 
                         for (BackupTemplateKontogruppe backupTemplateKontogruppe : backupTemplateKontohauptgruppe.getBackupTemplateKontogruppes()) {
                             TemplateKontogruppe templateKontogruppe = new TemplateKontogruppe();
                             templateKontogruppe.setBezeichnung(backupTemplateKontogruppe.getBezeichnung());
                             templateKontogruppe.setKontonummer(backupTemplateKontogruppe.getKontonummer());
                             templateKontogruppe.setTemplateKontohauptgruppe(templateKontohauptgruppe);
-                            templateKontogruppe = templateKontogruppeFacade.save(templateKontogruppe);
+                            templateKontogruppe = templateKontogruppeDeltaspikeFacade.save(templateKontogruppe);
                             templateKontohauptgruppe.getTemplateKontogruppes().add(templateKontogruppe);
-                            templateKontohauptgruppe = templateKontohauptgruppeFacade.save(templateKontohauptgruppe);
+                            templateKontohauptgruppe = templateKontohauptgruppeDeltaspikeFacade.save(templateKontohauptgruppe);
 
                             for (BackupTemplateKonto backupTemplateKonto : backupTemplateKontogruppe.getBackupTemplateKontos()) {
                                 TemplateKonto templateKonto = new TemplateKonto();
                                 templateKonto.setBezeichnung(backupTemplateKonto.getBezeichnung());
                                 templateKonto.setKontonummer(backupTemplateKonto.getKontonummer());
                                 templateKonto.setTemplateKontogruppe(templateKontogruppe);
-                                templateKonto = templateKontoFacade.save(templateKonto);
+                                templateKonto = templateKontoDeltaspikeFacade.save(templateKonto);
                                 templateKontogruppe.getTemplateKontos().add(templateKonto);
-                                templateKontogruppe = templateKontogruppeFacade.save(templateKontogruppe);
+                                templateKontogruppe = templateKontogruppeDeltaspikeFacade.save(templateKontogruppe);
 
                                 for (BackupTemplateMehrwertsteuercode backupTemplateMehrwertsteuercode : backupTemplateKonto.getBackupTemplateMehrwertsteuercodes()) {
                                     TemplateMehrwertsteuercode templateMehrwertsteuercode = new TemplateMehrwertsteuercode();
@@ -114,15 +114,15 @@ public class TemplateBuchhaltungenUploadReceiver implements Serializable, Upload
                                     templateMehrwertsteuercode.setProzent(backupTemplateMehrwertsteuercode.getProzent());
                                     templateMehrwertsteuercode.setVerkauf(backupTemplateMehrwertsteuercode.isVerkauf());
                                     templateMehrwertsteuercode.setTemplateBuchhaltung(templateBuchhaltung);
-                                    templateMehrwertsteuercode = templateMehrwertsteuercodeFacade.save(templateMehrwertsteuercode);
+                                    templateMehrwertsteuercode = templateMehrwertsteuercodeDeltaspikeFacade.save(templateMehrwertsteuercode);
                                     templateKonto.getTemplateMehrwertsteuercode().add(templateMehrwertsteuercode);
-                                    templateKonto = templateKontoFacade.save(templateKonto);
+                                    templateKonto = templateKontoDeltaspikeFacade.save(templateKonto);
                                 }
                             }
                         }
                     }
                 }
-                templateBuchhaltung = templateBuchhaltungFacade.save(templateBuchhaltung);
+                templateBuchhaltung = templateBuchhaltungDeltaspikeFacade.save(templateBuchhaltung);
             }
             tempFile.deleteOnExit();
             Notification.show(backupTemplateBuchhaltungen.getBuchhaltungen().size() + " Template Buchhaltungen neu erstellt", Notification.Type.HUMANIZED_MESSAGE);

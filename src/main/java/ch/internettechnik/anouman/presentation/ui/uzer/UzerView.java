@@ -1,13 +1,14 @@
 package ch.internettechnik.anouman.presentation.ui.uzer;
 
 import ch.internettechnik.anouman.backend.entity.Uzer;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.UzerFacade;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.UzerDeltaspikeFacade;
 import ch.internettechnik.anouman.presentation.ui.Menu;
-import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.shared.ui.ValueChangeMode;
+import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.themes.ValoTheme;
@@ -16,7 +17,8 @@ import javax.inject.Inject;
 import java.util.List;
 import java.util.logging.Logger;
 
-@CDIView(value = "Uzer")
+@UIScope
+@SpringView(name = "UzerView")
 public class UzerView extends VerticalLayout implements View {
     private static final Logger LOGGER = Logger.getLogger(UzerView.class.getName());
 
@@ -27,7 +29,7 @@ public class UzerView extends VerticalLayout implements View {
     private Menu menu;
 
     @Inject
-    private UzerFacade service;
+    private UzerDeltaspikeFacade service;
 
     @Inject
     private UzerForm form;

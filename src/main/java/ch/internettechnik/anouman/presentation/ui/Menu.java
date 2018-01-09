@@ -1,9 +1,10 @@
 package ch.internettechnik.anouman.presentation.ui;
 
 
-import com.vaadin.cdi.ViewScoped;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.ThemeResource;
+import com.vaadin.spring.annotation.SpringComponent;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.MenuBar;
@@ -14,7 +15,8 @@ import org.slf4j.LoggerFactory;
  * Created by michzuerch on 26.10.15.
  */
 
-@ViewScoped
+@SpringComponent
+@UIScope
 public class Menu extends CustomComponent {
     private static Logger logger = LoggerFactory.getLogger(Menu.class.getName());
     CssLayout layout = new CssLayout();
@@ -25,7 +27,7 @@ public class Menu extends CustomComponent {
         MenuBar.MenuItem aboutItem = menuBar.addItem("About", new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem menuItem) {
-                getUI().getNavigator().navigateTo("About");
+                getUI().getNavigator().navigateTo("AboutView");
             }
         });
         aboutItem.setIcon(resourceLogo);
@@ -35,25 +37,25 @@ public class Menu extends CustomComponent {
         administrationMenu.addItem("Benutzer", VaadinIcons.USER, new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem menuItem) {
-                getUI().getNavigator().navigateTo("Uzer");
+                getUI().getNavigator().navigateTo("UzerView");
             }
         });
         administrationMenu.addItem("Benutzerrollen", VaadinIcons.DIPLOMA_SCROLL, new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem menuItem) {
-                getUI().getNavigator().navigateTo("UzerRole");
+                getUI().getNavigator().navigateTo("UzerRoleView");
             }
         });
         administrationMenu.addItem("Benutzer zu Rollen zuordnen", VaadinIcons.DIPLOMA, new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem menuItem) {
-                getUI().getNavigator().navigateTo("UzerToUzerRoleMapping");
+                getUI().getNavigator().navigateTo("UzerToUzerRoleMappingView");
             }
         });
         administrationMenu.addItem("Backup", VaadinIcons.DOWNLOAD, new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem menuItem) {
-                getUI().getNavigator().navigateTo("Backup");
+                getUI().getNavigator().navigateTo("BackupView");
             }
         });
 
@@ -61,14 +63,14 @@ public class Menu extends CustomComponent {
         MenuBar.MenuItem reportJasper = reportingMenu.addItem("Report Vorlagen (Jasperreports)", VaadinIcons.GAVEL, new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem menuItem) {
-                getUI().getNavigator().navigateTo("ReportJasper");
+                getUI().getNavigator().navigateTo("ReportJasperView");
             }
         });
 
         reportJasper.addItem("Report Vorlagen Jasper Bilder", VaadinIcons.BULLSEYE, new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem selectedItem) {
-                getUI().getNavigator().navigateTo("ReportJasperImage");
+                getUI().getNavigator().navigateTo("ReportJasperImageView");
             }
         });
 
@@ -76,13 +78,13 @@ public class Menu extends CustomComponent {
         reportingMenu.addItem("Report Vorlagen (CSS)", VaadinIcons.GAVEL, new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem menuItem) {
-                getUI().getNavigator().navigateTo("ReportCSS");
+                getUI().getNavigator().navigateTo("ReportCSSView");
             }
         });
         reportingMenu.addItem("Report Vorlagen (FOP)", VaadinIcons.GAVEL, new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem menuItem) {
-                getUI().getNavigator().navigateTo("ReportFOP");
+                getUI().getNavigator().navigateTo("ReportFOPView");
             }
         });
 
@@ -97,33 +99,33 @@ public class Menu extends CustomComponent {
         toolsItem.addItem("Editable Invoice", VaadinIcons.INBOX, new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem selectedItem) {
-                getUI().getNavigator().navigateTo("RechnungEditOpener");
+                getUI().getNavigator().navigateTo("RechnungEditOpenerView");
             }
         });
 
         rechnungenMenu.addItem("Adressen", VaadinIcons.CALENDAR_CLOCK, new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem menuItem) {
-                getUI().getNavigator().navigateTo("Adresse");
+                getUI().getNavigator().navigateTo("AdresseView");
             }
         });
         rechnungenMenu.addItem("Rechnungen", VaadinIcons.INVOICE, new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem menuItem) {
-                getUI().getNavigator().navigateTo("Rechnung");
+                getUI().getNavigator().navigateTo("RechnungView");
             }
         });
         rechnungenMenu.addItem("Rechnungspositionen", VaadinIcons.PACKAGE, new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem menuItem) {
-                getUI().getNavigator().navigateTo("Rechnungsposition");
+                getUI().getNavigator().navigateTo("RechnungspositionView");
             }
         });
 
         MenuBar.MenuItem aufwandItem = rechnungenMenu.addItem("Aufwand", VaadinIcons.CAMERA, new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem menuItem) {
-                getUI().getNavigator().navigateTo("Aufwand");
+                getUI().getNavigator().navigateTo("AufwandView");
             }
         });
 
@@ -132,28 +134,28 @@ public class Menu extends CustomComponent {
         buchhaltungbuchhaltungMenu.addItem("Buchhaltung", VaadinIcons.LAPTOP, new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem menuItem) {
-                getUI().getNavigator().navigateTo("Buchhaltung");
+                getUI().getNavigator().navigateTo("BuchhaltungView");
             }
         });
 
         buchhaltungbuchhaltungMenu.addItem("Buchhaltung Tree", VaadinIcons.MAGNET, new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem menuItem) {
-                getUI().getNavigator().navigateTo("BuchhaltungTree");
+                getUI().getNavigator().navigateTo("BuchhaltungTreeView");
             }
         });
 
         buchhaltungbuchhaltungMenu.addItem("Buchhaltung erstellen", VaadinIcons.CONTROLLER, new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem selectedItem) {
-                getUI().getNavigator().navigateTo("BuchhaltungCreate");
+                getUI().getNavigator().navigateTo("BuchhaltungCreateView");
             }
         });
 
         buchhaltungbuchhaltungMenu.addItem("Buchungsmaske", VaadinIcons.ABACUS, new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem selectedItem) {
-                getUI().getNavigator().navigateTo("Buchungsmaske");
+                getUI().getNavigator().navigateTo("BuchungsmaskeView");
             }
         });
 
@@ -162,20 +164,20 @@ public class Menu extends CustomComponent {
         templateBuchhaltungMenu.addItem("Template Buchhaltung", VaadinIcons.ROAD, new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem menuItem) {
-                getUI().getNavigator().navigateTo("TemplateBuchhaltung");
+                getUI().getNavigator().navigateTo("TemplateBuchhaltungView");
             }
         });
         templateBuchhaltungMenu.addItem("Template Buchhaltung Tree", VaadinIcons.TREE_TABLE, new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem menuItem) {
-                getUI().getNavigator().navigateTo("TemplateBuchhaltungTree");
+                getUI().getNavigator().navigateTo("TemplateBuchhaltungTreeView");
             }
         });
 
         templateBuchhaltungMenu.addItem("Template Mehrwertsteuercodes", VaadinIcons.CLOCK, new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem selectedItem) {
-                getUI().getNavigator().navigateTo("TemplateMehrwertsteuercode");
+                getUI().getNavigator().navigateTo("TemplateMehrwertsteuercodeView");
             }
         });
 
@@ -185,21 +187,21 @@ public class Menu extends CustomComponent {
         artikelstammMenu.addItem("Artikelkategorie", VaadinIcons.SCREWDRIVER, new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem menuItem) {
-                getUI().getNavigator().navigateTo("Artikelkategorie");
+                getUI().getNavigator().navigateTo("ArtikelkategorieView");
             }
         });
 
         artikelstammMenu.addItem("Artikelbild", VaadinIcons.DIAMOND, new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem menuItem) {
-                getUI().getNavigator().navigateTo("Artikelbild");
+                getUI().getNavigator().navigateTo("ArtikelbildView");
             }
         });
 
         artikelstammMenu.addItem("Artikel", VaadinIcons.MAGIC, new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem menuItem) {
-                getUI().getNavigator().navigateTo("Artikel");
+                getUI().getNavigator().navigateTo("ArtikelView");
             }
         });
 
@@ -212,7 +214,7 @@ public class Menu extends CustomComponent {
         testsDatenMenu.addItem("Testdaten", VaadinIcons.ABACUS, new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem selectedItem) {
-                getUI().getNavigator().navigateTo("TestDataCreate");
+                getUI().getNavigator().navigateTo("TestDataCreateView");
             }
         });
 
@@ -221,42 +223,42 @@ public class Menu extends CustomComponent {
         testsComponents.addItem("EditorTest", VaadinIcons.EDIT, new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem selectedItem) {
-                getUI().getNavigator().navigateTo("EditorTest");
+                getUI().getNavigator().navigateTo("EditorTestView");
             }
         });
 
         testsComponents.addItem("Push Test", VaadinIcons.PUZZLE_PIECE, new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem selectedItem) {
-                getUI().getNavigator().navigateTo("PushTest");
+                getUI().getNavigator().navigateTo("PushTestView");
             }
         });
 
         testsComponents.addItem("TestAdresse", VaadinIcons.EDIT, new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem selectedItem) {
-                getUI().getNavigator().navigateTo("TestAdresse");
+                getUI().getNavigator().navigateTo("TestAdresseView");
             }
         });
 
         testsComponents.addItem("EditorTestGridEdit", VaadinIcons.YOUTUBE, new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem selectedItem) {
-                getUI().getNavigator().navigateTo("EditorTestGridEdit");
+                getUI().getNavigator().navigateTo("EditorTestGridEditView");
             }
         });
 
         testsComponents.addItem("Image Test", VaadinIcons.INFO, new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem selectedItem) {
-                getUI().getNavigator().navigateTo("ImageTest");
+                getUI().getNavigator().navigateTo("ImageTestView");
             }
         });
 
         testsComponents.addItem("GridCrud Test", VaadinIcons.MAGIC, new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem selectedItem) {
-                getUI().getNavigator().navigateTo("GridCrudTest");
+                getUI().getNavigator().navigateTo("GridCrudTestView");
             }
         });
 

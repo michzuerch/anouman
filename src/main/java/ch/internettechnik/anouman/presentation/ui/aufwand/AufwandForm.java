@@ -2,8 +2,8 @@ package ch.internettechnik.anouman.presentation.ui.aufwand;
 
 import ch.internettechnik.anouman.backend.entity.Aufwand;
 import ch.internettechnik.anouman.backend.entity.Rechnung;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.RechnungFacade;
-import com.vaadin.cdi.ViewScoped;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.RechnungDeltaspikeFacade;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import org.vaadin.viritin.form.AbstractForm;
 
@@ -13,7 +13,7 @@ import java.time.ZoneOffset;
 /**
  * Created by michzuerch on 09.08.15.
  */
-@ViewScoped
+@UIScope
 public class AufwandForm extends AbstractForm<Aufwand> {
 
     NativeSelect<Rechnung> rechnung = new NativeSelect<>();
@@ -23,7 +23,7 @@ public class AufwandForm extends AbstractForm<Aufwand> {
     DateTimeField ende = new DateTimeField("Ende");
 
     @Inject
-    RechnungFacade rechnungFacade;
+    RechnungDeltaspikeFacade rechnungDeltaspikeFacade;
 
     public AufwandForm() {
         super(Aufwand.class);
@@ -45,7 +45,7 @@ public class AufwandForm extends AbstractForm<Aufwand> {
     protected Component createContent() {
         rechnung.setCaption("Rechnung");
         rechnung.setEmptySelectionAllowed(false);
-        rechnung.setItems(rechnungFacade.findAll());
+        rechnung.setItems(rechnungDeltaspikeFacade.findAll());
         rechnung.setItemCaptionGenerator(rechnung1 -> rechnung1.getBezeichnung() + " id:" + rechnung1.getId());
 
         getBinder().forField(start)

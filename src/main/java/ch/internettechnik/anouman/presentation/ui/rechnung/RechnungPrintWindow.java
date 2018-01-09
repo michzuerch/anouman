@@ -2,10 +2,10 @@ package ch.internettechnik.anouman.presentation.ui.rechnung;
 
 import ch.internettechnik.anouman.backend.entity.Rechnung;
 import ch.internettechnik.anouman.backend.entity.report.jasper.ReportJasper;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ReportJasperFacade;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ReportJasperDeltaspikeFacade;
 import ch.internettechnik.anouman.presentation.reports.rechnung.RechnungReportTool;
-import com.vaadin.cdi.ViewScoped;
 import com.vaadin.icons.VaadinIcons;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import org.apache.commons.io.IOUtils;
 import org.vaadin.viritin.button.DownloadButton;
@@ -15,12 +15,12 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-@ViewScoped
+@UIScope
 public class RechnungPrintWindow extends CustomComponent {
     private static final Logger LOGGER = Logger.getLogger(RechnungView.class.getName());
 
     @Inject
-    ReportJasperFacade reportJasperFacade;
+    ReportJasperDeltaspikeFacade reportJasperDeltaspikeFacade;
 
     private Rechnung rechnung;
     private ComboBox<ReportJasper> reportSelect = new ComboBox<>();
@@ -77,9 +77,9 @@ public class RechnungPrintWindow extends CustomComponent {
     }
 
     protected Component createContent() {
-        reportSelect.setItems(reportJasperFacade.findAll());
+        reportSelect.setItems(reportJasperDeltaspikeFacade.findAll());
         reportSelect.setEmptySelectionAllowed(false);
-        reportSelect.setSelectedItem(reportJasperFacade.findAll().get(0));
+        reportSelect.setSelectedItem(reportJasperDeltaspikeFacade.findAll().get(0));
         reportSelect.setItemCaptionGenerator(reportTemplate -> reportTemplate.getBezeichnung());
         reportSelect.setCaption("Report Template");
 

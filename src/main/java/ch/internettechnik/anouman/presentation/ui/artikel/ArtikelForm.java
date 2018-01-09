@@ -2,16 +2,16 @@ package ch.internettechnik.anouman.presentation.ui.artikel;
 
 import ch.internettechnik.anouman.backend.entity.Artikel;
 import ch.internettechnik.anouman.backend.entity.Artikelkategorie;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ArtikelkategorieFacade;
-import com.vaadin.cdi.ViewScoped;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ArtikelkategorieDeltaspikeFacade;
 import com.vaadin.data.converter.StringToDoubleConverter;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import org.vaadin.viritin.form.AbstractForm;
 import tm.kod.widgets.numberfield.NumberField;
 
 import javax.inject.Inject;
 
-@ViewScoped
+@UIScope
 public class ArtikelForm extends AbstractForm<Artikel> {
 
     NativeSelect<Artikelkategorie> artikelkategorieNativeSelect = new NativeSelect<>();
@@ -23,7 +23,7 @@ public class ArtikelForm extends AbstractForm<Artikel> {
     NumberField anzahl = new NumberField("Anzahl");
 
     @Inject
-    ArtikelkategorieFacade artikelkategorieFacade;
+    ArtikelkategorieDeltaspikeFacade artikelkategorieDeltaspikeFacade;
 
     public ArtikelForm() {
         super(Artikel.class);
@@ -66,7 +66,7 @@ public class ArtikelForm extends AbstractForm<Artikel> {
 
         artikelkategorieNativeSelect.setCaption("Artikelkategorie");
         artikelkategorieNativeSelect.setEmptySelectionAllowed(false);
-        artikelkategorieNativeSelect.setItems(artikelkategorieFacade.findAll());
+        artikelkategorieNativeSelect.setItems(artikelkategorieDeltaspikeFacade.findAll());
         artikelkategorieNativeSelect.setItemCaptionGenerator(artikelkategorie -> artikelkategorie.getBezeichnung() + " id:" + artikelkategorie.getId());
         return new VerticalLayout(new FormLayout(
                 artikelkategorieNativeSelect, bezeichnung, bezeichnungLang, mengeneinheit, stueckpreis, anzahl

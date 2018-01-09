@@ -2,14 +2,15 @@ package ch.internettechnik.anouman.presentation.ui.uzerrole;
 
 import ch.internettechnik.anouman.backend.entity.Uzer;
 import ch.internettechnik.anouman.backend.entity.UzerRole;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.UzerFacade;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.UzerRoleFacade;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.UzerDeltaspikeFacade;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.UzerRoleDeltaspikeFacade;
 import ch.internettechnik.anouman.presentation.ui.Menu;
-import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.shared.ui.ValueChangeMode;
+import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.themes.ValoTheme;
@@ -19,7 +20,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
 
-@CDIView(value = "UzerRole")
+@UIScope
+@SpringView(name = "UzerRoleView")
 public class UzerRoleView extends VerticalLayout implements View {
     private static final Logger LOGGER = Logger.getLogger(UzerRoleView.class.getName());
 
@@ -30,10 +32,10 @@ public class UzerRoleView extends VerticalLayout implements View {
     private Menu menu;
 
     @Inject
-    private UzerRoleFacade uzerRoleFacade;
+    private UzerRoleDeltaspikeFacade uzerRoleDeltaspikeFacade;
 
     @Inject
-    private UzerFacade uzerFacade;
+    private UzerDeltaspikeFacade uzerDeltaspikeFacade;
 
     @Inject
     private UzerRoleForm form;
@@ -48,7 +50,7 @@ public class UzerRoleView extends VerticalLayout implements View {
         filterText.addValueChangeListener(e -> updateList());
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
 
-        Collection<Uzer> uzers = uzerFacade.findAll();
+        Collection<Uzer> uzers = uzerDeltaspikeFacade.findAll();
         ComboBox<Uzer> uzerComboBox = new ComboBox<>("", uzers);
         uzerComboBox.setItemCaptionGenerator(Uzer::getPrincipal);
         uzerComboBox.setEmptySelectionAllowed(true);
@@ -64,7 +66,7 @@ public class UzerRoleView extends VerticalLayout implements View {
             form.setEntity(new UzerRole());
             form.openInModalPopup();
             form.setSavedHandler(val -> {
-                uzerRoleFacade.save(val);
+                uzerRoleDeltaspikeFacade.save(val);
                 updateList();
                 grid.select(val);
                 form.closePopup();
@@ -85,7 +87,7 @@ public class UzerRoleView extends VerticalLayout implements View {
         grid.addColumn(val -> "löschen",
                 new ButtonRenderer(event -> {
                     Notification.show("Lösche User Role id:" + event.getItem(), Notification.Type.HUMANIZED_MESSAGE);
-                    uzerRoleFacade.delete((UzerRole) event.getItem());
+                    uzerRoleDeltaspikeFacade.delete((UzerRole) event.getItem());
                     updateList();
                 })
         );
@@ -95,7 +97,7 @@ public class UzerRoleView extends VerticalLayout implements View {
                     form.setEntity((UzerRole) event.getItem());
                     form.openInModalPopup();
                     form.setSavedHandler(val -> {
-                        uzerRoleFacade.save(val);
+                        uzerRoleDeltaspikeFacade.save(val);
                         updateList();
                         grid.select(val);
                         form.closePopup();
@@ -123,12 +125,12 @@ public class UzerRoleView extends VerticalLayout implements View {
         }
         /*
         if (!filterText.isEmpty()) {
-            items = uzerRoleFacade.findByErsterLike(filterText.getValue().toLowerCase());
+            items = uzerRoleDeltaspikeFacade.findByErsterLike(filterText.getValue().toLowerCase());
         } else {
-            items = uzerRoleFacade.findAll();
+            items = uzerRoleDeltaspikeFacade.findAll();
         }
         */
-        items = uzerRoleFacade.findAll();
+        items = uzerRoleDeltaspikeFacade.findAll();
         grid.setItems(items);
     }
 

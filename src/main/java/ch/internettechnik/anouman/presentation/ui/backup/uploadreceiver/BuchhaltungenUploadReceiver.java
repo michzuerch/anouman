@@ -21,22 +21,22 @@ public class BuchhaltungenUploadReceiver implements Serializable, Upload.Receive
     File tempFile;
 
     @Inject
-    BuchhaltungFacade buchhaltungFacade;
+    BuchhaltungDeltaspikeFacade buchhaltungDeltaspikeFacade;
 
     @Inject
-    KontoklasseFacade kontoklasseFacade;
+    KontoklasseDeltaspikeFacade kontoklasseDeltaspikeFacade;
 
     @Inject
-    KontogruppeFacade kontogruppeFacade;
+    KontogruppeDeltaspikeFacade kontogruppeDeltaspikeFacade;
 
     @Inject
-    KontohauptgruppeFacade kontohauptgruppeFacade;
+    KontohauptgruppeDeltaspikeFacade kontohauptgruppeDeltaspikeFacade;
 
     @Inject
-    KontoFacade kontoFacade;
+    KontoDeltaspikeFacade kontoDeltaspikeFacade;
 
     @Inject
-    MehrwertsteuercodeFacade mehrwertsteuercodeFacade;
+    MehrwertsteuercodeDeltaspikeFacade mehrwertsteuercodeDeltaspikeFacade;
 
     public BuchhaltungenUploadReceiver() {
     }
@@ -67,34 +67,34 @@ public class BuchhaltungenUploadReceiver implements Serializable, Upload.Receive
                 Buchhaltung buchhaltung = new Buchhaltung();
                 String bezeichnung = backupBuchhaltung.getBezeichnung();
                 buchhaltung.setBezeichnung(bezeichnung);
-                buchhaltung = buchhaltungFacade.save(buchhaltung);
+                buchhaltung = buchhaltungDeltaspikeFacade.save(buchhaltung);
 
                 for (BackupKontoklasse backupKontoklasse : backupBuchhaltung.getKontoklasses()) {
                     Kontoklasse kontoklasse = new Kontoklasse();
                     kontoklasse.setBezeichnung(backupKontoklasse.getBezeichnung());
                     kontoklasse.setKontonummer(backupKontoklasse.getKontonummer());
                     kontoklasse.setBuchhaltung(buchhaltung);
-                    kontoklasse = kontoklasseFacade.save(kontoklasse);
+                    kontoklasse = kontoklasseDeltaspikeFacade.save(kontoklasse);
                     buchhaltung.getKontoklasse().add(kontoklasse);
-                    buchhaltung = buchhaltungFacade.save(buchhaltung);
+                    buchhaltung = buchhaltungDeltaspikeFacade.save(buchhaltung);
 
                     for (BackupKontohauptgruppe backupKontohauptgruppe : backupKontoklasse.getBackupKontohauptgruppes()) {
                         Kontohauptgruppe kontohauptgruppe = new Kontohauptgruppe();
                         kontohauptgruppe.setBezeichnung(backupKontohauptgruppe.getBezeichnung());
                         kontohauptgruppe.setKontonummer(backupKontohauptgruppe.getKontonummer());
                         kontohauptgruppe.setKontoklasse(kontoklasse);
-                        kontohauptgruppe = kontohauptgruppeFacade.save(kontohauptgruppe);
+                        kontohauptgruppe = kontohauptgruppeDeltaspikeFacade.save(kontohauptgruppe);
                         kontoklasse.getKontohauptgruppes().add(kontohauptgruppe);
-                        kontoklasse = kontoklasseFacade.save(kontoklasse);
+                        kontoklasse = kontoklasseDeltaspikeFacade.save(kontoklasse);
 
                         for (BackupKontogruppe backupKontogruppe : backupKontohauptgruppe.getBackupKontogruppes()) {
                             Kontogruppe kontogruppe = new Kontogruppe();
                             kontogruppe.setBezeichnung(backupKontogruppe.getBezeichnung());
                             kontogruppe.setKontonummer(backupKontogruppe.getKontonummer());
                             kontogruppe.setKontohauptgruppe(kontohauptgruppe);
-                            kontogruppe = kontogruppeFacade.save(kontogruppe);
+                            kontogruppe = kontogruppeDeltaspikeFacade.save(kontogruppe);
                             kontohauptgruppe.getKontogruppes().add(kontogruppe);
-                            kontohauptgruppe = kontohauptgruppeFacade.save(kontohauptgruppe);
+                            kontohauptgruppe = kontohauptgruppeDeltaspikeFacade.save(kontohauptgruppe);
 
 
                             for (BackupKonto backupKonto : backupKontogruppe.getKontos()) {
@@ -102,14 +102,14 @@ public class BuchhaltungenUploadReceiver implements Serializable, Upload.Receive
                                 konto.setBezeichnung(backupKonto.getBezeichnung());
                                 konto.setKontonummer(backupKonto.getKontonummer());
                                 konto.setKontogruppe(kontogruppe);
-                                konto = kontoFacade.save(konto);
+                                konto = kontoDeltaspikeFacade.save(konto);
                                 kontogruppe.getKontos().add(konto);
-                                kontogruppe = kontogruppeFacade.save(kontogruppe);
+                                kontogruppe = kontogruppeDeltaspikeFacade.save(kontogruppe);
                             }
                         }
                     }
                 }
-                buchhaltung = buchhaltungFacade.save(buchhaltung);
+                buchhaltung = buchhaltungDeltaspikeFacade.save(buchhaltung);
             }
             tempFile.deleteOnExit();
             Notification.show(backupBuchhaltungen.getBuchhaltungen().size() + " Buchhaltungen neu erstellt", Notification.Type.HUMANIZED_MESSAGE);

@@ -2,8 +2,8 @@ package ch.internettechnik.anouman.presentation.ui.rechnung;
 
 import ch.internettechnik.anouman.backend.entity.Adresse;
 import ch.internettechnik.anouman.backend.entity.Rechnung;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.AdresseFacade;
-import com.vaadin.cdi.ViewScoped;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.AdresseDeltaspikeFacade;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +15,7 @@ import javax.inject.Inject;
 /**
  * Created by michzuerch on 09.08.15.
  */
-@ViewScoped
+@UIScope
 public class RechnungForm extends AbstractForm<Rechnung> {
     private static Logger logger = LoggerFactory.getLogger(RechnungForm.class.getName());
 
@@ -27,7 +27,7 @@ public class RechnungForm extends AbstractForm<Rechnung> {
     CheckBox verschickt = new CheckBox("Verschickt");
 
     @Inject
-    AdresseFacade facade;
+    AdresseDeltaspikeFacade facade;
 
     public RechnungForm() {
         super(Rechnung.class);

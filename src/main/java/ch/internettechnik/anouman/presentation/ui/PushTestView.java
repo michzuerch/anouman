@@ -1,9 +1,9 @@
 package ch.internettechnik.anouman.presentation.ui;
 
-import com.vaadin.annotations.Theme;
-import com.vaadin.cdi.CDIView;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import org.slf4j.LoggerFactory;
@@ -13,8 +13,8 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.concurrent.ForkJoinPool;
 
-@Theme("anouman")
-@CDIView("PushTest")
+@UIScope
+@SpringView(name = "TemplateMehrwertsteuercodeView")
 public class PushTestView extends VerticalLayout implements View {
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(PushTestView.class.getName());
 

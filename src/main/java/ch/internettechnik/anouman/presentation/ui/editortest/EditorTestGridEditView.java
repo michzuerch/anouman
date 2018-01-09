@@ -1,15 +1,16 @@
 package ch.internettechnik.anouman.presentation.ui.editortest;
 
 import ch.internettechnik.anouman.backend.entity.EditorTest;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.EditorTestFacade;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.EditorTestDeltaspikeFacade;
 import ch.internettechnik.anouman.presentation.ui.Menu;
 import com.vaadin.annotations.PreserveOnRefresh;
-import com.vaadin.cdi.CDIView;
 import com.vaadin.data.Binder;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.shared.ui.ValueChangeMode;
+import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.themes.ValoTheme;
@@ -18,13 +19,14 @@ import javax.inject.Inject;
 import java.util.List;
 import java.util.logging.Logger;
 
-@CDIView(value = "EditorTestGridEdit")
+@UIScope
+@SpringView(name = "EditorTestGridView")
 @PreserveOnRefresh
 public class EditorTestGridEditView extends VerticalLayout implements View {
     private static final Logger LOGGER = Logger.getLogger(EditorTestGridEditView.class.getName());
 
     @Inject
-    EditorTestFacade facade;
+    EditorTestDeltaspikeFacade facade;
 
     TextField filterText = new TextField();
     Grid<EditorTest> grid = new Grid<>();

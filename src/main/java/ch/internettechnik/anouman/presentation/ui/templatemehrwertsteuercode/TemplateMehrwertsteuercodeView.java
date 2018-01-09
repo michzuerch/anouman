@@ -3,15 +3,16 @@ package ch.internettechnik.anouman.presentation.ui.templatemehrwertsteuercode;
 import ch.internettechnik.anouman.backend.entity.TemplateBuchhaltung;
 import ch.internettechnik.anouman.backend.entity.TemplateKonto;
 import ch.internettechnik.anouman.backend.entity.TemplateMehrwertsteuercode;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.TemplateBuchhaltungFacade;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.TemplateKontoFacade;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.TemplateMehrwertsteuercodeFacade;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.TemplateBuchhaltungDeltaspikeFacade;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.TemplateKontoDeltaspikeFacade;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.TemplateMehrwertsteuercodeDeltaspikeFacade;
 import ch.internettechnik.anouman.presentation.ui.Menu;
-import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.shared.ui.ValueChangeMode;
+import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.themes.ValoTheme;
@@ -21,7 +22,8 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
-@CDIView(value = "TemplateMehrwertsteuercode")
+@UIScope
+@SpringView(name = "TemplateMehrwertsteuercodeView")
 public class TemplateMehrwertsteuercodeView extends VerticalLayout implements View {
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(TemplateMehrwertsteuercodeView.class.getName());
 
@@ -34,13 +36,13 @@ public class TemplateMehrwertsteuercodeView extends VerticalLayout implements Vi
     private Menu menu;
 
     @Inject
-    private TemplateMehrwertsteuercodeFacade facade;
+    private TemplateMehrwertsteuercodeDeltaspikeFacade facade;
 
     @Inject
-    private TemplateBuchhaltungFacade templateBuchhaltungFacade;
+    private TemplateBuchhaltungDeltaspikeFacade templateBuchhaltungDeltaspikeFacade;
 
     @Inject
-    private TemplateKontoFacade templateKontoFacade;
+    private TemplateKontoDeltaspikeFacade templateKontoDeltaspikeFacade;
 
     @Inject
     private TemplateMehrwertsteuercodeForm form;
@@ -52,7 +54,7 @@ public class TemplateMehrwertsteuercodeView extends VerticalLayout implements Vi
         filterTextBezeichnung.setValueChangeMode(ValueChangeMode.LAZY);
 
         filterTemplateBuchhaltung.setPlaceholder("Filter für Template Buchhaltung");
-        filterTemplateBuchhaltung.setItems(templateBuchhaltungFacade.findAll());
+        filterTemplateBuchhaltung.setItems(templateBuchhaltungDeltaspikeFacade.findAll());
         filterTemplateBuchhaltung.setItemCaptionGenerator(item -> item.getBezeichnung() + " id:" + item.getId());
         filterTemplateBuchhaltung.addValueChangeListener(valueChangeEvent -> updateList());
 
@@ -67,7 +69,7 @@ public class TemplateMehrwertsteuercodeView extends VerticalLayout implements Vi
         addBtn.addClickListener(event -> {
             grid.asSingleSelect().clear();
             TemplateMehrwertsteuercode templateMehrwertsteuercode = new TemplateMehrwertsteuercode();
-            TemplateBuchhaltung templateBuchhaltung = templateBuchhaltungFacade.findAll().get(0);
+            TemplateBuchhaltung templateBuchhaltung = templateBuchhaltungDeltaspikeFacade.findAll().get(0);
             templateMehrwertsteuercode.setTemplateBuchhaltung(templateBuchhaltung);
             templateMehrwertsteuercode.setProzent(8f);
             templateMehrwertsteuercode.setTemplateMehrwertsteuerKonto(createTemplateKontoList(templateBuchhaltung).get(0));
@@ -107,7 +109,7 @@ public class TemplateMehrwertsteuercodeView extends VerticalLayout implements Vi
                     mehrwertsteuercode = facade.findBy(mehrwertsteuercode.getId());
                     TemplateBuchhaltung buchhaltung = mehrwertsteuercode.getTemplateBuchhaltung();
                     buchhaltung.getTemplateMehrwertsteuercodes().remove(mehrwertsteuercode);
-                    templateBuchhaltungFacade.save(buchhaltung);
+                    templateBuchhaltungDeltaspikeFacade.save(buchhaltung);
                     Notification.show("Lösche Template Mehrwertsteuercode id:" + mehrwertsteuercode.getId(), Notification.Type.HUMANIZED_MESSAGE);
                     facade.delete(mehrwertsteuercode);
                     updateList();

@@ -2,7 +2,7 @@ package ch.internettechnik.anouman.presentation.ui.report.css;
 
 import ch.internettechnik.anouman.backend.entity.report.css.ReportCSS;
 import ch.internettechnik.anouman.presentation.ui.converter.ByteToStringConverter;
-import com.vaadin.cdi.ViewScoped;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import org.vaadin.viritin.form.AbstractForm;
 import server.droporchoose.UploadComponent;
@@ -12,7 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-@ViewScoped
+@UIScope
 public class ReportCSSForm extends AbstractForm<ReportCSS> {
     TextField bezeichnung = new TextField("Bezeichnung");
     UploadComponent uploadCSS = new UploadComponent();

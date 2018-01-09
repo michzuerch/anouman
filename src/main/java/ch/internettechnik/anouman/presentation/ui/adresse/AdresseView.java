@@ -1,13 +1,14 @@
 package ch.internettechnik.anouman.presentation.ui.adresse;
 
 import ch.internettechnik.anouman.backend.entity.Adresse;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.AdresseFacade;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.AdresseDeltaspikeFacade;
 import ch.internettechnik.anouman.presentation.ui.Menu;
-import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.shared.ui.ValueChangeMode;
+import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.themes.ValoTheme;
@@ -17,7 +18,8 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 
 
-@CDIView(value = "Adresse")
+@UIScope
+@SpringView(name = "AdresseView")
 public class AdresseView extends VerticalLayout implements View {
     private static Logger logger = LoggerFactory.getLogger(AdresseView.class.getName());
 
@@ -31,7 +33,7 @@ public class AdresseView extends VerticalLayout implements View {
     private Menu menu;
 
     @Inject
-    private AdresseFacade facade;
+    private AdresseDeltaspikeFacade facade;
 
     @Inject
     private AdresseForm form;
