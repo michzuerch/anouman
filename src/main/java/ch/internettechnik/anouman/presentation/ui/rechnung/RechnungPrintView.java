@@ -7,11 +7,10 @@ import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.Rechnung
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ReportJasperDeltaspikeFacade;
 import ch.internettechnik.anouman.presentation.reports.rechnung.RechnungReportTool;
 import ch.internettechnik.anouman.presentation.ui.Menu;
+import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.spring.annotation.SpringView;
-import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import org.apache.commons.io.IOUtils;
 import org.vaadin.viritin.button.DownloadButton;
@@ -20,8 +19,7 @@ import javax.inject.Inject;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
-@UIScope
-@SpringView(name = "RechnungPrintView")
+@CDIView("RechnungPrintView")
 public class RechnungPrintView extends VerticalLayout implements View {
     @Inject
     RechnungDeltaspikeFacade rechnungDeltaspikeFacade;

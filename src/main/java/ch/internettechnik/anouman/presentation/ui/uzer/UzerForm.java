@@ -1,14 +1,12 @@
 package ch.internettechnik.anouman.presentation.ui.uzer;
 
 import ch.internettechnik.anouman.backend.entity.Uzer;
-import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import org.vaadin.viritin.form.AbstractForm;
 
 /**
  * Created by michzuerch on 09.08.15.
  */
-@UIScope
 public class UzerForm extends AbstractForm<Uzer> {
 
     //@Inject

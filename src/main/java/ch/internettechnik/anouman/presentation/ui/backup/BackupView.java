@@ -12,11 +12,10 @@ import ch.internettechnik.anouman.presentation.ui.backup.uploadreceiver.Template
 import ch.internettechnik.anouman.presentation.ui.backup.xml.adressen.*;
 import ch.internettechnik.anouman.presentation.ui.backup.xml.buchhaltungen.*;
 import ch.internettechnik.anouman.presentation.ui.backup.xml.templatebuchhaltungen.*;
+import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.spring.annotation.SpringView;
-import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,8 +36,7 @@ import java.util.List;
 /**
  * Created by michzuerch on 25.07.15.
  */
-@UIScope
-@SpringView(name = "BackkupView")
+@CDIView("BackupView")
 public class BackupView extends VerticalLayout implements View {
     private static Logger logger = LoggerFactory.getLogger(BackupView.class.getName());
 
@@ -112,7 +110,7 @@ public class BackupView extends VerticalLayout implements View {
                         backupAufwand.setTitel(aufwand.getTitel());
                         backupAufwand.setBezeichnung(aufwand.getBezeichnung());
                         backupAufwand.setStart(aufwand.getStart());
-                        backupAufwand.setEnde(aufwand.getEnde());
+                        backupAufwand.setEnd(aufwand.getEnd());
                         backupRechnung.getAufwands().add(backupAufwand);
                     });
                 });
@@ -388,7 +386,7 @@ public class BackupView extends VerticalLayout implements View {
                     backupAufwand.setTitel(aufwand.getTitel());
                     backupAufwand.setBezeichnung(aufwand.getBezeichnung());
                     backupAufwand.setStart(aufwand.getStart());
-                    backupAufwand.setEnde(aufwand.getEnde());
+                    backupAufwand.setEnd(aufwand.getEnd());
                     backupRechnung.getAufwands().add(backupAufwand);
                 });
             });

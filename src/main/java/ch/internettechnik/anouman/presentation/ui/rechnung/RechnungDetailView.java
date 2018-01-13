@@ -9,19 +9,17 @@ import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.Rechnung
 import ch.internettechnik.anouman.presentation.ui.Menu;
 import ch.internettechnik.anouman.presentation.ui.aufwand.AufwandForm;
 import ch.internettechnik.anouman.presentation.ui.rechnungsposition.RechnungspositionForm;
+import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.spring.annotation.SpringView;
-import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 
 import javax.inject.Inject;
 
-@UIScope
-@SpringView(name = "RechnungDetailView")
+@CDIView("RechnungDetailView")
 public class RechnungDetailView extends VerticalLayout implements View {
     @Inject
     RechnungspositionForm rechnungspositionForm;

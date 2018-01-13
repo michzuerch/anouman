@@ -1,7 +1,6 @@
 package ch.internettechnik.anouman.presentation.ui.buchung;
 
 import ch.internettechnik.anouman.backend.entity.Buchung;
-import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.VerticalLayout;
@@ -11,7 +10,6 @@ import org.vaadin.viritin.form.AbstractForm;
 /**
  * Created by michzuerch on 09.08.15.
  */
-@UIScope
 public class BuchungForm extends AbstractForm<Buchung> {
 
     //@Inject

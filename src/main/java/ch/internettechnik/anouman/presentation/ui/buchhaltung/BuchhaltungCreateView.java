@@ -4,13 +4,12 @@ import ch.internettechnik.anouman.backend.entity.*;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.*;
 import ch.internettechnik.anouman.presentation.ui.Menu;
 import ch.internettechnik.anouman.presentation.ui.templatebuchhaltung.TemplateBuchhaltungTreeView;
+import com.vaadin.cdi.CDIView;
 import com.vaadin.data.BeanValidationBinder;
 import com.vaadin.data.StatusChangeEvent;
 import com.vaadin.data.StatusChangeListener;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.spring.annotation.SpringView;
-import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import org.slf4j.LoggerFactory;
 import org.vaadin.viritin.fields.IntegerField;
@@ -18,8 +17,7 @@ import org.vaadin.viritin.fields.IntegerField;
 import javax.inject.Inject;
 import java.time.LocalDate;
 
-@UIScope
-@SpringView(name = "BuchhaltungCreateView")
+@CDIView("BuchhaltungCreateView")
 public class BuchhaltungCreateView extends VerticalLayout implements View {
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(TemplateBuchhaltungTreeView.class.getName());
     @Inject

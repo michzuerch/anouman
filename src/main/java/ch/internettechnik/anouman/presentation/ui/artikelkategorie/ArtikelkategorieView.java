@@ -3,12 +3,11 @@ package ch.internettechnik.anouman.presentation.ui.artikelkategorie;
 import ch.internettechnik.anouman.backend.entity.Artikelkategorie;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ArtikelkategorieDeltaspikeFacade;
 import ch.internettechnik.anouman.presentation.ui.Menu;
+import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.shared.ui.ValueChangeMode;
-import com.vaadin.spring.annotation.SpringView;
-import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.themes.ValoTheme;
@@ -19,8 +18,7 @@ import javax.inject.Inject;
 
 // @todo : java.lang.IllegalStateException: Property type 'java.util.Date' doesn't match the field type 'java.time.LocalDateTime'.
 // Binding should be configured manually using converter.
-@UIScope
-@SpringView(name = "ArtikelkategorieView")
+@CDIView("ArtikelkategorieView")
 public class ArtikelkategorieView extends VerticalLayout implements View {
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(ArtikelkategorieView.class.getName());
 

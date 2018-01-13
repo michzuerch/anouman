@@ -3,11 +3,10 @@ package ch.internettechnik.anouman.presentation.ui.testdata;
 import ch.internettechnik.anouman.backend.entity.*;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.*;
 import ch.internettechnik.anouman.presentation.ui.Menu;
+import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.spring.annotation.SpringView;
-import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.VerticalLayout;
@@ -15,10 +14,13 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Date;
 
-@UIScope
-@SpringView(name = "TestDataCreateView")
+@CDIView("TestDataCreateView")
 public class TestDataCreateView extends VerticalLayout implements View {
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(TestDataCreateView.class.getName());
 
@@ -168,8 +170,12 @@ public class TestDataCreateView extends VerticalLayout implements View {
         aufwand.setTitel("Aufwand");
 
         //@todo Aufwand ist 0 Stunden wegen Enddatum
-        aufwand.setStart(new Date());
-        aufwand.setEnde(new Date());
+
+        Instant now = Instant.now();
+        aufwand.setStart(LocalDateTime.ofInstant(now, ZoneOffset.UTC));
+
+        aufwand.setEnd(LocalDateTime.ofInstant(now.plus(Duration.ofHours(3)), ZoneOffset.UTC));
+
         aufwand.setRechnung(rechnung);
         aufwand = aufwandDeltaspikeFacade.save(aufwand);
 

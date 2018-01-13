@@ -3,7 +3,7 @@ package ch.internettechnik.anouman.presentation.ui.backup.xml.adressen;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @XmlAccessorType(XmlAccessType.NONE)
 public class BackupAufwand {
@@ -12,9 +12,9 @@ public class BackupAufwand {
     @XmlElement
     private String bezeichnung;
     @XmlElement
-    private Date start;
+    private LocalDateTime start;
     @XmlElement
-    private Date ende;
+    private LocalDateTime end;
 
     public String getTitel() {
         return titel;
@@ -32,19 +32,19 @@ public class BackupAufwand {
         this.bezeichnung = bezeichnung;
     }
 
-    public Date getStart() {
+    public LocalDateTime getStart() {
         return start;
     }
 
-    public void setStart(Date start) {
+    public void setStart(LocalDateTime start) {
         this.start = start;
     }
 
-    public Date getEnde() {
-        return ende;
+    public LocalDateTime getEnd() {
+        return end;
     }
 
-    public void setEnde(Date ende) {
-        this.ende = ende;
+    public void setEnd(LocalDateTime end) {
+        this.end = end;
     }
 }

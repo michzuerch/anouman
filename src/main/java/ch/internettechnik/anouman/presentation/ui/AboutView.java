@@ -1,10 +1,9 @@
 package ch.internettechnik.anouman.presentation.ui;
 
 import com.vaadin.annotations.Theme;
+import com.vaadin.cdi.CDIView;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.spring.annotation.SpringView;
-import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.VerticalLayout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,8 +13,7 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 @Theme("anouman")
-@UIScope
-@SpringView(name = "AboutView")
+@CDIView("AboutView")
 public class AboutView extends VerticalLayout implements View {
     private static Logger logger = LoggerFactory.getLogger(AboutView.class.getName());
 

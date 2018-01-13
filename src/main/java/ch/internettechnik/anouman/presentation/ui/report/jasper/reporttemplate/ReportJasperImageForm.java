@@ -4,13 +4,11 @@ import ch.internettechnik.anouman.backend.entity.report.jasper.ReportJasper;
 import ch.internettechnik.anouman.backend.entity.report.jasper.ReportJasperImage;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ReportJasperDeltaspikeFacade;
 import ch.internettechnik.anouman.presentation.ui.ImageField;
-import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import org.vaadin.viritin.form.AbstractForm;
 
 import javax.inject.Inject;
 
-@UIScope
 public class ReportJasperImageForm extends AbstractForm<ReportJasperImage> {
     @Inject
     ReportJasperDeltaspikeFacade reportJasperDeltaspikeFacade;

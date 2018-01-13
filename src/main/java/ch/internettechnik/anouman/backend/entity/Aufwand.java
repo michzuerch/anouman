@@ -4,10 +4,14 @@ package ch.internettechnik.anouman.backend.entity;
  * Created by michzuerch on 06.07.15.
  */
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 @Entity
 @NamedQueries({
@@ -23,13 +27,11 @@ public class Aufwand extends AbstractEntity {
     @Column
     private String bezeichnung;
 
-    @Column
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date start;
+    @Column(name = "startzeit")
+    private LocalDateTime start;
 
-    @Column
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date ende;
+    @Column(name = "endzeit")
+    private LocalDateTime end;
 
     @ManyToOne
     private ch.internettechnik.anouman.backend.entity.Rechnung rechnung;
@@ -50,20 +52,20 @@ public class Aufwand extends AbstractEntity {
         this.bezeichnung = bezeichnung;
     }
 
-    public Date getStart() {
+    public LocalDateTime getStart() {
         return start;
     }
 
-    public void setStart(Date start) {
+    public void setStart(LocalDateTime start) {
         this.start = start;
     }
 
-    public Date getEnde() {
-        return ende;
+    public LocalDateTime getEnd() {
+        return end;
     }
 
-    public void setEnde(Date ende) {
-        this.ende = ende;
+    public void setEnd(LocalDateTime end) {
+        this.end = end;
     }
 
     public Rechnung getRechnung() {
@@ -75,13 +77,15 @@ public class Aufwand extends AbstractEntity {
     }
 
     @Transient
-    public Double getDauerInMinuten() {
-        return Double.valueOf(((ende.getTime() - start.getTime()) / 1000) / 60);
+    public Long getDauerInMinuten() {
+
+        return Duration.between(start, end).toMinutes();
     }
 
     @Transient
-    public Double getDauerInStunden() {
-        return Double.valueOf((((ende.getTime() - start.getTime()) / 1000) / 60) / 60);
+    public Long getDauerInStunden() {
+
+        return Duration.between(start, end).toHours();
     }
 
     @Transient
@@ -104,8 +108,40 @@ public class Aufwand extends AbstractEntity {
                 "titel='" + titel + '\'' +
                 ", bezeichnung='" + bezeichnung + '\'' +
                 ", start=" + start +
-                ", ende=" + ende +
+                ", ende=" + end +
                 ", rechnung=" + rechnung +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Aufwand aufwand = (Aufwand) o;
+
+        return new EqualsBuilder()
+                .appendSuper(super.equals(o))
+                .append(id, aufwand.titel)
+                .append(titel, aufwand.titel)
+                .append(bezeichnung, aufwand.bezeichnung)
+                .append(start, aufwand.start)
+                .append(end, aufwand.end)
+                .append(rechnung, aufwand.rechnung)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .appendSuper(super.hashCode())
+                .append(id)
+                .append(titel)
+                .append(bezeichnung)
+                .append(start)
+                .append(end)
+                .append(rechnung)
+                .toHashCode();
     }
 }

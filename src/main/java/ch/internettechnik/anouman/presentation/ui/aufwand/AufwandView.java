@@ -5,12 +5,11 @@ import ch.internettechnik.anouman.backend.entity.Rechnung;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.AufwandDeltaspikeFacade;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.RechnungDeltaspikeFacade;
 import ch.internettechnik.anouman.presentation.ui.Menu;
+import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.shared.ui.ValueChangeMode;
-import com.vaadin.spring.annotation.SpringView;
-import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.themes.ValoTheme;
@@ -21,10 +20,9 @@ import javax.inject.Inject;
 
 // @todo : java.lang.IllegalStateException: Property type 'java.util.Date' doesn't match the field type 'java.time.LocalDateTime'.
 // Binding should be configured manually using converter.
-@UIScope
-@SpringView(name = "AufwandView")
+@CDIView("AufwandView")
 public class AufwandView extends VerticalLayout implements View {
-    private static org.slf4j.Logger logger = LoggerFactory.getLogger(Aufwand.class.getName());
+    private static org.slf4j.Logger logger = LoggerFactory.getLogger(AufwandView.class.getName());
 
     TextField filterTextTitel = new TextField();
     ComboBox<Rechnung> filterRechnung = new ComboBox<Rechnung>();
@@ -107,7 +105,7 @@ public class AufwandView extends VerticalLayout implements View {
         grid.addColumn(Aufwand::getTitel).setCaption("Titel");
         grid.addColumn(Aufwand::getBezeichnung).setCaption("Bezeichnung");
         grid.addColumn(Aufwand::getStart).setCaption("Startzeit");
-        grid.addColumn(Aufwand::getEnde).setCaption("Endzeit");
+        grid.addColumn(Aufwand::getEnd).setCaption("Endzeit");
         grid.addColumn(Aufwand::getDauerInStunden).setCaption("Dauer in Stunden");
         grid.addColumn(aufwand -> aufwand.getRechnung().getBezeichnung() + " " +
                         aufwand.getRechnung().getAdresse().getNachname() + " " +

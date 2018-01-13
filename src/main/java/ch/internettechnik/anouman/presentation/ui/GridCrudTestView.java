@@ -4,8 +4,6 @@ import ch.internettechnik.anouman.backend.entity.Adresse;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.AdresseDeltaspikeFacade;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.spring.annotation.SpringView;
-import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.VerticalLayout;
@@ -23,8 +21,6 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.util.Collection;
 
-@UIScope
-@SpringView(name = "GridCrudTestView")
 public class GridCrudTestView extends VerticalLayout implements View, CrudListener<Adresse> {
     private static Logger logger = LoggerFactory.getLogger(GridCrudTestView.class.getName());
 

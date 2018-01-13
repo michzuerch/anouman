@@ -5,12 +5,11 @@ import ch.internettechnik.anouman.backend.entity.UzerRole;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.UzerDeltaspikeFacade;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.UzerRoleDeltaspikeFacade;
 import ch.internettechnik.anouman.presentation.ui.Menu;
+import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.shared.ui.ValueChangeMode;
-import com.vaadin.spring.annotation.SpringView;
-import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.themes.ValoTheme;
@@ -20,8 +19,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
 
-@UIScope
-@SpringView(name = "UzerRoleView")
+@CDIView("UzerRoleView")
 public class UzerRoleView extends VerticalLayout implements View {
     private static final Logger LOGGER = Logger.getLogger(UzerRoleView.class.getName());
 

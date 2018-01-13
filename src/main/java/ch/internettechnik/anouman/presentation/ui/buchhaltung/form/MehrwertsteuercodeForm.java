@@ -6,7 +6,6 @@ import ch.internettechnik.anouman.backend.entity.Mehrwertsteuercode;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.BuchhaltungDeltaspikeFacade;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.KontoDeltaspikeFacade;
 import com.vaadin.data.converter.StringToFloatConverter;
-import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import org.vaadin.viritin.form.AbstractForm;
 
@@ -14,7 +13,6 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
-@UIScope
 public class MehrwertsteuercodeForm extends AbstractForm<Mehrwertsteuercode> {
 
     @Inject

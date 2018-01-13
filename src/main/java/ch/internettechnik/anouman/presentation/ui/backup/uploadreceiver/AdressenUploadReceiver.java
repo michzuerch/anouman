@@ -104,7 +104,7 @@ public class AdressenUploadReceiver implements Serializable, Upload.Receiver, Up
                         aufwand.setBezeichnung(backupAufwand.getBezeichnung());
                         aufwand.setTitel(backupAufwand.getTitel());
                         aufwand.setStart(backupAufwand.getStart());
-                        aufwand.setEnde(backupAufwand.getEnde());
+                        aufwand.setEnd(backupAufwand.getEnd());
                         aufwand.setRechnung(rechnung);
                         rechnung = rechnungDeltaspikeFacade.save(rechnung);
                         aufwand = aufwandDeltaspikeFacade.save(aufwand);

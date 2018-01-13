@@ -5,7 +5,6 @@ import ch.internettechnik.anouman.backend.entity.report.jasper.ReportJasper;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ReportJasperDeltaspikeFacade;
 import ch.internettechnik.anouman.presentation.reports.rechnung.RechnungReportTool;
 import com.vaadin.icons.VaadinIcons;
-import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import org.apache.commons.io.IOUtils;
 import org.vaadin.viritin.button.DownloadButton;
@@ -15,7 +14,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-@UIScope
 public class RechnungPrintWindow extends CustomComponent {
     private static final Logger LOGGER = Logger.getLogger(RechnungView.class.getName());
 

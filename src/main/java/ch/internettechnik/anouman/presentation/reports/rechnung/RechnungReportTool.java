@@ -73,7 +73,7 @@ public class RechnungReportTool implements Serializable {
         for (ch.internettechnik.anouman.backend.entity.Aufwand aw : val.getAufwands()) {
             list.add(new Rechnungsposition(aw.getTitel(), aw.getBezeichnung(), "Stunden",
                     aw.getRechnung().getAdresse().getStundensatz(),
-                    aw.getDauerInStunden(), aw.getPositionstotal()));
+                    aw.getDauerInStunden().doubleValue(), aw.getPositionstotal()));
         }
         logger.debug("Anzahl gefundende Rechnungspositonen:" + list.size());
         JRBeanCollectionDataSource collectionDataSource = new JRBeanCollectionDataSource(list);

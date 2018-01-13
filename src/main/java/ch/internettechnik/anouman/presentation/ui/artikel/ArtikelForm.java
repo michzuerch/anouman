@@ -4,14 +4,12 @@ import ch.internettechnik.anouman.backend.entity.Artikel;
 import ch.internettechnik.anouman.backend.entity.Artikelkategorie;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ArtikelkategorieDeltaspikeFacade;
 import com.vaadin.data.converter.StringToDoubleConverter;
-import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import org.vaadin.viritin.form.AbstractForm;
 import tm.kod.widgets.numberfield.NumberField;
 
 import javax.inject.Inject;
 
-@UIScope
 public class ArtikelForm extends AbstractForm<Artikel> {
 
     NativeSelect<Artikelkategorie> artikelkategorieNativeSelect = new NativeSelect<>();

@@ -3,7 +3,6 @@ package ch.internettechnik.anouman.presentation.ui.adresse;
 import ch.internettechnik.anouman.backend.entity.Adresse;
 import ch.internettechnik.anouman.presentation.ui.TestTextField;
 import com.vaadin.data.converter.StringToDoubleConverter;
-import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +15,6 @@ import java.util.Locale;
 /**
  * Created by michzuerch on 09.08.15.
  */
-@UIScope
 public class AdresseForm extends AbstractForm<Adresse> {
     private static Logger logger = LoggerFactory.getLogger(AdresseForm.class.getName());
 

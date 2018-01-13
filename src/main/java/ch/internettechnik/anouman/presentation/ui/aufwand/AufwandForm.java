@@ -3,7 +3,6 @@ package ch.internettechnik.anouman.presentation.ui.aufwand;
 import ch.internettechnik.anouman.backend.entity.Aufwand;
 import ch.internettechnik.anouman.backend.entity.Rechnung;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.RechnungDeltaspikeFacade;
-import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import org.vaadin.viritin.form.AbstractForm;
 
@@ -13,7 +12,6 @@ import java.time.ZoneOffset;
 /**
  * Created by michzuerch on 09.08.15.
  */
-@UIScope
 public class AufwandForm extends AbstractForm<Aufwand> {
 
     NativeSelect<Rechnung> rechnung = new NativeSelect<>();

@@ -3,20 +3,20 @@ package ch.internettechnik.anouman.presentation.ui;
 
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.ThemeResource;
-import com.vaadin.spring.annotation.SpringComponent;
-import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.MenuBar;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.enterprise.context.ApplicationScoped;
+
 /**
  * Created by michzuerch on 26.10.15.
  */
 
-@SpringComponent
-@UIScope
+//@ViewScoped
+@ApplicationScoped
 public class Menu extends CustomComponent {
     private static Logger logger = LoggerFactory.getLogger(Menu.class.getName());
     CssLayout layout = new CssLayout();
@@ -126,6 +126,13 @@ public class Menu extends CustomComponent {
             @Override
             public void menuSelected(MenuBar.MenuItem menuItem) {
                 getUI().getNavigator().navigateTo("AufwandView");
+            }
+        });
+
+        MenuBar.MenuItem aufwandCalendarItem = rechnungenMenu.addItem("Aufwand Calendar", VaadinIcons.CALENDAR, new MenuBar.Command() {
+            @Override
+            public void menuSelected(MenuBar.MenuItem menuItem) {
+                getUI().getNavigator().navigateTo("AufwandCalendarView");
             }
         });
 

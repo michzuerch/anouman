@@ -1,18 +1,16 @@
 package ch.internettechnik.anouman.presentation.ui.rechnung;
 
 import ch.internettechnik.anouman.presentation.ui.AnoumanUI;
+import com.vaadin.cdi.CDIView;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.ExternalResource;
-import com.vaadin.spring.annotation.SpringView;
-import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.BrowserFrame;
 import com.vaadin.ui.VerticalLayout;
 import org.slf4j.LoggerFactory;
 
-@UIScope
-@SpringView(name = "RechnungEditOpenerView")
-public class RechnungEditOpener extends VerticalLayout implements View {
+@CDIView("RechnungEditOpenerView")
+public class RechnungEditOpenerView extends VerticalLayout implements View {
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(AnoumanUI.class.getName());
 
     @Override

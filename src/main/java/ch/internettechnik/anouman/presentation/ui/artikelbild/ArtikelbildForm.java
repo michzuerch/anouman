@@ -5,7 +5,6 @@ import ch.internettechnik.anouman.backend.entity.Artikelbild;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ArtikelDeltaspikeFacade;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ArtikelbildDeltaspikeFacade;
 import com.vaadin.server.StreamResource;
-import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import org.vaadin.viritin.form.AbstractForm;
 import server.droporchoose.UploadComponent;
@@ -18,7 +17,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-@UIScope
 public class ArtikelbildForm extends AbstractForm<Artikelbild> {
     @Inject
     ArtikelDeltaspikeFacade artikelDeltaspikeFacade;

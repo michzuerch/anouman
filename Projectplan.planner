@@ -20,14 +20,20 @@
     </calendar>
   </calendars>
   <tasks>
-    <task id="1" name="Estonia eResidency" note="" work="28800" start="20171201T000000Z" end="20171201T170000Z" work-start="20171201T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work">
-      <task id="2" name="Antrag im Web ausf&#xFC;llen" note="" work="28800" start="20171201T000000Z" end="20171201T170000Z" work-start="20171201T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work"/>
+    <task id="1" name="Estonia eResidency" note="" work="0" start="20171201T000000Z" end="20171201T000000Z" work-start="20171201T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work">
+      <task id="2" name="Antrag im Web ausf&#xFC;llen" note="" work="0" start="20171201T000000Z" end="20171201T000000Z" work-start="20171201T080000Z" percent-complete="50" priority="1" type="milestone" scheduling="fixed-work"/>
     </task>
     <task id="3" name="UI f&#xFC;r Reports fertigstellen" note="" work="57600" start="20171201T000000Z" end="20171201T170000Z" work-start="20171201T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work">
       <task id="4" name="Funktionalit&#xE4;t Jasperreport einbauen" note="" work="28800" start="20171201T000000Z" end="20171201T170000Z" work-start="20171201T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work"/>
       <task id="5" name="Funktionalit&#xE4;t CSS Report einbauen" note="" work="28800" start="20171201T000000Z" end="20171201T170000Z" work-start="20171201T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work">
         <task id="6" name="Validator f&#xFC;r Schema" note="" work="28800" start="20171201T000000Z" end="20171201T170000Z" work-start="20171201T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work"/>
       </task>
+    </task>
+    <task id="7" name="Calendar" note="" work="28800" start="20171201T000000Z" end="20171201T170000Z" work-start="20171201T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work"/>
+    <task id="8" name="Datensicherung" note="" work="28800" start="20171201T170000Z" end="20171204T170000Z" work-start="20171204T080000Z" percent-complete="100" priority="0" type="normal" scheduling="fixed-work">
+      <predecessors>
+        <predecessor id="1" predecessor-id="6" type="FS"/>
+      </predecessors>
     </task>
   </tasks>
   <resource-groups/>
