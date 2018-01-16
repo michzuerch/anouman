@@ -34,11 +34,13 @@ public class BuchhaltungCreateView extends VerticalLayout implements View {
     TemplateBuchhaltungDeltaspikeFacade templateBuchhaltungDeltaspikeFacade;
     @Inject
     BuchhaltungForm buchhaltungForm;
+
     private BeanValidationBinder<Buchhaltung> binder = new BeanValidationBinder<>(Buchhaltung.class);
     private TextField bezeichnungField = new TextField("Bezeichnung");
     private IntegerField jahrField = new IntegerField("Jahr");
     private NativeSelect<TemplateBuchhaltung> templateBuchhaltungSelect = new NativeSelect<>();
     private Button createBuchhaltungBtn = new Button("Erstelle Buchhaltung");
+
     @Inject
     private Menu menu;
 
@@ -125,7 +127,7 @@ public class BuchhaltungCreateView extends VerticalLayout implements View {
                 }
                 buchhaltung1 = buchhaltungDeltaspikeFacade.save(buchhaltung1);
                 Notification.show("Buchhaltung erstellt id: " + buchhaltung1.getId());
-                UI.getCurrent().getNavigator().navigateTo("BuchhaltungTree/id/" + buchhaltung1.getId());
+                UI.getCurrent().getNavigator().navigateTo("BuchhaltungTreeView/id/" + buchhaltung1.getId());
             }
 
         });

@@ -16,6 +16,7 @@ import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.themes.ValoTheme;
+import org.vaadin.viritin.fields.IntegerField;
 
 import javax.inject.Inject;
 
@@ -31,15 +32,16 @@ public class RechnungDetailView extends VerticalLayout implements View {
     RechnungspositionDeltaspikeFacade rechnungspositionDeltaspikeFacade;
     @Inject
     AufwandDeltaspikeFacade aufwandDeltaspikeFacade;
+
     Long idRechnung = new Long(0);
     TextField fieldId = new TextField("id");
     TextField fieldAdresseFirma = new TextField("Adresse Firma");
     TextField fieldAdresseNachname = new TextField("Adresse Nachname");
     TextField fieldAdresseOrt = new TextField("Adresse Ort");
     TextField fieldBezeichnung = new TextField("Bezeichnung");
-    TextField fieldRechnungsdatum = new TextField("Rechnungsdatum");
-    TextField fieldFaelligInTagen = new TextField("Fällig in Tagen");
-    TextField fieldFaelligkeitsdatum = new TextField("Fälligkeitsdatum");
+    DateTimeField fieldRechnungsdatum = new DateTimeField("Rechnungsdatum");
+    IntegerField fieldFaelligInTagen = new IntegerField("Fällig in Tagen");
+    DateTimeField fieldFaelligkeitsdatum = new DateTimeField("Fälligkeitsdatum");
     TextField fieldMehrwertsteuer = new TextField("Mehrwertsteuer");
     TextField fieldZwischentotal = new TextField("Zwischentotal");
     TextField fieldRechnungstotal = new TextField("Rechnungstotal");
@@ -47,7 +49,8 @@ public class RechnungDetailView extends VerticalLayout implements View {
     Grid<Aufwand> aufwandGrid = new Grid<>();
     Button btnAddRechnungsposition = new Button("Add Rechnungsposition");
     Button btnAddAufwand = new Button("Add Aufwand");
-    Button btnBack = new Button("Zurück", clickEvent -> getUI().getNavigator().navigateTo("Rechnung/id/" + getIdRechnung()));
+    Button btnBack = new Button("Zurück", clickEvent -> getUI().getNavigator().navigateTo("RechnungView/id/" + getIdRechnung()));
+
     @Inject
     private Menu menu;
 
@@ -58,9 +61,9 @@ public class RechnungDetailView extends VerticalLayout implements View {
         fieldAdresseNachname.setValue(val.getAdresse().getNachname());
         fieldAdresseOrt.setValue(val.getAdresse().getOrt());
         fieldBezeichnung.setValue(val.getBezeichnung());
-        fieldRechnungsdatum.setValue(val.getRechnungsdatum().toLocaleString());
-        fieldFaelligInTagen.setValue(new Integer(val.getFaelligInTagen()).toString());
-        fieldFaelligkeitsdatum.setValue(val.getFaelligkeitsdatum().toLocaleString());
+        fieldRechnungsdatum.setValue(val.getRechnungsdatum());
+        fieldFaelligInTagen.setValue(val.getFaelligInTagen());
+        fieldFaelligkeitsdatum.setValue(val.getFaelligkeitsdatum());
         fieldMehrwertsteuer.setValue(val.getMehrwertsteuer().toString());
         fieldZwischentotal.setValue(val.getZwischentotal().toString());
         fieldRechnungstotal.setValue(val.getRechnungstotal().toString());

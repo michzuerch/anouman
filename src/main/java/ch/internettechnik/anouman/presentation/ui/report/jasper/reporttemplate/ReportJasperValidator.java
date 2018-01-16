@@ -5,6 +5,8 @@ import com.vaadin.data.ValidationResult;
 import com.vaadin.data.Validator;
 import com.vaadin.data.ValueContext;
 import com.vaadin.ui.Notification;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -23,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class ReportJasperValidator implements Validator<byte[]> {
+    private static Logger logger = LoggerFactory.getLogger(ReportJasperValidator.class.getName());
 
     @Override
     public ValidationResult apply(byte[] bytes, ValueContext valueContext) {

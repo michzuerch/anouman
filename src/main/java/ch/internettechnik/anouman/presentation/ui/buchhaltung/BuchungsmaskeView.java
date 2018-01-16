@@ -2,7 +2,6 @@ package ch.internettechnik.anouman.presentation.ui.buchhaltung;
 
 import ch.internettechnik.anouman.backend.entity.*;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.*;
-import ch.internettechnik.anouman.presentation.ui.FloatField;
 import ch.internettechnik.anouman.presentation.ui.Menu;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.navigator.View;
@@ -10,8 +9,10 @@ import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.slf4j.LoggerFactory;
+import org.vaadin.ui.NumberField;
 
 import javax.inject.Inject;
+import java.util.Locale;
 
 @CDIView("BuchungsmaskeView")
 public class BuchungsmaskeView extends VerticalLayout implements View {
@@ -30,6 +31,7 @@ public class BuchungsmaskeView extends VerticalLayout implements View {
     KontoDeltaspikeFacade kontoDeltaspikeFacade;
     @Inject
     MehrwertsteuercodeDeltaspikeFacade mehrwertsteuercodeDeltaspikeFacade;
+
     private NativeSelect<Buchhaltung> buchhaltungNativeSelect = new NativeSelect<>();
     private Panel sollPanel = new Panel("Sollkonto");
     private NativeSelect<Kontoklasse> sollKontoklasse = new NativeSelect<>();
@@ -47,7 +49,7 @@ public class BuchungsmaskeView extends VerticalLayout implements View {
     private HorizontalLayout habenKontoLayout = new HorizontalLayout();
     private Panel buchenPanel = new Panel("Buchen");
     private NativeSelect<Mehrwertsteuercode> mehrwertsteuercodeNativeSelect = new NativeSelect<>();
-    private FloatField betragField = new FloatField("Betrag");
+    private NumberField betragField = new NumberField("Betrag");
     private Button buchenButton = new Button("Buchen");
     private HorizontalLayout buchenLayout = new HorizontalLayout();
 
@@ -162,6 +164,18 @@ public class BuchungsmaskeView extends VerticalLayout implements View {
         mehrwertsteuercodeNativeSelect.setItems(mehrwertsteuercodeDeltaspikeFacade.findByBuchhaltung(buchhaltungNativeSelect.getValue()));
         mehrwertsteuercodeNativeSelect.setCaption("Mehrwertsteuercode");
 
+
+        betragField.setLocale(Locale.GERMAN);
+        betragField.setDecimalPrecision(2);
+        betragField.setDecimalSeparator('.');
+        betragField.setGroupingSeparator('\'');
+        betragField.setDecimalSeparatorAlwaysShown(true);
+        betragField.setMinimumFractionDigits(2);
+        betragField.setMinValue(5);
+
+//        getBinder().forField(stundensatz).withConverter(
+//                NumberField.getConverter("Muss Betrag sein")
+//        ).bind("stundensatz");
 
         buchenLayout.addComponents(mehrwertsteuercodeNativeSelect, betragField, buchenButton);
         buchenLayout.setMargin(true);

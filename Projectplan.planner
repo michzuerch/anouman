@@ -35,6 +35,8 @@
         <predecessor id="1" predecessor-id="6" type="FS"/>
       </predecessors>
     </task>
+    <task id="9" name="ErrorView f&#xFC;r Anouman" note="" work="28800" start="20171201T000000Z" end="20171201T170000Z" work-start="20171201T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work"/>
+    <task id="10" name="Datum bei Backups, Rechnung JSON??" note="" work="28800" start="20171201T000000Z" end="20171201T170000Z" work-start="20171201T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work"/>
   </tasks>
   <resource-groups/>
   <resources/>

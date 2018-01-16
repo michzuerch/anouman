@@ -1,8 +1,11 @@
 package ch.internettechnik.anouman.backend.entity;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Created by michzuerch on 07.08.15.
@@ -17,8 +20,7 @@ public class Unterbuchung extends AbstractEntity {
     private Integer laufnummer;
 
     @Column
-    @Temporal(TemporalType.DATE)
-    private Date buchungsdatum;
+    private LocalDateTime buchungsdatum;
 
     @Column
     @NotNull
@@ -52,11 +54,11 @@ public class Unterbuchung extends AbstractEntity {
         this.laufnummer = laufnummer;
     }
 
-    public Date getBuchungsdatum() {
+    public LocalDateTime getBuchungsdatum() {
         return buchungsdatum;
     }
 
-    public void setBuchungsdatum(Date buchungsdatum) {
+    public void setBuchungsdatum(LocalDateTime buchungsdatum) {
         this.buchungsdatum = buchungsdatum;
     }
 

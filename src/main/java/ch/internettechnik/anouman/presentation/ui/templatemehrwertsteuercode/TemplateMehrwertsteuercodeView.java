@@ -69,7 +69,7 @@ public class TemplateMehrwertsteuercodeView extends VerticalLayout implements Vi
             TemplateMehrwertsteuercode templateMehrwertsteuercode = new TemplateMehrwertsteuercode();
             TemplateBuchhaltung templateBuchhaltung = templateBuchhaltungDeltaspikeFacade.findAll().get(0);
             templateMehrwertsteuercode.setTemplateBuchhaltung(templateBuchhaltung);
-            templateMehrwertsteuercode.setProzent(8f);
+            templateMehrwertsteuercode.setProzent(8d);
             templateMehrwertsteuercode.setTemplateMehrwertsteuerKonto(createTemplateKontoList(templateBuchhaltung).get(0));
 
             if (!filterTemplateBuchhaltung.isEmpty())

@@ -2,10 +2,10 @@ package ch.internettechnik.anouman.presentation.ui.adresse;
 
 import ch.internettechnik.anouman.backend.entity.Adresse;
 import ch.internettechnik.anouman.presentation.ui.TestTextField;
-import com.vaadin.data.converter.StringToDoubleConverter;
 import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.vaadin.ui.NumberField;
 import org.vaadin.viritin.form.AbstractForm;
 
 import java.util.Locale;
@@ -26,7 +26,7 @@ public class AdresseForm extends AbstractForm<Adresse> {
     TextField postleitzahl = new TextField("Postleitzahl");
     TextField ort = new TextField("Ort");
     //NumberField stundensatz = new NumberField("Stundensatz");
-    TextField stundensatz = new TextField("Stundensatz");
+    NumberField stundensatz = new NumberField("Stundensatz");
 
 
     public AdresseForm() {
@@ -44,21 +44,16 @@ public class AdresseForm extends AbstractForm<Adresse> {
     @Override
     protected Component createContent() {
         stundensatz.setLocale(Locale.GERMAN);
-        stundensatz.setCaption("Stundensatz");
-
-        /*
         stundensatz.setDecimalPrecision(2);
-        stundensatz.setDecimalSeparator(',');
-        stundensatz.setGroupingSeparator('.');
+        stundensatz.setDecimalSeparator('.');
+        stundensatz.setGroupingSeparator('\'');
         stundensatz.setDecimalSeparatorAlwaysShown(true);
         stundensatz.setMinimumFractionDigits(2);
         stundensatz.setMinValue(5);
-        */
 
-        getBinder().forField(stundensatz)
-                .withConverter(new StringToDoubleConverter("Muss Betrag sein"))
-                //.withConverter(NumberField.getConverter("Muss Betrag sein"))
-                .bind("stundensatz");
+        getBinder().forField(stundensatz).withConverter(
+                NumberField.getConverter("Muss Betrag sein")
+        ).bind("stundensatz");
 
         return new VerticalLayout(new FormLayout(
                 firma, anrede, vorname, nachname, strasse, postleitzahl, ort, stundensatz

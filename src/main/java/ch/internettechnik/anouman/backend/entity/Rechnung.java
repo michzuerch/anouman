@@ -5,9 +5,9 @@ import javax.validation.constraints.*;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import java.math.BigDecimal;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,10 +20,9 @@ import java.util.List;
 @Entity
 @XmlAccessorType(XmlAccessType.NONE)
 public class Rechnung extends AbstractEntity {
-    @Temporal(TemporalType.DATE)
     @NotNull
     @javax.xml.bind.annotation.XmlElement
-    private Date rechnungsdatum;
+    private LocalDateTime rechnungsdatum;
 
     @Column
     @NotNull
@@ -61,11 +60,11 @@ public class Rechnung extends AbstractEntity {
         this.bezeichnung = bezeichnung;
     }
 
-    public Date getRechnungsdatum() {
+    public LocalDateTime getRechnungsdatum() {
         return rechnungsdatum;
     }
 
-    public void setRechnungsdatum(Date rechnungsdatum) {
+    public void setRechnungsdatum(LocalDateTime rechnungsdatum) {
         this.rechnungsdatum = rechnungsdatum;
     }
 
@@ -173,11 +172,10 @@ public class Rechnung extends AbstractEntity {
     }
 
     @Transient
-    public Date getFaelligkeitsdatum() {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(getRechnungsdatum());
-        cal.add(Calendar.DATE, getFaelligInTagen());
-        return cal.getTime();
+    public LocalDateTime getFaelligkeitsdatum() {
+        //@todo Berechnen Fälligkeitsdatum
+        return getRechnungsdatum().plus(Duration.ofDays(getFaelligInTagen()));
+        //LocalDateTime.ofInstant(now.plus(Duration.ofHours(3)), ZoneOffset.UTC)return LocalDateTime.now();
     }
 
 }

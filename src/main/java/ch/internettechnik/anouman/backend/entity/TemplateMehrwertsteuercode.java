@@ -28,7 +28,7 @@ public class TemplateMehrwertsteuercode extends AbstractEntity {
     @Digits(integer = 2, fraction = 2, message = "Ungültiges Zahlenformat")
     @DecimalMin(value = "0.1", message = "Minimale Mehrwertsteuer ist 0.1%")
     @DecimalMax(value = "50", message = "Maximale Mehrwertsteuer ist 50%")
-    private Float prozent;
+    private Double prozent;
 
     @ManyToOne
     private TemplateKonto templateMehrwertsteuerKonto;
@@ -43,7 +43,7 @@ public class TemplateMehrwertsteuercode extends AbstractEntity {
     public TemplateMehrwertsteuercode() {
     }
 
-    public TemplateMehrwertsteuercode(String code, String bezeichnung, Float prozent, TemplateKonto mehrwertsteuerKonto, boolean verkauf) {
+    public TemplateMehrwertsteuercode(String code, String bezeichnung, Double prozent, TemplateKonto mehrwertsteuerKonto, boolean verkauf) {
         this.code = code;
         this.bezeichnung = bezeichnung;
         this.prozent = prozent;
@@ -67,11 +67,11 @@ public class TemplateMehrwertsteuercode extends AbstractEntity {
         this.bezeichnung = bezeichnung;
     }
 
-    public Float getProzent() {
+    public Double getProzent() {
         return prozent;
     }
 
-    public void setProzent(Float prozent) {
+    public void setProzent(Double prozent) {
         this.prozent = prozent;
     }
 
@@ -97,14 +97,6 @@ public class TemplateMehrwertsteuercode extends AbstractEntity {
 
     public void setTemplateBuchhaltung(TemplateBuchhaltung templateBuchhaltung) {
         this.templateBuchhaltung = templateBuchhaltung;
-    }
-
-    public String getProzentString() {
-        return getProzent().toString();
-    }
-
-    public void setProzentString(String prozent) {
-        setProzent(Float.valueOf(prozent));
     }
 
     @Override

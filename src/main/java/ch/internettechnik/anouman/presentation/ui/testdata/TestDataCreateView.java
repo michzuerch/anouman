@@ -18,7 +18,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.Date;
 
 @CDIView("TestDataCreateView")
 public class TestDataCreateView extends VerticalLayout implements View {
@@ -137,7 +136,7 @@ public class TestDataCreateView extends VerticalLayout implements View {
         Rechnung rechnung = new Rechnung();
         rechnung.setBezahlt(false);
         rechnung.setBezeichnung("Testrechnung");
-        rechnung.setRechnungsdatum(new Date());
+        rechnung.setRechnungsdatum(LocalDateTime.now());
         rechnung.setFaelligInTagen(32);
         rechnung.setVerschickt(true);
 
@@ -286,7 +285,7 @@ public class TestDataCreateView extends VerticalLayout implements View {
         TemplateMehrwertsteuercode mehrwertsteuercode = new TemplateMehrwertsteuercode();
         mehrwertsteuercode.setBezeichnung("12%");
         mehrwertsteuercode.setCode("V12");
-        mehrwertsteuercode.setProzent(12.0f);
+        mehrwertsteuercode.setProzent(12.0d);
         mehrwertsteuercode.setVerkauf(true);
         mehrwertsteuercode.setTemplateMehrwertsteuerKonto(konto1);
         mehrwertsteuercode.setTemplateBuchhaltung(buchhaltung);

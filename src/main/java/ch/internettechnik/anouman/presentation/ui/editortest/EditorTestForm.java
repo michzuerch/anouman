@@ -12,9 +12,6 @@ import org.vaadin.viritin.form.AbstractForm;
 public class EditorTestForm extends AbstractForm<EditorTest> {
     private static Logger logger = LoggerFactory.getLogger(EditorTestForm.class.getName());
 
-    //@Inject
-    //TemplateKontoplanSelect kontoplan;
-
     TextField erster = new TextField("Erster");
     TextField zweiter = new TextField("Zweiter");
 

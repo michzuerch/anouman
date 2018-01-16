@@ -48,11 +48,6 @@ public class AdresseView extends VerticalLayout implements View {
                     id = Long.valueOf(msg);
                 }
             }
-            /*
-            if (target.equals("adresseId")) {
-                Adresse adresse = adresseService.findById(id);
-                adresseSelect.setValue(adresse);
-            }*/
             if (target.equals("id")) {
                 grid.select(facade.findBy(id));
             }
@@ -110,8 +105,7 @@ public class AdresseView extends VerticalLayout implements View {
         grid.addColumn(adresse -> adresse.getAnzahlRechnungen(), new ButtonRenderer(event -> {
             Adresse adresse = (Adresse) event.getItem();
             if (adresse.getAnzahlRechnungen() > 0) {
-                UI.getCurrent().getNavigator().navigateTo("Rechnung/adresseId/" + adresse.getId().toString());
-
+                UI.getCurrent().getNavigator().navigateTo("RechnungView/adresseId/" + adresse.getId().toString());
             }
         })).setCaption("Anzahl Rechnungen").setStyleGenerator(item -> "v-align-center");
         grid.setSizeFull();
@@ -121,7 +115,6 @@ public class AdresseView extends VerticalLayout implements View {
                 new ButtonRenderer(event -> {
                     Notification.show("Lösche Adresse id:" + event.getItem(), Notification.Type.HUMANIZED_MESSAGE);
                     facade.delete((Adresse) event.getItem());
-                    //service.delete((Adresse) event.getItem());
                     updateList();
                 })
         );

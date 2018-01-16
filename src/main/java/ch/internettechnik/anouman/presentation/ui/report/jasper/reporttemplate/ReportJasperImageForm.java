@@ -5,11 +5,15 @@ import ch.internettechnik.anouman.backend.entity.report.jasper.ReportJasperImage
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ReportJasperDeltaspikeFacade;
 import ch.internettechnik.anouman.presentation.ui.ImageField;
 import com.vaadin.ui.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.vaadin.viritin.form.AbstractForm;
 
 import javax.inject.Inject;
 
 public class ReportJasperImageForm extends AbstractForm<ReportJasperImage> {
+    private static Logger logger = LoggerFactory.getLogger(ReportJasperImageForm.class.getName());
+
     @Inject
     ReportJasperDeltaspikeFacade reportJasperDeltaspikeFacade;
 

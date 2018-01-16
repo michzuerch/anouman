@@ -3,10 +3,9 @@ package ch.internettechnik.anouman.presentation.ui.artikel;
 import ch.internettechnik.anouman.backend.entity.Artikel;
 import ch.internettechnik.anouman.backend.entity.Artikelkategorie;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ArtikelkategorieDeltaspikeFacade;
-import com.vaadin.data.converter.StringToDoubleConverter;
 import com.vaadin.ui.*;
+import org.vaadin.ui.NumberField;
 import org.vaadin.viritin.form.AbstractForm;
-import tm.kod.widgets.numberfield.NumberField;
 
 import javax.inject.Inject;
 
@@ -17,7 +16,6 @@ public class ArtikelForm extends AbstractForm<Artikel> {
     TextArea bezeichnungLang = new TextArea("Bezeichnung Lang");
     TextField mengeneinheit = new TextField("Mengeneinheit");
     NumberField stueckpreis = new NumberField("Stückpreis");
-    //FloatField stueckpreis = new FloatField("Stückpreis");
     NumberField anzahl = new NumberField("Anzahl");
 
     @Inject
@@ -43,24 +41,24 @@ public class ArtikelForm extends AbstractForm<Artikel> {
     protected Component createContent() {
 
         getBinder().forField(stueckpreis).withConverter(
-                new StringToDoubleConverter("Muss Betrag sein")
+                NumberField.getConverter("Muss Betrag sein")
         ).bind("stueckpreis");
 
         getBinder().forField(anzahl).withConverter(
-                new StringToDoubleConverter("Muss Anzahl sein")
+                NumberField.getConverter("Muss Anzahl sein")
         ).bind("anzahl");
 
-        stueckpreis.setSigned(false);
-        stueckpreis.setUseGrouping(true);
+        stueckpreis.setNegativeAllowed(false);
         stueckpreis.setGroupingSeparator('\'');
-        stueckpreis.setDecimalLength(2);
+        stueckpreis.setMinimumFractionDigits(2);
         stueckpreis.setDecimalSeparator('.');
+        stueckpreis.setGroupingUsed(true);
 
-        anzahl.setSigned(false);
-        anzahl.setUseGrouping(true);
+        anzahl.setNegativeAllowed(false);
         anzahl.setGroupingSeparator('\'');
-        anzahl.setDecimalLength(2);
+        anzahl.setMinimumFractionDigits(3);
         anzahl.setDecimalSeparator('.');
+        anzahl.setGroupingUsed(false);
 
         artikelkategorieNativeSelect.setCaption("Artikelkategorie");
         artikelkategorieNativeSelect.setEmptySelectionAllowed(false);

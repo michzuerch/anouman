@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 public class RechnungPrintWindow extends CustomComponent {
-    private static final Logger LOGGER = Logger.getLogger(RechnungView.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(RechnungPrintWindow.class.getName());
 
     @Inject
     ReportJasperDeltaspikeFacade reportJasperDeltaspikeFacade;
@@ -24,7 +24,7 @@ public class RechnungPrintWindow extends CustomComponent {
     private ComboBox<ReportJasper> reportSelect = new ComboBox<>();
     private TextField id = new TextField("Id");
     private TextField bezeichnung = new TextField("Bezeichnung");
-    private TextField rechnungsdatum = new TextField("Rechnungsdatum");
+    private DateTimeField rechnungsdatum = new DateTimeField("Rechnungsdatum");
     private TextField firma = new TextField("Firma");
     private TextField name = new TextField("Name");
     private TextField ort = new TextField("Ort");
@@ -68,7 +68,7 @@ public class RechnungPrintWindow extends CustomComponent {
         printButton.setCaption("Print " + getFilename());
         id.setValue(rechnung.getId().toString());
         bezeichnung.setValue(rechnung.getBezeichnung());
-        rechnungsdatum.setValue(rechnung.getRechnungsdatum().toLocaleString());
+        rechnungsdatum.setValue(rechnung.getRechnungsdatum());
         firma.setValue(rechnung.getAdresse().getFirma());
         name.setValue(rechnung.getAdresse().getNachname());
 

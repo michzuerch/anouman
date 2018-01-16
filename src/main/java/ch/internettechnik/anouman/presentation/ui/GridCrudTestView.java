@@ -2,6 +2,7 @@ package ch.internettechnik.anouman.presentation.ui;
 
 import ch.internettechnik.anouman.backend.entity.Adresse;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.AdresseDeltaspikeFacade;
+import com.vaadin.cdi.CDIView;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.Notification;
@@ -21,6 +22,7 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.util.Collection;
 
+@CDIView("GridCrudTestView")
 public class GridCrudTestView extends VerticalLayout implements View, CrudListener<Adresse> {
     private static Logger logger = LoggerFactory.getLogger(GridCrudTestView.class.getName());
 
@@ -31,7 +33,6 @@ public class GridCrudTestView extends VerticalLayout implements View, CrudListen
     AdresseDeltaspikeFacade facade;
 
     private TabSheet tabSheet = new TabSheet();
-
 
     @PostConstruct
     void init() {

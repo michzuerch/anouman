@@ -5,6 +5,8 @@ import ch.internettechnik.anouman.presentation.ui.converter.ByteToStringConverte
 import ch.internettechnik.anouman.presentation.ui.report.jasper.reporttemplate.xmlvalidation.ResourceResolver;
 import com.vaadin.server.UserError;
 import com.vaadin.ui.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.vaadin.viritin.form.AbstractForm;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
@@ -29,6 +31,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class ReportFOPForm extends AbstractForm<ReportFOP> {
+    private static Logger logger = LoggerFactory.getLogger(ReportFOPForm.class.getName());
     TextField bezeichnung = new TextField("Bezeichnung");
     UploadComponent upload = new UploadComponent();
     Button validateButton = new Button("Validate");

@@ -89,7 +89,7 @@ public class ArtikelkategorieView extends VerticalLayout implements View {
         grid.addColumn(artikelkategorie -> artikelkategorie.getArtikels().size(), new ButtonRenderer(event -> {
             Artikelkategorie artikelkategorie = (Artikelkategorie) event.getItem();
             if (artikelkategorie.getArtikels().size() > 0) {
-                UI.getCurrent().getNavigator().navigateTo("Artikel/artikelkategorieId/" + artikelkategorie.getId().toString());
+                UI.getCurrent().getNavigator().navigateTo("ArtikelView/artikelkategorieId/" + artikelkategorie.getId().toString());
 
             }
         })).setCaption("Anzahl Artikel").setStyleGenerator(item -> "v-align-center");

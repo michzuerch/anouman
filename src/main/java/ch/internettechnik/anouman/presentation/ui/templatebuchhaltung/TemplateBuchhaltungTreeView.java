@@ -550,19 +550,12 @@ public class TemplateBuchhaltungTreeView extends VerticalLayout implements View 
             }
         });
 
-        // @todo Lieber direkt Float als String...
-//        TextField prozentFld = new TextField();
-        // @todo Validator geht nicht...
-//        grid.getEditor().getBinder().forField(prozentFld).withValidator(s -> Validator.isFloat(s)==true, "kein Float");
-
-        //TextField prozentField = new TextField();
-        //grid.getEditor().getBinder().forField(TemplateMehrwertsteuercode, "code").withConverter(new StringToDoubleConverter("Muss Betrag sein")
-        //).bind("stueckpreis");
         grid.addColumn(TemplateMehrwertsteuercode::getId).setCaption("Id");
         grid.addColumn(TemplateMehrwertsteuercode::getVersion).setCaption("Vers");
         grid.addColumn(TemplateMehrwertsteuercode::getCode).setEditorComponent(new TextField(), TemplateMehrwertsteuercode::setCode).setCaption("Code");
         grid.addColumn(TemplateMehrwertsteuercode::getBezeichnung).setEditorComponent(new TextField(), TemplateMehrwertsteuercode::setBezeichnung).setCaption("Bezeichnung");
-        grid.addColumn(TemplateMehrwertsteuercode::getProzentString).setEditorComponent(new TextField(), TemplateMehrwertsteuercode::setProzentString).setCaption("Prozent");
+        //@todo Editor NumberField mit Double (Siehe AdresseForm mit Konfiguration Numberfield
+        //grid.addColumn(TemplateMehrwertsteuercode::getProzent).setEditorComponent(new NumberField(), TemplateMehrwertsteuercode::setProzent).setCaption("Prozent");
         grid.addColumn(TemplateMehrwertsteuercode::isVerkauf).setEditorComponent(new CheckBox(), TemplateMehrwertsteuercode::setVerkauf).setCaption("Verkauf");
         grid.addColumn(templateMehrwertsteuercode -> templateMehrwertsteuercode.getTemplateMehrwertsteuerKonto().getBezeichnung()
                 + " " + templateMehrwertsteuercode.getTemplateMehrwertsteuerKonto().getId()).setCaption("Konto");
@@ -607,7 +600,7 @@ public class TemplateBuchhaltungTreeView extends VerticalLayout implements View 
             mehrwertsteuercode.setTemplateBuchhaltung(buchhaltungSelect.getValue());
             mehrwertsteuercode.setTemplateMehrwertsteuerKonto(createTemplateKontoList(buchhaltungSelect.getValue()).get(0));
 
-            mehrwertsteuercode.setProzent(8f);
+            mehrwertsteuercode.setProzent(8d);
 
             templateMehrwertsteuercodeForm.setWidth(500, Unit.PIXELS);
             templateMehrwertsteuercodeForm.lockSelect();

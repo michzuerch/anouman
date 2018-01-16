@@ -5,15 +5,19 @@ import ch.internettechnik.anouman.backend.entity.TemplateKonto;
 import ch.internettechnik.anouman.backend.entity.TemplateMehrwertsteuercode;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.TemplateBuchhaltungDeltaspikeFacade;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.TemplateKontoDeltaspikeFacade;
-import com.vaadin.data.converter.StringToFloatConverter;
 import com.vaadin.ui.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.vaadin.ui.NumberField;
 import org.vaadin.viritin.form.AbstractForm;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class TemplateMehrwertsteuercodeForm extends AbstractForm<TemplateMehrwertsteuercode> {
+    private static Logger logger = LoggerFactory.getLogger(TemplateMehrwertsteuercodeForm.class.getName());
 
     @Inject
     TemplateBuchhaltungDeltaspikeFacade templateBuchhaltungDeltaspikeFacade;
@@ -25,7 +29,7 @@ public class TemplateMehrwertsteuercodeForm extends AbstractForm<TemplateMehrwer
     NativeSelect<TemplateKonto> templateMehrwertsteuerKonto = new NativeSelect<>();
     TextField bezeichnung = new TextField("Bezeichnung");
     TextField code = new TextField("Code");
-    TextField prozent = new TextField("Prozent");
+    NumberField prozent = new NumberField("Prozent");
     CheckBox verkauf = new CheckBox("Verkauf");
 
     public TemplateMehrwertsteuercodeForm() {
@@ -77,8 +81,16 @@ public class TemplateMehrwertsteuercodeForm extends AbstractForm<TemplateMehrwer
             templateMehrwertsteuerKonto.setItems(createTemplateKontoList(templateBuchhaltung.getValue()));
         });
 
+        prozent.setLocale(Locale.GERMAN);
+        prozent.setDecimalPrecision(1);
+        prozent.setDecimalSeparator('.');
+        prozent.setGroupingSeparator('\'');
+        prozent.setDecimalSeparatorAlwaysShown(false);
+        prozent.setMinimumFractionDigits(2);
+        //prozent.setMinValue(5);
+
         getBinder().forField(prozent).withConverter(
-                new StringToFloatConverter("Muss Prozent Zahl sein")
+                NumberField.getConverter("Muss Prozent sein")
         ).bind("prozent");
 
         return new VerticalLayout(new FormLayout(templateBuchhaltung, templateMehrwertsteuerKonto, code, bezeichnung, verkauf, prozent), getToolbar());

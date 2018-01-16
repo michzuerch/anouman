@@ -156,9 +156,7 @@ public class TemplateBuchhaltungView extends VerticalLayout implements View {
                     updateList();
                     Notification.show("Buchhaltung " + buchhaltung + " erstellt");
                 })
-
         );
-
 
         updateList();
 

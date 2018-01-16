@@ -3,15 +3,15 @@ package ch.internettechnik.anouman.presentation.ui.backup.xml.adressen;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @XmlAccessorType(XmlAccessType.NONE)
 public class BackupRechnung {
 
     @XmlElement
-    private Date rechnungsdatum;
+    private LocalDateTime rechnungsdatum;
 
     @XmlElement
     private String bezeichnung;
@@ -33,11 +33,11 @@ public class BackupRechnung {
     private List<BackupAufwand> aufwands = new ArrayList<>();
 
 
-    public Date getRechnungsdatum() {
+    public LocalDateTime getRechnungsdatum() {
         return rechnungsdatum;
     }
 
-    public void setRechnungsdatum(Date rechnungsdatum) {
+    public void setRechnungsdatum(LocalDateTime rechnungsdatum) {
         this.rechnungsdatum = rechnungsdatum;
     }
 

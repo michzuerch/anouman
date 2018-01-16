@@ -4,7 +4,10 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomField;
 import com.vaadin.ui.VerticalLayout;
 
+import java.util.logging.Logger;
+
 public class TestTextField extends CustomField<String> {
+    private static final Logger LOGGER = Logger.getLogger(TestTextField.class.getName());
 
     private com.vaadin.ui.TextField textField = new com.vaadin.ui.TextField();
     private String textValue = new String();

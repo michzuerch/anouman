@@ -123,18 +123,18 @@ public class RechnungView extends VerticalLayout implements View {
                         rechnung.getAdresse().getNachname() + " " + rechnung.getAdresse().getOrt() + " id:" + rechnung.getAdresse().getId(),
                 new ButtonRenderer(event -> {
                     Rechnung rechnung = (Rechnung) event.getItem();
-                    UI.getCurrent().getNavigator().navigateTo("Adresse/id/" + rechnung.getAdresse().getId());
+                    UI.getCurrent().getNavigator().navigateTo("AdresseView/id/" + rechnung.getAdresse().getId());
                 })
         ).setCaption("Adresse").setStyleGenerator(item -> "v-align-center");
 
         grid.addColumn(rechnung -> rechnung.getAnzahlRechnungspositionen(), new ButtonRenderer(event -> {
             Rechnung rechnung = (Rechnung) event.getItem();
-            UI.getCurrent().getNavigator().navigateTo("Rechnungsposition/rechnungId/" + rechnung.getId());
+            UI.getCurrent().getNavigator().navigateTo("RechnungspositionView/rechnungId/" + rechnung.getId());
         })).setCaption("Rechnungspositionen").setStyleGenerator(item -> "v-align-center");
 
         grid.addColumn(rechnung -> rechnung.getAnzahlAufwands(), new ButtonRenderer(event -> {
             Rechnung rechnung = (Rechnung) event.getItem();
-            UI.getCurrent().getNavigator().navigateTo("Aufwand/rechnungId/" + rechnung.getId());
+            UI.getCurrent().getNavigator().navigateTo("AufwandView/rechnungId/" + rechnung.getId());
         })).setCaption("Aufwand").setStyleGenerator(item -> "v-align-center");
 
         grid.setSizeFull();
@@ -189,12 +189,12 @@ public class RechnungView extends VerticalLayout implements View {
 
         grid.addColumn(rechnung -> "Print", new ButtonRenderer(rendererClickEvent -> {
             Rechnung val = (Rechnung) rendererClickEvent.getItem();
-            getUI().getNavigator().navigateTo("RechnungPrint/id/" + val.getId());
+            getUI().getNavigator().navigateTo("RechnungPrintView/id/" + val.getId());
         }));
 
         grid.addColumn(rechnung -> "detail", new ButtonRenderer(rendererClickEvent -> {
             Rechnung val = (Rechnung) rendererClickEvent.getItem();
-            getUI().getNavigator().navigateTo("RechnungDetail/id/" + val.getId());
+            getUI().getNavigator().navigateTo("RechnungDetailView/id/" + val.getId());
         }));
 
         updateList();

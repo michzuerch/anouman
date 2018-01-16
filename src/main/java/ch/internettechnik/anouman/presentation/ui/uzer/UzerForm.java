@@ -4,13 +4,13 @@ import ch.internettechnik.anouman.backend.entity.Uzer;
 import com.vaadin.ui.*;
 import org.vaadin.viritin.form.AbstractForm;
 
+import java.util.logging.Logger;
+
 /**
  * Created by michzuerch on 09.08.15.
  */
 public class UzerForm extends AbstractForm<Uzer> {
-
-    //@Inject
-    //TemplateKontoplanSelect kontoplan;
+    private static final Logger LOGGER = Logger.getLogger(UzerForm.class.getName());
 
     TextField principal = new TextField("principal");
     PasswordField pazzword = new PasswordField("password");
@@ -18,11 +18,6 @@ public class UzerForm extends AbstractForm<Uzer> {
 
     public UzerForm() {
         super(Uzer.class);
-        /*
-        getBinder().forField(stundensatz).withConverter(
-                new StringToFloatConverter("Muss Betrag sein")
-        ).bind("stundensatz");
-        */
     }
 
     @Override
@@ -34,12 +29,8 @@ public class UzerForm extends AbstractForm<Uzer> {
 
     @Override
     protected Component createContent() {
-
-
         return new VerticalLayout(new FormLayout(
                 principal, pazzword, description
         ), getToolbar());
     }
-
-
 }

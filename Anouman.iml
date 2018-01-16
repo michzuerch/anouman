@@ -29,7 +29,7 @@
       <configuration>
         <setting name="compilerMaxHeapSize" value="1024" />
         <setting name="gwtScriptOutputStyle" value="DETAILED" />
-        <setting name="gwtSdkUrl" value="file://$MAVEN_REPOSITORY$/com/vaadin/vaadin-client/8.3-SNAPSHOT" />
+        <setting name="gwtSdkUrl" value="file://$MAVEN_REPOSITORY$/com/vaadin/vaadin-client/8.3.0.beta1" />
         <setting name="gwtSdkType" value="Vaadin-Maven" />
         <setting name="webFacet" value="Web" />
         <packaging>
@@ -94,15 +94,14 @@
     <orderEntry type="library" name="Maven: com.vaadin:vaadin-themes:8.3.0.beta1" level="project" />
     <orderEntry type="library" name="Maven: org.vaadin.addons:drop-or-choose-upload:2.0" level="project" />
     <orderEntry type="library" name="Maven: org.vaadin.blackbluegl:calendar-component:2.0-BETA3" level="project" />
-    <orderEntry type="library" name="Maven: com.github.appreciated:app-layout-addon:0.9.19" level="project" />
-    <orderEntry type="library" name="Maven: org.ocpsoft.prettytime:prettytime:4.0.1.Final" level="project" />
-    <orderEntry type="library" name="Maven: org.vaadin.addons:inputmask:1.0.2" level="project" />
-    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.9.2" level="project" />
-    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.9.0" level="project" />
-    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.9.2" level="project" />
-    <orderEntry type="library" name="Maven: org.vaadin.addons:floating-textfield:2.0.0-beta2" level="project" />
     <orderEntry type="library" name="Maven: org.vaadin.community.addon:clickabletextrenderer-v8:1.0.0" level="project" />
-    <orderEntry type="library" name="Maven: tm.kod:numberfield7:0.0.5" level="project" />
+    <orderEntry type="library" name="Maven: org.vaadin.ui:numberfield:0.2.0" level="project" />
+    <orderEntry type="library" name="Maven: com.vaadin:vaadin-client:8.3.0.beta1" level="project" />
+    <orderEntry type="library" name="Maven: com.google.gwt:gwt-elemental:2.8.2" level="project" />
+    <orderEntry type="library" name="Maven: com.google.gwt:gwt-user:2.8.2" level="project" />
+    <orderEntry type="library" name="Maven: com.google.jsinterop:jsinterop-annotations:1.0.2" level="project" />
+    <orderEntry type="library" name="Maven: com.google.jsinterop:jsinterop-annotations:sources:1.0.2" level="project" />
+    <orderEntry type="library" name="Maven: javax.validation:validation-api:sources:1.0.0.GA" level="project" />
     <orderEntry type="library" name="Maven: org.vaadin.reports:report-ui:1.1" level="project" />
     <orderEntry type="library" name="Maven: ar.com.fdvs:DynamicJasper:5.1.0" level="project" />
     <orderEntry type="library" name="Maven: net.sf.jasperreports:jasperreports:6.3.0" level="project" />
@@ -127,6 +126,9 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-core:3.0.6.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-expression:3.0.6.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-asm:3.0.6.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.1.4" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.1.4" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.1.4" level="project" />
     <orderEntry type="library" name="Maven: org.apache.lucene:lucene-core:4.5.1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.lucene:lucene-analyzers-common:4.5.1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.lucene:lucene-queryparser:4.5.1" level="project" />

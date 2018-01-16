@@ -3,6 +3,8 @@ package ch.internettechnik.anouman.presentation.ui.report.css;
 import ch.internettechnik.anouman.backend.entity.report.css.ReportCSS;
 import ch.internettechnik.anouman.presentation.ui.converter.ByteToStringConverter;
 import com.vaadin.ui.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.vaadin.viritin.form.AbstractForm;
 import server.droporchoose.UploadComponent;
 
@@ -12,6 +14,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class ReportCSSForm extends AbstractForm<ReportCSS> {
+    private static Logger logger = LoggerFactory.getLogger(ReportCSSForm.class.getName());
+
     TextField bezeichnung = new TextField("Bezeichnung");
     UploadComponent uploadCSS = new UploadComponent();
     UploadComponent uploadHtml = new UploadComponent();

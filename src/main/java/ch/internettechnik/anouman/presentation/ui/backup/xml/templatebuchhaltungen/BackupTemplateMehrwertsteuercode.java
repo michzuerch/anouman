@@ -20,7 +20,7 @@ public class BackupTemplateMehrwertsteuercode {
     private String code;
 
     @XmlElement
-    private Float prozent;
+    private Double prozent;
 
     @XmlElement
     private boolean verkauf;
@@ -55,11 +55,11 @@ public class BackupTemplateMehrwertsteuercode {
         this.code = code;
     }
 
-    public Float getProzent() {
+    public Double getProzent() {
         return prozent;
     }
 
-    public void setProzent(Float prozent) {
+    public void setProzent(Double prozent) {
         this.prozent = prozent;
     }
 

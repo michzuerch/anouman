@@ -111,7 +111,7 @@ public class ArtikelView extends VerticalLayout implements View {
         grid.addColumn(artikel -> artikel.getArtikelkategorie().getBezeichnung() + " id:" + artikel.getArtikelkategorie().getId(),
                 new ButtonRenderer(event -> {
                     Artikel artikel = (Artikel) event.getItem();
-                    UI.getCurrent().getNavigator().navigateTo("Artikelkategorie/id/" + artikel.getArtikelkategorie().getId());
+                    UI.getCurrent().getNavigator().navigateTo("ArtikelkategorieView/id/" + artikel.getArtikelkategorie().getId());
                 })
         ).setCaption("Artikelkategorie").setStyleGenerator(item -> "v-align-center");
 

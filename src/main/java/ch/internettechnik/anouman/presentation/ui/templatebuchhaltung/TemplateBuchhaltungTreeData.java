@@ -1,5 +1,8 @@
 package ch.internettechnik.anouman.presentation.ui.templatebuchhaltung;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,6 +10,7 @@ import java.util.List;
  * Created by michzuerch on 18.05.17.
  */
 public class TemplateBuchhaltungTreeData {
+    private static Logger logger = LoggerFactory.getLogger(TemplateBuchhaltungTreeData.class.getName());
     private List<TemplateBuchhaltungTreeData> sub = new ArrayList<>();
     private String type;
     private Long id;

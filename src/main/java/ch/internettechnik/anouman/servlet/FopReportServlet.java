@@ -17,9 +17,11 @@ import javax.xml.transform.stream.StreamSource;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 @WebServlet(name = "FopReportServlet")
 public class FopReportServlet extends HttpServlet {
+    private static final Logger LOGGER = Logger.getLogger(FopReportServlet.class.getName());
     protected URIResolver uriResolver;
     private TransformerFactory tFactory = TransformerFactory.newInstance();
     private FopFactory fopFactory = FopFactory.newInstance(new File(".").toURI());
@@ -48,7 +50,7 @@ public class FopReportServlet extends HttpServlet {
 
     }
 
-    private void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void process(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/pdf");
         response.setContentLength(out.size());
         response.getOutputStream().write(out.toByteArray());

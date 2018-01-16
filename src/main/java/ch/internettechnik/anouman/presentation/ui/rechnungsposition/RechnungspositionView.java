@@ -110,7 +110,7 @@ public class RechnungspositionView extends VerticalLayout implements View {
                         rechnungsposition.getRechnung().getAdresse().getNachname() + " " + rechnungsposition.getRechnung().getAdresse().getOrt() + " id:" + rechnungsposition.getRechnung().getId(),
                 new ButtonRenderer(event -> {
                     Rechnungsposition val = (Rechnungsposition) event.getItem();
-                    UI.getCurrent().getNavigator().navigateTo("Rechnung/id/" + val.getRechnung().getId());
+                    UI.getCurrent().getNavigator().navigateTo("RechnungView/id/" + val.getRechnung().getId());
                 })
         ).setCaption("Rechnung").setStyleGenerator(item -> "v-align-center");
 

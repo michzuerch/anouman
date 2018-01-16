@@ -1,5 +1,6 @@
 package ch.internettechnik.anouman.presentation.ui;
 
+import com.vaadin.cdi.CDIView;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.ClassResource;
@@ -9,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 
+@CDIView("ImageTestView")
 public class ImageTestView extends VerticalLayout implements View {
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(ImageTestView.class.getName());
 

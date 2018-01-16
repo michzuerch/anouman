@@ -13,7 +13,10 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.*;
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.vaadin.viritin.button.DownloadButton;
+import org.vaadin.viritin.fields.IntegerField;
 
 import javax.inject.Inject;
 import java.io.ByteArrayInputStream;
@@ -21,6 +24,8 @@ import java.io.IOException;
 
 @CDIView("RechnungPrintView")
 public class RechnungPrintView extends VerticalLayout implements View {
+    private static Logger logger = LoggerFactory.getLogger(RechnungPrintView.class.getName());
+
     @Inject
     RechnungDeltaspikeFacade rechnungDeltaspikeFacade;
     @Inject
@@ -34,9 +39,9 @@ public class RechnungPrintView extends VerticalLayout implements View {
     TextField fieldAdresseNachname = new TextField("Adresse Nachname");
     TextField fieldAdresseOrt = new TextField("Adresse Ort");
     TextField fieldBezeichnung = new TextField("Bezeichnung");
-    TextField fieldRechnungsdatum = new TextField("Rechnungsdatum");
-    TextField fieldFaelligInTagen = new TextField("Fällig in Tagen");
-    TextField fieldFaelligkeitsdatum = new TextField("Fälligkeitsdatum");
+    DateTimeField fieldRechnungsdatum = new DateTimeField("Rechnungsdatum");
+    IntegerField fieldFaelligInTagen = new IntegerField("Fällig in Tagen");
+    DateTimeField fieldFaelligkeitsdatum = new DateTimeField("Fälligkeitsdatum");
     TextField fieldMehrwertsteuer = new TextField("Mehrwertsteuer");
     TextField fieldZwischentotal = new TextField("Zwischentotal");
     TextField fieldRechnungstotal = new TextField("Rechnungstotal");
@@ -71,9 +76,9 @@ public class RechnungPrintView extends VerticalLayout implements View {
         fieldAdresseNachname.setValue(val.getAdresse().getNachname());
         fieldAdresseOrt.setValue(val.getAdresse().getOrt());
         fieldBezeichnung.setValue(val.getBezeichnung());
-        fieldRechnungsdatum.setValue(val.getRechnungsdatum().toLocaleString());
-        fieldFaelligInTagen.setValue(new Integer(val.getFaelligInTagen()).toString());
-        fieldFaelligkeitsdatum.setValue(val.getFaelligkeitsdatum().toLocaleString());
+        fieldRechnungsdatum.setValue(val.getRechnungsdatum());
+        fieldFaelligInTagen.setValue(val.getFaelligInTagen());
+        fieldFaelligkeitsdatum.setValue(val.getFaelligkeitsdatum());
         fieldMehrwertsteuer.setValue(val.getMehrwertsteuer().toString());
         fieldZwischentotal.setValue(val.getZwischentotal().toString());
         fieldRechnungstotal.setValue(val.getRechnungstotal().toString());

@@ -8,6 +8,8 @@ import com.vaadin.ui.*;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperReport;
 import org.apache.commons.lang3.SerializationUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.vaadin.viritin.form.AbstractForm;
 import server.droporchoose.UploadComponent;
 
@@ -18,6 +20,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class ReportJasperForm extends AbstractForm<ReportJasper> {
+    private static Logger logger = LoggerFactory.getLogger(ReportJasperForm.class.getName());
+
     TestTextField bezeichnung = new TestTextField("Bezeichnung");
     UploadComponent upload = new UploadComponent();
     Button validateAndCompileButton = new Button("Validate and Compile");
@@ -143,7 +147,7 @@ public class ReportJasperForm extends AbstractForm<ReportJasper> {
 //
 //            Schema schema = factory.newSchema(schemaFile);
 //
-//            Validator validator = schema.newValidator();
+//            alidator validator = schema.newValidator();
 //            validator.validate(new DOMSource(document));
 //
 //            return true;
