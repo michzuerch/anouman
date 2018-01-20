@@ -3,6 +3,8 @@ package ch.internettechnik.anouman.presentation.ui.artikel;
 import ch.internettechnik.anouman.backend.entity.Artikel;
 import ch.internettechnik.anouman.backend.entity.Artikelkategorie;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ArtikelkategorieDeltaspikeFacade;
+import ch.internettechnik.anouman.presentation.ui.field.AnzahlField;
+import ch.internettechnik.anouman.presentation.ui.field.BetragField;
 import com.vaadin.ui.*;
 import org.vaadin.ui.NumberField;
 import org.vaadin.viritin.form.AbstractForm;
@@ -15,8 +17,8 @@ public class ArtikelForm extends AbstractForm<Artikel> {
     TextField bezeichnung = new TextField("Bezeichnung");
     TextArea bezeichnungLang = new TextArea("Bezeichnung Lang");
     TextField mengeneinheit = new TextField("Mengeneinheit");
-    NumberField stueckpreis = new NumberField("Stückpreis");
-    NumberField anzahl = new NumberField("Anzahl");
+    BetragField stueckpreis = new BetragField("Stückpreis");
+    AnzahlField anzahl = new AnzahlField("Anzahl");
 
     @Inject
     ArtikelkategorieDeltaspikeFacade artikelkategorieDeltaspikeFacade;

@@ -3,7 +3,7 @@ package ch.internettechnik.anouman.presentation.ui.report.jasper.reporttemplate;
 import ch.internettechnik.anouman.backend.entity.report.jasper.ReportJasper;
 import ch.internettechnik.anouman.backend.entity.report.jasper.ReportJasperImage;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ReportJasperDeltaspikeFacade;
-import ch.internettechnik.anouman.presentation.ui.ImageField;
+import ch.internettechnik.anouman.presentation.ui.field.ImageField;
 import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

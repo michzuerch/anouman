@@ -7,7 +7,6 @@ import com.vaadin.ui.*;
 import org.vaadin.viritin.form.AbstractForm;
 
 import javax.inject.Inject;
-import java.time.ZoneOffset;
 
 /**
  * Created by michzuerch on 09.08.15.
@@ -17,8 +16,8 @@ public class AufwandForm extends AbstractForm<Aufwand> {
     NativeSelect<Rechnung> rechnung = new NativeSelect<>();
     TextField titel = new TextField("Titel");
     TextField bezeichnung = new TextField("Bezeichnung");
-    DateTimeField start = new DateTimeField("Start");
-    DateTimeField ende = new DateTimeField("Ende");
+    DateTimeField startzeit = new DateTimeField("Start");
+    DateTimeField endzeit = new DateTimeField("Ende");
 
     @Inject
     RechnungDeltaspikeFacade rechnungDeltaspikeFacade;
@@ -46,17 +45,17 @@ public class AufwandForm extends AbstractForm<Aufwand> {
         rechnung.setItems(rechnungDeltaspikeFacade.findAll());
         rechnung.setItemCaptionGenerator(rechnung1 -> rechnung1.getBezeichnung() + " id:" + rechnung1.getId());
 
-        getBinder().forField(start)
-                .withConverter(new com.vaadin.data.converter.LocalDateTimeToDateConverter(ZoneOffset.UTC))
-                .bind("start");
-
-        getBinder().forField(ende)
-                .withConverter(new com.vaadin.data.converter.LocalDateTimeToDateConverter(ZoneOffset.UTC))
-                .bind("ende");
-
+//        getBinder().forField(startzeit)
+//                .withConverter(new com.vaadin.data.converter.LocalDateTimeToDateConverter(ZoneOffset.UTC))
+//                .bind("start");
+//
+//        getBinder().forField(ende)
+//                .withConverter(new com.vaadin.data.converter.LocalDateTimeToDateConverter(ZoneOffset.UTC))
+//                .bind("ende");
+//
 
         return new VerticalLayout(new FormLayout(
-                rechnung, titel, bezeichnung, start, ende
+                rechnung, titel, bezeichnung, startzeit, endzeit
         ), getToolbar());
     }
 

@@ -1,4 +1,4 @@
-package ch.internettechnik.anouman.presentation.ui;
+package ch.internettechnik.anouman.presentation.ui.field;
 
 import com.vaadin.server.StreamResource;
 import com.vaadin.ui.*;

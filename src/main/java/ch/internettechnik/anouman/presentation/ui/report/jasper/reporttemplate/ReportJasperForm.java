@@ -1,8 +1,8 @@
 package ch.internettechnik.anouman.presentation.ui.report.jasper.reporttemplate;
 
 import ch.internettechnik.anouman.backend.entity.report.jasper.ReportJasper;
-import ch.internettechnik.anouman.presentation.ui.TestTextField;
 import ch.internettechnik.anouman.presentation.ui.converter.ByteToStringConverter;
+import ch.internettechnik.anouman.presentation.ui.field.TestTextField;
 import com.vaadin.server.UserError;
 import com.vaadin.ui.*;
 import net.sf.jasperreports.engine.JasperCompileManager;

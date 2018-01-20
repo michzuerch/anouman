@@ -12,6 +12,8 @@ import ch.internettechnik.anouman.presentation.ui.backup.uploadreceiver.Template
 import ch.internettechnik.anouman.presentation.ui.backup.xml.adressen.*;
 import ch.internettechnik.anouman.presentation.ui.backup.xml.buchhaltungen.*;
 import ch.internettechnik.anouman.presentation.ui.backup.xml.templatebuchhaltungen.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
@@ -64,7 +66,44 @@ public class BackupView extends VerticalLayout implements View {
     @Inject
     BuchhaltungenUploadReceiver buchhaltungenUploadReceiver;
 
-    Button downloaderAdressen = new DownloadButton(stream -> {
+    Button downloadAdressenJson = new DownloadButton(stream -> {
+        ObjectMapper mapper = new ObjectMapper();
+        //Convert object to JSON string and save into file directly
+        //mapper.writeValue(new File("D:\\user.json"), user);
+
+        //Convert object to JSON string
+        BackupAdressen adressen = new BackupAdressen();
+        adressen.setBackupdatum(new Date());
+        adresseDeltaspikeFacade.findAll().stream().forEach(adresse -> {
+            BackupAdresse backupAdresse = new BackupAdresse();
+            backupAdresse.setAnrede(adresse.getAnrede());
+            backupAdresse.setFirma(adresse.getFirma());
+            backupAdresse.setNachname(adresse.getNachname());
+            backupAdresse.setOrt(adresse.getOrt());
+            backupAdresse.setPostleitzahl(adresse.getPostleitzahl());
+            backupAdresse.setStrasse(adresse.getStrasse());
+            backupAdresse.setStundensatz(adresse.getStundensatz());
+            backupAdresse.setVorname(adresse.getVorname());
+            adressen.getAdressen().add(backupAdresse);
+
+        });
+
+        String jsonInString = null;
+        try {
+            mapper.writeValue(stream, jsonInString);
+            jsonInString = mapper.writeValueAsString(adressen);
+            stream.flush();
+            stream.close();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println(jsonInString);
+    }).setFileName("AdressenRechnungenAnouman.json")
+            .withCaption("JSON-Datei mit Adressen, Rechnungen, Rechnungspositionen, Aufwand herunterladen").withIcon(VaadinIcons.DOWNLOAD);
+
+    Button downloaderAdressenXml = new DownloadButton(stream -> {
         JAXBContext jaxbContext = null;
         try {
             jaxbContext = JAXBContext.newInstance(BackupAdressen.class, BackupAdresse.class, Rechnung.class,
@@ -507,7 +546,7 @@ public class BackupView extends VerticalLayout implements View {
         List<Adresse> adressen = adresseDeltaspikeFacade.findAll();
         if (adressen.size() == 0) {
             listAdressen.setEnabled(false);
-            downloaderAdressen.setEnabled(false);
+            downloaderAdressenXml.setEnabled(false);
             downloaderAdresse.setEnabled(false);
         } else {
             listAdressen.setItems(adresseDeltaspikeFacade.findAll());
@@ -518,7 +557,7 @@ public class BackupView extends VerticalLayout implements View {
         listAdressen.setWidth(20, Unit.EM);
 
         Panel panelBackup = new Panel("Backup");
-        panelBackup.setContent(new MVerticalLayout(downloaderAdressen, downloaderBuchhaltungen, downloaderTemplateBuchhaltungen,
+        panelBackup.setContent(new MVerticalLayout(downloaderAdressenXml, downloadAdressenJson, downloaderBuchhaltungen, downloaderTemplateBuchhaltungen,
                 new HorizontalLayout(downloaderBuchhaltung, listBuchhaltungen),
                 new HorizontalLayout(downloaderTemplateBuchhaltung, listTemplateBuchhaltungen),
                 new HorizontalLayout(downloaderAdresse, listAdressen)

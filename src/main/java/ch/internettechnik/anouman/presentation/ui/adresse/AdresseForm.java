@@ -1,7 +1,7 @@
 package ch.internettechnik.anouman.presentation.ui.adresse;
 
 import ch.internettechnik.anouman.backend.entity.Adresse;
-import ch.internettechnik.anouman.presentation.ui.TestTextField;
+import ch.internettechnik.anouman.presentation.ui.field.TestTextField;
 import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

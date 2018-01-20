@@ -1,4 +1,4 @@
-package ch.internettechnik.anouman.presentation.ui;
+package ch.internettechnik.anouman.presentation.ui.field;
 
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomField;

@@ -50,12 +50,6 @@ public class RechnungForm extends AbstractForm<Rechnung> {
         adresse.setItemCaptionGenerator(item -> item.getFirma() + " id:" + item.getId());
         adresse.setItems(facade.findAll());
 
-        // @todo In EJB umstellen auf LocalDate
-        getBinder().forField(rechnungsdatum)
-                .withConverter(new com.vaadin.data.converter.LocalDateToDateConverter())
-                .bind("rechnungsdatum");
-
-
         return new VerticalLayout(new FormLayout(
                 adresse, bezeichnung, rechnungsdatum, faelligInTagen, bezahlt, verschickt
         ), getToolbar());
