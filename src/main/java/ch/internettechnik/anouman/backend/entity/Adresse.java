@@ -1,9 +1,6 @@
 package ch.internettechnik.anouman.backend.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +47,7 @@ public class Adresse extends AbstractEntity {
     @DecimalMax(value = "500", message = "Maximaler Betrag ist 500")
     private Double stundensatz;
 
-    @OneToMany(mappedBy = "adresse")
+    @OneToMany(mappedBy = "adresse", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Rechnung> rechnungen = new ArrayList<>();
 
     public Adresse(String firma, String anrede, String vorname, String nachname, String strasse, String postleitzahl, String ort, Double stundensatz) {

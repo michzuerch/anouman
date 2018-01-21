@@ -2,12 +2,15 @@ package ch.internettechnik.anouman.presentation.ui;
 
 import ch.internettechnik.anouman.backend.entity.Adresse;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.AdresseDeltaspikeFacade;
+import ch.internettechnik.anouman.presentation.ui.field.BetragField;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TabSheet;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.renderers.ButtonRenderer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.crudui.crud.Crud;
@@ -15,8 +18,8 @@ import org.vaadin.crudui.crud.CrudListener;
 import org.vaadin.crudui.crud.CrudOperation;
 import org.vaadin.crudui.crud.impl.EditableGridCrud;
 import org.vaadin.crudui.crud.impl.GridCrud;
-import org.vaadin.crudui.form.impl.form.factory.GridLayoutCrudFormFactory;
-import org.vaadin.crudui.layout.impl.HorizontalSplitCrudLayout;
+import org.vaadin.crudui.form.impl.form.factory.VerticalCrudFormFactory;
+import org.vaadin.crudui.layout.impl.WindowBasedCrudLayout;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -41,8 +44,8 @@ public class GridCrudTestView extends VerticalLayout implements View, CrudListen
         addComponentsAndExpand(tabSheet);
         //addCrud(getDefaultCrud(), "Default");
         //addCrud(getDefaultCrudWithFixes(), "Default (with fixes)");
-        //addCrud(getConfiguredCrud(), "Configured");
-        addCrud(getEditableGridCrud(), "Editable Grid");
+        addCrud(getCrud(), "Configured");
+        //addCrud(getEditableGridCrud(), "Editable Grid");
     }
 
 
@@ -53,24 +56,14 @@ public class GridCrudTestView extends VerticalLayout implements View, CrudListen
         tabSheet.addTab(layout, caption);
     }
 
-    private Crud getDefaultCrud() {
-        return new GridCrud<>(Adresse.class, this);
-    }
-
-    private Crud getDefaultCrudWithFixes() {
-        GridCrud<Adresse> crud = new GridCrud<>(Adresse.class);
-        crud.setCrudListener(this);
-        //crud.getCrudFormFactory().setFieldProvider("groups", new CheckBoxGroupProvider<>(GroupRepository.findAll()));
-        //crud.getCrudFormFactory().setFieldProvider("mainGroup", new ComboBoxProvider<>(GroupRepository.findAll()));
-
-        return crud;
-    }
-
-    private Crud getConfiguredCrud() {
-        GridCrud<Adresse> crud = new GridCrud<Adresse>(Adresse.class, new HorizontalSplitCrudLayout());
+    private Crud getCrud() {
+        GridCrud<Adresse> crud = new GridCrud<Adresse>(Adresse.class, new WindowBasedCrudLayout());
         crud.setCrudListener(this);
 
-        GridLayoutCrudFormFactory<Adresse> formFactory = new GridLayoutCrudFormFactory<>(Adresse.class, 2, 2);
+        //GridLayoutCrudFormFactory<Adresse> formFactory = new GridLayoutCrudFormFactory<>(Adresse.class, 2, 2);
+
+        VerticalCrudFormFactory<Adresse> formFactory = new VerticalCrudFormFactory<>(Adresse.class);
+
         crud.setCrudFormFactory(formFactory);
 
         formFactory.setUseBeanValidation(true);
@@ -86,9 +79,19 @@ public class GridCrudTestView extends VerticalLayout implements View, CrudListen
         formFactory.setVisibleProperties(CrudOperation.DELETE, "firma");
 
         formFactory.setDisabledProperties("id");
+        formFactory.setDisabledProperties("anzahlRechnungen");
 
         crud.getGrid().setColumns("id", "firma", "anrede", "vorname", "nachname", "strasse", "postleitzahl",
-                "ort", "stundensatz");
+                "ort", "stundensatz", "anzahlRechnungen");
+
+        crud.getGrid().addColumn(adresse -> adresse.getAnzahlRechnungen(), new ButtonRenderer(event -> {
+            Adresse adresse = (Adresse) event.getItem();
+            if (adresse.getAnzahlRechnungen() > 0) {
+                UI.getCurrent().getNavigator().navigateTo("RechnungView/adresseId/" + adresse.getId().toString());
+            }
+        })).setCaption("Anzahl Rechnungen").setStyleGenerator(item -> "v-align-center");
+
+
         //crud.getGrid().getColumn("mainGroup").setRenderer(group -> group == null ? "" : ((Group) group).getName(), new TextRenderer());
         //((Grid.Column<User, Date>) crud.getGrid().getColumn("birthDate")).setRenderer(new DateRenderer("%1$tY-%1$tm-%1$te"));
 
@@ -98,11 +101,15 @@ public class GridCrudTestView extends VerticalLayout implements View, CrudListen
         //formFactory.setFieldProvider("groups", new CheckBoxGroupProvider<>("Groups", GroupRepository.findAll(), Group::getName));
         //formFactory.setFieldProvider("mainGroup", new ComboBoxProvider<>("Main Group", GroupRepository.findAll(), Group::getName));
 
+        formFactory.setFieldType("stundensatz", BetragField.class);
         formFactory.setButtonCaption(CrudOperation.ADD, "Neue Adresse erstellen");
+        formFactory.setButtonCaption(CrudOperation.DELETE, "Adresse löschen");
+
         crud.setRowCountCaption("%d Adressen gefunden");
 
-        crud.setClickRowToUpdate(true);
-        crud.setUpdateOperationVisible(false);
+        crud.setClickRowToUpdate(false);
+        crud.setUpdateOperationVisible(true);
+        crud.setDeleteOperationVisible(true);
 
         return crud;
     }

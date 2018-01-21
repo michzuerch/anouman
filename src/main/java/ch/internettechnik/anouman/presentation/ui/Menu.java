@@ -1,6 +1,7 @@
 package ch.internettechnik.anouman.presentation.ui;
 
 
+import com.vaadin.cdi.ViewScoped;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.CssLayout;
@@ -9,14 +10,11 @@ import com.vaadin.ui.MenuBar;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.enterprise.context.ApplicationScoped;
-
 /**
  * Created by michzuerch on 26.10.15.
  */
 
-//@ViewScoped
-@ApplicationScoped
+@ViewScoped
 public class Menu extends CustomComponent {
     private static Logger logger = LoggerFactory.getLogger(Menu.class.getName());
     CssLayout layout = new CssLayout();

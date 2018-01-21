@@ -31,7 +31,7 @@ public class Mehrwertsteuercode extends AbstractEntity {
     @Column
     private boolean verkauf;
 
-    @OneToMany(mappedBy = "mehrwertsteuercode", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "mehrwertsteuercode", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Buchung> buchungen = new ArrayList<>();
 
     @ManyToOne
