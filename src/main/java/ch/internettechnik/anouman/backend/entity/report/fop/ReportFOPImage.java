@@ -1,9 +1,9 @@
 package ch.internettechnik.anouman.backend.entity.report.fop;
 
 import ch.internettechnik.anouman.backend.entity.AbstractEntity;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 public class ReportFOPImage extends AbstractEntity {

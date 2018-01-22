@@ -87,7 +87,7 @@ public class GridCrudTestView extends VerticalLayout implements View, CrudListen
         crud.getGrid().addColumn(adresse -> adresse.getAnzahlRechnungen(), new ButtonRenderer(event -> {
             Adresse adresse = (Adresse) event.getItem();
             if (adresse.getAnzahlRechnungen() > 0) {
-                UI.getCurrent().getNavigator().navigateTo("RechnungView/adresseId/" + adresse.getId().toString());
+                UI.getCurrent().getNavigator().navigateTo("RechnungOldView/adresseId/" + adresse.getId().toString());
             }
         })).setCaption("Anzahl Rechnungen").setStyleGenerator(item -> "v-align-center");
 

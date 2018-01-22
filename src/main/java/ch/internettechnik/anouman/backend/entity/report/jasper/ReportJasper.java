@@ -1,7 +1,6 @@
 package ch.internettechnik.anouman.backend.entity.report.jasper;
 
 import ch.internettechnik.anouman.backend.entity.AbstractEntity;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -21,12 +20,10 @@ public class ReportJasper extends AbstractEntity {
 
     @Column
     @Basic(fetch = FetchType.LAZY)
-    @NotEmpty
     private byte[] templateSource;
 
     @Column
     @Basic(fetch = FetchType.LAZY)
-    @NotEmpty
     private byte[] templateCompiled;
 
     @OneToMany(mappedBy = "reportJasper", cascade = CascadeType.ALL, orphanRemoval = true)

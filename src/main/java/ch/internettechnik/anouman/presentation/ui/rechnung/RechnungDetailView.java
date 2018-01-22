@@ -49,7 +49,7 @@ public class RechnungDetailView extends VerticalLayout implements View {
     Grid<Aufwand> aufwandGrid = new Grid<>();
     Button btnAddRechnungsposition = new Button("Add Rechnungsposition");
     Button btnAddAufwand = new Button("Add Aufwand");
-    Button btnBack = new Button("Zurück", clickEvent -> getUI().getNavigator().navigateTo("RechnungView/id/" + getIdRechnung()));
+    Button btnBack = new Button("Zurück", clickEvent -> getUI().getNavigator().navigateTo("RechnungOldView/id/" + getIdRechnung()));
 
     @Inject
     private Menu menu;

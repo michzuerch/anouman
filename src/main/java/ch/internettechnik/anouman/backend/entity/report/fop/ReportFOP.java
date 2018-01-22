@@ -1,7 +1,6 @@
 package ch.internettechnik.anouman.backend.entity.report.fop;
 
 import ch.internettechnik.anouman.backend.entity.AbstractEntity;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -16,7 +15,6 @@ public class ReportFOP extends AbstractEntity {
 
     @Column
     @Basic(fetch = FetchType.LAZY)
-    @NotEmpty
     private byte[] template;
 
     @OneToMany(mappedBy = "reportFOP", cascade = CascadeType.ALL, orphanRemoval = true)

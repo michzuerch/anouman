@@ -1,9 +1,9 @@
 package ch.internettechnik.anouman.backend.entity.report.css;
 
 import ch.internettechnik.anouman.backend.entity.AbstractEntity;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;

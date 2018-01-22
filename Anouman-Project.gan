@@ -35,8 +35,8 @@
             <taskproperty id="tpd8" name="coordinator" type="default" valuetype="text"/>
             <taskproperty id="tpd9" name="predecessorsr" type="default" valuetype="text"/>
         </taskproperties>
-        <task id="0" name="Anouman Fertigstelllung" color="#8cb6ce" meeting="false" start="2018-01-22" duration="14" complete="0" expand="true">
-            <task id="3" name="Evaluierung CRUDUI" color="#8cb6ce" meeting="false" start="2018-02-01" duration="1" complete="0" expand="true"/>
+        <task id="0" name="Anouman Fertigstelllung" color="#8cb6ce" meeting="false" start="2018-01-22" duration="14" complete="7" expand="true">
+            <task id="3" name="Evaluierung CRUDUI" color="#8cb6ce" meeting="false" start="2018-02-01" duration="1" complete="75" expand="true"/>
             <task id="5" name="Beenden aller CRUD" meeting="false" start="2018-02-08" duration="1" complete="0" expand="true"/>
             <task id="6" name="Annotations Validation überarbeiten" meeting="false" start="2018-02-08" duration="1" complete="0" expand="true"/>
             <task id="14" name="Buchungsmaske" meeting="false" start="2018-01-22" duration="1" complete="0" expand="true"/>
@@ -49,6 +49,8 @@
         </task>
         <task id="21" name="Anouman durchtesten und alle Issues in Gitea" meeting="false" start="2018-01-22" duration="1" complete="0" expand="true"/>
         <task id="22" name="Prototyp mit Deltaspike Mongo" meeting="false" start="2018-01-22" duration="1" complete="0" expand="true"/>
+        <task id="23" name="Umstellung auf CRUDUI" meeting="false" start="2018-01-12" duration="1" complete="0" expand="true"/>
+        <task id="24" name="App Layout als Menü einbauen" meeting="false" start="2018-01-12" duration="1" complete="0" expand="true"/>
     </tasks>
     <resources/>
     <allocations/>

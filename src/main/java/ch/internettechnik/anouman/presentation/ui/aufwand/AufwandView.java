@@ -113,7 +113,7 @@ public class AufwandView extends VerticalLayout implements View {
                         aufwand.getRechnung().getId(),
                 new ButtonRenderer(event -> {
                     Aufwand aufwand = (Aufwand) event.getItem();
-                    UI.getCurrent().getNavigator().navigateTo("RechnungView/id/" + aufwand.getRechnung().getId());
+                    UI.getCurrent().getNavigator().navigateTo("RechnungOldView/id/" + aufwand.getRechnung().getId());
                 })
         ).setCaption("Rechnung").setStyleGenerator(item -> "v-align-center");
 

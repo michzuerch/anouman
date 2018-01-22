@@ -110,7 +110,7 @@ public class Menu extends CustomComponent {
         rechnungenMenu.addItem("Rechnungen", VaadinIcons.INVOICE, new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem menuItem) {
-                getUI().getNavigator().navigateTo("RechnungView");
+                getUI().getNavigator().navigateTo("RechnungOldView");
             }
         });
         rechnungenMenu.addItem("Rechnungspositionen", VaadinIcons.PACKAGE, new MenuBar.Command() {
