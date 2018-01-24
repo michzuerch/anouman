@@ -39,14 +39,15 @@ public class RechnungPrintView extends VerticalLayout implements View {
     TextField fieldAdresseNachname = new TextField("Adresse Nachname");
     TextField fieldAdresseOrt = new TextField("Adresse Ort");
     TextField fieldBezeichnung = new TextField("Bezeichnung");
-    DateTimeField fieldRechnungsdatum = new DateTimeField("Rechnungsdatum");
+    DateField fieldRechnungsdatum = new DateField("Rechnungsdatum");
     IntegerField fieldFaelligInTagen = new IntegerField("Fällig in Tagen");
-    DateTimeField fieldFaelligkeitsdatum = new DateTimeField("Fälligkeitsdatum");
+    DateField fieldFaelligkeitsdatum = new DateField("Fälligkeitsdatum");
     TextField fieldMehrwertsteuer = new TextField("Mehrwertsteuer");
     TextField fieldZwischentotal = new TextField("Zwischentotal");
     TextField fieldRechnungstotal = new TextField("Rechnungstotal");
     NativeSelect<ReportJasper> selectReport = new NativeSelect<>();
     DownloadButton btnPrint = new DownloadButton();
+
     @Inject
     private Menu menu;
 

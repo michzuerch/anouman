@@ -103,12 +103,12 @@ public class AdresseView extends VerticalLayout implements View, CrudListener<Ad
         formFactory.setDisabledProperties("anzahlRechnungen");
 
         crud.getGrid().setColumns("id", "firma", "anrede", "vorname", "nachname", "strasse", "postleitzahl",
-                "ort", "stundensatz", "anzahlRechnungen");
+                "ort", "stundensatz");
 
         crud.getGrid().addColumn(adresse -> adresse.getAnzahlRechnungen(), new ButtonRenderer(event -> {
             Adresse adresse = (Adresse) event.getItem();
             if (adresse.getAnzahlRechnungen() > 0) {
-                UI.getCurrent().getNavigator().navigateTo("RechnungOldView/adresseId/" + adresse.getId().toString());
+                UI.getCurrent().getNavigator().navigateTo("RechnungView/adresseId/" + adresse.getId().toString());
             }
         })).setCaption("Anzahl Rechnungen").setStyleGenerator(item -> "v-align-center");
 
@@ -157,9 +157,22 @@ public class AdresseView extends VerticalLayout implements View, CrudListener<Ad
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
-
+        if (event.getParameters() != null) {
+            String[] msgs = event.getParameters().split("/");
+            String target = new String();
+            Long id = new Long(0);
+            for (String msg : msgs) {
+                if (target.isEmpty()) {
+                    target = msg;
+                } else {
+                    id = Long.valueOf(msg);
+                }
+            }
+            if (target.equals("id")) {
+                crud.getGrid().select(facade.findBy(id));
+            }
+        }
     }
-
 
     @Override
     public Collection<Adresse> findAll() {

@@ -3,7 +3,7 @@ package ch.internettechnik.anouman.presentation.ui.backup.xml.adressen;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +11,7 @@ import java.util.List;
 public class BackupRechnung {
 
     @XmlElement
-    private LocalDateTime rechnungsdatum;
+    private LocalDate rechnungsdatum;
 
     @XmlElement
     private String bezeichnung;
@@ -32,12 +32,11 @@ public class BackupRechnung {
     @XmlElement(name = "aufwand")
     private List<BackupAufwand> aufwands = new ArrayList<>();
 
-
-    public LocalDateTime getRechnungsdatum() {
+    public LocalDate getRechnungsdatum() {
         return rechnungsdatum;
     }
 
-    public void setRechnungsdatum(LocalDateTime rechnungsdatum) {
+    public void setRechnungsdatum(LocalDate rechnungsdatum) {
         this.rechnungsdatum = rechnungsdatum;
     }
 

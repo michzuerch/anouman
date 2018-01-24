@@ -2,9 +2,9 @@ package ch.internettechnik.anouman.presentation.ui.rechnung;
 
 import ch.internettechnik.anouman.backend.entity.Adresse;
 import ch.internettechnik.anouman.backend.entity.Rechnung;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.AdresseDeltaspikeFacade;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.RechnungDeltaspikeFacade;
 import ch.internettechnik.anouman.presentation.ui.Menu;
-import ch.internettechnik.anouman.presentation.ui.field.BetragField;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
@@ -12,6 +12,7 @@ import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
+import com.vaadin.ui.renderers.LocalDateRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,67 +25,48 @@ import org.vaadin.crudui.layout.impl.WindowBasedCrudLayout;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import java.time.LocalDate;
 import java.util.Collection;
 
 @CDIView("RechnungView")
 public class RechnungView extends VerticalLayout implements View, CrudListener<Rechnung> {
-    private static Logger logger = LoggerFactory.getLogger(ch.internettechnik.anouman.presentation.ui.adresse.RechnungView.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(ch.internettechnik.anouman.presentation.ui.rechnung.RechnungView.class.getName());
 
     @Inject
-    RechnungDeltaspikeFacade facade;
+    RechnungDeltaspikeFacade rechnungDeltaspikeFacade;
+
+    @Inject
+    AdresseDeltaspikeFacade adresseDeltaspikeFacade;
 
     GridCrud<Rechnung> crud;
     CssLayout filterToolbar = new CssLayout();
-    TextField filterTextFirma = new TextField();
-    TextField filterTextNachname = new TextField();
-    TextField filterTextOrt = new TextField();
+    TextField filterTextBezeichnung = new TextField();
+    ComboBox<Adresse> filterAdresse = new ComboBox<>();
 
 
     private Collection<Rechnung> getItems() {
-        if ((!filterTextFirma.isEmpty()) && (!filterTextNachname.isEmpty()) && (!filterTextOrt.isEmpty())) {
-            //Suche mit Firma und Nachname und Ort
-            logger.debug("Suche mit Firma und Nachname und Ort:" + filterTextFirma.getValue() + "," + filterTextNachname.getValue() + "," + filterTextOrt.getValue());
-            return (facade.findByFirmaLikeIgnoreCaseAndNachnameLikeIgnoreCaseAndOrtLikeIgnoreCase(
-                    filterTextFirma.getValue() + "%", filterTextNachname.getValue() + "%", filterTextOrt.getValue() + "%"));
-        } else if ((!filterTextFirma.isEmpty()) && (!filterTextNachname.isEmpty()) && (filterTextOrt.isEmpty())) {
-            //Suche mit Firma und Nachname
-            logger.debug("Suche mit Firma und Nachname:" + filterTextFirma.getValue() + "," + filterTextNachname.getValue());
-            return (facade.findByFirmaLikeIgnoreCaseAndNachnameLikeIgnoreCase(filterTextFirma.getValue() + "%", filterTextNachname.getValue() + "%"));
-        } else if ((!filterTextFirma.isEmpty()) && (filterTextNachname.isEmpty()) && (!filterTextOrt.isEmpty())) {
-            //Suche mit Firma und Ort
-            logger.debug("Suche mit Firma und Ort:" + filterTextFirma.getValue() + "," + filterTextOrt.getValue());
-            return (facade.findByFirmaLikeIgnoreCaseAndOrtLikeIgnoreCase(filterTextFirma.getValue() + "%", filterTextOrt.getValue() + "%"));
-
-        } else if ((filterTextFirma.isEmpty()) && (!filterTextNachname.isEmpty()) && (filterTextOrt.isEmpty())) {
-            //Suche mit Nachname
-            logger.debug("Suche mit Nachname:" + filterTextNachname.getValue());
-            return (facade.findByNachnameLikeIgnoreCase(filterTextNachname.getValue() + "%"));
-
-        } else if ((filterTextFirma.isEmpty()) && (filterTextNachname.isEmpty()) && (!filterTextOrt.isEmpty())) {
-            //Suche mit Ort
-            logger.debug("Suche mit Ort:" + filterTextOrt.getValue());
-            return (facade.findByOrtLikeIgnoreCase(filterTextOrt.getValue() + "%"));
-
-        } else if ((!filterTextFirma.isEmpty()) && (filterTextNachname.isEmpty()) && (filterTextOrt.isEmpty())) {
-            //Suche mit Firma
-            logger.debug("Suche mit Firma:" + filterTextFirma.getValue());
-            return (facade.findByFirmaLikeIgnoreCase(filterTextFirma.getValue() + "%"));
-
-        } else if ((filterTextFirma.isEmpty()) && (!filterTextNachname.isEmpty()) && (!filterTextOrt.isEmpty())) {
-            //Suche mit Nachname und Ort
-            logger.debug("Suche mit Nachname und Ort:" + filterTextNachname.getValue() + "," + filterTextOrt.getValue());
-            return (facade.findByNachnameLikeIgnoreCaseAndOrtLikeIgnoreCase(
-                    filterTextNachname.getValue() + "%", filterTextOrt.getValue() + "%"));
-
+        if ((!filterAdresse.isEmpty()) && (!filterTextBezeichnung.isEmpty())) {
+            //Suche mit Adresse und Bezeichnung
+            logger.debug("Suche mit Adresse und Bezeichnung:" + filterAdresse.getValue().getId() + "," + filterTextBezeichnung.getValue());
+            return rechnungDeltaspikeFacade.findByAdresseAndBezeichnungLikeIgnoreCase(
+                    filterAdresse.getValue(), filterTextBezeichnung.getValue() + "%");
+        } else if ((filterAdresse.isEmpty()) && (!filterTextBezeichnung.isEmpty())) {
+            //Suche mit Bezeichnung
+            logger.debug("Suche mit Bezeichnung:" + filterTextBezeichnung.getValue());
+            return rechnungDeltaspikeFacade.findByBezeichnungLikeIgnoreCase(filterTextBezeichnung.getValue() + "%");
+        } else if ((!filterAdresse.isEmpty()) && (filterTextBezeichnung.isEmpty())) {
+            //Suche mit Adresse
+            logger.debug("Suche mit Adresse:" + filterAdresse.getValue());
+            return rechnungDeltaspikeFacade.findByAdresse(filterAdresse.getValue());
         }
-        return facade.findAll();
+        return (rechnungDeltaspikeFacade.findAll());
     }
 
     private Crud createCrud() {
         crud = new GridCrud<Rechnung>(Rechnung.class, new WindowBasedCrudLayout());
         crud.setCrudListener(this);
 
-        VerticalCrudFormFactory<Adresse> formFactory = new VerticalCrudFormFactory<>(Adresse.class);
+        VerticalCrudFormFactory<Rechnung> formFactory = new VerticalCrudFormFactory<>(Rechnung.class);
 
         crud.setCrudFormFactory(formFactory);
 
@@ -92,33 +74,39 @@ public class RechnungView extends VerticalLayout implements View, CrudListener<R
 
         formFactory.setErrorListener(e -> Notification.show("Custom error message (simulated error)", Notification.Type.ERROR_MESSAGE));
 
-        formFactory.setVisibleProperties(CrudOperation.READ, "id", "firma", "anrede", "vorname", "nachname", "strasse", "postleitzahl",
-                "ort", "stundensatz");
-        formFactory.setVisibleProperties(CrudOperation.ADD, "firma", "anrede", "vorname", "nachname", "strasse", "postleitzahl",
-                "ort", "stundensatz");
-        formFactory.setVisibleProperties(CrudOperation.UPDATE, "id", "firma", "anrede", "vorname", "nachname", "strasse", "postleitzahl",
-                "ort", "stundensatz");
-        formFactory.setVisibleProperties(CrudOperation.DELETE, "firma");
+        formFactory.setVisibleProperties(CrudOperation.READ, "id", "bezeichnung", "rechnungsdatum", "faelligInTagen", "bezahlt", "verschickt", "adresse");
+        formFactory.setVisibleProperties(CrudOperation.ADD, "bezeichnung", "rechnungsdatum", "faelligInTagen", "bezahlt", "verschickt", "adresse");
+        formFactory.setVisibleProperties(CrudOperation.UPDATE, "id", "bezeichnung", "rechnungsdatum", "faelligInTagen", "bezahlt", "verschickt", "adresse");
+        formFactory.setVisibleProperties(CrudOperation.DELETE, "bezeichnung");
 
         formFactory.setDisabledProperties("id");
-        formFactory.setDisabledProperties("anzahlRechnungen");
 
-        crud.getGrid().setColumns("id", "firma", "anrede", "vorname", "nachname", "strasse", "postleitzahl",
-                "ort", "stundensatz", "anzahlRechnungen");
+        crud.getGrid().setColumns("id", "bezeichnung", "rechnungsdatum", "faelligInTagen", "bezahlt", "verschickt");
+        crud.getGrid().addColumn(rechnung -> rechnung.getAdresse().getFirma() + " " +
+                        rechnung.getAdresse().getNachname() + " " + rechnung.getAdresse().getOrt() + " id:" + rechnung.getAdresse().getId(),
+                new ButtonRenderer(event -> {
+                    Rechnung rechnung = (Rechnung) event.getItem();
+                    UI.getCurrent().getNavigator().navigateTo("AdresseView/id/" + rechnung.getAdresse().getId());
+                })
+        ).setCaption("Adresse").setStyleGenerator(item -> "v-align-center");
+        crud.getGrid().addColumn(rechnung -> rechnung.getAnzahlRechnungspositionen(), new ButtonRenderer(event -> {
+            Rechnung rechnung = (Rechnung) event.getItem();
+            UI.getCurrent().getNavigator().navigateTo("RechnungspositionView/rechnungId/" + rechnung.getId());
+        })).setCaption("Rechnungspositionen").setStyleGenerator(item -> "v-align-center");
 
+        crud.getGrid().addColumn(rechnung -> rechnung.getAnzahlAufwands(), new ButtonRenderer(event -> {
+            Rechnung rechnung = (Rechnung) event.getItem();
+            UI.getCurrent().getNavigator().navigateTo("AufwandView/rechnungId/" + rechnung.getId());
+        })).setCaption("Aufwand").setStyleGenerator(item -> "v-align-center");
 
-        crud.getGrid().addColumn(adresse -> adresse.getAnzahlRechnungen(), new ButtonRenderer(event -> {
-            Adresse adresse = (Adresse) event.getItem();
-            if (adresse.getAnzahlRechnungen() > 0) {
-                UI.getCurrent().getNavigator().navigateTo("RechnungOldView/adresseId/" + adresse.getId().toString());
-            }
-        })).setCaption("Anzahl Rechnungen").setStyleGenerator(item -> "v-align-center");
+        //((Grid.Column<Rechnung, LocalDate>) crud.getGrid().getColumn("rechnungsdatum")).setRenderer(new LocalDateRenderer("%1$tY-%1$tm-%1$te"));
+        ((Grid.Column<Rechnung, LocalDate>) crud.getGrid().getColumn("rechnungsdatum")).setRenderer(new LocalDateRenderer());
 
-        formFactory.setFieldType("stundensatz", BetragField.class);
-        formFactory.setButtonCaption(CrudOperation.ADD, "Neue Adresse erstellen");
-        formFactory.setButtonCaption(CrudOperation.DELETE, "Adresse löschen");
+        formFactory.setFieldType("rechnungsdatum", InlineDateField.class);
+        formFactory.setButtonCaption(CrudOperation.ADD, "Neue Rechnung erstellen");
+        formFactory.setButtonCaption(CrudOperation.DELETE, "Rechnung löschen");
 
-        crud.setRowCountCaption("%d Adressen gefunden");
+        crud.setRowCountCaption("%d Rechnungen gefunden");
 
         crud.getCrudLayout().addToolbarComponent(filterToolbar);
         crud.setClickRowToUpdate(false);
@@ -126,31 +114,27 @@ public class RechnungView extends VerticalLayout implements View, CrudListener<R
         crud.setDeleteOperationVisible(true);
 
         return crud;
-        }
+    }
 
     @PostConstruct
     void init() {
-        filterTextFirma.setPlaceholder("Filter für Firma");
-        filterTextFirma.addValueChangeListener(e -> crud.getGrid().setItems(getItems()));
-        filterTextFirma.setValueChangeMode(ValueChangeMode.LAZY);
+        filterTextBezeichnung.setPlaceholder("Filter für Bezeichnung");
+        filterTextBezeichnung.addValueChangeListener(e -> crud.getGrid().setItems(getItems()));
+        filterTextBezeichnung.setValueChangeMode(ValueChangeMode.LAZY);
 
-        filterTextNachname.setPlaceholder("Filter für Nachname");
-        filterTextNachname.addValueChangeListener(e -> crud.getGrid().setItems(getItems()));
-        filterTextNachname.setValueChangeMode(ValueChangeMode.LAZY);
-
-        filterTextOrt.setPlaceholder("Filter für Ort");
-        filterTextOrt.addValueChangeListener(e -> crud.getGrid().setItems(getItems()));
-        filterTextOrt.setValueChangeMode(ValueChangeMode.LAZY);
+        filterAdresse.setPlaceholder("Filter für Adresse");
+        filterAdresse.addValueChangeListener(e -> crud.getGrid().setItems(getItems()));
+        filterAdresse.setItems(adresseDeltaspikeFacade.findAll());
+        filterAdresse.setItemCaptionGenerator(item -> item.getId() + " " + item.getFirma() + " " + item.getNachname());
 
         Button clearFilterTextBtn = new Button(VaadinIcons.RECYCLE);
         clearFilterTextBtn.setDescription("Entferne Filter");
         clearFilterTextBtn.addClickListener(e -> {
-            filterTextFirma.clear();
-            filterTextNachname.clear();
-            filterTextOrt.clear();
+            filterTextBezeichnung.clear();
+            filterAdresse.clear();
         });
 
-        filterToolbar.addComponents(filterTextFirma, filterTextNachname, filterTextOrt, clearFilterTextBtn);
+        filterToolbar.addComponents(filterTextBezeichnung, filterAdresse, clearFilterTextBtn);
         filterToolbar.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 
         addComponents(new Menu());
@@ -159,28 +143,45 @@ public class RechnungView extends VerticalLayout implements View, CrudListener<R
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
-
+        if (event.getParameters() != null) {
+            String[] msgs = event.getParameters().split("/");
+            String target = new String();
+            Long id = new Long(0);
+            for (String msg : msgs) {
+                if (target.isEmpty()) {
+                    target = msg;
+                } else {
+                    id = Long.valueOf(msg);
+                }
+            }
+            if (target.equals("adresseId")) {
+                filterAdresse.setSelectedItem(adresseDeltaspikeFacade.findBy(id));
+                crud.getGrid().setItems(getItems());
+            } else if (target.equals("id")) {
+                crud.getGrid().select(rechnungDeltaspikeFacade.findBy(id));
+            }
+        }
     }
 
 
     @Override
-    public Collection<Adresse> findAll() {
+    public Collection<Rechnung> findAll() {
         return getItems();
     }
 
     @Override
-    public Adresse add(Adresse adresse) {
-        return facade.save(adresse);
+    public Rechnung add(Rechnung rechnung) {
+        return rechnungDeltaspikeFacade.save(rechnung);
     }
 
     @Override
-    public Adresse update(Adresse adresse) {
-        return facade.save(adresse);
+    public Rechnung update(Rechnung rechnung) {
+        return rechnungDeltaspikeFacade.save(rechnung);
     }
 
     @Override
-    public void delete(Adresse adresse) {
-        facade.delete(adresse);
+    public void delete(Rechnung rechnung) {
+        rechnungDeltaspikeFacade.delete(rechnung);
     }
 
 }

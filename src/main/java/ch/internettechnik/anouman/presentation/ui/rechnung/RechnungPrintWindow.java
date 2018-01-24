@@ -24,7 +24,7 @@ public class RechnungPrintWindow extends CustomComponent {
     private ComboBox<ReportJasper> reportSelect = new ComboBox<>();
     private TextField id = new TextField("Id");
     private TextField bezeichnung = new TextField("Bezeichnung");
-    private DateTimeField rechnungsdatum = new DateTimeField("Rechnungsdatum");
+    private DateField rechnungsdatum = new DateField("Rechnungsdatum");
     private TextField firma = new TextField("Firma");
     private TextField name = new TextField("Name");
     private TextField ort = new TextField("Ort");

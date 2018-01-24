@@ -14,10 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import java.time.Duration;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.time.*;
 
 @CDIView("TestDataCreateView")
 public class TestDataCreateView extends VerticalLayout implements View {
@@ -136,7 +133,7 @@ public class TestDataCreateView extends VerticalLayout implements View {
         Rechnung rechnung = new Rechnung();
         rechnung.setBezahlt(false);
         rechnung.setBezeichnung("Testrechnung");
-        rechnung.setRechnungsdatum(LocalDateTime.now());
+        rechnung.setRechnungsdatum(LocalDate.now());
         rechnung.setFaelligInTagen(32);
         rechnung.setVerschickt(true);
 

@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import java.math.BigDecimal;
 import java.time.Duration;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +22,7 @@ import java.util.List;
 public class Rechnung extends AbstractEntity {
     @NotNull
     @javax.xml.bind.annotation.XmlElement
-    private LocalDateTime rechnungsdatum;
+    private LocalDate rechnungsdatum;
 
     @Column
     @NotNull
@@ -60,11 +60,11 @@ public class Rechnung extends AbstractEntity {
         this.bezeichnung = bezeichnung;
     }
 
-    public LocalDateTime getRechnungsdatum() {
+    public LocalDate getRechnungsdatum() {
         return rechnungsdatum;
     }
 
-    public void setRechnungsdatum(LocalDateTime rechnungsdatum) {
+    public void setRechnungsdatum(LocalDate rechnungsdatum) {
         this.rechnungsdatum = rechnungsdatum;
     }
 
@@ -172,7 +172,7 @@ public class Rechnung extends AbstractEntity {
     }
 
     @Transient
-    public LocalDateTime getFaelligkeitsdatum() {
+    public LocalDate getFaelligkeitsdatum() {
         //@todo Berechnen Fälligkeitsdatum
         return getRechnungsdatum().plus(Duration.ofDays(getFaelligInTagen()));
         //LocalDateTime.ofInstant(now.plus(Duration.ofHours(3)), ZoneOffset.UTC)return LocalDateTime.now();

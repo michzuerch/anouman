@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 /**
  * Created by michzuerch on 07.08.15.
@@ -20,7 +20,7 @@ public class Unterbuchung extends AbstractEntity {
     private Integer laufnummer;
 
     @Column
-    private LocalDateTime buchungsdatum;
+    private LocalDate buchungsdatum;
 
     @Column
     @NotNull
@@ -54,11 +54,11 @@ public class Unterbuchung extends AbstractEntity {
         this.laufnummer = laufnummer;
     }
 
-    public LocalDateTime getBuchungsdatum() {
+    public LocalDate getBuchungsdatum() {
         return buchungsdatum;
     }
 
-    public void setBuchungsdatum(LocalDateTime buchungsdatum) {
+    public void setBuchungsdatum(LocalDate buchungsdatum) {
         this.buchungsdatum = buchungsdatum;
     }
 

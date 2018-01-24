@@ -31,9 +31,6 @@ public class AufwandCalendarView extends VerticalLayout implements View {
     @Inject
     private RechnungDeltaspikeFacade rechnungDeltaspikeFacade;
 
-    @Inject
-    private AufwandForm form;
-
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
         setStyleName("anouman-background");
