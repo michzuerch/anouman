@@ -19,7 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-@WebServlet(name = "FopReportServlet")
+@WebServlet(name = "FopReportServlet", urlPatterns = "/fop/*")
 public class FopReportServlet extends HttpServlet {
     private static final Logger LOGGER = Logger.getLogger(FopReportServlet.class.getName());
     protected URIResolver uriResolver;
@@ -58,11 +58,11 @@ public class FopReportServlet extends HttpServlet {
 
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         process(request, response);
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         process(request, response);
     }
 }

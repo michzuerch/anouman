@@ -1,11 +1,8 @@
-package ch.internettechnik.anouman.presentation.ui.artikelkategorie;
+package ch.internettechnik.anouman.presentation.ui.templatebuchhaltung.templatemehrwertsteuercode;
 
-import ch.internettechnik.anouman.backend.entity.Artikel;
-import ch.internettechnik.anouman.backend.entity.Artikelkategorie;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ArtikelkategorieDeltaspikeFacade;
+import ch.internettechnik.anouman.backend.entity.TemplateMehrwertsteuercode;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.TemplateMehrwertsteuercodeDeltaspikeFacade;
 import ch.internettechnik.anouman.presentation.ui.Menu;
-import ch.internettechnik.anouman.presentation.ui.field.AnzahlField;
-import ch.internettechnik.anouman.presentation.ui.field.BetragField;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
@@ -27,34 +24,34 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.util.Collection;
 
-@CDIView("ArtikelkategorieView")
-public class ArtikelkategorieView extends VerticalLayout implements View, CrudListener<Artikelkategorie> {
-    private static Logger logger = LoggerFactory.getLogger(ArtikelkategorieView.class.getName());
+@CDIView("TemplateMehrwertsteuercodeView")
+public class TemplateMehrwertsteuercodeView extends VerticalLayout implements View, CrudListener<TemplateMehrwertsteuercode> {
+    private static Logger logger = LoggerFactory.getLogger(TemplateMehrwertsteuercodeView.class.getName());
 
     @Inject
-    ArtikelkategorieDeltaspikeFacade artikelkategorieDeltaspikeFacade;
+    TemplateMehrwertsteuercodeDeltaspikeFacade templateMehrwertsteuercodeDeltaspikeFacade;
 
-    GridCrud<Artikelkategorie> crud;
+    GridCrud<TemplateMehrwertsteuercode> crud;
     CssLayout filterToolbar = new CssLayout();
     TextField filterTextBezeichnung = new TextField();
 
 
-    private Collection<Artikelkategorie> getItems() {
+    private Collection<TemplateMehrwertsteuercode> getItems() {
         if (!filterTextBezeichnung.isEmpty()) {
             //Suche mit Bezeichnung
             logger.debug("Suche mit Bezeichnung:" + filterTextBezeichnung.getValue());
-            return artikelkategorieDeltaspikeFacade
+            return templateMehrwertsteuercodeDeltaspikeFacade
                     .findByBezeichnungLikeIgnoreCase(filterTextBezeichnung.getValue() + "%");
         }
-        return artikelkategorieDeltaspikeFacade.findAll();
+        return templateMehrwertsteuercodeDeltaspikeFacade.findAll();
 
     }
 
     private Crud createCrud() {
-        crud = new GridCrud<Artikelkategorie>(Artikelkategorie.class, new WindowBasedCrudLayout());
+        crud = new GridCrud<TemplateMehrwertsteuercode>(TemplateMehrwertsteuercode.class, new WindowBasedCrudLayout());
         crud.setCrudListener(this);
 
-        VerticalCrudFormFactory<Artikelkategorie> formFactory = new VerticalCrudFormFactory<>(Artikelkategorie.class);
+        VerticalCrudFormFactory<TemplateMehrwertsteuercode> formFactory = new VerticalCrudFormFactory<>(TemplateMehrwertsteuercode.class);
 
         crud.setCrudFormFactory(formFactory);
 
@@ -71,17 +68,17 @@ public class ArtikelkategorieView extends VerticalLayout implements View, CrudLi
 
         crud.getGrid().setColumns("id", "bezeichnung");
 
-        crud.getGrid().addColumn(artikelkategorie -> artikelkategorie.getArtikels().size(), new ButtonRenderer(event -> {
-            Artikel artikel = (Artikel) event.getItem();
-            UI.getCurrent().getNavigator().navigateTo("ArtikelkategorieView/id/" + artikel.getArtikelkategorie().getId().toString());
-        })).setCaption("Artikel").setStyleGenerator(item -> "v-align-center");
+        crud.getGrid().addColumn(templateMehrwertsteuercode -> templateMehrwertsteuercode.getTemplateBuchhaltung().getBezeichnung(), new ButtonRenderer(event -> {
+            TemplateMehrwertsteuercode templateMehrwertsteuercode = (TemplateMehrwertsteuercode) event.getItem();
+            UI.getCurrent().getNavigator().navigateTo("TemplateBuchhaltungView/id/" + templateMehrwertsteuercode.getTemplateBuchhaltung().getId().toString());
+        })).setCaption("Template Buchhaltung").setStyleGenerator(item -> "v-align-center");
 
-        formFactory.setFieldType("anzahl", AnzahlField.class);
-        formFactory.setFieldType("stueckpreis", BetragField.class);
-        formFactory.setButtonCaption(CrudOperation.ADD, "Neue Artikelkategorie erstellen");
-        formFactory.setButtonCaption(CrudOperation.DELETE, "Artikelkategorie löschen");
+        //formFactory.setFieldType("anzahl", AnzahlField.class);
+        //formFactory.setFieldType("stueckpreis", BetragField.class);
+        formFactory.setButtonCaption(CrudOperation.ADD, "Neuen Template Mehrwertsteuercode erstellen");
+        formFactory.setButtonCaption(CrudOperation.DELETE, "Template Mehrwertsteuercode löschen");
 
-        crud.setRowCountCaption("%d Artikelkategorien gefunden");
+        crud.setRowCountCaption("%d Template Mehrwertsteuercodes gefunden");
 
         crud.getCrudLayout().addToolbarComponent(filterToolbar);
         crud.setClickRowToUpdate(false);
@@ -124,28 +121,28 @@ public class ArtikelkategorieView extends VerticalLayout implements View, CrudLi
                 }
             }
             if (target.equals("id")) {
-                crud.getGrid().select(artikelkategorieDeltaspikeFacade.findBy(id));
+                crud.getGrid().select(templateMehrwertsteuercodeDeltaspikeFacade.findBy(id));
             }
         }
     }
 
     @Override
-    public Collection<Artikelkategorie> findAll() {
+    public Collection<TemplateMehrwertsteuercode> findAll() {
         return getItems();
     }
 
     @Override
-    public Artikelkategorie add(Artikelkategorie artikelkategorie) {
-        return artikelkategorieDeltaspikeFacade.save(artikelkategorie);
+    public TemplateMehrwertsteuercode add(TemplateMehrwertsteuercode templateMehrwertsteuercode) {
+        return templateMehrwertsteuercodeDeltaspikeFacade.save(templateMehrwertsteuercode);
     }
 
     @Override
-    public Artikelkategorie update(Artikelkategorie artikelkategorie) {
-        return artikelkategorieDeltaspikeFacade.save(artikelkategorie);
+    public TemplateMehrwertsteuercode update(TemplateMehrwertsteuercode templateMehrwertsteuercode) {
+        return templateMehrwertsteuercodeDeltaspikeFacade.save(templateMehrwertsteuercode);
     }
 
     @Override
-    public void delete(Artikelkategorie artikelkategorie) {
-        artikelkategorieDeltaspikeFacade.delete(artikelkategorie);
+    public void delete(TemplateMehrwertsteuercode templateMehrwertsteuercode) {
+        templateMehrwertsteuercodeDeltaspikeFacade.delete(templateMehrwertsteuercode);
     }
 }

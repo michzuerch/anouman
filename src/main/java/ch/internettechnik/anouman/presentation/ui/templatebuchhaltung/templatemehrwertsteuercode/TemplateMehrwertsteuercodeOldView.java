@@ -1,4 +1,4 @@
-package ch.internettechnik.anouman.presentation.ui.templatemehrwertsteuercode;
+package ch.internettechnik.anouman.presentation.ui.templatebuchhaltung.templatemehrwertsteuercode;
 
 import ch.internettechnik.anouman.backend.entity.TemplateBuchhaltung;
 import ch.internettechnik.anouman.backend.entity.TemplateKonto;
@@ -21,9 +21,9 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
-@CDIView("TemplateMehrwertsteuercodeView")
-public class TemplateMehrwertsteuercodeView extends VerticalLayout implements View {
-    private static org.slf4j.Logger logger = LoggerFactory.getLogger(TemplateMehrwertsteuercodeView.class.getName());
+@CDIView("TemplateMehrwertsteuercodeOldView")
+public class TemplateMehrwertsteuercodeOldView extends VerticalLayout implements View {
+    private static org.slf4j.Logger logger = LoggerFactory.getLogger(TemplateMehrwertsteuercodeOldView.class.getName());
 
     TextField filterTextBezeichnung = new TextField();
     ComboBox<TemplateBuchhaltung> filterTemplateBuchhaltung = new ComboBox<>();

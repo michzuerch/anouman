@@ -1,8 +1,6 @@
 package ch.internettechnik.anouman.presentation.ui.artikelbild;
 
-import ch.internettechnik.anouman.backend.entity.Artikel;
 import ch.internettechnik.anouman.backend.entity.Artikelbild;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ArtikelDeltaspikeFacade;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ArtikelbildDeltaspikeFacade;
 import ch.internettechnik.anouman.presentation.ui.Menu;
 import com.vaadin.cdi.CDIView;
@@ -13,42 +11,106 @@ import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.themes.ValoTheme;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.vaadin.crudui.crud.Crud;
+import org.vaadin.crudui.crud.CrudListener;
+import org.vaadin.crudui.crud.CrudOperation;
+import org.vaadin.crudui.crud.impl.GridCrud;
+import org.vaadin.crudui.form.impl.form.factory.VerticalCrudFormFactory;
+import org.vaadin.crudui.layout.impl.WindowBasedCrudLayout;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import java.util.Collection;
 
-
-// @todo : java.lang.IllegalStateException: Property type 'java.util.Date' doesn't match the field type 'java.time.LocalDateTime'.
-// Binding should be configured manually using converter.
 @CDIView("ArtikelbildView")
-public class ArtikelbildView extends VerticalLayout implements View {
-    private static org.slf4j.Logger logger = LoggerFactory.getLogger(ArtikelbildView.class.getName());
+public class ArtikelbildView extends VerticalLayout implements View, CrudListener<Artikelbild> {
+    private static Logger logger = LoggerFactory.getLogger(ArtikelbildView.class.getName());
 
+    @Inject
+    ArtikelbildDeltaspikeFacade artikelbildDeltaspikeFacade;
+
+    GridCrud<Artikelbild> crud;
+    CssLayout filterToolbar = new CssLayout();
     TextField filterTextTitel = new TextField();
-    Grid<Artikelbild> grid = new Grid<>();
 
-    @Inject
-    private Menu menu;
 
-    @Inject
-    private ArtikelbildDeltaspikeFacade artikelbildDeltaspikeFacade;
+    private Collection<Artikelbild> getItems() {
+        if (!filterTextTitel.isEmpty()) {
+            //Suche mit Bezeichnung
+            logger.debug("Suche mit Titel:" + filterTextTitel.getValue());
+            return artikelbildDeltaspikeFacade
+                    .findByTitelLikeIgnoreCase(filterTextTitel.getValue() + "%");
+        }
+        return artikelbildDeltaspikeFacade.findAll();
 
-    @Inject
-    private ArtikelDeltaspikeFacade artikelDeltaspikeFacade;
+    }
 
-    @Inject
-    private ArtikelbildForm artikelbildForm;
+    private Crud createCrud() {
+        crud = new GridCrud<Artikelbild>(Artikelbild.class, new WindowBasedCrudLayout());
+        crud.setCrudListener(this);
 
-    @Override
-    public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
-        setStyleName("anouman-background");
+        VerticalCrudFormFactory<Artikelbild> formFactory = new VerticalCrudFormFactory<>(Artikelbild.class);
 
-        filterTextTitel.setPlaceholder("Filter Titel");
-        filterTextTitel.addValueChangeListener(e -> updateList());
+        crud.setCrudFormFactory(formFactory);
+
+        formFactory.setUseBeanValidation(true);
+
+        formFactory.setErrorListener(e -> Notification.show("Custom error message (simulated error)", Notification.Type.ERROR_MESSAGE));
+
+        formFactory.setVisibleProperties(CrudOperation.READ, "id", "titel", "mimetype");
+        formFactory.setVisibleProperties(CrudOperation.ADD, "id", "titel", "mimetype");
+        formFactory.setVisibleProperties(CrudOperation.UPDATE, "id", "titel", "mimetype");
+        formFactory.setVisibleProperties(CrudOperation.DELETE, "id", "titel");
+
+        formFactory.setDisabledProperties("id");
+
+        crud.getGrid().setColumns("id", "titel", "mimetype");
+
+        crud.getGrid().addColumn(artikelbild -> artikelbild.getArtikel().getId(), new ButtonRenderer(event -> {
+            Artikelbild artikelbild = (Artikelbild) event.getItem();
+            UI.getCurrent().getNavigator().navigateTo("ArtikelView/id/" + artikelbild.getArtikel().getId().toString());
+        })).setCaption("Artikel").setStyleGenerator(item -> "v-align-center");
+
+        //formFactory.setFieldType("anzahl", AnzahlField.class);
+        //formFactory.setFieldType("stueckpreis", BetragField.class);
+        formFactory.setButtonCaption(CrudOperation.ADD, "Neues Artikelbild erstellen");
+        formFactory.setButtonCaption(CrudOperation.DELETE, "Artikelbild löschen");
+
+        crud.setRowCountCaption("%d Artikelbilder gefunden");
+
+        crud.getCrudLayout().addToolbarComponent(filterToolbar);
+        crud.setClickRowToUpdate(false);
+        crud.setUpdateOperationVisible(true);
+        crud.setDeleteOperationVisible(true);
+
+        return crud;
+    }
+
+    @PostConstruct
+    void init() {
+        filterTextTitel.setPlaceholder("Filter für Bezeichnung");
+        filterTextTitel.addValueChangeListener(e -> crud.getGrid().setItems(getItems()));
         filterTextTitel.setValueChangeMode(ValueChangeMode.LAZY);
 
-        if (viewChangeEvent.getParameters() != null) {
-            String[] msgs = viewChangeEvent.getParameters().split("/");
+        Button clearFilterTextBtn = new Button(VaadinIcons.RECYCLE);
+        clearFilterTextBtn.setDescription("Entferne Filter");
+        clearFilterTextBtn.addClickListener(e -> {
+            filterTextTitel.clear();
+        });
+
+        filterToolbar.addComponents(filterTextTitel, clearFilterTextBtn);
+        filterToolbar.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+
+        addComponents(new Menu());
+        addComponentsAndExpand(createCrud());
+    }
+
+    @Override
+    public void enter(ViewChangeListener.ViewChangeEvent event) {
+        if (event.getParameters() != null) {
+            String[] msgs = event.getParameters().split("/");
             String target = new String();
             Long id = new Long(0);
             for (String msg : msgs) {
@@ -59,95 +121,28 @@ public class ArtikelbildView extends VerticalLayout implements View {
                 }
             }
             if (target.equals("id")) {
-                grid.select(artikelbildDeltaspikeFacade.findBy(id));
+                crud.getGrid().select(artikelbildDeltaspikeFacade.findBy(id));
             }
         }
-
-        Button clearFilterTextBtn = new Button(VaadinIcons.RECYCLE);
-        clearFilterTextBtn.setDescription("Entferne Filter");
-        clearFilterTextBtn.addClickListener(e -> {
-            filterTextTitel.clear();
-        });
-
-        Button addBtn = new Button(VaadinIcons.PLUS);
-        addBtn.addClickListener(event -> {
-            grid.asSingleSelect().clear();
-            Artikelbild artikelbild = new Artikelbild();
-            artikelbildForm.setEntity(artikelbild);
-            artikelbildForm.openInModalPopup();
-            artikelbildForm.setSavedHandler(val -> {
-                artikelbildDeltaspikeFacade.save(val);
-                updateList();
-                grid.select(val);
-                artikelbildForm.closePopup();
-            });
-        });
-
-        CssLayout tools = new CssLayout();
-        tools.addComponents(filterTextTitel, clearFilterTextBtn, addBtn);
-        tools.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
-
-        grid.setCaption("Artikelbild");
-        grid.setCaptionAsHtml(true);
-        grid.addColumn(Artikelbild::getId).setCaption("id");
-        grid.addColumn(Artikelbild::getTitel).setCaption("Titel");
-        grid.addColumn(Artikelbild::getSize).setCaption("Size");
-        grid.addColumn(Artikelbild::getMimetype).setCaption("Mimetype");
-
-//        grid.addColumn(bild -> bild.getArtikel().getBezeichnung() + " id:" + bild.getArtikel().getId(),
-//                new ButtonRenderer(event -> {
-//                    Artikelbild bild = (Artikelbild) event.getItem();
-//                    UI.getCurrent().getNavigator().navigateTo("Artikel/id/" + bild.getArtikel().getId());
-//                })
-//        ).setCaption("Artikel").setStyleGenerator(item -> "v-align-center");
-
-        grid.setSizeFull();
-
-        // Render a button that deletes the data row (item)
-        grid.addColumn(artikelbild -> "löschen",
-                new ButtonRenderer(event -> {
-                    Artikelbild bild = (Artikelbild) event.getItem();
-                    Notification.show("Lösche Artikelbild id:" + bild, Notification.Type.HUMANIZED_MESSAGE);
-
-                    Artikel artikel = artikelDeltaspikeFacade.findBy(bild.getArtikel().getId());
-                    artikel.getArtikelbilds().remove(bild);
-                    artikelDeltaspikeFacade.save(artikel);
-
-                    artikelbildDeltaspikeFacade.delete(bild);
-                    updateList();
-                })
-        );
-
-        grid.addColumn(adresse -> "ändern",
-                new ButtonRenderer(event -> {
-                    artikelbildForm.setEntity((Artikelbild) event.getItem());
-                    artikelbildForm.openInModalPopup();
-                    artikelbildForm.setSavedHandler(val -> {
-                        artikelbildDeltaspikeFacade.save(val);
-                        updateList();
-                        grid.select(val);
-                        artikelbildForm.closePopup();
-                    });
-                    artikelbildForm.setResetHandler(val -> {
-                        updateList();
-                        grid.select(val);
-                        artikelbildForm.closePopup();
-                    });
-                }));
-
-        updateList();
-        addComponents(menu, tools);
-        addComponentsAndExpand(grid);
     }
 
-    public void updateList() {
-        if (!filterTextTitel.isEmpty()) {
-            //Suche mit Titel
-            logger.debug("Suche mit Titel:" + filterTextTitel.getValue());
-            grid.setItems(artikelbildDeltaspikeFacade.findByTitelLikeIgnoreCase(filterTextTitel.getValue() + "%"));
-            return;
-        }
-        grid.setItems(artikelbildDeltaspikeFacade.findAll());
+    @Override
+    public Collection<Artikelbild> findAll() {
+        return getItems();
     }
 
+    @Override
+    public Artikelbild add(Artikelbild artikelbild) {
+        return artikelbildDeltaspikeFacade.save(artikelbild);
+    }
+
+    @Override
+    public Artikelbild update(Artikelbild artikelbild) {
+        return artikelbildDeltaspikeFacade.save(artikelbild);
+    }
+
+    @Override
+    public void delete(Artikelbild artikelbild) {
+        artikelbildDeltaspikeFacade.delete(artikelbild);
+    }
 }

@@ -85,12 +85,12 @@ public class ArtikelView extends VerticalLayout implements View, CrudListener<Ar
 
         crud.getGrid().addColumn(artikel -> artikel.getArtikelkategorie().getId(), new ButtonRenderer(event -> {
             Artikel artikel = (Artikel) event.getItem();
-            UI.getCurrent().getNavigator().navigateTo("ArtikelkategorieView/id/" + artikel.getArtikelkategorie().getId().toString());
+            UI.getCurrent().getNavigator().navigateTo("ArtikelkategorieOldView/id/" + artikel.getArtikelkategorie().getId().toString());
         })).setCaption("Artikelkategorie").setStyleGenerator(item -> "v-align-center");
 
         crud.getGrid().addColumn(artikel -> artikel.getArtikelkategorie().getId(), new ButtonRenderer(event -> {
             Artikel artikel = (Artikel) event.getItem();
-            UI.getCurrent().getNavigator().navigateTo("ArtikelbildView/id/" + artikel.getArtikelkategorie().getId().toString());
+            UI.getCurrent().getNavigator().navigateTo("ArtikelbildOldView/id/" + artikel.getArtikelkategorie().getId().toString());
         })).setCaption("Artikelbild").setStyleGenerator(item -> "v-align-center");
 
         formFactory.setFieldType("anzahl", AnzahlField.class);
@@ -117,7 +117,7 @@ public class ArtikelView extends VerticalLayout implements View, CrudListener<Ar
         filterArtikelkategorie.setPlaceholder("Filter für Artikelkategorie");
         filterArtikelkategorie.addValueChangeListener(e -> crud.getGrid().setItems(getItems()));
         filterArtikelkategorie.setItems(artikelkategorieDeltaspikeFacade.findAll());
-        filterArtikelkategorie.setItemCaptionGenerator(item -> item.getId() + " " + item.getBezeichnung() + " " + item.getRechnungstotal());
+        filterArtikelkategorie.setItemCaptionGenerator(item -> item.getId() + " " + item.getBezeichnung());
 
         Button clearFilterTextBtn = new Button(VaadinIcons.RECYCLE);
         clearFilterTextBtn.setDescription("Entferne Filter");

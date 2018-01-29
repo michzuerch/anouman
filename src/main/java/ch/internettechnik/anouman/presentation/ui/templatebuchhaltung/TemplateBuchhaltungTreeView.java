@@ -4,7 +4,7 @@ import ch.internettechnik.anouman.backend.entity.*;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.*;
 import ch.internettechnik.anouman.presentation.ui.Menu;
 import ch.internettechnik.anouman.presentation.ui.templatebuchhaltung.form.*;
-import ch.internettechnik.anouman.presentation.ui.templatemehrwertsteuercode.TemplateMehrwertsteuercodeForm;
+import ch.internettechnik.anouman.presentation.ui.templatebuchhaltung.templatemehrwertsteuercode.TemplateMehrwertsteuercodeForm;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.data.BeanValidationBinder;
 import com.vaadin.data.TreeData;

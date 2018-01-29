@@ -41,7 +41,7 @@ public class Menu extends CustomComponent {
         administrationMenu.addItem("Benutzerrollen", VaadinIcons.DIPLOMA_SCROLL, new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem menuItem) {
-                getUI().getNavigator().navigateTo("UzerRoleView");
+                getUI().getNavigator().navigateTo("UzerRoleOldView");
             }
         });
         administrationMenu.addItem("Benutzer zu Rollen zuordnen", VaadinIcons.DIPLOMA, new MenuBar.Command() {

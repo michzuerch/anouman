@@ -16,7 +16,7 @@ import java.util.Set;
         @NamedQuery(name = "Uzer.findById", query = "SELECT u FROM Uzer u where u.id = :id"),
         @NamedQuery(name = "Uzer.findByName", query = "SELECT u FROM Uzer u where u.principal = :name")
 })
-public class Uzer extends AbstractEntity {
+public class cUzer extends AbstractEntity {
 
     //@todo unique entfernt für Testdaten
     //@Column(unique = true)
