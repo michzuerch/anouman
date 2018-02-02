@@ -1,6 +1,8 @@
 package ch.internettechnik.anouman.presentation.ui.artikelbild;
 
+import ch.internettechnik.anouman.backend.entity.Artikel;
 import ch.internettechnik.anouman.backend.entity.Artikelbild;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ArtikelDeltaspikeFacade;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ArtikelbildDeltaspikeFacade;
 import ch.internettechnik.anouman.presentation.ui.Menu;
 import com.vaadin.cdi.CDIView;
@@ -31,10 +33,13 @@ public class ArtikelbildView extends VerticalLayout implements View, CrudListene
     @Inject
     ArtikelbildDeltaspikeFacade artikelbildDeltaspikeFacade;
 
+    @Inject
+    ArtikelDeltaspikeFacade artikelDeltaspikeFacade;
+
     GridCrud<Artikelbild> crud;
     CssLayout filterToolbar = new CssLayout();
     TextField filterTextTitel = new TextField();
-
+    ComboBox<Artikel> filterArtikel = new ComboBox<Artikel>();
 
     private Collection<Artikelbild> getItems() {
         if (!filterTextTitel.isEmpty()) {
@@ -42,6 +47,9 @@ public class ArtikelbildView extends VerticalLayout implements View, CrudListene
             logger.debug("Suche mit Titel:" + filterTextTitel.getValue());
             return artikelbildDeltaspikeFacade
                     .findByTitelLikeIgnoreCase(filterTextTitel.getValue() + "%");
+        }
+        if (!filterArtikel.isEmpty()) {
+            logger.debug("Suche mit Artikel: " + filterArtikel.getValue().getId());
         }
         return artikelbildDeltaspikeFacade.findAll();
 
@@ -94,13 +102,19 @@ public class ArtikelbildView extends VerticalLayout implements View, CrudListene
         filterTextTitel.addValueChangeListener(e -> crud.getGrid().setItems(getItems()));
         filterTextTitel.setValueChangeMode(ValueChangeMode.LAZY);
 
+        filterArtikel.setPlaceholder("Filter für Artikel");
+        filterArtikel.addValueChangeListener(e -> crud.getGrid().setItems(getItems()));
+        filterArtikel.setItems(artikelDeltaspikeFacade.findAll());
+        filterArtikel.setItemCaptionGenerator(item -> item.getId() + " " + item.getBezeichnung());
+
         Button clearFilterTextBtn = new Button(VaadinIcons.RECYCLE);
         clearFilterTextBtn.setDescription("Entferne Filter");
         clearFilterTextBtn.addClickListener(e -> {
             filterTextTitel.clear();
+            filterArtikel.clear();
         });
 
-        filterToolbar.addComponents(filterTextTitel, clearFilterTextBtn);
+        filterToolbar.addComponents(filterTextTitel, filterArtikel, clearFilterTextBtn);
         filterToolbar.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 
         addComponents(new Menu());
@@ -122,6 +136,8 @@ public class ArtikelbildView extends VerticalLayout implements View, CrudListene
             }
             if (target.equals("id")) {
                 crud.getGrid().select(artikelbildDeltaspikeFacade.findBy(id));
+            } else if (target.equals("artikelId")) {
+                filterArtikel.setValue(artikelDeltaspikeFacade.findBy(id));
             }
         }
     }

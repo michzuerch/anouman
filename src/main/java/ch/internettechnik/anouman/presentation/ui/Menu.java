@@ -41,7 +41,7 @@ public class Menu extends CustomComponent {
         administrationMenu.addItem("Benutzerrollen", VaadinIcons.DIPLOMA_SCROLL, new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem menuItem) {
-                getUI().getNavigator().navigateTo("UzerRoleOldView");
+                getUI().getNavigator().navigateTo("UzerRoleView");
             }
         });
         administrationMenu.addItem("Benutzer zu Rollen zuordnen", VaadinIcons.DIPLOMA, new MenuBar.Command() {
@@ -72,17 +72,32 @@ public class Menu extends CustomComponent {
             }
         });
 
-
-        reportingMenu.addItem("Report Vorlagen (CSS)", VaadinIcons.GAVEL, new MenuBar.Command() {
+        MenuBar.MenuItem reportCSS = reportingMenu.addItem("Report Vorlagen (CSS)", VaadinIcons.GAVEL, new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem menuItem) {
                 getUI().getNavigator().navigateTo("ReportCSSView");
             }
         });
-        reportingMenu.addItem("Report Vorlagen (FOP)", VaadinIcons.GAVEL, new MenuBar.Command() {
+
+        reportCSS.addItem("Report CSS Images", VaadinIcons.SAFE_LOCK, new MenuBar.Command() {
+            @Override
+            public void menuSelected(MenuBar.MenuItem selectedItem) {
+                getUI().getNavigator().navigateTo("ReportCSSImageView");
+            }
+        });
+
+
+        MenuBar.MenuItem reportFOP = reportingMenu.addItem("Report Vorlagen (FOP)", VaadinIcons.GAVEL, new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem menuItem) {
                 getUI().getNavigator().navigateTo("ReportFOPView");
+            }
+        });
+
+        reportFOP.addItem("Report FOP Images", VaadinIcons.COPYRIGHT, new MenuBar.Command() {
+            @Override
+            public void menuSelected(MenuBar.MenuItem selectedItem) {
+                getUI().getNavigator().navigateTo("ReportFOPImageView");
             }
         });
 
@@ -196,17 +211,17 @@ public class Menu extends CustomComponent {
             }
         });
 
-        artikelstammMenu.addItem("Artikelbild", VaadinIcons.DIAMOND, new MenuBar.Command() {
-            @Override
-            public void menuSelected(MenuBar.MenuItem menuItem) {
-                getUI().getNavigator().navigateTo("ArtikelbildView");
-            }
-        });
-
         artikelstammMenu.addItem("Artikel", VaadinIcons.MAGIC, new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem menuItem) {
                 getUI().getNavigator().navigateTo("ArtikelView");
+            }
+        });
+
+        artikelstammMenu.addItem("Artikelbild", VaadinIcons.DIAMOND, new MenuBar.Command() {
+            @Override
+            public void menuSelected(MenuBar.MenuItem menuItem) {
+                getUI().getNavigator().navigateTo("ArtikelbildView");
             }
         });
 
@@ -264,6 +279,13 @@ public class Menu extends CustomComponent {
             @Override
             public void menuSelected(MenuBar.MenuItem selectedItem) {
                 getUI().getNavigator().navigateTo("GridCrudTestView");
+            }
+        });
+
+        testsComponents.addItem("EditGridCrud Test", VaadinIcons.MAGIC, new MenuBar.Command() {
+            @Override
+            public void menuSelected(MenuBar.MenuItem selectedItem) {
+                getUI().getNavigator().navigateTo("EditGridCrudTestView");
             }
         });
 

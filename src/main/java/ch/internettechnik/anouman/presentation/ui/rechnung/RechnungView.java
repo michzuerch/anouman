@@ -20,6 +20,7 @@ import org.vaadin.crudui.crud.Crud;
 import org.vaadin.crudui.crud.CrudListener;
 import org.vaadin.crudui.crud.CrudOperation;
 import org.vaadin.crudui.crud.impl.GridCrud;
+import org.vaadin.crudui.form.impl.field.provider.NativeSelectProvider;
 import org.vaadin.crudui.form.impl.form.factory.VerticalCrudFormFactory;
 import org.vaadin.crudui.layout.impl.WindowBasedCrudLayout;
 
@@ -103,6 +104,10 @@ public class RechnungView extends VerticalLayout implements View, CrudListener<R
         ((Grid.Column<Rechnung, LocalDate>) crud.getGrid().getColumn("rechnungsdatum")).setRenderer(new LocalDateRenderer());
 
         formFactory.setFieldType("rechnungsdatum", InlineDateField.class);
+
+        formFactory.setFieldProvider("adresse", new NativeSelectProvider<Adresse>("Adresse", adresseDeltaspikeFacade.findAll(),
+                item -> item.getId() + " " + item.getFirma() + " " + item.getNachname()));
+
         formFactory.setButtonCaption(CrudOperation.ADD, "Neue Rechnung erstellen");
         formFactory.setButtonCaption(CrudOperation.DELETE, "Rechnung löschen");
 

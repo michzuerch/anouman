@@ -1,7 +1,8 @@
-package ch.internettechnik.anouman.presentation.ui;
+package ch.internettechnik.anouman.presentation.ui.testviews;
 
 import ch.internettechnik.anouman.backend.entity.Adresse;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.AdresseDeltaspikeFacade;
+import ch.internettechnik.anouman.presentation.ui.Menu;
 import ch.internettechnik.anouman.presentation.ui.field.BetragField;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.navigator.View;

@@ -145,7 +145,6 @@ public class TemplateBuchhaltungTreeView extends VerticalLayout implements View 
             bodyLayout.removeComponent(kontoGrid);
 
             bodyLayout.removeComponent(addGridBtn);
-            windowMehrwertsteuercode = createTemplateMehrwertsteuerWindow(buchhaltungSelect.getValue());
             if (!buchhaltungTree.asSingleSelect().isEmpty()) {
                 TemplateBuchhaltungTreeData selectedItem = buchhaltungTree.asSingleSelect().getValue();
                 buchhaltungTree.expand(selectedItem);

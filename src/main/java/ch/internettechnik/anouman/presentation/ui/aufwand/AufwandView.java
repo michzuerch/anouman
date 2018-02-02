@@ -21,7 +21,8 @@ import org.vaadin.crudui.crud.Crud;
 import org.vaadin.crudui.crud.CrudListener;
 import org.vaadin.crudui.crud.CrudOperation;
 import org.vaadin.crudui.crud.impl.GridCrud;
-import org.vaadin.crudui.form.impl.form.factory.VerticalCrudFormFactory;
+import org.vaadin.crudui.form.impl.field.provider.NativeSelectProvider;
+import org.vaadin.crudui.form.impl.form.factory.GridLayoutCrudFormFactory;
 import org.vaadin.crudui.layout.impl.WindowBasedCrudLayout;
 
 import javax.annotation.PostConstruct;
@@ -66,7 +67,12 @@ public class AufwandView extends VerticalLayout implements View, CrudListener<Au
         crud = new GridCrud<Aufwand>(Aufwand.class, new WindowBasedCrudLayout());
         crud.setCrudListener(this);
 
-        VerticalCrudFormFactory<Aufwand> formFactory = new VerticalCrudFormFactory<>(Aufwand.class);
+
+        //@todo Layout anpassen
+        GridLayoutCrudFormFactory<Aufwand> formFactory = new GridLayoutCrudFormFactory<>(Aufwand.class, 3, 2);
+
+
+        //VerticalCrudFormFactory<Aufwand> formFactory = new VerticalCrudFormFactory<>(Aufwand.class);
 
         crud.setCrudFormFactory(formFactory);
 
@@ -88,8 +94,15 @@ public class AufwandView extends VerticalLayout implements View, CrudListener<Au
             UI.getCurrent().getNavigator().navigateTo("RechnungView/id/" + aufwand.getRechnung().getId().toString());
         })).setCaption("Rechnung").setStyleGenerator(item -> "v-align-center");
 
+        formFactory.setFieldType("bezeichnung", TextArea.class);
+        formFactory.setFieldType("start", InlineDateTimeField.class);
+        formFactory.setFieldType("end", InlineDateTimeField.class);
         formFactory.setFieldType("anzahl", AnzahlField.class);
         formFactory.setFieldType("stueckpreis", BetragField.class);
+
+        formFactory.setFieldProvider("rechnung", new NativeSelectProvider<Rechnung>("Rechnung", rechnungDeltaspikeFacade.findAll(),
+                item -> item.getId() + " " + item.getBezeichnung() + " " + item.getRechnungsdatum().toString()));
+
         formFactory.setButtonCaption(CrudOperation.ADD, "Neuen Aufwand erstellen");
         formFactory.setButtonCaption(CrudOperation.DELETE, "Aufwand löschen");
 
@@ -144,6 +157,8 @@ public class AufwandView extends VerticalLayout implements View, CrudListener<Au
             }
             if (target.equals("id")) {
                 crud.getGrid().select(aufwandDeltaspikeFacade.findBy(id));
+            } else if (target.equals("rechnungId")) {
+                filterRechnung.setValue(rechnungDeltaspikeFacade.findBy(id));
             }
         }
     }

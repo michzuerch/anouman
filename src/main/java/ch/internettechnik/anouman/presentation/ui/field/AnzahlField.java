@@ -9,6 +9,8 @@ public class AnzahlField extends NumberField {
         super();
         setLocale(Locale.GERMAN);
         setDecimalPrecision(2);
+        setGroupingSeparator('\'');
+        setGroupingUsed(false);
         setDecimalSeparator('.');
         setDecimalSeparatorAlwaysShown(false);
         setMinimumFractionDigits(0);
@@ -21,6 +23,8 @@ public class AnzahlField extends NumberField {
         setCaption(caption);
         setLocale(Locale.GERMAN);
         setDecimalPrecision(2);
+        setGroupingSeparator('\'');
+        setGroupingUsed(false);
         setDecimalSeparator('.');
         setDecimalSeparatorAlwaysShown(false);
         setMinimumFractionDigits(0);

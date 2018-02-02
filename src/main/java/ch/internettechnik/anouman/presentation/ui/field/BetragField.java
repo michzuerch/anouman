@@ -11,6 +11,7 @@ public class BetragField extends NumberField {
         setDecimalPrecision(2);
         setDecimalSeparator('.');
         setGroupingSeparator('\'');
+        setGroupingUsed(false);
         setDecimalSeparatorAlwaysShown(true);
         setMinimumFractionDigits(2);
     }
@@ -22,6 +23,7 @@ public class BetragField extends NumberField {
         setDecimalPrecision(2);
         setDecimalSeparator('.');
         setGroupingSeparator('\'');
+        setGroupingUsed(false);
         setDecimalSeparatorAlwaysShown(true);
         setMinimumFractionDigits(2);
         //setMinValue(5);

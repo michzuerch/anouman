@@ -21,6 +21,7 @@ import org.vaadin.crudui.crud.Crud;
 import org.vaadin.crudui.crud.CrudListener;
 import org.vaadin.crudui.crud.CrudOperation;
 import org.vaadin.crudui.crud.impl.GridCrud;
+import org.vaadin.crudui.form.impl.field.provider.NativeSelectProvider;
 import org.vaadin.crudui.form.impl.form.factory.VerticalCrudFormFactory;
 import org.vaadin.crudui.layout.impl.WindowBasedCrudLayout;
 
@@ -91,6 +92,10 @@ public class RechnungspositionView extends VerticalLayout implements View, CrudL
 
         formFactory.setFieldType("anzahl", AnzahlField.class);
         formFactory.setFieldType("stueckpreis", BetragField.class);
+
+        formFactory.setFieldProvider("rechnung", new NativeSelectProvider<Rechnung>("Rechnung", rechnungDeltaspikeFacade.findAll(),
+                item -> item.getId() + " " + item.getBezeichnung() + " " + item.getRechnungsdatum().toString()));
+
         formFactory.setButtonCaption(CrudOperation.ADD, "Neue Rechnungsposition erstellen");
         formFactory.setButtonCaption(CrudOperation.DELETE, "Rechnungsposition löschen");
 
@@ -145,6 +150,8 @@ public class RechnungspositionView extends VerticalLayout implements View, CrudL
             }
             if (target.equals("id")) {
                 crud.getGrid().select(rechnungspositionDeltaspikeFacade.findBy(id));
+            } else if (target.equals("rechnungId")) {
+                filterRechnung.setValue(rechnungDeltaspikeFacade.findBy(id));
             }
         }
     }

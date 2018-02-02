@@ -1,5 +1,6 @@
-package ch.internettechnik.anouman.presentation.ui;
+package ch.internettechnik.anouman.presentation.ui.testviews;
 
+import ch.internettechnik.anouman.presentation.ui.Menu;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;

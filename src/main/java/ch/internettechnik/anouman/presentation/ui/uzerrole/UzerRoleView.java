@@ -26,45 +26,45 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.util.Collection;
 
-@CDIView("UzerView")
-public class UzerRoleView extends VerticalLayout implements View, CrudListener<Uzer> {
+@CDIView("UzerRoleView")
+public class UzerRoleView extends VerticalLayout implements View, CrudListener<UzerRole> {
     private static Logger logger = LoggerFactory.getLogger(UzerRoleView.class.getName());
-
-    @Inject
-    UzerDeltaspikeFacade uzerDeltaspikeFacade;
 
     @Inject
     UzerRoleDeltaspikeFacade uzerRoleDeltaspikeFacade;
 
-    GridCrud<Uzer> crud;
+    @Inject
+    UzerDeltaspikeFacade uzerDeltaspikeFacade;
+
+    GridCrud<UzerRole> crud;
     CssLayout filterToolbar = new CssLayout();
-    TextField filterTextPrincipal = new TextField();
-    ComboBox<UzerRole> filterUzerRole = new ComboBox<>();
+    TextField filterTextRole = new TextField();
+    ComboBox<Uzer> filterUzer = new ComboBox<>();
 
 
-    private Collection<Uzer> getItems() {
-        if ((!filterUzerRole.isEmpty()) && (!filterTextPrincipal.isEmpty())) {
+    private Collection<UzerRole> getItems() {
+        if ((!filterUzer.isEmpty()) && (!filterTextRole.isEmpty())) {
             // Such mit Rechnung und Bezeichnung
-            logger.debug("Suche mit UzerRole und Principal:" + filterUzerRole.getValue().getId() + "," + filterTextPrincipal.getValue());
-            return (uzerDeltaspikeFacade.findByUzerRoleAndPrincipalLikeIgnoreCase(filterUzerRole.getValue(), filterTextPrincipal.getValue() + "%"));
+            logger.debug("Suche mit Uzer und Role:" + filterUzer.getValue().getId() + "," + filterTextRole.getValue());
+            return (uzerRoleDeltaspikeFacade.findByUzerAndRoleLikeIgnoreCase(filterUzer.getValue(), filterTextRole.getValue() + "%"));
 
-        } else if ((!filterUzerRole.isEmpty()) && (filterTextPrincipal.isEmpty())) {
+        } else if ((!filterUzer.isEmpty()) && (filterTextRole.isEmpty())) {
             // Suche mit Rechnung
-            logger.debug("Suche mit Rechnung:" + filterUzerRole.getValue().getId());
-            return (uzerDeltaspikeFacade.findByUzerRole(filterUzerRole.getValue()));
-        } else if ((filterUzerRole.isEmpty()) && (!filterTextPrincipal.isEmpty())) {
+            logger.debug("Suche mit Uzer:" + filterUzer.getValue().getId());
+            return (uzerRoleDeltaspikeFacade.findByUzer(filterUzer.getValue()));
+        } else if ((filterUzer.isEmpty()) && (!filterTextRole.isEmpty())) {
             // Suche mit Bezeichnung
-            logger.debug("Suche mit Principal:" + filterTextPrincipal.getValue());
-            return (uzerDeltaspikeFacade.findByPrincipalLikeIgnoreCase(filterTextPrincipal.getValue() + "%"));
+            logger.debug("Suche mit Role:" + filterTextRole.getValue());
+            return (uzerRoleDeltaspikeFacade.findByRoleLikeIgnoreCase(filterTextRole.getValue() + "%"));
         }
-        return (uzerDeltaspikeFacade.findAll());
+        return (uzerRoleDeltaspikeFacade.findAll());
     }
 
     private Crud createCrud() {
-        crud = new GridCrud<Uzer>(Uzer.class, new WindowBasedCrudLayout());
+        crud = new GridCrud<UzerRole>(UzerRole.class, new WindowBasedCrudLayout());
         crud.setCrudListener(this);
 
-        VerticalCrudFormFactory<Uzer> formFactory = new VerticalCrudFormFactory<>(Uzer.class);
+        VerticalCrudFormFactory<UzerRole> formFactory = new VerticalCrudFormFactory<>(UzerRole.class);
 
         crud.setCrudFormFactory(formFactory);
 
@@ -72,25 +72,25 @@ public class UzerRoleView extends VerticalLayout implements View, CrudListener<U
 
         formFactory.setErrorListener(e -> Notification.show("Custom error message (simulated error)", Notification.Type.ERROR_MESSAGE));
 
-        formFactory.setVisibleProperties(CrudOperation.READ, "id", "principal", "description");
-        formFactory.setVisibleProperties(CrudOperation.ADD, "id", "principal", "description");
-        formFactory.setVisibleProperties(CrudOperation.UPDATE, "id", "principal", "description");
-        formFactory.setVisibleProperties(CrudOperation.DELETE, "id", "principal");
+        formFactory.setVisibleProperties(CrudOperation.READ, "id", "role");
+        formFactory.setVisibleProperties(CrudOperation.ADD, "id", "role");
+        formFactory.setVisibleProperties(CrudOperation.UPDATE, "id", "role");
+        formFactory.setVisibleProperties(CrudOperation.DELETE, "id", "role");
 
         formFactory.setDisabledProperties("id");
 
-        crud.getGrid().setColumns("id", "principal", "description");
+        crud.getGrid().setColumns("id", "role");
 
-        crud.getGrid().addColumn(uzer -> uzer.getAnzahlUzerRoles(), new ButtonRenderer(event -> {
-            Uzer uzer = (Uzer) event.getItem();
+        crud.getGrid().addColumn(uzerRole -> uzerRole.getAnzahlUzers(), new ButtonRenderer(event -> {
+            UzerRole uzerRole = (UzerRole) event.getItem();
             //@todo ManyToMany für Roles
-            UI.getCurrent().getNavigator().navigateTo("UzerRoleOldView/id/");
+            UI.getCurrent().getNavigator().navigateTo("UzerView/id/");
         })).setCaption("User Role").setStyleGenerator(item -> "v-align-center");
 
-        formFactory.setButtonCaption(CrudOperation.ADD, "Neuen User erstellen");
-        formFactory.setButtonCaption(CrudOperation.DELETE, "User löschen");
+        formFactory.setButtonCaption(CrudOperation.ADD, "Neue User Role erstellen");
+        formFactory.setButtonCaption(CrudOperation.DELETE, "User Role löschen");
 
-        crud.setRowCountCaption("%d User gefunden");
+        crud.setRowCountCaption("%d User Roles gefunden");
 
         crud.getCrudLayout().addToolbarComponent(filterToolbar);
         crud.setClickRowToUpdate(false);
@@ -102,24 +102,24 @@ public class UzerRoleView extends VerticalLayout implements View, CrudListener<U
 
     @PostConstruct
     void init() {
-        filterTextPrincipal.setPlaceholder("Filter für Principal");
-        filterTextPrincipal.addValueChangeListener(e -> crud.getGrid().setItems(getItems()));
-        filterTextPrincipal.setValueChangeMode(ValueChangeMode.LAZY);
+        filterTextRole.setPlaceholder("Filter für Role");
+        filterTextRole.addValueChangeListener(e -> crud.getGrid().setItems(getItems()));
+        filterTextRole.setValueChangeMode(ValueChangeMode.LAZY);
 
-        filterUzerRole.setPlaceholder("Filter für User Role");
-        filterUzerRole.addValueChangeListener(e -> crud.getGrid().setItems(getItems()));
-        filterUzerRole.setItems(uzerRoleDeltaspikeFacade.findAll());
-        filterUzerRole.setItemCaptionGenerator(item -> item.getId() + " " + item.getRole());
+        filterUzer.setPlaceholder("Filter für User");
+        filterUzer.addValueChangeListener(e -> crud.getGrid().setItems(getItems()));
+        filterUzer.setItems(uzerDeltaspikeFacade.findAll());
+        filterUzer.setItemCaptionGenerator(item -> item.getId() + " " + item.getPrincipal());
 
 
         Button clearFilterTextBtn = new Button(VaadinIcons.RECYCLE);
         clearFilterTextBtn.setDescription("Entferne Filter");
         clearFilterTextBtn.addClickListener(e -> {
-            filterTextPrincipal.clear();
-            filterUzerRole.clear();
+            filterTextRole.clear();
+            filterUzer.clear();
         });
 
-        filterToolbar.addComponents(filterTextPrincipal, filterUzerRole, clearFilterTextBtn);
+        filterToolbar.addComponents(filterTextRole, filterUzer, clearFilterTextBtn);
         filterToolbar.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 
         addComponents(new Menu());
@@ -140,28 +140,28 @@ public class UzerRoleView extends VerticalLayout implements View, CrudListener<U
                 }
             }
             if (target.equals("id")) {
-                crud.getGrid().select(uzerDeltaspikeFacade.findBy(id));
+                crud.getGrid().select(uzerRoleDeltaspikeFacade.findBy(id));
             }
         }
     }
 
     @Override
-    public Collection<Uzer> findAll() {
+    public Collection<UzerRole> findAll() {
         return getItems();
     }
 
     @Override
-    public Uzer add(Uzer uzer) {
-        return uzerDeltaspikeFacade.save(uzer);
+    public UzerRole add(UzerRole uzerRole) {
+        return uzerRoleDeltaspikeFacade.save(uzerRole);
     }
 
     @Override
-    public Uzer update(Uzer uzer) {
-        return uzerDeltaspikeFacade.save(uzer);
+    public UzerRole update(UzerRole uzerRole) {
+        return uzerRoleDeltaspikeFacade.save(uzerRole);
     }
 
     @Override
-    public void delete(Uzer uzer) {
-        uzerDeltaspikeFacade.delete(uzer);
+    public void delete(UzerRole uzerRole) {
+        uzerRoleDeltaspikeFacade.delete(uzerRole);
     }
 }

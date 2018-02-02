@@ -1,5 +1,6 @@
 package ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade;
 
+import ch.internettechnik.anouman.backend.entity.Uzer;
 import ch.internettechnik.anouman.backend.entity.UzerRole;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.repository.UzerRoleDeltaspikeRepository;
 
@@ -26,6 +27,18 @@ public class UzerRoleDeltaspikeFacade {
 
     public UzerRole save(UzerRole val) {
         return repo.save(val);
+    }
+
+    public List<UzerRole> findByUzerAndRoleLikeIgnoreCase(Uzer uzer, String role) {
+        return repo.findByUzerAndRoleLikeIgnoreCase(uzer, role);
+    }
+
+    public List<UzerRole> findByUzer(Uzer uzer) {
+        return repo.findByUzer(uzer);
+    }
+
+    public List<UzerRole> findByRoleLikeIgnoreCase(String role) {
+        return repo.findByRoleLikeIgnoreCase(role);
     }
 
 }

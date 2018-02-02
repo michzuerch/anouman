@@ -1,7 +1,7 @@
-package ch.internettechnik.anouman.presentation.ui.report.jasper.reporttemplate;
+package ch.internettechnik.anouman.presentation.ui.report.css;
 
-import ch.internettechnik.anouman.backend.entity.report.jasper.ReportJasper;
-import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ReportJasperDeltaspikeFacade;
+import ch.internettechnik.anouman.backend.entity.report.css.ReportCSSImage;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ReportCSSImageDeltaspikeFacade;
 import ch.internettechnik.anouman.presentation.ui.Menu;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
@@ -24,18 +24,18 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.util.Collection;
 
-@CDIView("ReportJasperView")
-public class ReportJasperView extends VerticalLayout implements View, CrudListener<ReportJasper> {
-    private static Logger logger = LoggerFactory.getLogger(ReportJasperView.class.getName());
+@CDIView("ReportCSSImageView")
+public class ReportCSSImageView extends VerticalLayout implements View, CrudListener<ReportCSSImage> {
+    private static Logger logger = LoggerFactory.getLogger(ReportCSSImageView.class.getName());
 
     @Inject
-    ReportJasperDeltaspikeFacade facade;
+    ReportCSSImageDeltaspikeFacade facade;
 
-    GridCrud<ReportJasper> crud;
+    GridCrud<ReportCSSImage> crud;
     CssLayout filterToolbar = new CssLayout();
     TextField filterTextBezeichnung = new TextField();
 
-    private Collection<ReportJasper> getItems() {
+    private Collection<ReportCSSImage> getItems() {
         if (!filterTextBezeichnung.isEmpty()) {
             //Suche mit Bezeichnung
             logger.debug("Suche mit Bezeichnung:" + filterTextBezeichnung.getValue());
@@ -45,10 +45,10 @@ public class ReportJasperView extends VerticalLayout implements View, CrudListen
     }
 
     private Crud createCrud() {
-        crud = new GridCrud<ReportJasper>(ReportJasper.class, new WindowBasedCrudLayout());
+        crud = new GridCrud<ReportCSSImage>(ReportCSSImage.class, new WindowBasedCrudLayout());
         crud.setCrudListener(this);
 
-        VerticalCrudFormFactory<ReportJasper> formFactory = new VerticalCrudFormFactory<>(ReportJasper.class);
+        VerticalCrudFormFactory<ReportCSSImage> formFactory = new VerticalCrudFormFactory<>(ReportCSSImage.class);
 
         crud.setCrudFormFactory(formFactory);
 
@@ -56,26 +56,24 @@ public class ReportJasperView extends VerticalLayout implements View, CrudListen
 
         formFactory.setErrorListener(e -> Notification.show("Custom error message (simulated error)", Notification.Type.ERROR_MESSAGE));
 
-        formFactory.setVisibleProperties(CrudOperation.READ, "id", "bezeichnung", "filename");
-        formFactory.setVisibleProperties(CrudOperation.ADD, "id", "bezeichnung", "filename");
-        formFactory.setVisibleProperties(CrudOperation.UPDATE, "id", "bezeichnung", "filename");
+        formFactory.setVisibleProperties(CrudOperation.READ, "id", "bezeichnung");
+        formFactory.setVisibleProperties(CrudOperation.ADD, "id", "bezeichnung");
+        formFactory.setVisibleProperties(CrudOperation.UPDATE, "id", "bezeichnung");
         formFactory.setVisibleProperties(CrudOperation.DELETE, "id", "bezeichnung");
 
         formFactory.setDisabledProperties("id");
 
-        crud.getGrid().setColumns("id", "bezeichnung", "filename");
+        crud.getGrid().setColumns("id", "bezeichnung");
 
-        crud.getGrid().addColumn(reportJasper -> reportJasper.getAnzahlReportJasperImages(), new ButtonRenderer(event -> {
-            ReportJasper reportJasper = (ReportJasper) event.getItem();
-            if (reportJasper.getAnzahlReportJasperImages() > 0) {
-                UI.getCurrent().getNavigator().navigateTo("ReportJasperImageOldView/adresseId/" + reportJasper.getId().toString());
-            }
-        })).setCaption("Anzahl Images").setStyleGenerator(item -> "v-align-center");
+        crud.getGrid().addColumn(reportCSSImage -> reportCSSImage.getReportCSS().getId(), new ButtonRenderer(event -> {
+            ReportCSSImage reportCSSImage = (ReportCSSImage) event.getItem();
+            UI.getCurrent().getNavigator().navigateTo("ReportCSSView/adresseId/" + reportCSSImage.getId().toString());
+        })).setCaption("Report CSS").setStyleGenerator(item -> "v-align-center");
 
-        formFactory.setButtonCaption(CrudOperation.ADD, "Neuen Report Jasper erstellen");
-        formFactory.setButtonCaption(CrudOperation.DELETE, "Report Jasper löschen");
+        formFactory.setButtonCaption(CrudOperation.ADD, "Neues Report CSS Image erstellen");
+        formFactory.setButtonCaption(CrudOperation.DELETE, "Report CSS Image löschen");
 
-        crud.setRowCountCaption("%d Report Jasper gefunden");
+        crud.setRowCountCaption("%d Report CSS Images gefunden");
 
         crud.getCrudLayout().addToolbarComponent(filterToolbar);
         crud.setClickRowToUpdate(false);
@@ -124,22 +122,22 @@ public class ReportJasperView extends VerticalLayout implements View, CrudListen
     }
 
     @Override
-    public Collection<ReportJasper> findAll() {
+    public Collection<ReportCSSImage> findAll() {
         return getItems();
     }
 
     @Override
-    public ReportJasper add(ReportJasper reportJasper) {
-        return facade.save(reportJasper);
+    public ReportCSSImage add(ReportCSSImage reportCSSImage) {
+        return facade.save(reportCSSImage);
     }
 
     @Override
-    public ReportJasper update(ReportJasper reportJasper) {
-        return facade.save(reportJasper);
+    public ReportCSSImage update(ReportCSSImage reportCSSImage) {
+        return facade.save(reportCSSImage);
     }
 
     @Override
-    public void delete(ReportJasper reportJasper) {
-        facade.delete(reportJasper);
+    public void delete(ReportCSSImage reportCSSImage) {
+        facade.delete(reportCSSImage);
     }
 }

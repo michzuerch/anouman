@@ -1,6 +1,5 @@
 package ch.internettechnik.anouman.presentation.ui.artikelkategorie;
 
-import ch.internettechnik.anouman.backend.entity.Artikel;
 import ch.internettechnik.anouman.backend.entity.Artikelkategorie;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ArtikelkategorieDeltaspikeFacade;
 import ch.internettechnik.anouman.presentation.ui.Menu;
@@ -72,9 +71,9 @@ public class ArtikelkategorieView extends VerticalLayout implements View, CrudLi
         crud.getGrid().setColumns("id", "bezeichnung");
 
         crud.getGrid().addColumn(artikelkategorie -> artikelkategorie.getArtikels().size(), new ButtonRenderer(event -> {
-            Artikel artikel = (Artikel) event.getItem();
-            UI.getCurrent().getNavigator().navigateTo("ArtikelkategorieView/id/" + artikel.getArtikelkategorie().getId().toString());
-        })).setCaption("Artikel").setStyleGenerator(item -> "v-align-center");
+            Artikelkategorie artikelkategorie = (Artikelkategorie) event.getItem();
+            UI.getCurrent().getNavigator().navigateTo("ArtikelView/artikelkategorieId/" + artikelkategorie.getId().toString());
+        })).setCaption("Anzahl Artikel").setStyleGenerator(item -> "v-align-center");
 
         formFactory.setFieldType("anzahl", AnzahlField.class);
         formFactory.setFieldType("stueckpreis", BetragField.class);

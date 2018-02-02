@@ -83,15 +83,16 @@ public class ArtikelView extends VerticalLayout implements View, CrudListener<Ar
 
         crud.getGrid().setColumns("id", "bezeichnung", "bezeichnungLang", "mengeneinheit", "anzahl", "stueckpreis");
 
-        crud.getGrid().addColumn(artikel -> artikel.getArtikelkategorie().getId(), new ButtonRenderer(event -> {
+        crud.getGrid().addColumn(artikel -> artikel.getArtikelkategorie().getBezeichnung()
+                + " " + artikel.getArtikelkategorie().getId(), new ButtonRenderer(event -> {
             Artikel artikel = (Artikel) event.getItem();
-            UI.getCurrent().getNavigator().navigateTo("ArtikelkategorieOldView/id/" + artikel.getArtikelkategorie().getId().toString());
+            UI.getCurrent().getNavigator().navigateTo("ArtikelkategorieView/id/" + artikel.getArtikelkategorie().getId().toString());
         })).setCaption("Artikelkategorie").setStyleGenerator(item -> "v-align-center");
 
-        crud.getGrid().addColumn(artikel -> artikel.getArtikelkategorie().getId(), new ButtonRenderer(event -> {
+        crud.getGrid().addColumn(artikel -> artikel.getArtikelbilds().size(), new ButtonRenderer(event -> {
             Artikel artikel = (Artikel) event.getItem();
-            UI.getCurrent().getNavigator().navigateTo("ArtikelbildOldView/id/" + artikel.getArtikelkategorie().getId().toString());
-        })).setCaption("Artikelbild").setStyleGenerator(item -> "v-align-center");
+            UI.getCurrent().getNavigator().navigateTo("ArtikelbildView/artikelId/" + artikel.getArtikelkategorie().getId().toString());
+        })).setCaption("Anzahl Artikelbilder").setStyleGenerator(item -> "v-align-center");
 
         formFactory.setFieldType("anzahl", AnzahlField.class);
         formFactory.setFieldType("stueckpreis", BetragField.class);
@@ -148,6 +149,8 @@ public class ArtikelView extends VerticalLayout implements View, CrudListener<Ar
             }
             if (target.equals("id")) {
                 crud.getGrid().select(artikelDeltaspikeFacade.findBy(id));
+            } else if (target.equals("artikelkategorieId")) {
+                filterArtikelkategorie.setValue(artikelkategorieDeltaspikeFacade.findBy(id));
             }
         }
     }
