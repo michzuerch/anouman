@@ -58,7 +58,7 @@ public class ImageField extends CustomField<Byte[]> {
         layout.setMargin(false);
         layout.setSpacing(false);
         image.setSource(new StreamResource(new ImageSource(ArrayUtils.toPrimitive(getValue())), "EmptyImage.jpg"));
-        image.setHeight(400, Unit.PIXELS);
+        image.setHeight(100, Unit.PIXELS);
         layout.addComponents(image, upload);
         return layout;
     }

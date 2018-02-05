@@ -21,6 +21,7 @@ import org.vaadin.crudui.crud.Crud;
 import org.vaadin.crudui.crud.CrudListener;
 import org.vaadin.crudui.crud.CrudOperation;
 import org.vaadin.crudui.crud.impl.GridCrud;
+import org.vaadin.crudui.form.impl.field.provider.NativeSelectProvider;
 import org.vaadin.crudui.form.impl.form.factory.VerticalCrudFormFactory;
 import org.vaadin.crudui.layout.impl.WindowBasedCrudLayout;
 
@@ -74,9 +75,9 @@ public class ArtikelView extends VerticalLayout implements View, CrudListener<Ar
 
         formFactory.setErrorListener(e -> Notification.show("Custom error message (simulated error)", Notification.Type.ERROR_MESSAGE));
 
-        formFactory.setVisibleProperties(CrudOperation.READ, "id", "bezeichnung", "bezeichnungLang", "mengeneinheit", "anzahl", "stueckpreis");
-        formFactory.setVisibleProperties(CrudOperation.ADD, "id", "bezeichnung", "bezeichnungLang", "mengeneinheit", "anzahl", "stueckpreis");
-        formFactory.setVisibleProperties(CrudOperation.UPDATE, "id", "bezeichnung", "bezeichnungLang", "mengeneinheit", "anzahl", "stueckpreis");
+        formFactory.setVisibleProperties(CrudOperation.READ, "id", "bezeichnung", "bezeichnungLang", "mengeneinheit", "anzahl", "stueckpreis", "artikelkategorie");
+        formFactory.setVisibleProperties(CrudOperation.ADD, "id", "bezeichnung", "bezeichnungLang", "mengeneinheit", "anzahl", "stueckpreis", "artikelkategorie");
+        formFactory.setVisibleProperties(CrudOperation.UPDATE, "id", "bezeichnung", "bezeichnungLang", "mengeneinheit", "anzahl", "stueckpreis", "artikelkategorie");
         formFactory.setVisibleProperties(CrudOperation.DELETE, "id", "bezeichnung");
 
         formFactory.setDisabledProperties("id");
@@ -96,6 +97,10 @@ public class ArtikelView extends VerticalLayout implements View, CrudListener<Ar
 
         formFactory.setFieldType("anzahl", AnzahlField.class);
         formFactory.setFieldType("stueckpreis", BetragField.class);
+
+        formFactory.setFieldProvider("artikelkategorie", new NativeSelectProvider<Artikelkategorie>("Adresse", artikelkategorieDeltaspikeFacade.findAll(),
+                item -> item.getId() + " " + item.getBezeichnung()));
+
         formFactory.setButtonCaption(CrudOperation.ADD, "Neuen Artikel erstellen");
         formFactory.setButtonCaption(CrudOperation.DELETE, "Artikel löschen");
 

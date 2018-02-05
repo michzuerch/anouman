@@ -6,6 +6,7 @@ import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ArtikelD
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ArtikelbildDeltaspikeFacade;
 import com.vaadin.server.StreamResource;
 import com.vaadin.ui.*;
+import org.apache.commons.lang3.ArrayUtils;
 import org.vaadin.viritin.form.AbstractForm;
 import server.droporchoose.UploadComponent;
 
@@ -71,7 +72,7 @@ public class ArtikelbildForm extends AbstractForm<Artikelbild> {
     private void uploadReceived(String fileName, Path path) {
         try {
             byte[] data = Files.readAllBytes(Paths.get(path.toUri()));
-            getEntity().setBild(data);
+            getEntity().setBild(ArrayUtils.toObject(data));
             getEntity().setMimetype(Files.probeContentType(path));
 
             StreamResource.StreamSource streamSource = new StreamResource.StreamSource() {

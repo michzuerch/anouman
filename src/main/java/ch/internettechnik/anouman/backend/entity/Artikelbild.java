@@ -15,7 +15,7 @@ public class Artikelbild extends AbstractEntity {
 
     @Column
     @Basic(fetch = FetchType.LAZY)
-    private byte[] bild;
+    private Byte[] bild;
 
     @ManyToOne
     private Artikel artikel;
@@ -36,11 +36,11 @@ public class Artikelbild extends AbstractEntity {
         this.mimetype = mimetype;
     }
 
-    public byte[] getBild() {
+    public Byte[] getBild() {
         return bild;
     }
 
-    public void setBild(byte[] bild) {
+    public void setBild(Byte[] bild) {
         this.bild = bild;
     }
 

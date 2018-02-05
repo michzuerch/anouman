@@ -5,6 +5,7 @@ import ch.internettechnik.anouman.backend.entity.Artikelbild;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ArtikelDeltaspikeFacade;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ArtikelbildDeltaspikeFacade;
 import ch.internettechnik.anouman.presentation.ui.Menu;
+import ch.internettechnik.anouman.presentation.ui.field.ImageField;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
@@ -13,17 +14,24 @@ import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.themes.ValoTheme;
+import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.crudui.crud.Crud;
 import org.vaadin.crudui.crud.CrudListener;
 import org.vaadin.crudui.crud.CrudOperation;
 import org.vaadin.crudui.crud.impl.GridCrud;
+import org.vaadin.crudui.form.impl.field.provider.NativeSelectProvider;
 import org.vaadin.crudui.form.impl.form.factory.VerticalCrudFormFactory;
 import org.vaadin.crudui.layout.impl.WindowBasedCrudLayout;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URLConnection;
 import java.util.Collection;
 
 @CDIView("ArtikelbildView")
@@ -67,9 +75,9 @@ public class ArtikelbildView extends VerticalLayout implements View, CrudListene
 
         formFactory.setErrorListener(e -> Notification.show("Custom error message (simulated error)", Notification.Type.ERROR_MESSAGE));
 
-        formFactory.setVisibleProperties(CrudOperation.READ, "id", "titel", "mimetype");
-        formFactory.setVisibleProperties(CrudOperation.ADD, "id", "titel", "mimetype");
-        formFactory.setVisibleProperties(CrudOperation.UPDATE, "id", "titel", "mimetype");
+        formFactory.setVisibleProperties(CrudOperation.READ, "id", "titel", "bild", "mimetype", "artikel");
+        formFactory.setVisibleProperties(CrudOperation.ADD, "titel", "bild", "artikel");
+        formFactory.setVisibleProperties(CrudOperation.UPDATE, "id", "titel", "bild", "artikel");
         formFactory.setVisibleProperties(CrudOperation.DELETE, "id", "titel");
 
         formFactory.setDisabledProperties("id");
@@ -81,11 +89,17 @@ public class ArtikelbildView extends VerticalLayout implements View, CrudListene
             UI.getCurrent().getNavigator().navigateTo("ArtikelView/id/" + artikelbild.getArtikel().getId().toString());
         })).setCaption("Artikel").setStyleGenerator(item -> "v-align-center");
 
-        //formFactory.setFieldType("anzahl", AnzahlField.class);
+        formFactory.setFieldType("bild", ImageField.class);
         //formFactory.setFieldType("stueckpreis", BetragField.class);
         formFactory.setButtonCaption(CrudOperation.ADD, "Neues Artikelbild erstellen");
         formFactory.setButtonCaption(CrudOperation.DELETE, "Artikelbild löschen");
 
+        formFactory.setFieldProvider("artikel", new NativeSelectProvider<Artikel>("Adresse", artikelDeltaspikeFacade.findAll(),
+                item -> item.getId() + " " + item.getBezeichnung()));
+
+//        formFactory.setFieldProvider("bild", new NativeSelectProvider<Artikel>("Adresse", artikelDeltaspikeFacade.findAll(),
+//                item -> item.getId() + " " + item.getBezeichnung()));
+//
         crud.setRowCountCaption("%d Artikelbilder gefunden");
 
         crud.getCrudLayout().addToolbarComponent(filterToolbar);
@@ -149,11 +163,25 @@ public class ArtikelbildView extends VerticalLayout implements View, CrudListene
 
     @Override
     public Artikelbild add(Artikelbild artikelbild) {
+        InputStream is = new BufferedInputStream(new ByteArrayInputStream(ArrayUtils.toPrimitive(artikelbild.getBild())));
+        try {
+            String mimeType = URLConnection.guessContentTypeFromStream(is);
+            artikelbild.setMimetype(mimeType);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return artikelbildDeltaspikeFacade.save(artikelbild);
     }
 
     @Override
     public Artikelbild update(Artikelbild artikelbild) {
+        InputStream is = new BufferedInputStream(new ByteArrayInputStream(ArrayUtils.toPrimitive(artikelbild.getBild())));
+        try {
+            String mimeType = URLConnection.guessContentTypeFromStream(is);
+            artikelbild.setMimetype(mimeType);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return artikelbildDeltaspikeFacade.save(artikelbild);
     }
 
