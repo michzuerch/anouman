@@ -13,155 +13,123 @@ import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.themes.ValoTheme;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.vaadin.crudui.crud.Crud;
-import org.vaadin.crudui.crud.CrudListener;
-import org.vaadin.crudui.crud.CrudOperation;
-import org.vaadin.crudui.crud.impl.GridCrud;
-import org.vaadin.crudui.form.impl.form.factory.VerticalCrudFormFactory;
-import org.vaadin.crudui.layout.impl.WindowBasedCrudLayout;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.util.Collection;
+import java.util.List;
+import java.util.logging.Logger;
 
 @CDIView("UzerRoleView")
-public class UzerRoleView extends VerticalLayout implements View, CrudListener<UzerRole> {
-    private static Logger logger = LoggerFactory.getLogger(UzerRoleView.class.getName());
+public class UzerRoleView extends VerticalLayout implements View {
+    private static final Logger LOGGER = Logger.getLogger(UzerRoleView.class.getName());
+
+    TextField filterText = new TextField();
+    Grid<UzerRole> grid = new Grid<>(UzerRole.class);
 
     @Inject
-    UzerRoleDeltaspikeFacade uzerRoleDeltaspikeFacade;
+    private Menu menu;
 
     @Inject
-    UzerDeltaspikeFacade uzerDeltaspikeFacade;
+    private UzerRoleDeltaspikeFacade uzerRoleDeltaspikeFacade;
 
-    GridCrud<UzerRole> crud;
-    CssLayout filterToolbar = new CssLayout();
-    TextField filterTextRole = new TextField();
-    ComboBox<Uzer> filterUzer = new ComboBox<>();
+    @Inject
+    private UzerDeltaspikeFacade uzerDeltaspikeFacade;
 
+    @Inject
+    private UzerRoleForm form;
 
-    private Collection<UzerRole> getItems() {
-        if ((!filterUzer.isEmpty()) && (!filterTextRole.isEmpty())) {
-            // Such mit Rechnung und Bezeichnung
-            logger.debug("Suche mit Uzer und Role:" + filterUzer.getValue().getId() + "," + filterTextRole.getValue());
-            return (uzerRoleDeltaspikeFacade.findByUzerAndRoleLikeIgnoreCase(filterUzer.getValue(), filterTextRole.getValue() + "%"));
+    private ComboBox<Uzer> uzerComboBox;
 
-        } else if ((!filterUzer.isEmpty()) && (filterTextRole.isEmpty())) {
-            // Suche mit Rechnung
-            logger.debug("Suche mit Uzer:" + filterUzer.getValue().getId());
-            return (uzerRoleDeltaspikeFacade.findByUzer(filterUzer.getValue()));
-        } else if ((filterUzer.isEmpty()) && (!filterTextRole.isEmpty())) {
-            // Suche mit Bezeichnung
-            logger.debug("Suche mit Role:" + filterTextRole.getValue());
-            return (uzerRoleDeltaspikeFacade.findByRoleLikeIgnoreCase(filterTextRole.getValue() + "%"));
-        }
-        return (uzerRoleDeltaspikeFacade.findAll());
-    }
+    @Override
+    public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
+        setStyleName("anouman-background");
 
-    private Crud createCrud() {
-        crud = new GridCrud<UzerRole>(UzerRole.class, new WindowBasedCrudLayout());
-        crud.setCrudListener(this);
+        filterText.setPlaceholder("Filter für Erster...");
+        filterText.addValueChangeListener(e -> updateList());
+        filterText.setValueChangeMode(ValueChangeMode.LAZY);
 
-        VerticalCrudFormFactory<UzerRole> formFactory = new VerticalCrudFormFactory<>(UzerRole.class);
-
-        crud.setCrudFormFactory(formFactory);
-
-        formFactory.setUseBeanValidation(true);
-
-        formFactory.setErrorListener(e -> Notification.show("Custom error message (simulated error)", Notification.Type.ERROR_MESSAGE));
-
-        formFactory.setVisibleProperties(CrudOperation.READ, "id", "role");
-        formFactory.setVisibleProperties(CrudOperation.ADD, "id", "role");
-        formFactory.setVisibleProperties(CrudOperation.UPDATE, "id", "role");
-        formFactory.setVisibleProperties(CrudOperation.DELETE, "id", "role");
-
-        formFactory.setDisabledProperties("id");
-
-        crud.getGrid().setColumns("id", "role");
-
-        crud.getGrid().addColumn(uzerRole -> uzerRole.getAnzahlUzers(), new ButtonRenderer(event -> {
-            UzerRole uzerRole = (UzerRole) event.getItem();
-            //@todo ManyToMany für Roles
-            UI.getCurrent().getNavigator().navigateTo("UzerView/id/");
-        })).setCaption("User Role").setStyleGenerator(item -> "v-align-center");
-
-        formFactory.setButtonCaption(CrudOperation.ADD, "Neue User Role erstellen");
-        formFactory.setButtonCaption(CrudOperation.DELETE, "User Role löschen");
-
-        crud.setRowCountCaption("%d User Roles gefunden");
-
-        crud.getCrudLayout().addToolbarComponent(filterToolbar);
-        crud.setClickRowToUpdate(false);
-        crud.setUpdateOperationVisible(true);
-        crud.setDeleteOperationVisible(true);
-
-        return crud;
-    }
-
-    @PostConstruct
-    void init() {
-        filterTextRole.setPlaceholder("Filter für Role");
-        filterTextRole.addValueChangeListener(e -> crud.getGrid().setItems(getItems()));
-        filterTextRole.setValueChangeMode(ValueChangeMode.LAZY);
-
-        filterUzer.setPlaceholder("Filter für User");
-        filterUzer.addValueChangeListener(e -> crud.getGrid().setItems(getItems()));
-        filterUzer.setItems(uzerDeltaspikeFacade.findAll());
-        filterUzer.setItemCaptionGenerator(item -> item.getId() + " " + item.getPrincipal());
-
+        Collection<Uzer> uzers = uzerDeltaspikeFacade.findAll();
+        ComboBox<Uzer> uzerComboBox = new ComboBox<>("", uzers);
+        uzerComboBox.setItemCaptionGenerator(Uzer::getPrincipal);
+        uzerComboBox.setEmptySelectionAllowed(true);
+        uzerComboBox.addValueChangeListener(valueChangeEvent -> updateList());
 
         Button clearFilterTextBtn = new Button(VaadinIcons.RECYCLE);
         clearFilterTextBtn.setDescription("Entferne Filter");
-        clearFilterTextBtn.addClickListener(e -> {
-            filterTextRole.clear();
-            filterUzer.clear();
+        clearFilterTextBtn.addClickListener(e -> uzerComboBox.clear());
+
+        Button addBtn = new Button(VaadinIcons.PLUS);
+        addBtn.addClickListener(event -> {
+            grid.asSingleSelect().clear();
+            form.setEntity(new UzerRole());
+            form.openInModalPopup();
+            form.setSavedHandler(val -> {
+                uzerRoleDeltaspikeFacade.save(val);
+                updateList();
+                grid.select(val);
+                form.closePopup();
+            });
         });
 
-        filterToolbar.addComponents(filterTextRole, filterUzer, clearFilterTextBtn);
-        filterToolbar.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+        CssLayout tools = new CssLayout();
+        tools.addComponents(uzerComboBox, addBtn);
+        //tools.addComponents(filterText, clearFilterTextBtn, addBtn);
+        tools.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 
-        addComponents(new Menu());
-        addComponentsAndExpand(createCrud());
+        grid.setCaption("User Role");
+        grid.setCaptionAsHtml(true);
+        grid.setColumns("id", "role", "roleGroup", "anzahlUzers");
+        grid.setSizeFull();
+
+        // Render a button that deletes the data row (item)
+        grid.addColumn(val -> "löschen",
+                new ButtonRenderer(event -> {
+                    Notification.show("Lösche User Role id:" + event.getItem(), Notification.Type.HUMANIZED_MESSAGE);
+                    uzerRoleDeltaspikeFacade.delete((UzerRole) event.getItem());
+                    updateList();
+                })
+        );
+
+        grid.addColumn(rechnung -> "ändern",
+                new ButtonRenderer(event -> {
+                    form.setEntity((UzerRole) event.getItem());
+                    form.openInModalPopup();
+                    form.setSavedHandler(val -> {
+                        uzerRoleDeltaspikeFacade.save(val);
+                        updateList();
+                        grid.select(val);
+                        form.closePopup();
+                    });
+                    form.setResetHandler(val -> {
+                        updateList();
+                        grid.select(val);
+                        form.closePopup();
+                    });
+                }));
+
+
+        updateList();
+        addComponents(menu, tools);
+        addComponentsAndExpand(grid);
     }
 
-    @Override
-    public void enter(ViewChangeListener.ViewChangeEvent event) {
-        if (event.getParameters() != null) {
-            String[] msgs = event.getParameters().split("/");
-            String target = new String();
-            Long id = new Long(0);
-            for (String msg : msgs) {
-                if (target.isEmpty()) {
-                    target = msg;
-                } else {
-                    id = Long.valueOf(msg);
-                }
-            }
-            if (target.equals("id")) {
-                crud.getGrid().select(uzerRoleDeltaspikeFacade.findBy(id));
+    public void updateList() {
+        List<UzerRole> items;
+
+        if (uzerComboBox != null) {
+            if (!uzerComboBox.isEmpty()) {
+                items = (List<UzerRole>) uzerComboBox.getValue().getRoles();
             }
         }
+        /*
+        if (!filterText.isEmpty()) {
+            items = uzerRoleDeltaspikeFacade.findByErsterLike(filterText.getValue().toLowerCase());
+        } else {
+            items = uzerRoleDeltaspikeFacade.findAll();
+        }
+        */
+        items = uzerRoleDeltaspikeFacade.findAll();
+        grid.setItems(items);
     }
 
-    @Override
-    public Collection<UzerRole> findAll() {
-        return getItems();
-    }
-
-    @Override
-    public UzerRole add(UzerRole uzerRole) {
-        return uzerRoleDeltaspikeFacade.save(uzerRole);
-    }
-
-    @Override
-    public UzerRole update(UzerRole uzerRole) {
-        return uzerRoleDeltaspikeFacade.save(uzerRole);
-    }
-
-    @Override
-    public void delete(UzerRole uzerRole) {
-        uzerRoleDeltaspikeFacade.delete(uzerRole);
-    }
 }

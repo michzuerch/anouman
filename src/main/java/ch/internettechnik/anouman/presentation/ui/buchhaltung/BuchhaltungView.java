@@ -11,138 +11,104 @@ import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.themes.ValoTheme;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.vaadin.crudui.crud.Crud;
-import org.vaadin.crudui.crud.CrudListener;
-import org.vaadin.crudui.crud.CrudOperation;
-import org.vaadin.crudui.crud.impl.GridCrud;
-import org.vaadin.crudui.form.impl.form.factory.VerticalCrudFormFactory;
-import org.vaadin.crudui.layout.impl.WindowBasedCrudLayout;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import java.util.Collection;
 
 @CDIView("BuchhaltungView")
-public class BuchhaltungView extends VerticalLayout implements View, CrudListener<Buchhaltung> {
-    private static Logger logger = LoggerFactory.getLogger(BuchhaltungView.class.getName());
+public class BuchhaltungView extends VerticalLayout implements View {
+    private static org.slf4j.Logger logger = LoggerFactory.getLogger(BuchhaltungView.class.getName());
+
+    TextField filterTextBezeichnung = new TextField();
+    Grid<Buchhaltung> grid = new Grid<>();
 
     @Inject
-    BuchhaltungDeltaspikeFacade buchhaltungDeltaspikeFacade;
+    private Menu menu;
 
-    GridCrud<Buchhaltung> crud;
-    CssLayout filterToolbar = new CssLayout();
-    TextField filterTextBezeichnung = new TextField();
+    @Inject
+    private BuchhaltungDeltaspikeFacade facade;
 
+    @Inject
+    private BuchhaltungForm form;
 
-    private Collection<Buchhaltung> getItems() {
-        if (!filterTextBezeichnung.isEmpty()) {
-            //Suche mit Bezeichnung
-            logger.debug("Suche mit Bezeichnung:" + filterTextBezeichnung.getValue());
-            return buchhaltungDeltaspikeFacade
-                    .findByBezeichnungLikeIgnoreCase(filterTextBezeichnung.getValue() + "%");
-        }
-        return buchhaltungDeltaspikeFacade.findAll();
+    @Override
+    public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
+        setStyleName("anouman-background");
 
-    }
-
-    private Crud createCrud() {
-        crud = new GridCrud<Buchhaltung>(Buchhaltung.class, new WindowBasedCrudLayout());
-        crud.setCrudListener(this);
-
-        VerticalCrudFormFactory<Buchhaltung> formFactory = new VerticalCrudFormFactory<>(Buchhaltung.class);
-
-        crud.setCrudFormFactory(formFactory);
-
-        formFactory.setUseBeanValidation(true);
-
-        formFactory.setErrorListener(e -> Notification.show("Custom error message (simulated error)", Notification.Type.ERROR_MESSAGE));
-
-        formFactory.setVisibleProperties(CrudOperation.READ, "id", "bezeichnung", "jahr");
-        formFactory.setVisibleProperties(CrudOperation.ADD, "id", "bezeichnung", "jahr");
-        formFactory.setVisibleProperties(CrudOperation.UPDATE, "id", "bezeichnung", "jahr");
-        formFactory.setVisibleProperties(CrudOperation.DELETE, "id", "bezeichnung", "jahr");
-
-        formFactory.setDisabledProperties("id");
-
-        crud.getGrid().setColumns("id", "bezeichnung", "jahr");
-
-        crud.getGrid().addColumn(buchhaltung -> buchhaltung.getKontoklasse().size(), new ButtonRenderer(event -> {
-            Buchhaltung buchhaltung = (Buchhaltung) event.getItem();
-            UI.getCurrent().getNavigator().navigateTo("KontoklasseView/id/" + buchhaltung.getId().toString());
-        })).setCaption("Kontoklasse").setStyleGenerator(item -> "v-align-center");
-
-        //formFactory.setFieldType("anzahl", AnzahlField.class);
-        //formFactory.setFieldType("stueckpreis", BetragField.class);
-        formFactory.setButtonCaption(CrudOperation.ADD, "Neue Buchhaltung erstellen");
-        formFactory.setButtonCaption(CrudOperation.DELETE, "Buchhaltung löschen");
-
-        crud.setRowCountCaption("%d Buchhaltungen gefunden");
-
-        crud.getCrudLayout().addToolbarComponent(filterToolbar);
-        crud.setClickRowToUpdate(false);
-        crud.setUpdateOperationVisible(true);
-        crud.setDeleteOperationVisible(true);
-
-        return crud;
-    }
-
-    @PostConstruct
-    void init() {
-        filterTextBezeichnung.setPlaceholder("Filter für Bezeichnung");
-        filterTextBezeichnung.addValueChangeListener(e -> crud.getGrid().setItems(getItems()));
+        filterTextBezeichnung.setPlaceholder("Filter für Bezeichnung...");
+        filterTextBezeichnung.addValueChangeListener(e -> updateList());
         filterTextBezeichnung.setValueChangeMode(ValueChangeMode.LAZY);
 
         Button clearFilterTextBtn = new Button(VaadinIcons.RECYCLE);
         clearFilterTextBtn.setDescription("Entferne Filter");
-        clearFilterTextBtn.addClickListener(e -> {
-            filterTextBezeichnung.clear();
+        clearFilterTextBtn.addClickListener(e -> filterTextBezeichnung.clear());
+
+        Button addBtn = new Button(VaadinIcons.PLUS);
+        addBtn.addClickListener(event -> {
+            grid.asSingleSelect().clear();
+            form.setEntity(new Buchhaltung());
+            form.openInModalPopup();
+            form.setSavedHandler(val -> {
+                facade.save(val);
+                updateList();
+                grid.select(val);
+                form.closePopup();
+            });
         });
 
-        filterToolbar.addComponents(filterTextBezeichnung, clearFilterTextBtn);
-        filterToolbar.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+        CssLayout tools = new CssLayout();
+        tools.addComponents(filterTextBezeichnung, clearFilterTextBtn, addBtn);
+        tools.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 
-        addComponents(new Menu());
-        addComponentsAndExpand(createCrud());
+        grid.setCaption("Buchhaltung");
+        grid.setCaptionAsHtml(true);
+        grid.addColumn(Buchhaltung::getId).setHidable(true).setCaption("id");
+        grid.addColumn(Buchhaltung::getBezeichnung).setCaption("Bezeichnung");
+        grid.addColumn(Buchhaltung::getJahr).setCaption("Jahr");
+        grid.addColumn(buchhaltung -> buchhaltung.getKontoklasse().size()).setCaption("Anzahl Kontoklassen");
+
+        grid.setSizeFull();
+
+        // Render a button that deletes the data row (item)
+        grid.addColumn(adresse -> "löschen",
+                new ButtonRenderer(event -> {
+                    Notification.show("Lösche Buchhaltung id:" + event.getItem(), Notification.Type.HUMANIZED_MESSAGE);
+                    facade.delete((Buchhaltung) event.getItem());
+                    updateList();
+                })
+        );
+
+        grid.addColumn(buchhaltung -> "ändern",
+                new ButtonRenderer(event -> {
+                    form.setEntity((Buchhaltung) event.getItem());
+                    form.openInModalPopup();
+                    form.setSavedHandler(val -> {
+                        facade.save(val);
+                        updateList();
+                        grid.select(val);
+                        form.closePopup();
+                    });
+                    form.setResetHandler(val -> {
+                        updateList();
+                        grid.select(val);
+                        form.closePopup();
+                    });
+                }));
+
+
+        updateList();
+        addComponents(menu, tools);
+        addComponentsAndExpand(grid);
     }
 
-    @Override
-    public void enter(ViewChangeListener.ViewChangeEvent event) {
-        if (event.getParameters() != null) {
-            String[] msgs = event.getParameters().split("/");
-            String target = new String();
-            Long id = new Long(0);
-            for (String msg : msgs) {
-                if (target.isEmpty()) {
-                    target = msg;
-                } else {
-                    id = Long.valueOf(msg);
-                }
-            }
-            if (target.equals("id")) {
-                crud.getGrid().select(buchhaltungDeltaspikeFacade.findBy(id));
-            }
+    public void updateList() {
+        if (!filterTextBezeichnung.isEmpty()) {
+            //Suche mit Bezeichnung
+            logger.debug("Suche mit Bezeichnung:" + filterTextBezeichnung.getValue());
+            grid.setItems(facade.findByBezeichnungLikeIgnoreCase(filterTextBezeichnung.getValue() + "%"));
+            return;
         }
+        grid.setItems(facade.findAll());
     }
 
-    @Override
-    public Collection<Buchhaltung> findAll() {
-        return getItems();
-    }
-
-    @Override
-    public Buchhaltung add(Buchhaltung buchhaltung) {
-        return buchhaltungDeltaspikeFacade.save(buchhaltung);
-    }
-
-    @Override
-    public Buchhaltung update(Buchhaltung buchhaltung) {
-        return buchhaltungDeltaspikeFacade.save(buchhaltung);
-    }
-
-    @Override
-    public void delete(Buchhaltung buchhaltung) {
-        buchhaltungDeltaspikeFacade.delete(buchhaltung);
-    }
 }

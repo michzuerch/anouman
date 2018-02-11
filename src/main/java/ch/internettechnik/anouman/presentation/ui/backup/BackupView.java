@@ -6,9 +6,7 @@ import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.Buchhalt
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.RechnungDeltaspikeFacade;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.TemplateBuchhaltungDeltaspikeFacade;
 import ch.internettechnik.anouman.presentation.ui.Menu;
-import ch.internettechnik.anouman.presentation.ui.backup.uploadreceiver.AdressenUploadReceiver;
-import ch.internettechnik.anouman.presentation.ui.backup.uploadreceiver.BuchhaltungenUploadReceiver;
-import ch.internettechnik.anouman.presentation.ui.backup.uploadreceiver.TemplateBuchhaltungenUploadReceiver;
+import ch.internettechnik.anouman.presentation.ui.backup.uploadreceiver.*;
 import ch.internettechnik.anouman.presentation.ui.backup.xml.adressen.*;
 import ch.internettechnik.anouman.presentation.ui.backup.xml.buchhaltungen.*;
 import ch.internettechnik.anouman.presentation.ui.backup.xml.templatebuchhaltungen.*;
@@ -58,20 +56,25 @@ public class BackupView extends VerticalLayout implements View {
     TemplateBuchhaltungDeltaspikeFacade templateBuchhaltungDeltaspikeFacade;
 
     @Inject
-    TemplateBuchhaltungenUploadReceiver templateBuchhaltungenUploadReceiver;
+    TemplateBuchhaltungenXmlUploadReceiver templateXmlBuchhaltungenUploadReceiver;
 
     @Inject
-    AdressenUploadReceiver adressenUploadReceiver;
+    AdressenXmlUploadReceiver adressenXmlUploadReceiver;
 
     @Inject
-    BuchhaltungenUploadReceiver buchhaltungenUploadReceiver;
+    BuchhaltungenXmlUploadReceiver buchhaltungenXmlUploadReceiver;
+
+    @Inject
+    TemplateBuchhaltungenJSONUploadReceiver templateBuchhaltungenJSONUploadReceiver;
+
+    @Inject
+    AdressenJSONUploadReceiver adressenJSONUploadReceiver;
+
+    @Inject
+    BuchhaltungenJSONUploadReceiver buchhaltungenJSONUploadReceiver;
 
     Button downloadAdressenJson = new DownloadButton(stream -> {
         ObjectMapper mapper = new ObjectMapper();
-        //Convert object to JSON string and save into file directly
-        //mapper.writeValue(new File("D:\\user.json"), user);
-
-        //Convert object to JSON string
         BackupAdressen adressen = new BackupAdressen();
         adressen.setBackupdatum(new Date());
         adresseDeltaspikeFacade.findAll().stream().forEach(adresse -> {
@@ -85,13 +88,36 @@ public class BackupView extends VerticalLayout implements View {
             backupAdresse.setStundensatz(adresse.getStundensatz());
             backupAdresse.setVorname(adresse.getVorname());
             adressen.getAdressen().add(backupAdresse);
+            adresse.getRechnungen().stream().forEach(rechnung -> {
+                BackupRechnung backupRechnung = new BackupRechnung();
+                backupRechnung.setBezeichnung(rechnung.getBezeichnung());
+                backupRechnung.setBezahlt(rechnung.isBezahlt());
+                backupRechnung.setVerschickt(rechnung.isVerschickt());
+                backupRechnung.setRechnungsdatum(rechnung.getRechnungsdatum());
 
+                rechnung.getRechnungspositionen().stream().forEach(rechnungsposition -> {
+                    BackupRechnungsposition backupRechnungsposition = new BackupRechnungsposition();
+                    backupRechnungsposition.setBezeichnung(rechnungsposition.getBezeichnung());
+                    backupRechnungsposition.setBezeichnunglang(rechnungsposition.getBezeichnunglang());
+                    backupRechnungsposition.setAnzahl(rechnungsposition.getAnzahl());
+                    backupRechnungsposition.setMengeneinheit(rechnungsposition.getMengeneinheit());
+                    backupRechnungsposition.setStueckpreis(rechnungsposition.getStueckpreis());
+                    backupRechnung.getRechnungspositions().add(backupRechnungsposition);
+                });
+
+                rechnung.getAufwands().stream().forEach(aufwand -> {
+                    BackupAufwand backupAufwand = new BackupAufwand();
+                    backupAufwand.setBezeichnung(aufwand.getBezeichnung());
+                    backupAufwand.setTitel(aufwand.getTitel());
+                    backupAufwand.setStart(aufwand.getStart());
+                    backupAufwand.setEnd(aufwand.getEnd());
+                    backupRechnung.getAufwands().add(backupAufwand);
+                });
+                backupAdresse.getRechnungen().add(backupRechnung);
+            });
         });
-
-        String jsonInString = null;
         try {
-            mapper.writeValue(stream, jsonInString);
-            jsonInString = mapper.writeValueAsString(adressen);
+            mapper.writeValue(stream,adressen);
             stream.flush();
             stream.close();
         } catch (JsonProcessingException e) {
@@ -99,7 +125,6 @@ public class BackupView extends VerticalLayout implements View {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(jsonInString);
     }).setFileName("AdressenRechnungenAnouman.json")
             .withCaption("JSON-Datei mit Adressen, Rechnungen, Rechnungspositionen, Aufwand herunterladen").withIcon(VaadinIcons.DOWNLOAD);
 
@@ -169,9 +194,9 @@ public class BackupView extends VerticalLayout implements View {
             System.err.print(ex);
         }
     }).setFileName("AdressenRechnungenAnouman.xml")
-            .withCaption("Datei mit Adressen, Rechnungen, Rechnungspositionen, Aufwand herunterladen").withIcon(VaadinIcons.DOWNLOAD);
+            .withCaption("XML-Datei mit Adressen, Rechnungen, Rechnungspositionen, Aufwand herunterladen").withIcon(VaadinIcons.DOWNLOAD);
 
-    Button downloaderBuchhaltungen = new DownloadButton(stream -> {
+    Button downloaderXmlBuchhaltungen = new DownloadButton(stream -> {
         JAXBContext jaxbContext = null;
         try {
             jaxbContext = JAXBContext.newInstance(BackupBuchhaltungen.class, BackupBuchhaltung.class);
@@ -232,7 +257,70 @@ public class BackupView extends VerticalLayout implements View {
             ex.printStackTrace();
         }
     }).setFileName("BuchhaltungAnouman.xml")
-            .withCaption("Datei mit allen Buchhaltungen herunterladen").withIcon(VaadinIcons.DOWNLOAD);
+            .withCaption("XML-Datei mit allen Buchhaltungen herunterladen").withIcon(VaadinIcons.DOWNLOAD);
+
+    Button downloaderJSONBuchhaltungen = new DownloadButton(stream -> {
+        JAXBContext jaxbContext = null;
+        try {
+            jaxbContext = JAXBContext.newInstance(BackupBuchhaltungen.class, BackupBuchhaltung.class);
+            logger.debug("Start");
+            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,
+                    true);
+            BackupBuchhaltungen backupBuchhaltungen = new BackupBuchhaltungen();
+            backupBuchhaltungen.setDatum(new Date());
+
+            buchhaltungDeltaspikeFacade.findAll().stream().forEach(buchhaltung -> {
+                BackupBuchhaltung backupBuchhaltung = new BackupBuchhaltung(buchhaltung.getBezeichnung(), buchhaltung.getJahr());
+
+                buchhaltung.getKontoklasse().stream().forEach(kontoklasse -> {
+                    BackupKontoklasse backupKontoklasse = new BackupKontoklasse(kontoklasse.getBezeichnung(), kontoklasse.getKontonummer());
+                    backupBuchhaltung.getKontoklasses().add(backupKontoklasse);
+                    kontoklasse.getKontohauptgruppes().stream().forEach(kontohauptgruppe -> {
+                        BackupKontohauptgruppe backupKontohauptgruppe = new BackupKontohauptgruppe(kontohauptgruppe.getBezeichnung(), kontohauptgruppe.getKontonummer());
+                        backupKontoklasse.getBackupKontohauptgruppes().add(backupKontohauptgruppe);
+                        kontohauptgruppe.getKontogruppes().stream().forEach(kontogruppe -> {
+                            BackupKontogruppe backupKontogruppe = new BackupKontogruppe(kontogruppe.getBezeichnung(), kontogruppe.getKontonummer());
+                            backupKontohauptgruppe.getBackupKontogruppes().add(backupKontogruppe);
+                            kontogruppe.getKontos().stream().forEach(konto -> {
+                                BackupKonto backupKonto = new BackupKonto();
+                                backupKonto.setId(konto.getId());
+                                backupKonto.setBezeichnung(konto.getBezeichnung());
+                                backupKonto.setKontonummer(konto.getKontonummer());
+                                backupKontogruppe.getKontos().add(backupKonto);
+                                konto.getMehrwertsteuercode().stream().forEach(mehrwertsteuercode -> {
+                                    BackupMehrwertsteuercode backupMehrwertsteuercode = new BackupMehrwertsteuercode();
+                                    backupMehrwertsteuercode.setId(mehrwertsteuercode.getId());
+                                    backupMehrwertsteuercode.setBezeichnung(mehrwertsteuercode.getBezeichnung());
+                                    backupMehrwertsteuercode.setCode(mehrwertsteuercode.getCode());
+                                    backupMehrwertsteuercode.setProzent(mehrwertsteuercode.getProzent());
+                                    backupMehrwertsteuercode.setVerkauf(mehrwertsteuercode.isVerkauf());
+                                    backupKonto.getMehrwertsteuercodes().add(backupMehrwertsteuercode);
+                                });
+                            });
+                        });
+                    });
+                });
+                backupBuchhaltungen.addBuchhaltung(backupBuchhaltung);
+            });
+            jaxbMarshaller.marshal(backupBuchhaltungen, stream);
+            stream.flush();
+            stream.close();
+        } catch (PropertyException ex) {
+            Notification.show(ex.getMessage(), Notification.Type.ERROR_MESSAGE);
+            System.err.print(ex);
+            ex.printStackTrace();
+        } catch (JAXBException ex) {
+            Notification.show(ex.getMessage(), Notification.Type.ERROR_MESSAGE);
+            System.err.print(ex);
+            ex.printStackTrace();
+        } catch (IOException ex) {
+            Notification.show(ex.getMessage(), Notification.Type.ERROR_MESSAGE);
+            System.err.print(ex);
+            ex.printStackTrace();
+        }
+    }).setFileName("BuchhaltungAnouman.xml")
+            .withCaption("JSON-Datei mit allen Buchhaltungen herunterladen").withIcon(VaadinIcons.DOWNLOAD);
 
 
     Button downloaderTemplateBuchhaltungen = new DownloadButton(stream -> {
@@ -503,19 +591,36 @@ public class BackupView extends VerticalLayout implements View {
     }).setFileName("BuchhaltungAnouman.xml")
             .withCaption("Datei mit Buchhaltung herunterladen").withIcon(VaadinIcons.DOWNLOAD);
 
-    private Upload uploadAdressen = new Upload("Upload Adressen", adressenUploadReceiver);
-    private Upload uploadBuchhaltungen = new Upload("Upload Buchhaltungen", buchhaltungenUploadReceiver);
-    private Upload uploadTemplateBuchhaltungen = new Upload("Upload Template Buchhaltungen", templateBuchhaltungenUploadReceiver);
+    private Upload uploadXmlAdressen = new Upload("Upload Adressen XML", adressenJSONUploadReceiver);
+    private Upload uploadXmlBuchhaltungen = new Upload("Upload Buchhaltungen XML", buchhaltungenJSONUploadReceiver);
+    private Upload uploadXmlTemplateBuchhaltungen = new Upload("Upload Template Buchhaltungen XML", templateBuchhaltungenJSONUploadReceiver);
+
+    private Upload uploadJSONAdressen = new Upload("Upload Adressen JSON", adressenJSONUploadReceiver);
+    private Upload uploadJSONBuchhaltungen = new Upload("Upload Buchhaltungen JSON", buchhaltungenJSONUploadReceiver);
+    private Upload uploadJSONTemplateBuchhaltungen = new Upload("Upload Template Buchhaltungen JSON", templateBuchhaltungenJSONUploadReceiver);
+
+
+
 
     @PostConstruct
     void init() {
-        uploadAdressen.addSucceededListener(adressenUploadReceiver);
-        uploadAdressen.setReceiver(adressenUploadReceiver);
+        uploadXmlAdressen.addSucceededListener(adressenJSONUploadReceiver);
+        uploadXmlAdressen.setReceiver(adressenJSONUploadReceiver);
 
-        uploadBuchhaltungen.addSucceededListener(buchhaltungenUploadReceiver);
+        uploadXmlBuchhaltungen.addSucceededListener(buchhaltungenJSONUploadReceiver);
+        uploadXmlBuchhaltungen.setReceiver(buchhaltungenJSONUploadReceiver);
 
-        uploadTemplateBuchhaltungen.addSucceededListener(templateBuchhaltungenUploadReceiver);
-        uploadTemplateBuchhaltungen.setReceiver(templateBuchhaltungenUploadReceiver);
+        uploadXmlTemplateBuchhaltungen.addSucceededListener(templateBuchhaltungenJSONUploadReceiver);
+        uploadXmlTemplateBuchhaltungen.setReceiver(templateBuchhaltungenJSONUploadReceiver);
+
+        uploadJSONAdressen.addSucceededListener(adressenJSONUploadReceiver);
+        uploadJSONAdressen.setReceiver(adressenJSONUploadReceiver);
+
+        uploadJSONBuchhaltungen.addSucceededListener(buchhaltungenJSONUploadReceiver);
+        uploadJSONBuchhaltungen.setReceiver(buchhaltungenJSONUploadReceiver);
+
+        uploadJSONTemplateBuchhaltungen.addSucceededListener(templateBuchhaltungenJSONUploadReceiver);
+        uploadJSONTemplateBuchhaltungen.setReceiver(templateBuchhaltungenJSONUploadReceiver);
 
         List<TemplateBuchhaltung> templateBuchhaltungen = templateBuchhaltungDeltaspikeFacade.findAll();
         if (templateBuchhaltungen.size() == 0) {
@@ -533,7 +638,7 @@ public class BackupView extends VerticalLayout implements View {
         List<Buchhaltung> buchhaltungen = buchhaltungDeltaspikeFacade.findAll();
         if (buchhaltungen.size() == 0) {
             listBuchhaltungen.setEnabled(false);
-            downloaderBuchhaltungen.setEnabled(false);
+            downloaderXmlBuchhaltungen.setEnabled(false);
             downloaderBuchhaltung.setEnabled(false);
         } else {
             listBuchhaltungen.setItems(buchhaltungDeltaspikeFacade.findAll());
@@ -557,14 +662,24 @@ public class BackupView extends VerticalLayout implements View {
         listAdressen.setWidth(20, Unit.EM);
 
         Panel panelBackup = new Panel("Backup");
-        panelBackup.setContent(new MVerticalLayout(downloaderAdressenXml, downloadAdressenJson, downloaderBuchhaltungen, downloaderTemplateBuchhaltungen,
+        panelBackup.setContent(new MVerticalLayout(downloaderAdressenXml, downloadAdressenJson, downloaderXmlBuchhaltungen, downloaderJSONBuchhaltungen,
+                downloaderTemplateBuchhaltungen,
                 new HorizontalLayout(downloaderBuchhaltung, listBuchhaltungen),
                 new HorizontalLayout(downloaderTemplateBuchhaltung, listTemplateBuchhaltungen),
                 new HorizontalLayout(downloaderAdresse, listAdressen)
         ));
 
         Panel panelRestore = new Panel("Restore");
-        panelRestore.setContent(new MVerticalLayout(uploadAdressen, uploadBuchhaltungen, uploadTemplateBuchhaltungen));
+
+        Panel panelRestoreXML = new Panel("XML");
+        Panel panelRestoreJSON = new Panel("JSON");
+
+        panelRestoreXML.setContent(new VerticalLayout(uploadXmlAdressen,uploadXmlBuchhaltungen,uploadXmlTemplateBuchhaltungen));
+        panelRestoreJSON.setContent(new VerticalLayout(uploadJSONAdressen,uploadJSONBuchhaltungen,uploadJSONTemplateBuchhaltungen));
+
+        panelRestore.setContent(
+                new VerticalLayout(panelRestoreJSON,panelRestoreXML));
+
 
         //Panel panelTemplateKontoplaene = new Panel("Templates Kontoplan");
         //panelTemplateKontoplaene.setContent(new MVerticalLayout(uploaderTemplateKontoplan,

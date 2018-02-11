@@ -24,6 +24,8 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.util.Collection;
 
+
+//@todo Umstellung auf Form
 @CDIView("ReportCSSImageView")
 public class ReportCSSImageView extends VerticalLayout implements View, CrudListener<ReportCSSImage> {
     private static Logger logger = LoggerFactory.getLogger(ReportCSSImageView.class.getName());

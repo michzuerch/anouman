@@ -21,7 +21,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.*;
 
-public class AdressenUploadReceiver implements Serializable, Upload.Receiver, Upload.SucceededListener {
+public class AdressenXmlUploadReceiver implements Serializable, Upload.Receiver, Upload.SucceededListener {
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(BackupView.class.getName());
 
     File tempFile;
@@ -39,7 +39,7 @@ public class AdressenUploadReceiver implements Serializable, Upload.Receiver, Up
     AufwandDeltaspikeFacade aufwandDeltaspikeFacade;
 
 
-    public AdressenUploadReceiver() {
+    public AdressenXmlUploadReceiver() {
     }
 
     @Override

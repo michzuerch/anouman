@@ -1,6 +1,10 @@
 package ch.internettechnik.anouman.presentation.ui.report.fop;
 
+import ch.internettechnik.anouman.backend.entity.report.fop.ReportFOP;
 import ch.internettechnik.anouman.backend.entity.report.fop.ReportFOPImage;
+import ch.internettechnik.anouman.backend.entity.report.jasper.ReportJasper;
+import ch.internettechnik.anouman.backend.entity.report.jasper.ReportJasperImage;
+import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ReportFOPDeltaspikeFacade;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.ReportFOPImageDeltaspikeFacade;
 import ch.internettechnik.anouman.presentation.ui.Menu;
 import com.vaadin.cdi.CDIView;
@@ -11,82 +15,35 @@ import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.themes.ValoTheme;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.vaadin.crudui.crud.Crud;
-import org.vaadin.crudui.crud.CrudListener;
-import org.vaadin.crudui.crud.CrudOperation;
-import org.vaadin.crudui.crud.impl.GridCrud;
-import org.vaadin.crudui.form.impl.form.factory.VerticalCrudFormFactory;
-import org.vaadin.crudui.layout.impl.WindowBasedCrudLayout;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import java.util.Collection;
 
-@CDIView("ReportFOPImageView")
-public class ReportFOPImageView extends VerticalLayout implements View, CrudListener<ReportFOPImage> {
-    private static Logger logger = LoggerFactory.getLogger(ReportFOPImageView.class.getName());
+@CDIView("ReportJasperImageView")
+public class ReportFOPImageView extends VerticalLayout implements View {
+    private static org.slf4j.Logger logger = LoggerFactory.getLogger(ReportFOPImageView.class.getName());
 
-    @Inject
-    ReportFOPImageDeltaspikeFacade facade;
-
-    GridCrud<ReportFOPImage> crud;
-    CssLayout filterToolbar = new CssLayout();
+    Grid<ReportFOPImage> grid = new Grid<>();
     TextField filterTextBezeichnung = new TextField();
 
-    private Collection<ReportFOPImage> getItems() {
-        if (!filterTextBezeichnung.isEmpty()) {
-            //Suche mit Bezeichnung
-            logger.debug("Suche mit Bezeichnung:" + filterTextBezeichnung.getValue());
-            return facade.findByBezeichnungLikeIgnoreCase(filterTextBezeichnung.getValue() + "%");
-        }
-        return facade.findAll();
-    }
+    @Inject
+    private Menu menu;
 
-    private Crud createCrud() {
-        crud = new GridCrud<ReportFOPImage>(ReportFOPImage.class, new WindowBasedCrudLayout());
-        crud.setCrudListener(this);
+    @Inject
+    private ReportFOPDeltaspikeFacade reportFOPDeltaspikeFacade;
 
-        VerticalCrudFormFactory<ReportFOPImage> formFactory = new VerticalCrudFormFactory<>(ReportFOPImage.class);
+    @Inject
+    private ReportFOPImageDeltaspikeFacade reportFOPImageDeltaspikeFacade;
 
-        crud.setCrudFormFactory(formFactory);
+    @Inject
+    private ReportFOPImageForm form;
 
-        formFactory.setUseBeanValidation(true);
+    @Override
+    public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
+        setStyleName("anouman-background");
 
-        formFactory.setErrorListener(e -> Notification.show("Custom error message (simulated error)", Notification.Type.ERROR_MESSAGE));
-
-        formFactory.setVisibleProperties(CrudOperation.READ, "id", "bezeichnung");
-        formFactory.setVisibleProperties(CrudOperation.ADD, "id", "bezeichnung");
-        formFactory.setVisibleProperties(CrudOperation.UPDATE, "id", "bezeichnung");
-        formFactory.setVisibleProperties(CrudOperation.DELETE, "id", "bezeichnung");
-
-        formFactory.setDisabledProperties("id");
-
-        crud.getGrid().setColumns("id", "bezeichnung");
-
-        crud.getGrid().addColumn(reportFOPImage -> reportFOPImage.getReportFOP().getId(), new ButtonRenderer(event -> {
-            ReportFOPImage reportFOPImage = (ReportFOPImage) event.getItem();
-            UI.getCurrent().getNavigator().navigateTo("ReportFOPImageView/adresseId/" + reportFOPImage.getId().toString());
-        })).setCaption("Anzahl Images").setStyleGenerator(item -> "v-align-center");
-
-        formFactory.setButtonCaption(CrudOperation.ADD, "Neues Report FOP Image erstellen");
-        formFactory.setButtonCaption(CrudOperation.DELETE, "Report FOP Image löschen");
-
-        crud.setRowCountCaption("%d Report FOP Images gefunden");
-
-        crud.getCrudLayout().addToolbarComponent(filterToolbar);
-        crud.setClickRowToUpdate(false);
-        crud.setUpdateOperationVisible(true);
-        crud.setDeleteOperationVisible(true);
-
-        return crud;
-    }
-
-    @PostConstruct
-    void init() {
         filterTextBezeichnung.setPlaceholder("Filter für Bezeichnung");
-        filterTextBezeichnung.addValueChangeListener(e -> crud.getGrid().setItems(getItems()));
+        filterTextBezeichnung.addValueChangeListener(e -> updateList());
         filterTextBezeichnung.setValueChangeMode(ValueChangeMode.LAZY);
 
         Button clearFilterTextBtn = new Button(VaadinIcons.RECYCLE);
@@ -95,49 +52,76 @@ public class ReportFOPImageView extends VerticalLayout implements View, CrudList
             filterTextBezeichnung.clear();
         });
 
-        filterToolbar.addComponents(filterTextBezeichnung, clearFilterTextBtn);
-        filterToolbar.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+        Button addBtn = new Button(VaadinIcons.PLUS);
+        addBtn.addClickListener(event -> {
+            grid.asSingleSelect().clear();
+            ReportFOPImage reportFOPImage = new ReportFOPImage();
+            form.setEntity(reportFOPImage);
+            form.openInModalPopup();
+            form.setSavedHandler(val -> {
+                System.err.println("Save:" + val);
+                //reportFOPImageDeltaspikeFacade.save(val);
+                updateList();
+                grid.select(val);
+                form.closePopup();
+            });
+        });
 
-        addComponents(new Menu());
-        addComponentsAndExpand(createCrud());
+
+        CssLayout tools = new CssLayout();
+        tools.addComponents(filterTextBezeichnung, clearFilterTextBtn, addBtn);
+        tools.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+
+        grid.setCaption("Report FOP Bild");
+        grid.setCaptionAsHtml(true);
+        grid.addColumn(ReportFOPImage::getId).setCaption("id");
+        grid.addColumn(ReportFOPImage::getBezeichnung).setCaption("Bezeichnung");
+        //grid.addColumn(ReportFOPImage::getSize).setCaption("Grösse");
+
+        // Render a button that deletes the data row (item)
+        grid.addColumn(report -> "löschen",
+                new ButtonRenderer(event -> {
+                    ReportFOPImage reportFOPImage = (ReportFOPImage) event.getItem();
+                    ReportFOP reportFOP = reportFOPDeltaspikeFacade.findBy(reportFOPImage.getReportFOP().getId());
+                    reportFOP.getReportFOPImages().remove(reportFOPImage);
+                    reportFOPDeltaspikeFacade.save(reportFOP);
+                    reportFOPImageDeltaspikeFacade.delete((ReportFOPImage) event.getItem());
+                    updateList();
+                    Notification.show("Lösche id:" + reportFOPImage.getId(), Notification.Type.HUMANIZED_MESSAGE);
+                })
+        );
+        grid.addColumn(report -> "ändern",
+                new ButtonRenderer(event -> {
+                    form.setEntity((ReportFOPImage) event.getItem());
+                    form.openInModalPopup();
+                    form.setSavedHandler(val -> {
+                        //val.setTemplateCompiled(form.getCompiledReport());
+                        reportFOPImageDeltaspikeFacade.save(val);
+                        updateList();
+                        grid.select(val);
+                        form.closePopup();
+                    });
+                    form.setResetHandler(val -> {
+                        updateList();
+                        grid.select(val);
+                        form.closePopup();
+                    });
+                }));
+
+        //@todo Downloadbutton für Report
+        grid.setSizeFull();
+        updateList();
+        addComponents(menu, tools);
+        addComponentsAndExpand(grid);
     }
 
-    @Override
-    public void enter(ViewChangeListener.ViewChangeEvent event) {
-        if (event.getParameters() != null) {
-            String[] msgs = event.getParameters().split("/");
-            String target = new String();
-            Long id = new Long(0);
-            for (String msg : msgs) {
-                if (target.isEmpty()) {
-                    target = msg;
-                } else {
-                    id = Long.valueOf(msg);
-                }
-            }
-            if (target.equals("id")) {
-                crud.getGrid().select(facade.findBy(id));
-            }
+    private void updateList() {
+        if (!filterTextBezeichnung.isEmpty()) {
+            //Suche mit Bezeichnung
+            logger.debug("Suche mit Bezeichnung:" + filterTextBezeichnung.getValue());
+            grid.setItems(reportFOPImageDeltaspikeFacade.findByBezeichnungLikeIgnoreCase(filterTextBezeichnung.getValue() + "%"));
+            return;
         }
-    }
-
-    @Override
-    public Collection<ReportFOPImage> findAll() {
-        return getItems();
-    }
-
-    @Override
-    public ReportFOPImage add(ReportFOPImage reportFOPImage) {
-        return facade.save(reportFOPImage);
-    }
-
-    @Override
-    public ReportFOPImage update(ReportFOPImage reportFOPImage) {
-        return facade.save(reportFOPImage);
-    }
-
-    @Override
-    public void delete(ReportFOPImage reportFOPImage) {
-        facade.delete(reportFOPImage);
+        grid.setItems(reportFOPImageDeltaspikeFacade.findAll());
     }
 }

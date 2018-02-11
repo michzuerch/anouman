@@ -2,8 +2,6 @@ package ch.internettechnik.anouman.backend.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -18,16 +16,13 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 @Entity
-@XmlAccessorType(XmlAccessType.NONE)
 public class Rechnung extends AbstractEntity {
     @NotNull
-    @javax.xml.bind.annotation.XmlElement
     private LocalDate rechnungsdatum;
 
     @Column
     @NotNull
     @Size(min = 3, max = 50)
-    @javax.xml.bind.annotation.XmlElement
     private String bezeichnung;
 
     @Column
@@ -35,7 +30,6 @@ public class Rechnung extends AbstractEntity {
     @Digits(integer = 2, fraction = 0, message = "Ungültiges Zahlenformat")
     @DecimalMin(value = "1", message = "Minimal 1 Tag")
     @DecimalMax(value = "365", message = "Maximal 365 Tage")
-    @javax.xml.bind.annotation.XmlElement
     private int faelligInTagen;
 
     @Column

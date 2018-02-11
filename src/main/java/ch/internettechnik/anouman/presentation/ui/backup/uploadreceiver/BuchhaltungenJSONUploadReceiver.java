@@ -3,7 +3,9 @@ package ch.internettechnik.anouman.presentation.ui.backup.uploadreceiver;
 import ch.internettechnik.anouman.backend.entity.*;
 import ch.internettechnik.anouman.backend.session.deltaspike.jpa.facade.*;
 import ch.internettechnik.anouman.presentation.ui.backup.BackupView;
+import ch.internettechnik.anouman.presentation.ui.backup.xml.adressen.BackupAdressen;
 import ch.internettechnik.anouman.presentation.ui.backup.xml.buchhaltungen.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Upload;
 import org.slf4j.LoggerFactory;
@@ -15,7 +17,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.*;
 
-public class BuchhaltungenUploadReceiver implements Serializable, Upload.Receiver, Upload.SucceededListener {
+public class BuchhaltungenJSONUploadReceiver implements Serializable, Upload.Receiver, Upload.SucceededListener {
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(BackupView.class.getName());
 
     File tempFile;
@@ -38,7 +40,7 @@ public class BuchhaltungenUploadReceiver implements Serializable, Upload.Receive
     @Inject
     MehrwertsteuercodeDeltaspikeFacade mehrwertsteuercodeDeltaspikeFacade;
 
-    public BuchhaltungenUploadReceiver() {
+    public BuchhaltungenJSONUploadReceiver() {
     }
 
     @Override
@@ -56,14 +58,14 @@ public class BuchhaltungenUploadReceiver implements Serializable, Upload.Receive
     //@todo Problem mit Mehrwertsteuercode und Buchungen
     @Override
     public void uploadSucceeded(Upload.SucceededEvent succeededEvent) {
-        JAXBContext jaxbContext = null;
+        ObjectMapper objectMapper = new ObjectMapper();
+        BackupBuchhaltungen backupBuchhaltungen = new BackupBuchhaltungen();
         try {
-            jaxbContext = JAXBContext.newInstance(BackupBuchhaltungen.class);
-            Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-            BackupBuchhaltungen backupBuchhaltungen =
-                    (BackupBuchhaltungen) unmarshaller.unmarshal(new FileInputStream(tempFile));
-
-            for (BackupBuchhaltung backupBuchhaltung : backupBuchhaltungen.getBuchhaltungen()) {
+            backupBuchhaltungen = objectMapper.readValue(tempFile, BackupBuchhaltungen.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        for (BackupBuchhaltung backupBuchhaltung : backupBuchhaltungen.getBuchhaltungen()) {
                 Buchhaltung buchhaltung = new Buchhaltung();
                 String bezeichnung = backupBuchhaltung.getBezeichnung();
                 buchhaltung.setBezeichnung(bezeichnung);
@@ -113,12 +115,6 @@ public class BuchhaltungenUploadReceiver implements Serializable, Upload.Receive
             }
             tempFile.deleteOnExit();
             Notification.show(backupBuchhaltungen.getBuchhaltungen().size() + " Buchhaltungen neu erstellt", Notification.Type.HUMANIZED_MESSAGE);
-        } catch (JAXBException e) {
-            Notification.show("Fehler:" + e.getLocalizedMessage(), Notification.Type.ERROR_MESSAGE);
-        } catch (IOException e) {
-            e.printStackTrace();
-            Notification.show("Fehler:" + e.getLocalizedMessage(), Notification.Type.ERROR_MESSAGE);
-        }
         Notification.show("Buchhaltungen Upload succeeded:" + succeededEvent.getLength(), Notification.Type.TRAY_NOTIFICATION);
     }
 

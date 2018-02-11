@@ -11,84 +11,32 @@ import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.themes.ValoTheme;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.vaadin.crudui.crud.Crud;
-import org.vaadin.crudui.crud.CrudListener;
-import org.vaadin.crudui.crud.CrudOperation;
-import org.vaadin.crudui.crud.impl.GridCrud;
-import org.vaadin.crudui.form.impl.form.factory.VerticalCrudFormFactory;
-import org.vaadin.crudui.layout.impl.WindowBasedCrudLayout;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import java.util.Collection;
 
 @CDIView("ReportJasperView")
-public class ReportJasperView extends VerticalLayout implements View, CrudListener<ReportJasper> {
-    private static Logger logger = LoggerFactory.getLogger(ReportJasperView.class.getName());
+public class ReportJasperView extends VerticalLayout implements View {
+    private static org.slf4j.Logger logger = LoggerFactory.getLogger(ReportJasperView.class.getName());
 
-    @Inject
-    ReportJasperDeltaspikeFacade facade;
-
-    GridCrud<ReportJasper> crud;
-    CssLayout filterToolbar = new CssLayout();
+    Grid<ReportJasper> grid = new Grid<>();
     TextField filterTextBezeichnung = new TextField();
 
-    private Collection<ReportJasper> getItems() {
-        if (!filterTextBezeichnung.isEmpty()) {
-            //Suche mit Bezeichnung
-            logger.debug("Suche mit Bezeichnung:" + filterTextBezeichnung.getValue());
-            return facade.findByBezeichnungLikeIgnoreCase(filterTextBezeichnung.getValue() + "%");
-        }
-        return facade.findAll();
-    }
+    @Inject
+    private Menu menu;
 
-    private Crud createCrud() {
-        crud = new GridCrud<ReportJasper>(ReportJasper.class, new WindowBasedCrudLayout());
-        crud.setCrudListener(this);
+    @Inject
+    private ReportJasperDeltaspikeFacade facade;
 
-        VerticalCrudFormFactory<ReportJasper> formFactory = new VerticalCrudFormFactory<>(ReportJasper.class);
+    @Inject
+    private ReportJasperForm form;
 
-        crud.setCrudFormFactory(formFactory);
+    @Override
+    public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
+        setStyleName("anouman-background");
 
-        formFactory.setUseBeanValidation(true);
-
-        formFactory.setErrorListener(e -> Notification.show("Custom error message (simulated error)", Notification.Type.ERROR_MESSAGE));
-
-        formFactory.setVisibleProperties(CrudOperation.READ, "id", "bezeichnung", "filename");
-        formFactory.setVisibleProperties(CrudOperation.ADD, "id", "bezeichnung", "filename");
-        formFactory.setVisibleProperties(CrudOperation.UPDATE, "id", "bezeichnung", "filename");
-        formFactory.setVisibleProperties(CrudOperation.DELETE, "id", "bezeichnung");
-
-        formFactory.setDisabledProperties("id");
-
-        crud.getGrid().setColumns("id", "bezeichnung", "filename");
-
-        crud.getGrid().addColumn(reportJasper -> reportJasper.getAnzahlReportJasperImages(), new ButtonRenderer(event -> {
-            ReportJasper reportJasper = (ReportJasper) event.getItem();
-            if (reportJasper.getAnzahlReportJasperImages() > 0) {
-                UI.getCurrent().getNavigator().navigateTo("ReportJasperImageOldView/adresseId/" + reportJasper.getId().toString());
-            }
-        })).setCaption("Anzahl Images").setStyleGenerator(item -> "v-align-center");
-
-        formFactory.setButtonCaption(CrudOperation.ADD, "Neuen Report Jasper erstellen");
-        formFactory.setButtonCaption(CrudOperation.DELETE, "Report Jasper löschen");
-
-        crud.setRowCountCaption("%d Report Jasper gefunden");
-
-        crud.getCrudLayout().addToolbarComponent(filterToolbar);
-        crud.setClickRowToUpdate(false);
-        crud.setUpdateOperationVisible(true);
-        crud.setDeleteOperationVisible(true);
-
-        return crud;
-    }
-
-    @PostConstruct
-    void init() {
         filterTextBezeichnung.setPlaceholder("Filter für Bezeichnung");
-        filterTextBezeichnung.addValueChangeListener(e -> crud.getGrid().setItems(getItems()));
+        filterTextBezeichnung.addValueChangeListener(e -> updateList());
         filterTextBezeichnung.setValueChangeMode(ValueChangeMode.LAZY);
 
         Button clearFilterTextBtn = new Button(VaadinIcons.RECYCLE);
@@ -97,49 +45,78 @@ public class ReportJasperView extends VerticalLayout implements View, CrudListen
             filterTextBezeichnung.clear();
         });
 
-        filterToolbar.addComponents(filterTextBezeichnung, clearFilterTextBtn);
-        filterToolbar.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+        Button addBtn = new Button(VaadinIcons.PLUS);
+        addBtn.addClickListener(event -> {
+            grid.asSingleSelect().clear();
+            ReportJasper reportJasper = new ReportJasper();
+            form.setEntity(reportJasper);
+            form.openInModalPopup();
+            form.setSavedHandler(val -> {
+                //val.setTemplateCompiled(form.getCompiledReport());
+                val.setFilename(form.getFilename());
+                System.err.println("ReportJasper:" + val);
+                facade.save(val);
+                updateList();
+                grid.select(val);
+                form.closePopup();
+            });
+        });
 
-        addComponents(new Menu());
-        addComponentsAndExpand(createCrud());
+
+        CssLayout tools = new CssLayout();
+        tools.addComponents(filterTextBezeichnung, clearFilterTextBtn, addBtn);
+        tools.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+
+        grid.setCaption("Report Jasper");
+        grid.setCaptionAsHtml(true);
+        grid.addColumn(ReportJasper::getId).setCaption("id");
+        grid.addColumn(ReportJasper::getBezeichnung).setCaption("Bezeichnung");
+        grid.addColumn(ReportJasper::getFilename).setCaption("Dateiname");
+        grid.addColumn(ReportJasper::getSizeSource).setCaption("Source Size");
+        grid.addColumn(ReportJasper::getSizeCompiled).setCaption("Compiled Size");
+        grid.addColumn(ReportJasper::getAnzahlReportJasperImages).setCaption("Anzahl Bilder");
+
+        // Render a button that deletes the data row (item)
+        grid.addColumn(report -> "löschen",
+                new ButtonRenderer(event -> {
+                    Notification.show("Lösche id:" + event.getItem(), Notification.Type.HUMANIZED_MESSAGE);
+                    facade.delete((ReportJasper) event.getItem());
+                    updateList();
+                })
+        );
+        grid.addColumn(report -> "ändern",
+                new ButtonRenderer(event -> {
+                    form.setEntity((ReportJasper) event.getItem());
+                    form.openInModalPopup();
+                    form.setSavedHandler(val -> {
+                        //val.setTemplateCompiled(form.getCompiledReport());
+                        val.setFilename(form.getFilename());
+                        facade.save(val);
+                        updateList();
+                        grid.select(val);
+                        form.closePopup();
+                    });
+                    form.setResetHandler(val -> {
+                        updateList();
+                        grid.select(val);
+                        form.closePopup();
+                    });
+                }));
+
+        //@todo Downloadbutton für Report
+        grid.setSizeFull();
+        updateList();
+        addComponents(menu, tools);
+        addComponentsAndExpand(grid);
     }
 
-    @Override
-    public void enter(ViewChangeListener.ViewChangeEvent event) {
-        if (event.getParameters() != null) {
-            String[] msgs = event.getParameters().split("/");
-            String target = new String();
-            Long id = new Long(0);
-            for (String msg : msgs) {
-                if (target.isEmpty()) {
-                    target = msg;
-                } else {
-                    id = Long.valueOf(msg);
-                }
-            }
-            if (target.equals("id")) {
-                crud.getGrid().select(facade.findBy(id));
-            }
+    private void updateList() {
+        if (!filterTextBezeichnung.isEmpty()) {
+            //Suche mit Bezeichnung
+            logger.debug("Suche mit Bezeichnung:" + filterTextBezeichnung.getValue());
+            grid.setItems(facade.findByBezeichnungLikeIgnoreCase(filterTextBezeichnung.getValue() + "%"));
+            return;
         }
-    }
-
-    @Override
-    public Collection<ReportJasper> findAll() {
-        return getItems();
-    }
-
-    @Override
-    public ReportJasper add(ReportJasper reportJasper) {
-        return facade.save(reportJasper);
-    }
-
-    @Override
-    public ReportJasper update(ReportJasper reportJasper) {
-        return facade.save(reportJasper);
-    }
-
-    @Override
-    public void delete(ReportJasper reportJasper) {
-        facade.delete(reportJasper);
+        grid.setItems(facade.findAll());
     }
 }

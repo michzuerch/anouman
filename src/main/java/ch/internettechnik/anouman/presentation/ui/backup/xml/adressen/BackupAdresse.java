@@ -1,5 +1,7 @@
 package ch.internettechnik.anouman.presentation.ui.backup.xml.adressen;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -9,30 +11,39 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.NONE)
 public class BackupAdresse {
     @XmlElement
+    @JsonProperty("firma")
     private String firma;
 
     @XmlElement
+    @JsonProperty("anrede")
     private String anrede;
 
     @XmlElement
+    @JsonProperty("vorname")
     private String vorname;
 
     @XmlElement
+    @JsonProperty("nachname")
     private String nachname;
 
     @XmlElement
+    @JsonProperty("strasse")
     private String strasse;
 
     @XmlElement
+    @JsonProperty("ort")
     private String ort;
 
     @XmlElement
+    @JsonProperty("postleitzahl")
     private String postleitzahl;
 
     @XmlElement
+    @JsonProperty("stundensatz")
     private Double stundensatz;
 
     @XmlElement(name = "rechnung")
+    @JsonProperty("rechnungen")
     private List<BackupRechnung> rechnungen = new ArrayList<>();
 
 

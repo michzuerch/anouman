@@ -15,7 +15,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.*;
 
-public class TemplateBuchhaltungenUploadReceiver implements Serializable, Upload.Receiver, Upload.SucceededListener {
+public class TemplateBuchhaltungenXmlUploadReceiver implements Serializable, Upload.Receiver, Upload.SucceededListener {
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(BackupView.class.getName());
 
     File tempFile;
@@ -38,7 +38,7 @@ public class TemplateBuchhaltungenUploadReceiver implements Serializable, Upload
     @Inject
     TemplateMehrwertsteuercodeDeltaspikeFacade templateMehrwertsteuercodeDeltaspikeFacade;
 
-    public TemplateBuchhaltungenUploadReceiver() {
+    public TemplateBuchhaltungenXmlUploadReceiver() {
     }
 
     @Override
