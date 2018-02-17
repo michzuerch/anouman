@@ -16,7 +16,7 @@ import javax.inject.Inject;
 /**
  * Created by michzuerch on 09.05.17.
  */
-@Theme("valo")
+@Theme("anouman")
 @Title("Anouman")
 @Push(PushMode.AUTOMATIC)
 @SuppressWarnings("serial")
