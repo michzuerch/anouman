@@ -62,55 +62,55 @@ public class BuchhaltungenJSONUploadReceiver implements Serializable, Upload.Rec
             e.printStackTrace();
         }
         for (BackupBuchhaltung backupBuchhaltung : backupBuchhaltungen.getBuchhaltungen()) {
-                Buchhaltung buchhaltung = new Buchhaltung();
-                String bezeichnung = backupBuchhaltung.getBezeichnung();
-                buchhaltung.setBezeichnung(bezeichnung);
+            Buchhaltung buchhaltung = new Buchhaltung();
+            String bezeichnung = backupBuchhaltung.getBezeichnung();
+            buchhaltung.setBezeichnung(bezeichnung);
+            buchhaltung = buchhaltungDeltaspikeFacade.save(buchhaltung);
+
+            for (BackupKontoklasse backupKontoklasse : backupBuchhaltung.getKontoklasses()) {
+                Kontoklasse kontoklasse = new Kontoklasse();
+                kontoklasse.setBezeichnung(backupKontoklasse.getBezeichnung());
+                kontoklasse.setKontonummer(backupKontoklasse.getKontonummer());
+                kontoklasse.setBuchhaltung(buchhaltung);
+                kontoklasse = kontoklasseDeltaspikeFacade.save(kontoklasse);
+                buchhaltung.getKontoklasse().add(kontoklasse);
                 buchhaltung = buchhaltungDeltaspikeFacade.save(buchhaltung);
 
-                for (BackupKontoklasse backupKontoklasse : backupBuchhaltung.getKontoklasses()) {
-                    Kontoklasse kontoklasse = new Kontoklasse();
-                    kontoklasse.setBezeichnung(backupKontoklasse.getBezeichnung());
-                    kontoklasse.setKontonummer(backupKontoklasse.getKontonummer());
-                    kontoklasse.setBuchhaltung(buchhaltung);
+                for (BackupKontohauptgruppe backupKontohauptgruppe : backupKontoklasse.getBackupKontohauptgruppes()) {
+                    Kontohauptgruppe kontohauptgruppe = new Kontohauptgruppe();
+                    kontohauptgruppe.setBezeichnung(backupKontohauptgruppe.getBezeichnung());
+                    kontohauptgruppe.setKontonummer(backupKontohauptgruppe.getKontonummer());
+                    kontohauptgruppe.setKontoklasse(kontoklasse);
+                    kontohauptgruppe = kontohauptgruppeDeltaspikeFacade.save(kontohauptgruppe);
+                    kontoklasse.getKontohauptgruppes().add(kontohauptgruppe);
                     kontoklasse = kontoklasseDeltaspikeFacade.save(kontoklasse);
-                    buchhaltung.getKontoklasse().add(kontoklasse);
-                    buchhaltung = buchhaltungDeltaspikeFacade.save(buchhaltung);
 
-                    for (BackupKontohauptgruppe backupKontohauptgruppe : backupKontoklasse.getBackupKontohauptgruppes()) {
-                        Kontohauptgruppe kontohauptgruppe = new Kontohauptgruppe();
-                        kontohauptgruppe.setBezeichnung(backupKontohauptgruppe.getBezeichnung());
-                        kontohauptgruppe.setKontonummer(backupKontohauptgruppe.getKontonummer());
-                        kontohauptgruppe.setKontoklasse(kontoklasse);
+                    for (BackupKontogruppe backupKontogruppe : backupKontohauptgruppe.getBackupKontogruppes()) {
+                        Kontogruppe kontogruppe = new Kontogruppe();
+                        kontogruppe.setBezeichnung(backupKontogruppe.getBezeichnung());
+                        kontogruppe.setKontonummer(backupKontogruppe.getKontonummer());
+                        kontogruppe.setKontohauptgruppe(kontohauptgruppe);
+                        kontogruppe = kontogruppeDeltaspikeFacade.save(kontogruppe);
+                        kontohauptgruppe.getKontogruppes().add(kontogruppe);
                         kontohauptgruppe = kontohauptgruppeDeltaspikeFacade.save(kontohauptgruppe);
-                        kontoklasse.getKontohauptgruppes().add(kontohauptgruppe);
-                        kontoklasse = kontoklasseDeltaspikeFacade.save(kontoklasse);
 
-                        for (BackupKontogruppe backupKontogruppe : backupKontohauptgruppe.getBackupKontogruppes()) {
-                            Kontogruppe kontogruppe = new Kontogruppe();
-                            kontogruppe.setBezeichnung(backupKontogruppe.getBezeichnung());
-                            kontogruppe.setKontonummer(backupKontogruppe.getKontonummer());
-                            kontogruppe.setKontohauptgruppe(kontohauptgruppe);
+
+                        for (BackupKonto backupKonto : backupKontogruppe.getKontos()) {
+                            Konto konto = new Konto();
+                            konto.setBezeichnung(backupKonto.getBezeichnung());
+                            konto.setKontonummer(backupKonto.getKontonummer());
+                            konto.setKontogruppe(kontogruppe);
+                            konto = kontoDeltaspikeFacade.save(konto);
+                            kontogruppe.getKontos().add(konto);
                             kontogruppe = kontogruppeDeltaspikeFacade.save(kontogruppe);
-                            kontohauptgruppe.getKontogruppes().add(kontogruppe);
-                            kontohauptgruppe = kontohauptgruppeDeltaspikeFacade.save(kontohauptgruppe);
-
-
-                            for (BackupKonto backupKonto : backupKontogruppe.getKontos()) {
-                                Konto konto = new Konto();
-                                konto.setBezeichnung(backupKonto.getBezeichnung());
-                                konto.setKontonummer(backupKonto.getKontonummer());
-                                konto.setKontogruppe(kontogruppe);
-                                konto = kontoDeltaspikeFacade.save(konto);
-                                kontogruppe.getKontos().add(konto);
-                                kontogruppe = kontogruppeDeltaspikeFacade.save(kontogruppe);
-                            }
                         }
                     }
                 }
-                buchhaltung = buchhaltungDeltaspikeFacade.save(buchhaltung);
             }
-            tempFile.deleteOnExit();
-            Notification.show(backupBuchhaltungen.getBuchhaltungen().size() + " Buchhaltungen neu erstellt", Notification.Type.HUMANIZED_MESSAGE);
+            buchhaltung = buchhaltungDeltaspikeFacade.save(buchhaltung);
+        }
+        tempFile.deleteOnExit();
+        Notification.show(backupBuchhaltungen.getBuchhaltungen().size() + " Buchhaltungen neu erstellt", Notification.Type.HUMANIZED_MESSAGE);
         Notification.show("Buchhaltungen Upload succeeded:" + succeededEvent.getLength(), Notification.Type.TRAY_NOTIFICATION);
     }
 

@@ -2,7 +2,6 @@ package com.gmail.michzuerch.anouman.presentation.ui.adresse;
 
 import com.gmail.michzuerch.anouman.backend.entity.Adresse;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.AdresseDeltaspikeFacade;
-import com.gmail.michzuerch.anouman.presentation.ui.Menu;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
@@ -13,11 +12,12 @@ import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.vaadin.teemusa.flexlayout.*;
 
 import javax.inject.Inject;
 
 @CDIView("AdresseView")
-public class AdresseView extends VerticalLayout implements View {
+public class AdresseView extends HorizontalLayout implements View {
     private static Logger logger = LoggerFactory.getLogger(AdresseView.class.getName());
 
     TextField filterTextFirma = new TextField();
@@ -27,33 +27,19 @@ public class AdresseView extends VerticalLayout implements View {
     Grid<Adresse> grid = new Grid<>();
 
     @Inject
-    private Menu menu;
-
-    @Inject
     private AdresseDeltaspikeFacade facade;
 
     @Inject
     private AdresseForm form;
 
-    @Override
-    public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
-        if (viewChangeEvent.getParameters() != null) {
-            String[] msgs = viewChangeEvent.getParameters().split("/");
-            String target = new String();
-            Long id = new Long(0);
-            for (String msg : msgs) {
-                if (target.isEmpty()) {
-                    target = msg;
-                } else {
-                    id = Long.valueOf(msg);
-                }
-            }
-            if (target.equals("id")) {
-                grid.select(facade.findBy(id));
-            }
-        }
+    private Component createContent() {
+        FlexLayout layout = new FlexLayout();
 
-        setStyleName("anouman-background");
+        layout.setFlexDirection(FlexDirection.Row);
+        layout.setAlignItems(AlignItems.FlexEnd);
+        layout.setJustifyContent(JustifyContent.SpaceBetween);
+        layout.setAlignContent(AlignContent.Stretch);
+        layout.setFlexWrap(FlexWrap.Wrap);
 
         filterTextFirma.setPlaceholder("Filter für Firma");
         filterTextFirma.addValueChangeListener(e -> updateList());
@@ -94,7 +80,6 @@ public class AdresseView extends VerticalLayout implements View {
         tools.addComponents(filterTextFirma, filterTextNachname, filterTextOrt, clearFilterTextBtn, addBtn);
         tools.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 
-        grid.setCaption("Adresse");
         grid.setCaptionAsHtml(true);
         grid.addColumn(Adresse::getId).setCaption("id");
         grid.addColumn(Adresse::getFirma).setCaption("Firma");
@@ -136,10 +121,31 @@ public class AdresseView extends VerticalLayout implements View {
                         form.closePopup();
                     });
                 }));
+        layout.addComponents(tools, grid);
+        layout.setSizeFull();
+        return layout;
+    }
 
+    @Override
+    public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
+        addComponent(createContent());
+        setSizeFull();
+        if (viewChangeEvent.getParameters() != null) {
+            String[] msgs = viewChangeEvent.getParameters().split("/");
+            String target = new String();
+            Long id = new Long(0);
+            for (String msg : msgs) {
+                if (target.isEmpty()) {
+                    target = msg;
+                } else {
+                    id = Long.valueOf(msg);
+                }
+            }
+            if (target.equals("id")) {
+                grid.select(facade.findBy(id));
+            }
+        }
         updateList();
-        addComponents(menu, tools);
-        addComponentsAndExpand(grid);
     }
 
     public void updateList() {

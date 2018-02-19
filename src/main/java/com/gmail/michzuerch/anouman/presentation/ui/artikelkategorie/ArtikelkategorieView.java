@@ -2,7 +2,6 @@ package com.gmail.michzuerch.anouman.presentation.ui.artikelkategorie;
 
 import com.gmail.michzuerch.anouman.backend.entity.Artikelkategorie;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.ArtikelkategorieDeltaspikeFacade;
-import com.gmail.michzuerch.anouman.presentation.ui.Menu;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
@@ -12,6 +11,7 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 import org.slf4j.LoggerFactory;
+import org.vaadin.teemusa.flexlayout.*;
 
 import javax.inject.Inject;
 
@@ -26,38 +26,23 @@ public class ArtikelkategorieView extends VerticalLayout implements View {
     Grid<Artikelkategorie> grid = new Grid<>();
 
     @Inject
-    private Menu menu;
-
-    @Inject
     private ArtikelkategorieDeltaspikeFacade artikelkategorieDeltaspikeFacade;
 
     @Inject
     private ArtikelkategorieForm artikelkategorieForm;
 
-    @Override
-    public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
-        setStyleName("anouman-background");
+    private Component createContent() {
+        FlexLayout layout = new FlexLayout();
+
+        layout.setFlexDirection(FlexDirection.Row);
+        layout.setAlignItems(AlignItems.FlexEnd);
+        layout.setJustifyContent(JustifyContent.SpaceBetween);
+        layout.setAlignContent(AlignContent.Stretch);
+        layout.setFlexWrap(FlexWrap.Wrap);
 
         filterTextBezeichnung.setPlaceholder("Filter Bezeichnung");
         filterTextBezeichnung.addValueChangeListener(e -> updateList());
         filterTextBezeichnung.setValueChangeMode(ValueChangeMode.LAZY);
-
-        if (viewChangeEvent.getParameters() != null) {
-            String[] msgs = viewChangeEvent.getParameters().split("/");
-            String target = new String();
-            Long id = new Long(0);
-            for (String msg : msgs) {
-                if (target.isEmpty()) {
-                    target = msg;
-                } else {
-                    id = Long.valueOf(msg);
-                }
-            }
-            if (target.equals("id")) {
-                grid.select(artikelkategorieDeltaspikeFacade.findBy(id));
-            }
-        }
-
         Button clearFilterTextBtn = new Button(VaadinIcons.RECYCLE);
         clearFilterTextBtn.setDescription("Entferne Filter");
         clearFilterTextBtn.addClickListener(e -> {
@@ -82,8 +67,6 @@ public class ArtikelkategorieView extends VerticalLayout implements View {
         tools.addComponents(filterTextBezeichnung, clearFilterTextBtn, addBtn);
         tools.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 
-        grid.setCaption("Artikelkategorie");
-        grid.setCaptionAsHtml(true);
         grid.addColumn(Artikelkategorie::getId).setCaption("id");
         grid.addColumn(Artikelkategorie::getBezeichnung).setCaption("Bezeichnung");
         grid.addColumn(artikelkategorie -> artikelkategorie.getArtikels().size(), new ButtonRenderer(event -> {
@@ -124,9 +107,34 @@ public class ArtikelkategorieView extends VerticalLayout implements View {
                     });
                 }));
 
+        layout.addComponents(tools, grid);
+        layout.setSizeFull();
+        return layout;
+    }
+
+
+    @Override
+    public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
+
+        addComponent(createContent());
+        setSizeFull();
+        if (viewChangeEvent.getParameters() != null) {
+            String[] msgs = viewChangeEvent.getParameters().split("/");
+            String target = new String();
+            Long id = new Long(0);
+            for (String msg : msgs) {
+                if (target.isEmpty()) {
+                    target = msg;
+                } else {
+                    id = Long.valueOf(msg);
+                }
+            }
+            if (target.equals("id")) {
+                grid.select(artikelkategorieDeltaspikeFacade.findBy(id));
+            }
+        }
+
         updateList();
-        addComponents(menu, tools);
-        addComponentsAndExpand(grid);
     }
 
     public void updateList() {

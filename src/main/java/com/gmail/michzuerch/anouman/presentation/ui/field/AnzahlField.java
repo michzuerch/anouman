@@ -18,6 +18,7 @@ public class AnzahlField extends NumberField {
 
 
     }
+
     public AnzahlField(String caption) {
         super();
         setCaption(caption);

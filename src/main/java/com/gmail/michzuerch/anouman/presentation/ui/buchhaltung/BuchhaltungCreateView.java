@@ -2,7 +2,6 @@ package com.gmail.michzuerch.anouman.presentation.ui.buchhaltung;
 
 import com.gmail.michzuerch.anouman.backend.entity.*;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.*;
-import com.gmail.michzuerch.anouman.presentation.ui.Menu;
 import com.gmail.michzuerch.anouman.presentation.ui.templatebuchhaltung.TemplateBuchhaltungTreeView;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.data.BeanValidationBinder;
@@ -12,6 +11,7 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.*;
 import org.slf4j.LoggerFactory;
+import org.vaadin.teemusa.flexlayout.*;
 import org.vaadin.viritin.fields.IntegerField;
 
 import javax.inject.Inject;
@@ -41,12 +41,16 @@ public class BuchhaltungCreateView extends VerticalLayout implements View {
     private NativeSelect<TemplateBuchhaltung> templateBuchhaltungSelect = new NativeSelect<>();
     private Button createBuchhaltungBtn = new Button("Erstelle Buchhaltung");
 
-    @Inject
-    private Menu menu;
 
+    private Component createContent() {
+        FlexLayout layout = new FlexLayout();
 
-    @Override
-    public void enter(ViewChangeListener.ViewChangeEvent event) {
+        layout.setFlexDirection(FlexDirection.Row);
+        layout.setAlignItems(AlignItems.Center);
+        layout.setJustifyContent(JustifyContent.Center);
+        layout.setAlignContent(AlignContent.Center);
+        layout.setFlexWrap(FlexWrap.Wrap);
+
         templateBuchhaltungSelect.setCaption("Template Buchhaltung");
         templateBuchhaltungSelect.setItemCaptionGenerator(templateBuchhaltung -> templateBuchhaltung.getBezeichnung() + " " + templateBuchhaltung.getId());
         templateBuchhaltungSelect.setItems(templateBuchhaltungDeltaspikeFacade.findAll());
@@ -75,10 +79,10 @@ public class BuchhaltungCreateView extends VerticalLayout implements View {
         });
 
         buchhaltungForm.setEntity(buchhaltung);
-        FormLayout layout = new FormLayout();
-        layout.addComponents(templateBuchhaltungSelect, bezeichnungField, jahrField, createBuchhaltungBtn);
-        addComponent(menu);
-        addComponent(layout);
+
+        FormLayout formLayout = new FormLayout();
+        formLayout.addComponents(templateBuchhaltungSelect, bezeichnungField, jahrField, createBuchhaltungBtn);
+        layout.addComponent(formLayout);
 
         createBuchhaltungBtn.addClickListener(clickEvent -> {
             if (binder.isValid()) {
@@ -131,5 +135,13 @@ public class BuchhaltungCreateView extends VerticalLayout implements View {
             }
 
         });
+        layout.setSizeFull();
+        return layout;
+    }
+
+    @Override
+    public void enter(ViewChangeListener.ViewChangeEvent event) {
+        addComponent(createContent());
+        setSizeFull();
     }
 }

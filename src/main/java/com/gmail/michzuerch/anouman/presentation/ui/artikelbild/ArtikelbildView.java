@@ -4,7 +4,6 @@ import com.gmail.michzuerch.anouman.backend.entity.Artikel;
 import com.gmail.michzuerch.anouman.backend.entity.Artikelbild;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.ArtikelDeltaspikeFacade;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.ArtikelbildDeltaspikeFacade;
-import com.gmail.michzuerch.anouman.presentation.ui.Menu;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
@@ -14,6 +13,7 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 import org.slf4j.LoggerFactory;
+import org.vaadin.teemusa.flexlayout.*;
 
 import javax.inject.Inject;
 
@@ -29,9 +29,6 @@ public class ArtikelbildView extends VerticalLayout implements View {
     Grid<Artikelbild> grid = new Grid<>();
 
     @Inject
-    private Menu menu;
-
-    @Inject
     private ArtikelbildDeltaspikeFacade artikelbildDeltaspikeFacade;
 
     @Inject
@@ -40,9 +37,15 @@ public class ArtikelbildView extends VerticalLayout implements View {
     @Inject
     private ArtikelbildForm artikelbildForm;
 
-    @Override
-    public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
-        setStyleName("anouman-background");
+
+    private Component createContent() {
+        FlexLayout layout = new FlexLayout();
+
+        layout.setFlexDirection(FlexDirection.Row);
+        layout.setAlignItems(AlignItems.FlexEnd);
+        layout.setJustifyContent(JustifyContent.SpaceBetween);
+        layout.setAlignContent(AlignContent.Stretch);
+        layout.setFlexWrap(FlexWrap.Wrap);
 
         filterArtikel.setPlaceholder("Filter Artikel");
         filterArtikel.setItems(artikelDeltaspikeFacade.findAll());
@@ -53,22 +56,6 @@ public class ArtikelbildView extends VerticalLayout implements View {
         filterTextTitel.setPlaceholder("Filter Titel");
         filterTextTitel.addValueChangeListener(e -> updateList());
         filterTextTitel.setValueChangeMode(ValueChangeMode.LAZY);
-
-        if (viewChangeEvent.getParameters() != null) {
-            String[] msgs = viewChangeEvent.getParameters().split("/");
-            String target = new String();
-            Long id = new Long(0);
-            for (String msg : msgs) {
-                if (target.isEmpty()) {
-                    target = msg;
-                } else {
-                    id = Long.valueOf(msg);
-                }
-            }
-            if (target.equals("id")) {
-                grid.select(artikelbildDeltaspikeFacade.findBy(id));
-            }
-        }
 
         Button clearFilterTextBtn = new Button(VaadinIcons.RECYCLE);
         clearFilterTextBtn.setDescription("Entferne Filter");
@@ -94,9 +81,6 @@ public class ArtikelbildView extends VerticalLayout implements View {
         CssLayout tools = new CssLayout();
         tools.addComponents(filterArtikel, filterTextTitel, clearFilterTextBtn, addBtn);
         tools.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
-
-        grid.setCaption("Artikelbild");
-        grid.setCaptionAsHtml(true);
         grid.addColumn(Artikelbild::getId).setCaption("id");
         grid.addColumn(Artikelbild::getTitel).setCaption("Titel");
         grid.addColumn(Artikelbild::getSize).setCaption("Size");
@@ -141,10 +125,35 @@ public class ArtikelbildView extends VerticalLayout implements View {
                         artikelbildForm.closePopup();
                     });
                 }));
+        layout.addComponents(tools, grid);
+        layout.setSizeFull();
+        return layout;
+
+
+    }
+
+    @Override
+    public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
+        addComponent(createContent());
+        setSizeFull();
+
+        if (viewChangeEvent.getParameters() != null) {
+            String[] msgs = viewChangeEvent.getParameters().split("/");
+            String target = new String();
+            Long id = new Long(0);
+            for (String msg : msgs) {
+                if (target.isEmpty()) {
+                    target = msg;
+                } else {
+                    id = Long.valueOf(msg);
+                }
+            }
+            if (target.equals("id")) {
+                grid.select(artikelbildDeltaspikeFacade.findBy(id));
+            }
+        }
 
         updateList();
-        addComponents(menu, tools);
-        addComponentsAndExpand(grid);
     }
 
     public void updateList() {

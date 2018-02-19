@@ -2,13 +2,13 @@ package com.gmail.michzuerch.anouman.presentation.ui.buchhaltung;
 
 import com.gmail.michzuerch.anouman.backend.entity.*;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.*;
-import com.gmail.michzuerch.anouman.presentation.ui.Menu;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.slf4j.LoggerFactory;
+import org.vaadin.teemusa.flexlayout.*;
 import org.vaadin.ui.NumberField;
 
 import javax.inject.Inject;
@@ -17,8 +17,6 @@ import java.util.Locale;
 @CDIView("BuchungsmaskeView")
 public class BuchungsmaskeView extends VerticalLayout implements View {
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(BuchungsmaskeView.class.getName());
-    @Inject
-    Menu menu;
     @Inject
     BuchhaltungDeltaspikeFacade buchhaltungDeltaspikeFacade;
     @Inject
@@ -33,54 +31,20 @@ public class BuchungsmaskeView extends VerticalLayout implements View {
     MehrwertsteuercodeDeltaspikeFacade mehrwertsteuercodeDeltaspikeFacade;
 
     private NativeSelect<Buchhaltung> buchhaltungNativeSelect = new NativeSelect<>();
-    private Panel sollPanel = new Panel("Sollkonto");
-    private NativeSelect<Kontoklasse> sollKontoklasse = new NativeSelect<>();
-    private NativeSelect<Kontohauptgruppe> sollKontohauptgruppe = new NativeSelect<>();
-    private NativeSelect<Kontogruppe> sollKontogruppe = new NativeSelect<>();
-    private NativeSelect<Konto> sollKonto = new NativeSelect<>();
-    private Label sollKontoLabel = new Label("Kontonummer Soll:");
-    private HorizontalLayout sollKontoLayout = new HorizontalLayout();
-    private Panel habenPanel = new Panel("Habenkonto");
-    private NativeSelect<Kontoklasse> habenKontoklasse = new NativeSelect<>();
-    private NativeSelect<Kontohauptgruppe> habenKontohauptgruppe = new NativeSelect<>();
-    private NativeSelect<Kontogruppe> habenKontogruppe = new NativeSelect<>();
-    private NativeSelect<Konto> habenKonto = new NativeSelect<>();
-    private Label habenKontoLabel = new Label("Kontonummer Haben:");
-    private HorizontalLayout habenKontoLayout = new HorizontalLayout();
     private Panel buchenPanel = new Panel("Buchen");
     private NativeSelect<Mehrwertsteuercode> mehrwertsteuercodeNativeSelect = new NativeSelect<>();
     private NumberField betragField = new NumberField("Betrag");
     private Button buchenButton = new Button("Buchen");
     private HorizontalLayout buchenLayout = new HorizontalLayout();
 
-    @Override
-    public void enter(ViewChangeListener.ViewChangeEvent event) {
-        buchhaltungNativeSelect.setCaption("Buchhaltung");
-        buchhaltungNativeSelect.setEmptySelectionAllowed(false);
-        buchhaltungNativeSelect.setItemCaptionGenerator(buchhaltung -> buchhaltung.getBezeichnung() + " " + buchhaltung.getJahr() + " " + buchhaltung.getId());
-        buchhaltungNativeSelect.setItems(buchhaltungDeltaspikeFacade.findAll());
-        buchhaltungNativeSelect.setSelectedItem(buchhaltungDeltaspikeFacade.findAll().get(0));
-
-        sollKontoklasse.setCaption("Kontoklasse");
-        sollKontoklasse.setItemCaptionGenerator(kontoklasse -> kontoklasse.getBezeichnung() + " " + kontoklasse.getShowKontonummer());
-        sollKontoklasse.setEmptySelectionAllowed(false);
-
-        sollKontohauptgruppe.setCaption("Kontohauptgruppe");
-        sollKontohauptgruppe.setItemCaptionGenerator(kontohauptgruppe -> kontohauptgruppe.getBezeichnung() + " " + kontohauptgruppe.getShowKontonummer());
-        sollKontohauptgruppe.setEmptySelectionAllowed(false);
-
-        sollKontogruppe.setCaption("Kontogruppe");
-        sollKontogruppe.setItemCaptionGenerator(kontogruppe -> kontogruppe.getBezeichnung() + " " + kontogruppe.getShowKontonummer());
-        sollKontogruppe.setEmptySelectionAllowed(false);
-
-        sollKonto.setCaption("Konto");
-        sollKonto.setItemCaptionGenerator(konto -> konto.getBezeichnung() + " " + konto.getShowKontonummer());
-        sollKonto.setEmptySelectionAllowed(false);
-
-        sollKontoLabel.setStyleName(ValoTheme.LABEL_HUGE);
-        sollKontoLayout.setMargin(true);
-        sollKontoLayout.addComponents(sollKontoklasse, sollKontohauptgruppe, sollKontogruppe, sollKonto, sollKontoLabel);
-        sollPanel.setContent(sollKontoLayout);
+    private Panel createHabenPanel() {
+        Panel habenPanel = new Panel("Habenkonto");
+        NativeSelect<Kontoklasse> habenKontoklasse = new NativeSelect<>();
+        NativeSelect<Kontohauptgruppe> habenKontohauptgruppe = new NativeSelect<>();
+        NativeSelect<Kontogruppe> habenKontogruppe = new NativeSelect<>();
+        NativeSelect<Konto> habenKonto = new NativeSelect<>();
+        Label habenKontoLabel = new Label("Kontonummer Haben:");
+        HorizontalLayout habenKontoLayout = new HorizontalLayout();
 
         habenKontoklasse.setCaption("Kontoklasse");
         habenKontoklasse.setItemCaptionGenerator(kontoklasse -> kontoklasse.getBezeichnung() + " " + kontoklasse.getShowKontonummer());
@@ -102,38 +66,6 @@ public class BuchungsmaskeView extends VerticalLayout implements View {
         habenKontoLayout.addComponents(habenKontoklasse, habenKontohauptgruppe, habenKontogruppe, habenKonto, habenKontoLabel);
         habenKontoLayout.setMargin(true);
         habenPanel.setContent(habenKontoLayout);
-
-        addComponent(menu);
-        addComponent(buchhaltungNativeSelect);
-        addComponent(new HorizontalLayout(sollPanel, habenPanel));
-
-
-        sollKontoklasse.setItems(kontoklasseDeltaspikeFacade.findByBuchhaltung(buchhaltungNativeSelect.getValue()));
-        sollKontoklasse.setSelectedItem(kontoklasseDeltaspikeFacade.findAll().get(0));
-
-        sollKontoklasse.addValueChangeListener(
-                valueChangeEvent -> {
-                    sollKontohauptgruppe.setItems(kontohauptgruppeDeltaspikeFacade.findByKontoklasse(valueChangeEvent.getValue()));
-                    sollKontohauptgruppe.setSelectedItem(kontohauptgruppeDeltaspikeFacade.findByKontoklasse(valueChangeEvent.getValue()).get(0));
-                });
-        sollKontohauptgruppe.addValueChangeListener(
-                valueChangeEvent -> {
-                    sollKontogruppe.setItems(kontogruppeDeltaspikeFacade.findByKontohauptgruppe(valueChangeEvent.getValue()));
-                    sollKontogruppe.setSelectedItem(kontogruppeDeltaspikeFacade.findByKontohauptgruppe(valueChangeEvent.getValue()).get(0));
-                });
-
-        sollKontogruppe.addValueChangeListener(
-                valueChangeEvent -> {
-                    sollKonto.setItems(kontoDeltaspikeFacade.findByKontogruppe(valueChangeEvent.getValue()));
-                    sollKonto.setSelectedItem(kontoDeltaspikeFacade.findByKontogruppe(valueChangeEvent.getValue()).get(0));
-                });
-
-        sollKonto.addValueChangeListener(
-                valueChangeEvent -> {
-                    sollKontoLabel.setValue("Konto Soll: " + valueChangeEvent.getValue().getShowKontonummer());
-                });
-
-
         habenKontoklasse.setItems(kontoklasseDeltaspikeFacade.findByBuchhaltung(buchhaltungNativeSelect.getValue()));
         habenKontoklasse.setSelectedItem(kontoklasseDeltaspikeFacade.findAll().get(0));
 
@@ -159,6 +91,96 @@ public class BuchungsmaskeView extends VerticalLayout implements View {
                     habenKontoLabel.setValue("Konto Haben: " + valueChangeEvent.getValue().getShowKontonummer());
                 });
 
+
+        return habenPanel;
+    }
+
+    private Panel createSollPanel() {
+        Panel sollPanel = new Panel("Sollkonto");
+        NativeSelect<Kontoklasse> sollKontoklasse = new NativeSelect<>();
+        NativeSelect<Kontohauptgruppe> sollKontohauptgruppe = new NativeSelect<>();
+        NativeSelect<Kontogruppe> sollKontogruppe = new NativeSelect<>();
+        NativeSelect<Konto> sollKonto = new NativeSelect<>();
+        Label sollKontoLabel = new Label("Kontonummer Soll:");
+        HorizontalLayout sollKontoLayout = new HorizontalLayout();
+
+        sollKontoklasse.setCaption("Kontoklasse");
+        sollKontoklasse.setItemCaptionGenerator(kontoklasse -> kontoklasse.getBezeichnung() + " " + kontoklasse.getShowKontonummer());
+        sollKontoklasse.setEmptySelectionAllowed(false);
+
+        sollKontohauptgruppe.setCaption("Kontohauptgruppe");
+        sollKontohauptgruppe.setItemCaptionGenerator(kontohauptgruppe -> kontohauptgruppe.getBezeichnung() + " " + kontohauptgruppe.getShowKontonummer());
+        sollKontohauptgruppe.setEmptySelectionAllowed(false);
+
+        sollKontogruppe.setCaption("Kontogruppe");
+        sollKontogruppe.setItemCaptionGenerator(kontogruppe -> kontogruppe.getBezeichnung() + " " + kontogruppe.getShowKontonummer());
+        sollKontogruppe.setEmptySelectionAllowed(false);
+
+        sollKonto.setCaption("Konto");
+        sollKonto.setItemCaptionGenerator(konto -> konto.getBezeichnung() + " " + konto.getShowKontonummer());
+        sollKonto.setEmptySelectionAllowed(false);
+
+        sollKontoLabel.setStyleName(ValoTheme.LABEL_HUGE);
+        sollKontoLayout.setMargin(true);
+        sollKontoLayout.addComponents(sollKontoklasse, sollKontohauptgruppe, sollKontogruppe, sollKonto, sollKontoLabel);
+        sollPanel.setContent(sollKontoLayout);
+
+        sollKontoklasse.setItems(kontoklasseDeltaspikeFacade.findByBuchhaltung(buchhaltungNativeSelect.getValue()));
+        sollKontoklasse.setSelectedItem(kontoklasseDeltaspikeFacade.findAll().get(0));
+        sollKontoklasse.addValueChangeListener(
+                valueChangeEvent -> {
+                    sollKontohauptgruppe.setItems(kontohauptgruppeDeltaspikeFacade.findByKontoklasse(valueChangeEvent.getValue()));
+                    sollKontohauptgruppe.setSelectedItem(kontohauptgruppeDeltaspikeFacade.findByKontoklasse(valueChangeEvent.getValue()).get(0));
+                });
+        sollKontohauptgruppe.addValueChangeListener(
+                valueChangeEvent -> {
+                    sollKontogruppe.setItems(kontogruppeDeltaspikeFacade.findByKontohauptgruppe(valueChangeEvent.getValue()));
+                    sollKontogruppe.setSelectedItem(kontogruppeDeltaspikeFacade.findByKontohauptgruppe(valueChangeEvent.getValue()).get(0));
+                });
+
+        sollKontogruppe.addValueChangeListener(
+                valueChangeEvent -> {
+                    sollKonto.setItems(kontoDeltaspikeFacade.findByKontogruppe(valueChangeEvent.getValue()));
+                    sollKonto.setSelectedItem(kontoDeltaspikeFacade.findByKontogruppe(valueChangeEvent.getValue()).get(0));
+                });
+
+        sollKonto.addValueChangeListener(
+                valueChangeEvent -> {
+                    sollKontoLabel.setValue("Konto Soll: " + valueChangeEvent.getValue().getShowKontonummer());
+                });
+
+
+        return sollPanel;
+    }
+
+
+    private Component createContent() {
+        FlexLayout layout = new FlexLayout();
+
+        layout.setFlexDirection(FlexDirection.Row);
+        layout.setAlignItems(AlignItems.FlexEnd);
+        layout.setJustifyContent(JustifyContent.SpaceBetween);
+        layout.setAlignContent(AlignContent.Stretch);
+        layout.setFlexWrap(FlexWrap.Wrap);
+
+        buchhaltungNativeSelect.setCaption("Buchhaltung");
+        buchhaltungNativeSelect.setEmptySelectionAllowed(false);
+        buchhaltungNativeSelect.setItemCaptionGenerator(buchhaltung -> buchhaltung.getBezeichnung() + " " + buchhaltung.getJahr() + " " + buchhaltung.getId());
+        buchhaltungNativeSelect.setItems(buchhaltungDeltaspikeFacade.findAll());
+        buchhaltungNativeSelect.setSelectedItem(buchhaltungDeltaspikeFacade.findAll().get(0));
+
+
+        addComponent(buchhaltungNativeSelect);
+        addComponent(new HorizontalLayout(createSollPanel(), createHabenPanel()));
+
+        layout.setSizeFull();
+        return layout;
+    }
+
+
+    @Override
+    public void enter(ViewChangeListener.ViewChangeEvent event) {
+
         mehrwertsteuercodeNativeSelect.setItemCaptionGenerator(mehrwertsteuercode -> mehrwertsteuercode.getBezeichnung());
         mehrwertsteuercodeNativeSelect.setEmptySelectionAllowed(false);
         mehrwertsteuercodeNativeSelect.setItems(mehrwertsteuercodeDeltaspikeFacade.findByBuchhaltung(buchhaltungNativeSelect.getValue()));
@@ -181,6 +203,10 @@ public class BuchungsmaskeView extends VerticalLayout implements View {
         buchenLayout.setMargin(true);
         buchenPanel.setContent(buchenLayout);
         addComponent(buchenPanel);
+
+
+        addComponent(createContent());
+        setSizeFull();
 
     }
 }

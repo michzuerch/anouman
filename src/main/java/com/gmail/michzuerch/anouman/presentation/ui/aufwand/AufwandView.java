@@ -4,7 +4,6 @@ import com.gmail.michzuerch.anouman.backend.entity.Aufwand;
 import com.gmail.michzuerch.anouman.backend.entity.Rechnung;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.AufwandDeltaspikeFacade;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.RechnungDeltaspikeFacade;
-import com.gmail.michzuerch.anouman.presentation.ui.Menu;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
@@ -14,6 +13,7 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 import org.slf4j.LoggerFactory;
+import org.vaadin.teemusa.flexlayout.*;
 
 import javax.inject.Inject;
 
@@ -29,9 +29,6 @@ public class AufwandView extends VerticalLayout implements View {
     Grid<Aufwand> grid = new Grid<>();
 
     @Inject
-    private Menu menu;
-
-    @Inject
     private AufwandDeltaspikeFacade facade;
 
     @Inject
@@ -40,9 +37,15 @@ public class AufwandView extends VerticalLayout implements View {
     @Inject
     private AufwandForm form;
 
-    @Override
-    public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
-        setStyleName("anouman-background");
+
+    private Component createContent() {
+        FlexLayout layout = new FlexLayout();
+
+        layout.setFlexDirection(FlexDirection.Row);
+        layout.setAlignItems(AlignItems.FlexEnd);
+        layout.setJustifyContent(JustifyContent.SpaceBetween);
+        layout.setAlignContent(AlignContent.Stretch);
+        layout.setFlexWrap(FlexWrap.Wrap);
 
         filterTextTitel.setPlaceholder("Filter Titel");
         filterTextTitel.addValueChangeListener(e -> updateList());
@@ -52,25 +55,6 @@ public class AufwandView extends VerticalLayout implements View {
         filterRechnung.setItemCaptionGenerator(rechnung -> rechnung.getBezeichnung() + " id:" + rechnung.getId());
         filterRechnung.setEmptySelectionAllowed(false);
         filterRechnung.addValueChangeListener(valueChangeEvent -> updateList());
-
-        if (viewChangeEvent.getParameters() != null) {
-            String[] msgs = viewChangeEvent.getParameters().split("/");
-            String target = new String();
-            Long id = new Long(0);
-            for (String msg : msgs) {
-                if (target.isEmpty()) {
-                    target = msg;
-                } else {
-                    id = Long.valueOf(msg);
-                }
-            }
-            if (target.equals("rechnungId")) {
-                filterRechnung.setSelectedItem(rechnungDeltaspikeFacade.findBy(id));
-                updateList();
-            } else if (target.equals("id")) {
-                grid.select(facade.findBy(id));
-            }
-        }
 
         Button clearFilterTextBtn = new Button(VaadinIcons.RECYCLE);
         clearFilterTextBtn.setDescription("Entferne Filter");
@@ -99,8 +83,6 @@ public class AufwandView extends VerticalLayout implements View {
         tools.addComponents(filterRechnung, filterTextTitel, clearFilterTextBtn, addBtn);
         tools.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 
-        grid.setCaption("Aufwand");
-        grid.setCaptionAsHtml(true);
         grid.addColumn(Aufwand::getId).setCaption("id");
         grid.addColumn(Aufwand::getTitel).setCaption("Titel");
         grid.addColumn(Aufwand::getBezeichnung).setCaption("Bezeichnung");
@@ -145,9 +127,36 @@ public class AufwandView extends VerticalLayout implements View {
                     });
                 }));
 
+        layout.addComponents(tools, grid);
+        layout.setSizeFull();
+        return layout;
+    }
+
+    @Override
+    public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
+        addComponent(createContent());
+        setSizeFull();
+
+        if (viewChangeEvent.getParameters() != null) {
+            String[] msgs = viewChangeEvent.getParameters().split("/");
+            String target = new String();
+            Long id = new Long(0);
+            for (String msg : msgs) {
+                if (target.isEmpty()) {
+                    target = msg;
+                } else {
+                    id = Long.valueOf(msg);
+                }
+            }
+            if (target.equals("rechnungId")) {
+                filterRechnung.setSelectedItem(rechnungDeltaspikeFacade.findBy(id));
+                updateList();
+            } else if (target.equals("id")) {
+                grid.select(facade.findBy(id));
+            }
+        }
+
         updateList();
-        addComponents(menu, tools);
-        addComponentsAndExpand(grid);
     }
 
     public void updateList() {

@@ -3,7 +3,6 @@ package com.gmail.michzuerch.anouman.presentation.ui.buchhaltung;
 
 import com.gmail.michzuerch.anouman.backend.entity.*;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.*;
-import com.gmail.michzuerch.anouman.presentation.ui.Menu;
 import com.gmail.michzuerch.anouman.presentation.ui.buchhaltung.form.*;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.data.BeanValidationBinder;
@@ -16,6 +15,7 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 import org.slf4j.LoggerFactory;
+import org.vaadin.teemusa.flexlayout.*;
 
 import javax.inject.Inject;
 import java.time.LocalDate;
@@ -39,9 +39,6 @@ public class BuchhaltungTreeView extends VerticalLayout implements View {
     private Window windowMehrwertsteuercode;
 
     private BuchhaltungTreeData treeRootItem;
-
-    @Inject
-    private Menu menu;
 
     @Inject
     private BuchhaltungDeltaspikeFacade buchhaltungDeltaspikeFacade;
@@ -79,27 +76,18 @@ public class BuchhaltungTreeView extends VerticalLayout implements View {
     @Inject
     private MehrwertsteuercodeForm mehrwertsteuercodeForm;
 
-    @Override
-    public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
+    private Component createContent() {
+        FlexLayout layout = new FlexLayout();
+
+        layout.setFlexDirection(FlexDirection.Row);
+        layout.setAlignItems(AlignItems.FlexEnd);
+        layout.setJustifyContent(JustifyContent.SpaceBetween);
+        layout.setAlignContent(AlignContent.Stretch);
+        layout.setFlexWrap(FlexWrap.Wrap);
+
+
         buchhaltungSelect = createBuchhaltungSelect();
         buchhaltungSelect.setWidth(30, Unit.PERCENTAGE);
-        if (viewChangeEvent.getParameters() != null) {
-            String[] msgs = viewChangeEvent.getParameters().split("/");
-            String target = new String();
-            Long id = new Long(0);
-            for (String msg : msgs) {
-                if (target.isEmpty()) {
-                    target = msg;
-                } else {
-                    id = Long.valueOf(msg);
-                }
-            }
-            if (target.equals("id")) {
-                buchhaltungSelect.setSelectedItem(buchhaltungDeltaspikeFacade.findBy(id));
-            }
-        }
-
-        setStyleName("anouman-background");
         HorizontalLayout toolsLayout = new HorizontalLayout();
         HorizontalLayout bodyLayout = new HorizontalLayout();
 
@@ -201,10 +189,34 @@ public class BuchhaltungTreeView extends VerticalLayout implements View {
                 //Notification.show("Selected from Tree:" + selectedItem.getType() + " id:" + selectedItem.getId(), Notification.Type.TRAY_NOTIFICATION);
             }
         });
-
-        addComponents(menu, toolsLayout);
-        addComponentsAndExpand(bodyLayout);
+        layout.addComponents(toolsLayout, bodyLayout);
         bodyLayout.setExpandRatio(buchhaltungPanel, 1);
+        layout.setSizeFull();
+        return layout;
+
+    }
+
+
+    @Override
+    public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
+        addComponent(createContent());
+        setSizeFull();
+
+        if (viewChangeEvent.getParameters() != null) {
+            String[] msgs = viewChangeEvent.getParameters().split("/");
+            String target = new String();
+            Long id = new Long(0);
+            for (String msg : msgs) {
+                if (target.isEmpty()) {
+                    target = msg;
+                } else {
+                    id = Long.valueOf(msg);
+                }
+            }
+            if (target.equals("id")) {
+                buchhaltungSelect.setSelectedItem(buchhaltungDeltaspikeFacade.findBy(id));
+            }
+        }
 
     }
 
