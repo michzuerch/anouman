@@ -6,7 +6,6 @@ import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.Aufwan
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.RechnungDeltaspikeFacade;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.ReportJasperDeltaspikeFacade;
 import com.gmail.michzuerch.anouman.presentation.reports.rechnung.RechnungReportTool;
-import com.gmail.michzuerch.anouman.presentation.ui.Menu;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
@@ -15,6 +14,7 @@ import com.vaadin.ui.*;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.vaadin.teemusa.flexlayout.*;
 import org.vaadin.viritin.button.DownloadButton;
 import org.vaadin.viritin.fields.IntegerField;
 
@@ -47,9 +47,6 @@ public class RechnungPrintView extends VerticalLayout implements View {
     TextField fieldRechnungstotal = new TextField("Rechnungstotal");
     NativeSelect<ReportJasper> selectReport = new NativeSelect<>();
     DownloadButton btnPrint = new DownloadButton();
-
-    @Inject
-    private Menu menu;
 
     protected DownloadButton getPrintButton() {
         return new DownloadButton(
@@ -88,24 +85,14 @@ public class RechnungPrintView extends VerticalLayout implements View {
         selectReport.setItemCaptionGenerator(reportTemplate -> reportTemplate.getBezeichnung());
     }
 
-    @Override
-    public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
+    private Component createContent() {
+        FlexLayout layout = new FlexLayout();
 
-        if (viewChangeEvent.getParameters() != null) {
-            String[] msgs = viewChangeEvent.getParameters().split("/");
-            String target = new String();
-            Long id = new Long(0);
-            for (String msg : msgs) {
-                if (target.isEmpty()) {
-                    target = msg;
-                } else {
-                    id = Long.valueOf(msg);
-                }
-            }
-            if (target.equals("id")) {
-                this.idRechnung = id;
-            }
-        }
+        layout.setFlexDirection(FlexDirection.Row);
+        layout.setAlignItems(AlignItems.FlexEnd);
+        layout.setJustifyContent(JustifyContent.SpaceBetween);
+        layout.setAlignContent(AlignContent.Stretch);
+        layout.setFlexWrap(FlexWrap.Wrap);
 
         fieldId.setEnabled(false);
         fieldAdresseFirma.setEnabled(false);
@@ -125,13 +112,36 @@ public class RechnungPrintView extends VerticalLayout implements View {
 
         btnPrint = getPrintButton();
 
-        addComponent(menu);
-        addComponents(new HorizontalLayout(
+        layout.addComponents(new HorizontalLayout(
                 new FormLayout(fieldId, fieldBezeichnung, fieldRechnungsdatum),
                 new FormLayout(fieldAdresseFirma, fieldAdresseNachname, fieldAdresseOrt),
                 new FormLayout(fieldFaelligkeitsdatum, fieldFaelligInTagen),
                 new FormLayout(fieldZwischentotal, fieldMehrwertsteuer, fieldRechnungstotal)
         ), selectReport, btnPrint);
+        layout.setSizeFull();
+        return layout;
+    }
 
+
+    @Override
+    public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
+        addComponent(createContent());
+        setSizeFull();
+
+        if (viewChangeEvent.getParameters() != null) {
+            String[] msgs = viewChangeEvent.getParameters().split("/");
+            String target = new String();
+            Long id = new Long(0);
+            for (String msg : msgs) {
+                if (target.isEmpty()) {
+                    target = msg;
+                } else {
+                    id = Long.valueOf(msg);
+                }
+            }
+            if (target.equals("id")) {
+                this.idRechnung = id;
+            }
+        }
     }
 }

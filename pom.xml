@@ -153,11 +153,11 @@
         <!--<artifactId>easyuploads</artifactId>-->
         <!--<version>8.0.0</version>-->
         <!--</dependency>-->
-        <!--<dependency>-->
-        <!--<groupId>org.vaadin.reports</groupId>-->
-        <!--<artifactId>report-ui</artifactId>-->
-        <!--<version>1.1</version>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>org.vaadin.reports</groupId>
+            <artifactId>report-ui</artifactId>
+            <version>1.1</version>
+        </dependency>
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-cdi</artifactId>

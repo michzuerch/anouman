@@ -2,7 +2,6 @@ package com.gmail.michzuerch.anouman.presentation.ui.editortest;
 
 import com.gmail.michzuerch.anouman.backend.entity.EditorTest;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.EditorTestDeltaspikeFacade;
-import com.gmail.michzuerch.anouman.presentation.ui.Menu;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
@@ -11,6 +10,7 @@ import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.themes.ValoTheme;
+import org.vaadin.teemusa.flexlayout.*;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -24,17 +24,19 @@ public class EditorTestView extends VerticalLayout implements View {
     Grid<EditorTest> grid = new Grid<>(EditorTest.class);
 
     @Inject
-    private Menu menu;
-
-    @Inject
     private EditorTestDeltaspikeFacade editorTestDeltaspikeFacade;
 
     @Inject
     private EditorTestForm form;
 
-    @Override
-    public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
-        setStyleName("anouman-background");
+    private Component createContent() {
+        FlexLayout layout = new FlexLayout();
+
+        layout.setFlexDirection(FlexDirection.Row);
+        layout.setAlignItems(AlignItems.FlexEnd);
+        layout.setJustifyContent(JustifyContent.SpaceBetween);
+        layout.setAlignContent(AlignContent.Stretch);
+        layout.setFlexWrap(FlexWrap.Wrap);
 
         filterText.setPlaceholder("Filter für Erster...");
         filterText.addValueChangeListener(e -> updateList());
@@ -92,10 +94,18 @@ public class EditorTestView extends VerticalLayout implements View {
                     });
                 }));
 
+        layout.addComponents(tools, grid);
+        layout.setSizeFull();
+        return layout;
 
+    }
+
+
+    @Override
+    public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
+        addComponent(createContent());
+        setSizeFull();
         updateList();
-        addComponents(menu, tools);
-        addComponentsAndExpand(grid);
     }
 
     public void updateList() {
