@@ -37,7 +37,6 @@ public class AufwandView extends VerticalLayout implements View {
     @Inject
     private AufwandForm form;
 
-
     private Component createContent() {
         FlexLayout layout = new FlexLayout();
 

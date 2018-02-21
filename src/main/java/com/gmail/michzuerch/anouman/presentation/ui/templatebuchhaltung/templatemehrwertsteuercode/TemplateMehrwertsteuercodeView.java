@@ -4,7 +4,6 @@ import com.gmail.michzuerch.anouman.backend.entity.TemplateBuchhaltung;
 import com.gmail.michzuerch.anouman.backend.entity.TemplateMehrwertsteuercode;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.TemplateBuchhaltungDeltaspikeFacade;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.TemplateMehrwertsteuercodeDeltaspikeFacade;
-import com.gmail.michzuerch.anouman.presentation.ui.Menu;
 import com.gmail.michzuerch.anouman.presentation.ui.field.ProzentField;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
@@ -23,8 +22,8 @@ import org.vaadin.crudui.crud.impl.GridCrud;
 import org.vaadin.crudui.form.impl.field.provider.NativeSelectProvider;
 import org.vaadin.crudui.form.impl.form.factory.VerticalCrudFormFactory;
 import org.vaadin.crudui.layout.impl.WindowBasedCrudLayout;
+import org.vaadin.teemusa.flexlayout.*;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.util.Collection;
 
@@ -104,8 +103,16 @@ public class TemplateMehrwertsteuercodeView extends VerticalLayout implements Vi
         return crud;
     }
 
-    @PostConstruct
-    void init() {
+
+    private Component createContent() {
+        FlexLayout layout = new FlexLayout();
+
+        layout.setFlexDirection(FlexDirection.Row);
+        layout.setAlignItems(AlignItems.FlexEnd);
+        layout.setJustifyContent(JustifyContent.SpaceBetween);
+        layout.setAlignContent(AlignContent.Stretch);
+        layout.setFlexWrap(FlexWrap.Wrap);
+
         filterTextBezeichnung.setPlaceholder("Filter für Bezeichnung");
         filterTextBezeichnung.addValueChangeListener(e -> crud.getGrid().setItems(getItems()));
         filterTextBezeichnung.setValueChangeMode(ValueChangeMode.LAZY);
@@ -125,12 +132,16 @@ public class TemplateMehrwertsteuercodeView extends VerticalLayout implements Vi
         filterToolbar.addComponents(filterTextBezeichnung, filterTemplateBuchhaltung, clearFilterTextBtn);
         filterToolbar.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 
-        addComponents(new Menu());
-        addComponentsAndExpand(createCrud());
+        layout.addComponents(filterToolbar, createCrud());
+        layout.setSizeFull();
+        return layout;
+
     }
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
+        addComponent(createContent());
+        setSizeFull();
         if (event.getParameters() != null) {
             String[] msgs = event.getParameters().split("/");
             String target = new String();
@@ -146,6 +157,7 @@ public class TemplateMehrwertsteuercodeView extends VerticalLayout implements Vi
                 crud.getGrid().select(templateMehrwertsteuercodeDeltaspikeFacade.findBy(id));
             }
         }
+
     }
 
     @Override

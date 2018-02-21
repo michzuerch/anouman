@@ -254,13 +254,6 @@ public class Menu extends CustomComponent {
             }
         });
 
-        testsComponents.addItem("TestAdresse", VaadinIcons.EDIT, new MenuBar.Command() {
-            @Override
-            public void menuSelected(MenuBar.MenuItem selectedItem) {
-                getUI().getNavigator().navigateTo("TestAdresseView");
-            }
-        });
-
         testsComponents.addItem("EditorTestGridEdit", VaadinIcons.YOUTUBE, new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem selectedItem) {

@@ -4,7 +4,6 @@ import com.gmail.michzuerch.anouman.backend.entity.report.jasper.ReportJasper;
 import com.gmail.michzuerch.anouman.backend.entity.report.jasper.ReportJasperImage;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.ReportJasperDeltaspikeFacade;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.ReportJasperImageDeltaspikeFacade;
-import com.gmail.michzuerch.anouman.presentation.ui.Menu;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
@@ -14,6 +13,7 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 import org.slf4j.LoggerFactory;
+import org.vaadin.teemusa.flexlayout.*;
 
 import javax.inject.Inject;
 
@@ -25,9 +25,6 @@ public class ReportJasperImageView extends VerticalLayout implements View {
     TextField filterTextBezeichnung = new TextField();
 
     @Inject
-    private Menu menu;
-
-    @Inject
     private ReportJasperDeltaspikeFacade reportJasperDeltaspikeFacade;
 
     @Inject
@@ -36,10 +33,15 @@ public class ReportJasperImageView extends VerticalLayout implements View {
     @Inject
     private ReportJasperImageForm form;
 
-    @Override
-    public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
-        setStyleName("anouman-background");
 
+    private Component createContent() {
+        FlexLayout layout = new FlexLayout();
+
+        layout.setFlexDirection(FlexDirection.Row);
+        layout.setAlignItems(AlignItems.FlexEnd);
+        layout.setJustifyContent(JustifyContent.SpaceBetween);
+        layout.setAlignContent(AlignContent.Stretch);
+        layout.setFlexWrap(FlexWrap.Wrap);
         filterTextBezeichnung.setPlaceholder("Filter für Bezeichnung");
         filterTextBezeichnung.addValueChangeListener(e -> updateList());
         filterTextBezeichnung.setValueChangeMode(ValueChangeMode.LAZY);
@@ -70,8 +72,6 @@ public class ReportJasperImageView extends VerticalLayout implements View {
         tools.addComponents(filterTextBezeichnung, clearFilterTextBtn, addBtn);
         tools.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 
-        grid.setCaption("Report Jasper Bild");
-        grid.setCaptionAsHtml(true);
         grid.addColumn(ReportJasperImage::getId).setCaption("id");
         grid.addColumn(ReportJasperImage::getBezeichnung).setCaption("Bezeichnung");
         grid.addColumn(ReportJasperImage::getSize).setCaption("Grösse");
@@ -108,9 +108,18 @@ public class ReportJasperImageView extends VerticalLayout implements View {
 
         //@todo Downloadbutton für Report
         grid.setSizeFull();
+
+        layout.addComponents(tools, grid);
+        layout.setSizeFull();
+        return layout;
+    }
+
+
+    @Override
+    public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
+        addComponent(createContent());
+        setSizeFull();
         updateList();
-        addComponents(menu, tools);
-        addComponentsAndExpand(grid);
     }
 
     private void updateList() {

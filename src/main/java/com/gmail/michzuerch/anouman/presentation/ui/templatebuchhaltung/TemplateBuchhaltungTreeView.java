@@ -2,7 +2,6 @@ package com.gmail.michzuerch.anouman.presentation.ui.templatebuchhaltung;
 
 import com.gmail.michzuerch.anouman.backend.entity.*;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.*;
-import com.gmail.michzuerch.anouman.presentation.ui.Menu;
 import com.gmail.michzuerch.anouman.presentation.ui.templatebuchhaltung.form.*;
 import com.gmail.michzuerch.anouman.presentation.ui.templatebuchhaltung.templatemehrwertsteuercode.TemplateMehrwertsteuercodeForm;
 import com.vaadin.cdi.CDIView;
@@ -16,6 +15,7 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 import org.slf4j.LoggerFactory;
+import org.vaadin.teemusa.flexlayout.*;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -38,9 +38,6 @@ public class TemplateBuchhaltungTreeView extends VerticalLayout implements View 
     private Window windowMehrwertsteuercode;
 
     private TemplateBuchhaltungTreeData treeRootItem;
-
-    @Inject
-    private Menu menu;
 
     @Inject
     private TemplateBuchhaltungDeltaspikeFacade templateBuchhaltungDeltaspikeFacade;
@@ -78,9 +75,16 @@ public class TemplateBuchhaltungTreeView extends VerticalLayout implements View 
     @Inject
     private TemplateMehrwertsteuercodeForm templateMehrwertsteuercodeForm;
 
-    @Override
-    public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
-        setStyleName("anouman-background");
+
+    private Component createContent() {
+        FlexLayout layout = new FlexLayout();
+
+        layout.setFlexDirection(FlexDirection.Row);
+        layout.setAlignItems(AlignItems.FlexEnd);
+        layout.setJustifyContent(JustifyContent.SpaceBetween);
+        layout.setAlignContent(AlignContent.Stretch);
+        layout.setFlexWrap(FlexWrap.Wrap);
+
         HorizontalLayout toolsLayout = new HorizontalLayout();
         HorizontalLayout bodyLayout = new HorizontalLayout();
         buchhaltungSelect = createTemplateBuchhaltungSelect();
@@ -184,9 +188,17 @@ public class TemplateBuchhaltungTreeView extends VerticalLayout implements View 
             }
         });
 
-        addComponents(menu, toolsLayout);
-        addComponentsAndExpand(bodyLayout);
-        bodyLayout.setExpandRatio(buchhaltungPanel, 1);
+        layout.addComponents(toolsLayout, bodyLayout);
+        layout.setSizeFull();
+        return layout;
+    }
+
+
+    @Override
+    public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
+        addComponent(createContent());
+        setSizeFull();
+
 
     }
 

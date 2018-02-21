@@ -8,11 +8,12 @@ import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.VerticalLayout;
 import org.slf4j.LoggerFactory;
+import org.vaadin.teemusa.flexlayout.*;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.time.*;
 
@@ -292,12 +293,19 @@ public class TestDataCreateView extends VerticalLayout implements View {
         Notification.show("Testdaten Template Buchhaltung erstellt", Notification.Type.TRAY_NOTIFICATION);
     }
 
-    @PostConstruct
-    void init() {
-        Button rechnungTestBtn = new Button("Create TestData Rechnung", clickEvent -> {
+    private Component createContent() {
+        FlexLayout layout = new FlexLayout();
+
+        layout.setFlexDirection(FlexDirection.Row);
+        layout.setAlignItems(AlignItems.FlexEnd);
+        layout.setJustifyContent(JustifyContent.SpaceBetween);
+        layout.setAlignContent(AlignContent.Stretch);
+        layout.setFlexWrap(FlexWrap.Wrap);
+
+        Button createRechnungTestBtn = new Button("Create TestData Rechnung", clickEvent -> {
             createTestDataRechnung();
         });
-        rechnungTestBtn.setIcon(VaadinIcons.ACADEMY_CAP);
+        createRechnungTestBtn.setIcon(VaadinIcons.ACADEMY_CAP);
 
         Button uzerTestBtn = new Button("Create TestData Uzer", clickEvent -> {
             createTestDataUzer();
@@ -309,15 +317,20 @@ public class TestDataCreateView extends VerticalLayout implements View {
         });
         createTemplateBuchhaltungBtn.setIcon(VaadinIcons.TOOTH);
 
-        Button createArtikelstammBtn = new Button("Create Testdata Artikelstramm", clickEvent -> {
+        Button createArtikelstammBtn = new Button("Create Testdata Artikelstamm", clickEvent -> {
             createArtikelstamm();
         });
         createArtikelstammBtn.setIcon(VaadinIcons.EYE);
 
-        addComponents(menu, rechnungTestBtn, createTemplateBuchhaltungBtn, createArtikelstammBtn);
+        layout.addComponents(createRechnungTestBtn, createTemplateBuchhaltungBtn, createArtikelstammBtn);
+        layout.setSizeFull();
+        return layout;
     }
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
+        addComponent(createContent());
+        setSizeFull();
+
     }
 }

@@ -80,7 +80,6 @@ public class AdresseView extends HorizontalLayout implements View {
         tools.addComponents(filterTextFirma, filterTextNachname, filterTextOrt, clearFilterTextBtn, addBtn);
         tools.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 
-        grid.setCaptionAsHtml(true);
         grid.addColumn(Adresse::getId).setCaption("id");
         grid.addColumn(Adresse::getFirma).setCaption("Firma");
         grid.addColumn(Adresse::getNachname).setCaption("Nachname");

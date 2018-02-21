@@ -7,10 +7,7 @@ import com.gmail.michzuerch.anouman.presentation.ui.field.BetragField;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.TabSheet;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,8 +18,8 @@ import org.vaadin.crudui.crud.impl.EditableGridCrud;
 import org.vaadin.crudui.crud.impl.GridCrud;
 import org.vaadin.crudui.form.impl.form.factory.VerticalCrudFormFactory;
 import org.vaadin.crudui.layout.impl.WindowBasedCrudLayout;
+import org.vaadin.teemusa.flexlayout.*;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.util.Collection;
 
@@ -37,18 +34,6 @@ public class GridCrudTestView extends VerticalLayout implements View, CrudListen
     AdresseDeltaspikeFacade facade;
 
     private TabSheet tabSheet = new TabSheet();
-
-    @PostConstruct
-    void init() {
-        logger.debug("GridCrudTest init");
-        addComponents(menu);
-        addComponentsAndExpand(tabSheet);
-        //addCrud(getDefaultCrud(), "Default");
-        //addCrud(getDefaultCrudWithFixes(), "Default (with fixes)");
-        addCrud(getCrud(), "Configured");
-        //addCrud(getEditableGridCrud(), "Editable Grid");
-    }
-
 
     private void addCrud(Crud crud, String caption) {
         VerticalLayout layout = new VerticalLayout(crud);
@@ -136,8 +121,30 @@ public class GridCrudTestView extends VerticalLayout implements View, CrudListen
         return crud;
     }
 
+    private Component createContent() {
+        FlexLayout layout = new FlexLayout();
+
+        layout.setFlexDirection(FlexDirection.Row);
+        layout.setAlignItems(AlignItems.FlexEnd);
+        layout.setJustifyContent(JustifyContent.SpaceBetween);
+        layout.setAlignContent(AlignContent.Stretch);
+        layout.setFlexWrap(FlexWrap.Wrap);
+
+        layout.addComponent(tabSheet);
+        //addCrud(getDefaultCrud(), "Default");
+        //addCrud(getDefaultCrudWithFixes(), "Default (with fixes)");
+        addCrud(getCrud(), "Configured");
+        //addCrud(getEditableGridCrud(), "Editable Grid");
+        layout.setSizeFull();
+        return layout;
+    }
+
+
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
+        addComponent(createContent());
+        setSizeFull();
+
         logger.debug("GridCrudTest enter");
     }
 

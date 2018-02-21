@@ -2,7 +2,6 @@ package com.gmail.michzuerch.anouman.presentation.ui.report.css;
 
 import com.gmail.michzuerch.anouman.backend.entity.report.css.ReportCSSImage;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.ReportCSSImageDeltaspikeFacade;
-import com.gmail.michzuerch.anouman.presentation.ui.Menu;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
@@ -19,8 +18,8 @@ import org.vaadin.crudui.crud.CrudOperation;
 import org.vaadin.crudui.crud.impl.GridCrud;
 import org.vaadin.crudui.form.impl.form.factory.VerticalCrudFormFactory;
 import org.vaadin.crudui.layout.impl.WindowBasedCrudLayout;
+import org.vaadin.teemusa.flexlayout.*;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.util.Collection;
 
@@ -85,8 +84,16 @@ public class ReportCSSImageView extends VerticalLayout implements View, CrudList
         return crud;
     }
 
-    @PostConstruct
-    void init() {
+
+    private Component createContent() {
+        FlexLayout layout = new FlexLayout();
+
+        layout.setFlexDirection(FlexDirection.Row);
+        layout.setAlignItems(AlignItems.FlexEnd);
+        layout.setJustifyContent(JustifyContent.SpaceBetween);
+        layout.setAlignContent(AlignContent.Stretch);
+        layout.setFlexWrap(FlexWrap.Wrap);
+
         filterTextBezeichnung.setPlaceholder("Filter für Bezeichnung");
         filterTextBezeichnung.addValueChangeListener(e -> crud.getGrid().setItems(getItems()));
         filterTextBezeichnung.setValueChangeMode(ValueChangeMode.LAZY);
@@ -100,12 +107,16 @@ public class ReportCSSImageView extends VerticalLayout implements View, CrudList
         filterToolbar.addComponents(filterTextBezeichnung, clearFilterTextBtn);
         filterToolbar.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 
-        addComponents(new Menu());
-        addComponentsAndExpand(createCrud());
+        layout.addComponents(filterToolbar, createCrud());
+        layout.setSizeFull();
+        return layout;
     }
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
+        addComponent(createContent());
+        setSizeFull();
+
         if (event.getParameters() != null) {
             String[] msgs = event.getParameters().split("/");
             String target = new String();
