@@ -42,6 +42,7 @@ public class AnoumanUI extends UI {
                 .spaceAround().alignContent().end().nowrap().build();
         naviBar.addComponents(new Menu());
         naviBar.setHeight("45px");
+
         VerticalLayout content = new VerticalLayout(naviBar, container);
         setContent(content);
         navigator.navigateTo("AboutView");
