@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="Anouman" company="" webLink="http://" view-date="2018-01-12" view-index="0" gantt-divider-location="751" resource-divider-location="300" version="2.8.5" locale="de">
+<?xml version="1.0" encoding="UTF-8"?><project name="Anouman" company="" webLink="http://" view-date="2018-01-08" view-index="0" gantt-divider-location="751" resource-divider-location="300" version="2.8.6" locale="de">
     <description/>
     <view zooming-state="default:3" id="gantt-chart">
-        <field id="tpd3" name="Vorgang" width="291" order="0"/>
-        <field id="tpd4" name="Anfang" width="183" order="1"/>
+        <field id="tpd3" name="Vorgang" width="375" order="0"/>
+        <field id="tpd4" name="Anfang" width="99" order="1"/>
         <field id="tpd5" name="Ende" width="182" order="2"/>
         <field id="tpd6" name="Dauer" width="46" order="3"/>
         <field id="tpd7" name="Fortschritt" width="45" order="4"/>
@@ -35,9 +35,9 @@
             <taskproperty id="tpd8" name="coordinator" type="default" valuetype="text"/>
             <taskproperty id="tpd9" name="predecessorsr" type="default" valuetype="text"/>
         </taskproperties>
-        <task id="0" name="Anouman Fertigstelllung" color="#8cb6ce" meeting="false" start="2018-01-22" duration="14" complete="7" expand="true">
-            <task id="3" name="Evaluierung CRUDUI" color="#8cb6ce" meeting="false" start="2018-02-01" duration="1" complete="75" expand="true"/>
-            <task id="5" name="Beenden aller CRUD" meeting="false" start="2018-02-08" duration="1" complete="0" expand="true"/>
+        <task id="0" name="Anouman Fertigstelllung" color="#8cb6ce" meeting="false" start="2018-01-22" duration="14" complete="17" expand="true">
+            <task id="3" name="Evaluierung CRUDUI" color="#8cb6ce" meeting="false" start="2018-02-01" duration="1" complete="100" thirdDate="2018-02-01" thirdDate-constraint="0" expand="true"/>
+            <task id="5" name="Beenden aller CRUD" color="#8cb6ce" meeting="false" start="2018-02-08" duration="1" complete="75" thirdDate="2018-02-08" thirdDate-constraint="0" expand="true"/>
             <task id="6" name="Annotations Validation überarbeiten" meeting="false" start="2018-02-08" duration="1" complete="0" expand="true"/>
             <task id="14" name="Buchungsmaske" meeting="false" start="2018-01-22" duration="1" complete="0" expand="true"/>
             <task id="15" name="Backup JSON" meeting="false" start="2018-01-22" duration="1" complete="0" expand="true"/>
@@ -47,9 +47,8 @@
             <task id="19" name="Webshop" meeting="false" start="2018-01-22" duration="1" complete="0" expand="true"/>
             <task id="20" name="Demo mit Openshift" meeting="false" start="2018-01-22" duration="1" complete="0" expand="true"/>
         </task>
-        <task id="21" name="Anouman durchtesten und alle Issues in Gitea" meeting="false" start="2018-01-22" duration="1" complete="0" expand="true"/>
+        <task id="21" name="Anouman durchtesten und alle Issues in Gitea" color="#8cb6ce" meeting="false" start="2018-01-22" duration="1" complete="30" thirdDate="2018-01-22" thirdDate-constraint="0" expand="true"/>
         <task id="22" name="Prototyp mit Deltaspike Mongo" meeting="false" start="2018-01-22" duration="1" complete="0" expand="true"/>
-        <task id="23" name="Umstellung auf CRUDUI" meeting="false" start="2018-01-12" duration="1" complete="0" expand="true"/>
         <task id="24" name="App Layout als Menü einbauen" meeting="false" start="2018-01-12" duration="1" complete="0" expand="true"/>
     </tasks>
     <resources/>
