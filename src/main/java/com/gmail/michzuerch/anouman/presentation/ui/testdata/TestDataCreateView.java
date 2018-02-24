@@ -297,9 +297,9 @@ public class TestDataCreateView extends VerticalLayout implements View {
         FlexLayout layout = new FlexLayout();
 
         layout.setFlexDirection(FlexDirection.Row);
-        layout.setAlignItems(AlignItems.FlexEnd);
-        layout.setJustifyContent(JustifyContent.SpaceBetween);
-        layout.setAlignContent(AlignContent.Stretch);
+        layout.setAlignItems(AlignItems.FlexStart);
+        layout.setJustifyContent(JustifyContent.Center);
+        layout.setAlignContent(AlignContent.Center);
         layout.setFlexWrap(FlexWrap.Wrap);
 
         Button createRechnungTestBtn = new Button("Create TestData Rechnung", clickEvent -> {

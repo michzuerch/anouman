@@ -9,7 +9,7 @@ import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.Aufwan
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.RechnungDeltaspikeFacade;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.RechnungspositionDeltaspikeFacade;
 import com.gmail.michzuerch.anouman.presentation.ui.backup.BackupView;
-import com.gmail.michzuerch.anouman.presentation.ui.backup.xml.adressen.*;
+import com.gmail.michzuerch.anouman.presentation.ui.backup.dto.adressen.*;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Upload;
 import org.slf4j.LoggerFactory;

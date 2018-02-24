@@ -9,8 +9,8 @@
     <version>1</version>
     <name>Anouman</name>
     <properties>
-        <vaadin.version>8.3.1</vaadin.version>
-        <vaadin.plugin.version>8.3.1</vaadin.plugin.version>
+        <vaadin.version>8.4-SNAPSHOT</vaadin.version>
+        <vaadin.plugin.version>8.4-SNAPSHOT</vaadin.plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -80,11 +80,6 @@
             <artifactId>value</artifactId>
             <version>2.6.0.alpha0</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-jdk8</artifactId>
-            <version>2.9.4</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -247,6 +242,21 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
+            <version>2.9.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.module</groupId>
+            <artifactId>jackson-module-parameter-names</artifactId>
+            <version>2.9.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jdk8</artifactId>
+            <version>2.9.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
             <version>2.9.4</version>
         </dependency>
         <dependency>

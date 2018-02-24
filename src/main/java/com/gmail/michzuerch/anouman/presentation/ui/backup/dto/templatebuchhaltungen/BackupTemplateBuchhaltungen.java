@@ -1,7 +1,7 @@
-package com.gmail.michzuerch.anouman.presentation.ui.backup.xml.templatebuchhaltungen;
+package com.gmail.michzuerch.anouman.presentation.ui.backup.dto.templatebuchhaltungen;
 
 import javax.xml.bind.annotation.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,19 +12,19 @@ import java.util.Set;
 @XmlAccessorType(XmlAccessType.NONE)
 public class BackupTemplateBuchhaltungen {
     @XmlAttribute
-    private Date datum;
+    private LocalDateTime backupdatum;
     @XmlElement(name = "buchhaltung")
     private Set<BackupTemplateBuchhaltung> buchhaltungen = new HashSet<>();
 
     public BackupTemplateBuchhaltungen() {
     }
 
-    public Date getDatum() {
-        return datum;
+    public LocalDateTime getBackupdatum() {
+        return backupdatum;
     }
 
-    public void setDatum(Date datum) {
-        this.datum = datum;
+    public void setBackupdatum(LocalDateTime backupdatum) {
+        this.backupdatum = backupdatum;
     }
 
     public Set<BackupTemplateBuchhaltung> getBuchhaltungen() {

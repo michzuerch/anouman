@@ -1,4 +1,4 @@
-package com.gmail.michzuerch.anouman.presentation.ui.backup.xml.templatebuchhaltungen;
+package com.gmail.michzuerch.anouman.presentation.ui.backup.dto.buchhaltungen;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -11,18 +11,18 @@ import java.util.Set;
  * Created by michzuerch on 16.11.15.
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public class BackupTemplateKontohauptgruppe {
+public class BackupKontogruppe {
     @XmlAttribute
     private String bezeichnung;
     @XmlAttribute
     private String kontonummer;
-    @XmlElement(name = "kontogruppe")
-    private Set<BackupTemplateKontogruppe> backupTemplateKontogruppes = new HashSet<>();
+    @XmlElement(name = "konto")
+    private Set<BackupKonto> kontos = new HashSet<>();
 
-    public BackupTemplateKontohauptgruppe() {
+    public BackupKontogruppe() {
     }
 
-    public BackupTemplateKontohauptgruppe(String bezeichnung, String kontonummer) {
+    public BackupKontogruppe(String bezeichnung, String kontonummer) {
         this.bezeichnung = bezeichnung;
         this.kontonummer = kontonummer;
     }
@@ -43,12 +43,11 @@ public class BackupTemplateKontohauptgruppe {
         this.kontonummer = kontonummer;
     }
 
-    public Set<BackupTemplateKontogruppe> getBackupTemplateKontogruppes() {
-        return backupTemplateKontogruppes;
+    public Set<BackupKonto> getKontos() {
+        return kontos;
     }
 
-    public void setBackupTemplateKontogruppes(Set<BackupTemplateKontogruppe> backupTemplateKontogruppes) {
-        this.backupTemplateKontogruppes = backupTemplateKontogruppes;
+    public void setKontos(Set<BackupKonto> kontos) {
+        this.kontos = kontos;
     }
-
 }

@@ -1,4 +1,4 @@
-package com.gmail.michzuerch.anouman.presentation.ui.backup.xml.templatebuchhaltungen;
+package com.gmail.michzuerch.anouman.presentation.ui.backup.dto.buchhaltungen;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -12,7 +12,7 @@ import java.util.Set;
  */
 
 @XmlAccessorType(XmlAccessType.NONE)
-public class BackupTemplateKonto {
+public class BackupKonto {
     @XmlAttribute
     private String bezeichnung;
     @XmlAttribute
@@ -21,15 +21,17 @@ public class BackupTemplateKonto {
     private String kontonummer;
     @XmlElement
     private String showKontonummer;
-    @XmlElement(name = "templatemehrwertsteuercode")
-    private Set<BackupTemplateMehrwertsteuercode> backupTemplateMehrwertsteuercodes = new HashSet<>();
-
-
+    @XmlElement
+    private Double anfangsbestand;
+    @XmlAttribute
     private Long id;
+    @XmlElement(name = "buchung")
+    private Set<BackupBuchung> buchungen = new HashSet<>();
+    @XmlElement(name = "mehrwersteuercode")
+    private Set<BackupMehrwertsteuercode> mehrwertsteuercodes = new HashSet<>();
 
-    public BackupTemplateKonto() {
+    public BackupKonto() {
     }
-
 
     public String getBezeichnung() {
         return bezeichnung;
@@ -55,6 +57,14 @@ public class BackupTemplateKonto {
         this.kontonummer = kontonummer;
     }
 
+    public Double getAnfangsbestand() {
+        return anfangsbestand;
+    }
+
+    public void setAnfangsbestand(Double anfangsbestand) {
+        this.anfangsbestand = anfangsbestand;
+    }
+
     public String getShowKontonummer() {
         return showKontonummer;
     }
@@ -63,12 +73,20 @@ public class BackupTemplateKonto {
         this.showKontonummer = showKontonummer;
     }
 
-    public Set<BackupTemplateMehrwertsteuercode> getBackupTemplateMehrwertsteuercodes() {
-        return backupTemplateMehrwertsteuercodes;
+    public Set<BackupBuchung> getBuchungen() {
+        return buchungen;
     }
 
-    public void setBackupTemplateMehrwertsteuercodes(Set<BackupTemplateMehrwertsteuercode> backupTemplateMehrwertsteuercodes) {
-        this.backupTemplateMehrwertsteuercodes = backupTemplateMehrwertsteuercodes;
+    public void setBuchungen(Set<BackupBuchung> buchungen) {
+        this.buchungen = buchungen;
+    }
+
+    public Set<BackupMehrwertsteuercode> getMehrwertsteuercodes() {
+        return mehrwertsteuercodes;
+    }
+
+    public void setMehrwertsteuercodes(Set<BackupMehrwertsteuercode> mehrwertsteuercodes) {
+        this.mehrwertsteuercodes = mehrwertsteuercodes;
     }
 
     public Long getId() {

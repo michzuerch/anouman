@@ -1,7 +1,10 @@
-package com.gmail.michzuerch.anouman.presentation.ui.backup.xml.buchhaltungen;
+package com.gmail.michzuerch.anouman.presentation.ui.backup.dto.buchhaltungen;
 
-import javax.xml.bind.annotation.*;
-import java.util.Date;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,8 +14,8 @@ import java.util.Set;
 @XmlRootElement(name = "buchhaltungen", namespace = "http://www.internettechnik.ch/Anouman")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class BackupBuchhaltungen {
-    @XmlAttribute
-    private Date datum;
+    @XmlElement(name = "backupdatum")
+    private LocalDateTime backupdatum;
 
     @XmlElement(name = "buchhaltung")
     private Set<BackupBuchhaltung> buchhaltungen = new HashSet<>();
@@ -28,12 +31,12 @@ public class BackupBuchhaltungen {
         this.buchhaltungen = buchhaltungen;
     }
 
-    public Date getDatum() {
-        return datum;
+    public LocalDateTime getBackupdatum() {
+        return backupdatum;
     }
 
-    public void setDatum(Date datum) {
-        this.datum = datum;
+    public void setBackupdatum(LocalDateTime backupdatum) {
+        this.backupdatum = backupdatum;
     }
 
     public void addBuchhaltung(BackupBuchhaltung buchhaltung) {

@@ -1,4 +1,4 @@
-package com.gmail.michzuerch.anouman.presentation.ui.backup.xml.adressen;
+package com.gmail.michzuerch.anouman.presentation.ui.backup.dto.adressen;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

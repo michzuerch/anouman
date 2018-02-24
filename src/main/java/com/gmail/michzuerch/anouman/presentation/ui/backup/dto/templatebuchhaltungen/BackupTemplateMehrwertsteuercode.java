@@ -1,4 +1,4 @@
-package com.gmail.michzuerch.anouman.presentation.ui.backup.xml.templatebuchhaltungen;
+package com.gmail.michzuerch.anouman.presentation.ui.backup.dto.templatebuchhaltungen;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

@@ -92,7 +92,8 @@ public class ArtikelkategorieView extends VerticalLayout implements View {
 
         grid.addColumn(adresse -> "ändern",
                 new ButtonRenderer(event -> {
-                    artikelkategorieForm.setEntity((Artikelkategorie) event.getItem());
+                    Artikelkategorie artikelkategorie = (Artikelkategorie) event.getItem();
+                    artikelkategorieForm.setEntity(artikelkategorie);
                     artikelkategorieForm.openInModalPopup();
                     artikelkategorieForm.setSavedHandler(val -> {
                         artikelkategorieDeltaspikeFacade.save(val);

@@ -13,7 +13,7 @@ import javax.inject.Inject;
 
 public class ArtikelForm extends AbstractForm<Artikel> {
 
-    NativeSelect<Artikelkategorie> artikelkategorieNativeSelect = new NativeSelect<>();
+    NativeSelect<Artikelkategorie> artikelkategorie = new NativeSelect<>();
     TextField bezeichnung = new TextField("Bezeichnung");
     TextArea bezeichnungLang = new TextArea("Bezeichnung Lang");
     TextField mengeneinheit = new TextField("Mengeneinheit");
@@ -28,7 +28,7 @@ public class ArtikelForm extends AbstractForm<Artikel> {
     }
 
     public void lockSelect() {
-        artikelkategorieNativeSelect.setEnabled(false);
+        artikelkategorie.setEnabled(false);
     }
 
     @Override
@@ -50,12 +50,12 @@ public class ArtikelForm extends AbstractForm<Artikel> {
                 NumberField.getConverter("Muss Anzahl sein")
         ).bind("anzahl");
 
-        artikelkategorieNativeSelect.setCaption("Artikelkategorie");
-        artikelkategorieNativeSelect.setEmptySelectionAllowed(false);
-        artikelkategorieNativeSelect.setItems(artikelkategorieDeltaspikeFacade.findAll());
-        artikelkategorieNativeSelect.setItemCaptionGenerator(artikelkategorie -> artikelkategorie.getBezeichnung() + " id:" + artikelkategorie.getId());
+        artikelkategorie.setCaption("Artikelkategorie");
+        artikelkategorie.setEmptySelectionAllowed(false);
+        artikelkategorie.setItems(artikelkategorieDeltaspikeFacade.findAll());
+        artikelkategorie.setItemCaptionGenerator(artikelkategorie -> artikelkategorie.getBezeichnung() + " id:" + artikelkategorie.getId());
         return new VerticalLayout(new FormLayout(
-                artikelkategorieNativeSelect, bezeichnung, bezeichnungLang, mengeneinheit, stueckpreis, anzahl
+                artikelkategorie, bezeichnung, bezeichnungLang, mengeneinheit, stueckpreis, anzahl
         ), getToolbar());
     }
 

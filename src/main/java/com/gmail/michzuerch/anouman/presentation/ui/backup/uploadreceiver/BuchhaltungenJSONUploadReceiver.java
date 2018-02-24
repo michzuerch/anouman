@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gmail.michzuerch.anouman.backend.entity.*;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.*;
 import com.gmail.michzuerch.anouman.presentation.ui.backup.BackupView;
-import com.gmail.michzuerch.anouman.presentation.ui.backup.xml.buchhaltungen.*;
+import com.gmail.michzuerch.anouman.presentation.ui.backup.dto.buchhaltungen.*;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Upload;
 import org.slf4j.LoggerFactory;

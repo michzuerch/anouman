@@ -3,7 +3,7 @@ package com.gmail.michzuerch.anouman.presentation.ui.backup.uploadreceiver;
 import com.gmail.michzuerch.anouman.backend.entity.*;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.*;
 import com.gmail.michzuerch.anouman.presentation.ui.backup.BackupView;
-import com.gmail.michzuerch.anouman.presentation.ui.backup.xml.templatebuchhaltungen.*;
+import com.gmail.michzuerch.anouman.presentation.ui.backup.dto.templatebuchhaltungen.*;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Upload;
 import org.slf4j.LoggerFactory;
