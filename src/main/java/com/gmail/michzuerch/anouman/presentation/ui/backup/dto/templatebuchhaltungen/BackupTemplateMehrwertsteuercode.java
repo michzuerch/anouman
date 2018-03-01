@@ -1,31 +1,15 @@
 package com.gmail.michzuerch.anouman.presentation.ui.backup.dto.templatebuchhaltungen;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 
 /**
  * Created by michzuerch on 16.11.15.
  */
-@XmlAccessorType(XmlAccessType.NONE)
 public class BackupTemplateMehrwertsteuercode {
-    @XmlAttribute
     private Long id;
-
-    @XmlElement
     private String bezeichnung;
-
-    @XmlElement
     private String code;
-
-    @XmlElement
     private Double prozent;
-
-    @XmlElement
     private boolean verkauf;
-
-    @XmlElement
     private Long konto;
 
     public BackupTemplateMehrwertsteuercode() {

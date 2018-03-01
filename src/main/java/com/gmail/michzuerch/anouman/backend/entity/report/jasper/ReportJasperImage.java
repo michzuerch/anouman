@@ -19,7 +19,7 @@ public class ReportJasperImage extends AbstractEntity {
 
     @Column
     @Basic(fetch = FetchType.LAZY)
-    private Byte[] image;
+    private byte[] image;
 
     @Transient
     private int size;
@@ -49,11 +49,11 @@ public class ReportJasperImage extends AbstractEntity {
         this.mimeType = mimeType;
     }
 
-    public Byte[] getImage() {
+    public byte[] getImage() {
         return image;
     }
 
-    public void setImage(Byte[] image) {
+    public void setImage(byte[] image) {
         this.image = image;
     }
 

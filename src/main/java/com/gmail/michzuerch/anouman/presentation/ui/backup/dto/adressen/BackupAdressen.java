@@ -1,6 +1,5 @@
 package com.gmail.michzuerch.anouman.presentation.ui.backup.dto.adressen;
 
-import javax.xml.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,13 +7,8 @@ import java.util.List;
 /**
  * Created by michzuerch on 25.07.15.
  */
-@XmlRootElement(name = "adressen", namespace = "http://www.internettechnik.ch/Anouman")
-@XmlAccessorType(XmlAccessType.NONE)
 public class BackupAdressen {
-    @XmlAttribute
     private LocalDateTime backupdatum;
-
-    @XmlElement(name = "adresse")
     private List<BackupAdresse> adressen = new ArrayList<>();
 
     public List<BackupAdresse> getAdressen() {
@@ -31,5 +25,13 @@ public class BackupAdressen {
 
     public void setBackupdatum(LocalDateTime backupdatum) {
         this.backupdatum = backupdatum;
+    }
+
+    @Override
+    public String toString() {
+        return "BackupAdressen{" +
+                "backupdatum=" + backupdatum +
+                ", adressen=" + adressen +
+                '}';
     }
 }

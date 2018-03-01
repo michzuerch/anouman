@@ -2,10 +2,13 @@ package com.gmail.michzuerch.anouman.presentation.ui.backup;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
-import com.gmail.michzuerch.anouman.backend.entity.*;
+import com.gmail.michzuerch.anouman.backend.entity.Adresse;
+import com.gmail.michzuerch.anouman.backend.entity.Buchhaltung;
+import com.gmail.michzuerch.anouman.backend.entity.TemplateBuchhaltung;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.AdresseDeltaspikeFacade;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.BuchhaltungDeltaspikeFacade;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.RechnungDeltaspikeFacade;
@@ -24,13 +27,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.teemusa.flexlayout.*;
 import org.vaadin.viritin.button.DownloadButton;
+import server.droporchoose.UploadComponent;
 
 import javax.inject.Inject;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.PropertyException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -42,7 +46,7 @@ import java.util.List;
 @CDIView("BackupView")
 public class BackupView extends VerticalLayout implements View {
     private static Logger logger = LoggerFactory.getLogger(BackupView.class.getName());
-
+    private String filename = new String();
 
     @Inject
     AdresseDeltaspikeFacade adresseDeltaspikeFacade;
@@ -73,100 +77,8 @@ public class BackupView extends VerticalLayout implements View {
 
     @Inject
     BuchhaltungenJSONUploadReceiver buchhaltungenJSONUploadReceiver;
-
-    private BackupAdressen getBackupAdressen() {
-        BackupAdressen backupAdressen = new BackupAdressen();
-        Instant now = Instant.now();
-        backupAdressen.setBackupdatum(LocalDateTime.ofInstant(now, ZoneOffset.UTC));
-        adresseDeltaspikeFacade.findAll().stream().forEach(adresse -> {
-            BackupAdresse backupAdresse = new BackupAdresse();
-            backupAdresse.setAnrede(adresse.getAnrede());
-            backupAdresse.setFirma(adresse.getFirma());
-            backupAdresse.setNachname(adresse.getNachname());
-            backupAdresse.setOrt(adresse.getOrt());
-            backupAdresse.setPostleitzahl(adresse.getPostleitzahl());
-            backupAdresse.setStrasse(adresse.getStrasse());
-            backupAdresse.setStundensatz(adresse.getStundensatz());
-            backupAdresse.setVorname(adresse.getVorname());
-            backupAdressen.getAdressen().add(backupAdresse);
-            adresse.getRechnungen().stream().forEach(rechnung -> {
-                BackupRechnung backupRechnung = new BackupRechnung();
-                backupRechnung.setBezeichnung(rechnung.getBezeichnung());
-                backupRechnung.setBezahlt(rechnung.isBezahlt());
-                backupRechnung.setVerschickt(rechnung.isVerschickt());
-                backupRechnung.setRechnungsdatum(rechnung.getRechnungsdatum());
-
-                rechnung.getRechnungspositionen().stream().forEach(rechnungsposition -> {
-                    BackupRechnungsposition backupRechnungsposition = new BackupRechnungsposition();
-                    backupRechnungsposition.setBezeichnung(rechnungsposition.getBezeichnung());
-                    backupRechnungsposition.setBezeichnunglang(rechnungsposition.getBezeichnunglang());
-                    backupRechnungsposition.setAnzahl(rechnungsposition.getAnzahl());
-                    backupRechnungsposition.setMengeneinheit(rechnungsposition.getMengeneinheit());
-                    backupRechnungsposition.setStueckpreis(rechnungsposition.getStueckpreis());
-                    backupRechnung.getRechnungspositions().add(backupRechnungsposition);
-                });
-
-                rechnung.getAufwands().stream().forEach(aufwand -> {
-                    BackupAufwand backupAufwand = new BackupAufwand();
-                    backupAufwand.setBezeichnung(aufwand.getBezeichnung());
-                    backupAufwand.setTitel(aufwand.getTitel());
-                    backupAufwand.setStart(aufwand.getStart());
-                    backupAufwand.setEnd(aufwand.getEnd());
-                    backupRechnung.getAufwands().add(backupAufwand);
-                });
-                backupAdresse.getRechnungen().add(backupRechnung);
-            });
-        });
-        return backupAdressen;
-    }
-
-    private BackupAdressen getBackupAdresse(Adresse adresse) {
-        BackupAdressen backupAdressen = new BackupAdressen();
-        Instant now = Instant.now();
-        backupAdressen.setBackupdatum(LocalDateTime.ofInstant(now, ZoneOffset.UTC));
-
-        BackupAdresse backupAdresse = new BackupAdresse();
-        backupAdresse.setAnrede(adresse.getAnrede());
-        backupAdresse.setFirma(adresse.getFirma());
-        backupAdresse.setNachname(adresse.getNachname());
-        backupAdresse.setOrt(adresse.getOrt());
-        backupAdresse.setPostleitzahl(adresse.getPostleitzahl());
-        backupAdresse.setStrasse(adresse.getStrasse());
-        backupAdresse.setStundensatz(adresse.getStundensatz());
-        backupAdresse.setVorname(adresse.getVorname());
-        backupAdressen.getAdressen().add(backupAdresse);
-
-        adresse.getRechnungen().stream().forEach(rechnung -> {
-            BackupRechnung backupRechnung = new BackupRechnung();
-            backupRechnung.setBezahlt(rechnung.isBezahlt());
-            backupRechnung.setVerschickt(rechnung.isVerschickt());
-            backupRechnung.setBezeichnung(rechnung.getBezeichnung());
-            backupRechnung.setFaelligInTagen(rechnung.getFaelligInTagen());
-            backupRechnung.setRechnungsdatum(rechnung.getRechnungsdatum());
-            backupAdresse.getRechnungen().add(backupRechnung);
-
-            rechnung.getRechnungspositionen().stream().forEach(rechnungsposition -> {
-                BackupRechnungsposition backupRechnungsposition = new BackupRechnungsposition();
-                backupRechnungsposition.setAnzahl(rechnungsposition.getAnzahl());
-                backupRechnungsposition.setBezeichnung(rechnungsposition.getBezeichnung());
-                backupRechnungsposition.setBezeichnunglang(rechnungsposition.getBezeichnunglang());
-                backupRechnungsposition.setMengeneinheit(rechnungsposition.getMengeneinheit());
-                backupRechnungsposition.setStueckpreis(rechnungsposition.getStueckpreis());
-                backupRechnung.getRechnungspositions().add(backupRechnungsposition);
-            });
-
-            rechnung.getAufwands().stream().forEach(aufwand -> {
-                BackupAufwand backupAufwand = new BackupAufwand();
-                backupAufwand.setTitel(aufwand.getTitel());
-                backupAufwand.setBezeichnung(aufwand.getBezeichnung());
-                backupAufwand.setStart(aufwand.getStart());
-                backupAufwand.setEnd(aufwand.getEnd());
-                backupRechnung.getAufwands().add(backupAufwand);
-            });
-        });
-
-        return backupAdressen;
-    }
+    private RadioButtonGroup<String> fileFormatDownloadGroup;
+    private RadioButtonGroup<String> fileFormatUploadGroup;
 
     private BackupBuchhaltungen getBackupBuchhaltungen() {
         BackupBuchhaltungen backupBuchhaltungen = new BackupBuchhaltungen();
@@ -348,6 +260,99 @@ public class BackupView extends VerticalLayout implements View {
 
     }
 
+    private BackupAdressen getBackupAdressen() {
+        BackupAdressen backupAdressen = new BackupAdressen();
+        Instant now = Instant.now();
+        backupAdressen.setBackupdatum(LocalDateTime.now());
+        adresseDeltaspikeFacade.findAll().stream().forEach(adresse -> {
+            BackupAdresse backupAdresse = new BackupAdresse();
+            backupAdresse.setAnrede(adresse.getAnrede());
+            backupAdresse.setFirma(adresse.getFirma());
+            backupAdresse.setNachname(adresse.getNachname());
+            backupAdresse.setOrt(adresse.getOrt());
+            backupAdresse.setPostleitzahl(adresse.getPostleitzahl());
+            backupAdresse.setStrasse(adresse.getStrasse());
+            backupAdresse.setStundensatz(adresse.getStundensatz());
+            backupAdresse.setVorname(adresse.getVorname());
+            backupAdressen.getAdressen().add(backupAdresse);
+            adresse.getRechnungen().stream().forEach(rechnung -> {
+                BackupRechnung backupRechnung = new BackupRechnung();
+                backupRechnung.setBezeichnung(rechnung.getBezeichnung());
+                backupRechnung.setBezahlt(rechnung.isBezahlt());
+                backupRechnung.setVerschickt(rechnung.isVerschickt());
+                backupRechnung.setRechnungsdatum(rechnung.getRechnungsdatum());
+
+                rechnung.getRechnungspositionen().stream().forEach(rechnungsposition -> {
+                    BackupRechnungsposition backupRechnungsposition = new BackupRechnungsposition();
+                    backupRechnungsposition.setBezeichnung(rechnungsposition.getBezeichnung());
+                    backupRechnungsposition.setBezeichnunglang(rechnungsposition.getBezeichnunglang());
+                    backupRechnungsposition.setAnzahl(rechnungsposition.getAnzahl());
+                    backupRechnungsposition.setMengeneinheit(rechnungsposition.getMengeneinheit());
+                    backupRechnungsposition.setStueckpreis(rechnungsposition.getStueckpreis());
+                    backupRechnung.getRechnungspositions().add(backupRechnungsposition);
+                });
+
+                rechnung.getAufwands().stream().forEach(aufwand -> {
+                    BackupAufwand backupAufwand = new BackupAufwand();
+                    backupAufwand.setBezeichnung(aufwand.getBezeichnung());
+                    backupAufwand.setTitel(aufwand.getTitel());
+                    backupAufwand.setStart(aufwand.getStart());
+                    backupAufwand.setEnd(aufwand.getEnd());
+                    backupRechnung.getAufwands().add(backupAufwand);
+                });
+                backupAdresse.getRechnungen().add(backupRechnung);
+            });
+        });
+        return backupAdressen;
+    }
+
+    private BackupAdressen getBackupAdresse(Adresse adresse) {
+        BackupAdressen backupAdressen = new BackupAdressen();
+        Instant now = Instant.now();
+        backupAdressen.setBackupdatum(LocalDateTime.now());
+
+        BackupAdresse backupAdresse = new BackupAdresse();
+        backupAdresse.setAnrede(adresse.getAnrede());
+        backupAdresse.setFirma(adresse.getFirma());
+        backupAdresse.setNachname(adresse.getNachname());
+        backupAdresse.setOrt(adresse.getOrt());
+        backupAdresse.setPostleitzahl(adresse.getPostleitzahl());
+        backupAdresse.setStrasse(adresse.getStrasse());
+        backupAdresse.setStundensatz(adresse.getStundensatz());
+        backupAdresse.setVorname(adresse.getVorname());
+        backupAdressen.getAdressen().add(backupAdresse);
+
+        adresse.getRechnungen().stream().forEach(rechnung -> {
+            BackupRechnung backupRechnung = new BackupRechnung();
+            backupRechnung.setBezahlt(rechnung.isBezahlt());
+            backupRechnung.setVerschickt(rechnung.isVerschickt());
+            backupRechnung.setBezeichnung(rechnung.getBezeichnung());
+            backupRechnung.setFaelligInTagen(rechnung.getFaelligInTagen());
+            backupRechnung.setRechnungsdatum(rechnung.getRechnungsdatum());
+            backupAdresse.getRechnungen().add(backupRechnung);
+
+            rechnung.getRechnungspositionen().stream().forEach(rechnungsposition -> {
+                BackupRechnungsposition backupRechnungsposition = new BackupRechnungsposition();
+                backupRechnungsposition.setAnzahl(rechnungsposition.getAnzahl());
+                backupRechnungsposition.setBezeichnung(rechnungsposition.getBezeichnung());
+                backupRechnungsposition.setBezeichnunglang(rechnungsposition.getBezeichnunglang());
+                backupRechnungsposition.setMengeneinheit(rechnungsposition.getMengeneinheit());
+                backupRechnungsposition.setStueckpreis(rechnungsposition.getStueckpreis());
+                backupRechnung.getRechnungspositions().add(backupRechnungsposition);
+            });
+
+            rechnung.getAufwands().stream().forEach(aufwand -> {
+                BackupAufwand backupAufwand = new BackupAufwand();
+                backupAufwand.setTitel(aufwand.getTitel());
+                backupAufwand.setBezeichnung(aufwand.getBezeichnung());
+                backupAufwand.setStart(aufwand.getStart());
+                backupAufwand.setEnd(aufwand.getEnd());
+                backupRechnung.getAufwands().add(backupAufwand);
+            });
+        });
+
+        return backupAdressen;
+    }
 
     private Component createContent() {
         FlexLayout layout = new FlexLayout();
@@ -358,562 +363,373 @@ public class BackupView extends VerticalLayout implements View {
         layout.setAlignContent(AlignContent.Center);
         layout.setFlexWrap(FlexWrap.Nowrap);
 
-        RadioButtonGroup<String> fileFormatGroup = new RadioButtonGroup<>("Fileformat");
-        fileFormatGroup.setItems("Json", "Xml");
-        fileFormatGroup.setValue("Json");
-        fileFormatGroup.setStyleName(ValoTheme.OPTIONGROUP_HORIZONTAL);
+        fileFormatDownloadGroup = new RadioButtonGroup<>("Fileformat Download");
+        fileFormatDownloadGroup.setItems("Json", "Xml");
+        fileFormatDownloadGroup.setValue("Json");
+        fileFormatDownloadGroup.setStyleName(ValoTheme.OPTIONGROUP_HORIZONTAL);
+
+        fileFormatUploadGroup = new RadioButtonGroup<>("Fileformat Upload");
+        fileFormatUploadGroup.setItems("Json", "Xml");
+        fileFormatUploadGroup.setValue("Json");
+        fileFormatUploadGroup.setStyleName(ValoTheme.OPTIONGROUP_HORIZONTAL);
 
         //Adressen, Rechnungen
-        Button downloaderAdressenJson = new DownloadButton(stream -> {
-            ObjectMapper mapper = new ObjectMapper()
-                    .registerModule(new ParameterNamesModule())
-                    .registerModule(new Jdk8Module())
-                    .registerModule(new JavaTimeModule()); // new module, NOT JSR310Module
+        Button downloaderAdressen = new DownloadButton(stream -> {
+            if (fileFormatDownloadGroup.getValue().equals("Json")) {
+                ObjectMapper mapper = new ObjectMapper()
+                        .registerModule(new ParameterNamesModule())
+                        .registerModule(new Jdk8Module())
+                        .registerModule(new JavaTimeModule()); // new module, NOT JSR310Module
+                try {
+                    mapper.writerWithDefaultPrettyPrinter().writeValue(stream, getBackupAdressen());
+                    stream.flush();
 
-            try {
-                mapper.writerWithDefaultPrettyPrinter().writeValue(stream, getBackupAdressen());
-                stream.flush();
-                stream.close();
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
+                    mapper.writerWithDefaultPrettyPrinter().writeValue(new FileOutputStream(new File("test.json")), getBackupAdressen());
+//Test
+                    BackupAdressen backupAdressen = mapper.readValue(new FileInputStream(new File("test.json")), BackupAdressen.class);
+                    logger.debug("backupAdressen:" + backupAdressen.getBackupdatum().toString());
+                    System.err.println("backupAdressen:" + backupAdressen);
+
+
+                    stream.close();
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
             }
-        }).setFileName("AdressenRechnungenAnouman.json")
-                .withCaption("Alle Adressen, Rechnungen").withIcon(VaadinIcons.DOWNLOAD);
-
-        Button downloaderAdressenXml = new DownloadButton(stream -> {
-            JAXBContext jaxbContext = null;
-            try {
-                jaxbContext = JAXBContext.newInstance(BackupAdressen.class, BackupAdresse.class, Rechnung.class,
-                        Rechnungsposition.class, Aufwand.class);
-                Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-                jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,
-                        true);
-                jaxbMarshaller.marshal(getBackupAdressen(), stream);
-                stream.flush();
-                stream.close();
-            } catch (PropertyException ex) {
-                Notification.show(ex.getMessage(), Notification.Type.ERROR_MESSAGE);
-                System.err.print(ex);
-            } catch (JAXBException ex) {
-                Notification.show(ex.getMessage(), Notification.Type.ERROR_MESSAGE);
-                System.err.print(ex);
-            } catch (IOException ex) {
-                Notification.show(ex.getMessage(), Notification.Type.ERROR_MESSAGE);
-                System.err.print(ex);
+            if (fileFormatDownloadGroup.getValue().equals("Xml")) {
+                XmlMapper mapper = new XmlMapper();
+                try {
+                    mapper.writerWithDefaultPrettyPrinter().writeValue(stream, getBackupAdressen());
+                    stream.flush();
+                    stream.close();
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-        }).setFileName("AdressenRechnungenAnouman.xml")
-                .withCaption("Alle Adressen, Rechnungen").withIcon(VaadinIcons.DOWNLOAD);
+        }).withCaption("Alle Adressen, Rechnungen").withIcon(VaadinIcons.DOWNLOAD);
 
-        ComboBox<Adresse> comboAdresseJson = new ComboBox<>();
-        Button downloaderAdresseJson = new DownloadButton(stream -> {
-            ObjectMapper mapper = new ObjectMapper()
-                    .registerModule(new ParameterNamesModule())
-                    .registerModule(new Jdk8Module())
-                    .registerModule(new JavaTimeModule()); // new module, NOT JSR310Module
-            try {
-                mapper.writerWithDefaultPrettyPrinter().writeValue(stream, getBackupAdresse(comboAdresseJson.getValue()));
-                stream.flush();
-                stream.close();
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
+        ComboBox<Adresse> comboAdresse = new ComboBox<>();
+        Button downloaderAdresse = new DownloadButton(stream -> {
+            if (fileFormatDownloadGroup.getValue().equals("Json")) {
+                ObjectMapper mapper = new ObjectMapper()
+                        .registerModule(new ParameterNamesModule())
+                        .registerModule(new Jdk8Module())
+                        .registerModule(new JavaTimeModule()); // new module, NOT JSR310Module
+                try {
+                    mapper.writerWithDefaultPrettyPrinter().writeValue(stream, getBackupAdresse(comboAdresse.getValue()));
+                    stream.flush();
+                    stream.close();
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-        }).setFileName("AdresseRechnungenAnouman.json")
-                .withCaption("Eine Adresse, Rechnungen").withIcon(VaadinIcons.DOWNLOAD);
-
-        ComboBox<Adresse> comboAdresseXml = new ComboBox<>();
-        Button downloaderAdresseXml = new DownloadButton(stream -> {
-            JAXBContext jaxbContext = null;
-            try {
-                jaxbContext = JAXBContext.newInstance(BackupAdressen.class, BackupAdresse.class, Rechnung.class,
-                        Rechnungsposition.class, Aufwand.class);
-                Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-                jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,
-                        true);
-
-                jaxbMarshaller.marshal(getBackupAdresse(comboAdresseXml.getValue()), stream);
-                stream.flush();
-                stream.close();
-            } catch (PropertyException ex) {
-                Notification.show(ex.getMessage(), Notification.Type.ERROR_MESSAGE);
-                System.err.print(ex);
-            } catch (JAXBException ex) {
-                Notification.show(ex.getMessage(), Notification.Type.ERROR_MESSAGE);
-                System.err.print(ex);
-            } catch (IOException ex) {
-                Notification.show(ex.getMessage(), Notification.Type.ERROR_MESSAGE);
-                System.err.print(ex);
+            if (fileFormatDownloadGroup.getValue().equals("Xml")) {
+                XmlMapper mapper = new XmlMapper();
+                try {
+                    mapper.writerWithDefaultPrettyPrinter().writeValue(stream, getBackupAdresse(comboAdresse.getValue()));
+                    stream.flush();
+                    stream.close();
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-        }).setFileName("AdresseRechnungenAnouman.xml")
-                .withCaption("Eine Adresse, Rechnungen").withIcon(VaadinIcons.DOWNLOAD);
+        }).withCaption("Adresse, Rechnungen").withIcon(VaadinIcons.DOWNLOAD);
 
         //Buchhaltungen
-        Button downloaderBuchhaltungenJson = new DownloadButton(stream -> {
-            ObjectMapper mapper = new ObjectMapper()
-                    .registerModule(new ParameterNamesModule())
-                    .registerModule(new Jdk8Module())
-                    .registerModule(new JavaTimeModule()); // new module, NOT JSR310Module
-
-            try {
-                mapper.writerWithDefaultPrettyPrinter().writeValue(stream, getBackupBuchhaltungen());
-                stream.flush();
-                stream.close();
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
+        Button downloaderBuchhaltungen = new DownloadButton(stream -> {
+            if (fileFormatDownloadGroup.getValue().equals("Json")) {
+                ObjectMapper mapper = new ObjectMapper()
+                        .registerModule(new ParameterNamesModule())
+                        .registerModule(new Jdk8Module())
+                        .registerModule(new JavaTimeModule()); // new module, NOT JSR310Module
+                try {
+                    mapper.writerWithDefaultPrettyPrinter().writeValue(stream, getBackupBuchhaltungen());
+                    stream.flush();
+                    stream.close();
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-        }).setFileName("BuchhaltungenAnouman.json")
-                .withCaption("Alle Buchhaltung").withIcon(VaadinIcons.DOWNLOAD);
-
-        Button downloaderBuchhaltungenXml = new DownloadButton(stream -> {
-            JAXBContext jaxbContext = null;
-            try {
-                jaxbContext = JAXBContext.newInstance(BackupBuchhaltungen.class, BackupBuchhaltung.class);
-                logger.debug("Start");
-                Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-                jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,
-                        true);
-
-                jaxbMarshaller.marshal(getBackupBuchhaltungen(), stream);
-                stream.flush();
-                stream.close();
-            } catch (PropertyException ex) {
-                Notification.show(ex.getMessage(), Notification.Type.ERROR_MESSAGE);
-                System.err.print(ex);
-                ex.printStackTrace();
-            } catch (JAXBException ex) {
-                Notification.show(ex.getMessage(), Notification.Type.ERROR_MESSAGE);
-                System.err.print(ex);
-                ex.printStackTrace();
-            } catch (IOException ex) {
-                Notification.show(ex.getMessage(), Notification.Type.ERROR_MESSAGE);
-                System.err.print(ex);
-                ex.printStackTrace();
+            if (fileFormatDownloadGroup.getValue().equals("Xml")) {
+                XmlMapper mapper = new XmlMapper();
+                try {
+                    mapper.writerWithDefaultPrettyPrinter().writeValue(stream, getBackupBuchhaltungen());
+                    stream.flush();
+                    stream.close();
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-        }).setFileName("BuchhaltungAnouman.xml")
-                .withCaption("Alle Buchhaltungen").withIcon(VaadinIcons.DOWNLOAD);
+        }).withCaption("Alle Buchhaltungen").withIcon(VaadinIcons.DOWNLOAD);
 
-
-        ComboBox<Buchhaltung> comboBuchhaltungJson = new ComboBox<>();
-        Button downloaderBuchhaltungJson = new DownloadButton(stream -> {
-            ObjectMapper mapper = new ObjectMapper()
-                    .registerModule(new ParameterNamesModule())
-                    .registerModule(new Jdk8Module())
-                    .registerModule(new JavaTimeModule()); // new module, NOT JSR310Module
-
-            try {
-                mapper.writerWithDefaultPrettyPrinter().writeValue(stream, getBackupBuchhaltung(comboBuchhaltungJson.getValue()));
-                stream.flush();
-                stream.close();
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
+        ComboBox<Buchhaltung> comboBuchhaltung = new ComboBox<>();
+        Button downloaderBuchhaltung = new DownloadButton(stream -> {
+            if (fileFormatDownloadGroup.getValue().equals("Json")) {
+                ObjectMapper mapper = new ObjectMapper()
+                        .registerModule(new ParameterNamesModule())
+                        .registerModule(new Jdk8Module())
+                        .registerModule(new JavaTimeModule()); // new module, NOT JSR310Module
+                try {
+                    mapper.writerWithDefaultPrettyPrinter().writeValue(stream, getBackupBuchhaltung(comboBuchhaltung.getValue()));
+                    stream.flush();
+                    stream.close();
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-        }).setFileName("BuchhaltungAnouman.json")
-                .withCaption("Datei mit Buchhaltung herunterladen").withIcon(VaadinIcons.DOWNLOAD);
-
-        ComboBox<Buchhaltung> comboBuchhaltungXml = new ComboBox<>();
-        Button downloaderBuchhaltungXml = new DownloadButton(stream -> {
-            JAXBContext jaxbContext = null;
-            Buchhaltung buchhaltung = comboBuchhaltungXml.getValue();
-            logger.debug("Gewählte Buchhaltung id:" + buchhaltung.getId());
-            try {
-                jaxbContext = JAXBContext.newInstance(BackupBuchhaltung.class);
-                logger.debug("Start");
-                Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-                jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,
-                        true);
-                BackupBuchhaltung backupBuchhaltung = new BackupBuchhaltung(buchhaltung.getBezeichnung(), buchhaltung.getJahr());
-
-
-                buchhaltung.getKontoklasse().stream().forEach(kontoklasse -> {
-                    BackupKontoklasse backupKontoklasse = new BackupKontoklasse(kontoklasse.getBezeichnung(), kontoklasse.getKontonummer());
-                    backupBuchhaltung.getKontoklasses().add(backupKontoklasse);
-                    kontoklasse.getKontohauptgruppes().stream().forEach(kontohauptgruppe -> {
-                        BackupKontohauptgruppe backupKontohauptgruppe = new BackupKontohauptgruppe(kontohauptgruppe.getBezeichnung(), kontohauptgruppe.getKontonummer());
-                        backupKontoklasse.getBackupKontohauptgruppes().add(backupKontohauptgruppe);
-                        kontohauptgruppe.getKontogruppes().stream().forEach(kontogruppe -> {
-                            BackupKontogruppe backupKontogruppe = new BackupKontogruppe(kontogruppe.getBezeichnung(), kontogruppe.getKontonummer());
-                            backupKontohauptgruppe.getBackupKontogruppes().add(backupKontogruppe);
-                            kontogruppe.getKontos().stream().forEach(konto -> {
-                                BackupKonto backupKonto = new BackupKonto();
-                                backupKonto.setBezeichnung(konto.getBezeichnung());
-                                backupKonto.setId(konto.getId());
-                                backupKonto.setKontonummer(konto.getKontonummer());
-                                backupKontogruppe.getKontos().add(backupKonto);
-                                konto.getMehrwertsteuercode().stream().forEach(mehrwertsteuercode -> {
-                                    BackupMehrwertsteuercode backupMehrwertsteuercode = new BackupMehrwertsteuercode();
-                                    backupMehrwertsteuercode.setId(mehrwertsteuercode.getId());
-                                    backupMehrwertsteuercode.setBezeichnung(mehrwertsteuercode.getBezeichnung());
-                                    backupMehrwertsteuercode.setCode(mehrwertsteuercode.getCode());
-                                    backupMehrwertsteuercode.setProzent(mehrwertsteuercode.getProzent());
-                                    backupMehrwertsteuercode.setVerkauf(mehrwertsteuercode.isVerkauf());
-                                    backupKonto.getMehrwertsteuercodes().add(backupMehrwertsteuercode);
-                                });
-                                //@todo Buchungen, Unterbuchungen
-                            });
-                        });
-                    });
-                });
-                jaxbMarshaller.marshal(backupBuchhaltung, stream);
-                stream.flush();
-                stream.close();
-            } catch (PropertyException ex) {
-                logger.error(ex.getLocalizedMessage());
-            } catch (JAXBException ex) {
-                logger.error(ex.getLocalizedMessage());
-            } catch (IOException ex) {
-                logger.error(ex.getLocalizedMessage());
+            if (fileFormatDownloadGroup.getValue().equals("Xml")) {
+                XmlMapper mapper = new XmlMapper();
+                try {
+                    mapper.writerWithDefaultPrettyPrinter().writeValue(stream, getBackupBuchhaltung(comboBuchhaltung.getValue()));
+                    stream.flush();
+                    stream.close();
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-        }).setFileName("BuchhaltungAnouman.xml")
-                .withCaption("Datei mit Buchhaltung herunterladen").withIcon(VaadinIcons.DOWNLOAD);
-
+        }).withCaption("Buchhaltung").withIcon(VaadinIcons.DOWNLOAD);
 
         //Template Buchhaltungen
-        Button downloaderTemplateBuchhaltungenJson = new DownloadButton(stream -> {
-            ObjectMapper mapper = new ObjectMapper()
-                    .registerModule(new ParameterNamesModule())
-                    .registerModule(new Jdk8Module())
-                    .registerModule(new JavaTimeModule()); // new module, NOT JSR310Module
-
-            try {
-                mapper.writerWithDefaultPrettyPrinter().writeValue(stream, getBackupTemplateBuchhaltungen());
-                stream.flush();
-                stream.close();
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
+        Button downloaderTemplateBuchhaltungen = new DownloadButton(stream -> {
+            if (fileFormatDownloadGroup.getValue().equals("Json")) {
+                ObjectMapper mapper = new ObjectMapper()
+                        .registerModule(new ParameterNamesModule())
+                        .registerModule(new Jdk8Module())
+                        .registerModule(new JavaTimeModule()); // new module, NOT JSR310Module
+                try {
+                    mapper.writerWithDefaultPrettyPrinter().writeValue(stream, getBackupTemplateBuchhaltungen());
+                    stream.flush();
+                    stream.close();
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-        }).setFileName("TemplateBuchhaltungenAnouman.json")
-                .withCaption("Alle Template Buchhaltungen").withIcon(VaadinIcons.DOWNLOAD);
-
-        Button downloaderTemplateBuchhaltungenXml = new DownloadButton(stream -> {
-            JAXBContext jaxbContext = null;
-            try {
-                jaxbContext = JAXBContext.newInstance(BackupTemplateBuchhaltungen.class);
-                Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-                jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,
-                        true);
-                jaxbMarshaller.marshal(getBackupTemplateBuchhaltungen(), stream);
-                stream.flush();
-                stream.close();
-            } catch (PropertyException ex) {
-                //Notification.show(ex.getMessage(), Notification.Type.ERROR_MESSAGE);
-                logger.error("PropertyException" + ex.getLocalizedMessage());
-                ex.printStackTrace();
-            } catch (JAXBException ex) {
-                //Notification.show(ex.getMessage(), Notification.Type.ERROR_MESSAGE);
-                logger.error("JAXBException" + ex.getLocalizedMessage());
-                ex.printStackTrace();
-            } catch (IOException ex) {
-                //Notification.show(ex.getMessage(), Notification.Type.ERROR_MESSAGE);
-                logger.error("IOException" + ex.getLocalizedMessage());
-                ex.printStackTrace();
+            if (fileFormatDownloadGroup.getValue().equals("Xml")) {
+                XmlMapper mapper = new XmlMapper();
+                try {
+                    mapper.writerWithDefaultPrettyPrinter().writeValue(stream, getBackupTemplateBuchhaltungen());
+                    stream.flush();
+                    stream.close();
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-        }).setFileName("TemplateBuchhaltungenAnouman.xml")
-                .withCaption("Alle Template Buchhaltungen").withIcon(VaadinIcons.DOWNLOAD);
+        }).withCaption("Alle Template Buchhaltungen").withIcon(VaadinIcons.DOWNLOAD);
 
-        ComboBox<TemplateBuchhaltung> comboTemplateBuchhaltungXml = new ComboBox<>();
-        Button downloaderTemplateBuchhaltungXml = new DownloadButton(stream -> {
-            JAXBContext jaxbContext = null;
-            try {
-                jaxbContext = JAXBContext.newInstance(BackupTemplateBuchhaltungen.class);
-                Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-                jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,
-                        true);
-                jaxbMarshaller.marshal(getBackupTemplateBuchhaltung(comboTemplateBuchhaltungXml.getValue()), stream);
-                stream.flush();
-                stream.close();
-            } catch (PropertyException ex) {
-                Notification.show(ex.getMessage(), Notification.Type.ERROR_MESSAGE);
-                System.err.print(ex);
-                ex.printStackTrace();
-            } catch (JAXBException ex) {
-                Notification.show(ex.getMessage(), Notification.Type.ERROR_MESSAGE);
-                System.err.print(ex);
-                ex.printStackTrace();
-            } catch (IOException ex) {
-                Notification.show(ex.getMessage(), Notification.Type.ERROR_MESSAGE);
-                System.err.print(ex);
-                ex.printStackTrace();
+        ComboBox<TemplateBuchhaltung> comboTemplateBuchhaltung = new ComboBox<>();
+        Button downloaderTemplateBuchhaltung = new DownloadButton(stream -> {
+            if (fileFormatDownloadGroup.getValue().equals("Json")) {
+                ObjectMapper mapper = new ObjectMapper()
+                        .registerModule(new ParameterNamesModule())
+                        .registerModule(new Jdk8Module())
+                        .registerModule(new JavaTimeModule()); // new module, NOT JSR310Module
+                try {
+                    mapper.writerWithDefaultPrettyPrinter().writeValue(stream, getBackupTemplateBuchhaltung(comboTemplateBuchhaltung.getValue()));
+                    stream.flush();
+                    stream.close();
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-        }).setFileName("TemplateBuchhaltungAnouman.xml")
-                .withCaption("Datei mit Template Buchhaltung herunterladen").withIcon(VaadinIcons.DOWNLOAD);
-
-        ComboBox<TemplateBuchhaltung> comboTemplateBuchhaltungJson = new ComboBox<>();
-        Button downloaderTemplateBuchhaltungJson = new DownloadButton(stream -> {
-            JAXBContext jaxbContext = null;
-            try {
-                jaxbContext = JAXBContext.newInstance(BackupTemplateBuchhaltungen.class);
-                Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-                jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,
-                        true);
-                jaxbMarshaller.marshal(getBackupTemplateBuchhaltung(comboTemplateBuchhaltungXml.getValue()), stream);
-                stream.flush();
-                stream.close();
-            } catch (PropertyException ex) {
-                Notification.show(ex.getMessage(), Notification.Type.ERROR_MESSAGE);
-                System.err.print(ex);
-                ex.printStackTrace();
-            } catch (JAXBException ex) {
-                Notification.show(ex.getMessage(), Notification.Type.ERROR_MESSAGE);
-                System.err.print(ex);
-                ex.printStackTrace();
-            } catch (IOException ex) {
-                Notification.show(ex.getMessage(), Notification.Type.ERROR_MESSAGE);
-                System.err.print(ex);
-                ex.printStackTrace();
+            if (fileFormatDownloadGroup.getValue().equals("Xml")) {
+                XmlMapper mapper = new XmlMapper();
+                try {
+                    mapper.writerWithDefaultPrettyPrinter().writeValue(stream, getBackupTemplateBuchhaltung(comboTemplateBuchhaltung.getValue()));
+                    stream.flush();
+                    stream.close();
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-        }).setFileName("TemplateBuchhaltungAnouman.json")
-                .withCaption("Datei mit Template Buchhaltung herunterladen").withIcon(VaadinIcons.DOWNLOAD);
+        }).withCaption("Template Buchhaltung").withIcon(VaadinIcons.DOWNLOAD);
 
-
-        fileFormatGroup.addValueChangeListener(valueChangeEvent -> {
-            if (valueChangeEvent.getValue().equals("Xml")) {
-                downloaderAdressenXml.setVisible(true);
-                downloaderAdressenJson.setVisible(false);
-
-                downloaderAdresseXml.setVisible(true);
-                downloaderAdresseJson.setVisible(false);
-
-                comboAdresseXml.setVisible(true);
-                comboAdresseJson.setVisible(false);
-
-                downloaderBuchhaltungenXml.setVisible(true);
-                downloaderBuchhaltungenJson.setVisible(false);
-
-                downloaderBuchhaltungXml.setVisible(true);
-                downloaderBuchhaltungJson.setVisible(false);
-
-                comboBuchhaltungXml.setVisible(true);
-                comboBuchhaltungJson.setVisible(false);
-
-                downloaderTemplateBuchhaltungenXml.setVisible(true);
-                downloaderTemplateBuchhaltungenJson.setVisible(false);
-
-                downloaderTemplateBuchhaltungXml.setVisible(true);
-                downloaderTemplateBuchhaltungJson.setVisible(false);
-
-                comboTemplateBuchhaltungXml.setVisible(true);
-                comboTemplateBuchhaltungJson.setVisible(false);
-            }
-            if (valueChangeEvent.getValue().equals("Json")) {
-                downloaderAdressenXml.setVisible(false);
-                downloaderAdressenJson.setVisible(true);
-
-                downloaderAdresseXml.setVisible(false);
-                downloaderAdresseJson.setVisible(true);
-
-                comboAdresseXml.setVisible(false);
-                comboAdresseJson.setVisible(true);
-
-                downloaderBuchhaltungenXml.setVisible(false);
-                downloaderBuchhaltungenJson.setVisible(true);
-
-                downloaderBuchhaltungXml.setVisible(false);
-                downloaderBuchhaltungJson.setVisible(true);
-
-                comboBuchhaltungXml.setVisible(false);
-                comboBuchhaltungJson.setVisible(true);
-
-                downloaderTemplateBuchhaltungenXml.setVisible(false);
-                downloaderTemplateBuchhaltungenJson.setVisible(true);
-
-                downloaderTemplateBuchhaltungXml.setVisible(false);
-                downloaderTemplateBuchhaltungJson.setVisible(true);
-
-                comboTemplateBuchhaltungXml.setVisible(false);
-                comboTemplateBuchhaltungJson.setVisible(true);
-            }
-        });
 
         List<TemplateBuchhaltung> templateBuchhaltungen = templateBuchhaltungDeltaspikeFacade.findAll();
         if (templateBuchhaltungen.size() == 0) {
-            comboTemplateBuchhaltungXml.setEnabled(false);
-            downloaderTemplateBuchhaltungenXml.setEnabled(false);
-            downloaderTemplateBuchhaltungXml.setEnabled(false);
-            comboTemplateBuchhaltungJson.setEnabled(false);
-            downloaderTemplateBuchhaltungenJson.setEnabled(false);
-            downloaderTemplateBuchhaltungJson.setEnabled(false);
+            comboTemplateBuchhaltung.setEnabled(false);
+            downloaderTemplateBuchhaltungen.setEnabled(false);
+            downloaderTemplateBuchhaltung.setEnabled(false);
         } else {
-            comboTemplateBuchhaltungXml.setItems(templateBuchhaltungDeltaspikeFacade.findAll());
-            comboTemplateBuchhaltungXml.setItemCaptionGenerator(templateBuchhaltung -> templateBuchhaltung.getBezeichnung());
-            comboTemplateBuchhaltungXml.setEmptySelectionAllowed(false);
-            comboTemplateBuchhaltungXml.setSelectedItem(templateBuchhaltungDeltaspikeFacade.findAll().get(0));
-            comboTemplateBuchhaltungJson.setItems(templateBuchhaltungDeltaspikeFacade.findAll());
-            comboTemplateBuchhaltungJson.setItemCaptionGenerator(templateBuchhaltung -> templateBuchhaltung.getBezeichnung());
-            comboTemplateBuchhaltungJson.setEmptySelectionAllowed(false);
-            comboTemplateBuchhaltungJson.setSelectedItem(templateBuchhaltungDeltaspikeFacade.findAll().get(0));
+            comboTemplateBuchhaltung.setItems(templateBuchhaltungDeltaspikeFacade.findAll());
+            comboTemplateBuchhaltung.setItemCaptionGenerator(templateBuchhaltung -> templateBuchhaltung.getBezeichnung());
+            comboTemplateBuchhaltung.setEmptySelectionAllowed(false);
+            comboTemplateBuchhaltung.setSelectedItem(templateBuchhaltungDeltaspikeFacade.findAll().get(0));
         }
-        comboTemplateBuchhaltungXml.setWidth(20, Unit.EM);
-        comboTemplateBuchhaltungJson.setWidth(20, Unit.EM);
+        comboTemplateBuchhaltung.setWidth(20, Unit.EM);
 
         List<Buchhaltung> buchhaltungen = buchhaltungDeltaspikeFacade.findAll();
         if (buchhaltungen.size() == 0) {
-            comboBuchhaltungXml.setEnabled(false);
-            downloaderBuchhaltungenXml.setEnabled(false);
-            downloaderBuchhaltungXml.setEnabled(false);
-            comboBuchhaltungJson.setEnabled(false);
-            downloaderBuchhaltungenJson.setEnabled(false);
-            downloaderBuchhaltungJson.setEnabled(false);
+            comboBuchhaltung.setEnabled(false);
+            downloaderBuchhaltungen.setEnabled(false);
+            downloaderBuchhaltung.setEnabled(false);
         } else {
-            comboBuchhaltungXml.setItems(buchhaltungDeltaspikeFacade.findAll());
-            comboBuchhaltungXml.setItemCaptionGenerator(buchhaltung -> buchhaltung.getBezeichnung() + " " + buchhaltung.getJahr());
-            comboBuchhaltungXml.setEmptySelectionAllowed(false);
-            comboBuchhaltungXml.setSelectedItem(buchhaltungDeltaspikeFacade.findAll().get(0));
-            comboBuchhaltungJson.setItems(buchhaltungDeltaspikeFacade.findAll());
-            comboBuchhaltungJson.setItemCaptionGenerator(buchhaltung -> buchhaltung.getBezeichnung() + " " + buchhaltung.getJahr());
-            comboBuchhaltungJson.setEmptySelectionAllowed(false);
-            comboBuchhaltungJson.setSelectedItem(buchhaltungDeltaspikeFacade.findAll().get(0));
+            comboBuchhaltung.setItems(buchhaltungDeltaspikeFacade.findAll());
+            comboBuchhaltung.setItemCaptionGenerator(buchhaltung -> buchhaltung.getBezeichnung() + " " + buchhaltung.getJahr());
+            comboBuchhaltung.setEmptySelectionAllowed(false);
+            comboBuchhaltung.setSelectedItem(buchhaltungDeltaspikeFacade.findAll().get(0));
         }
-        comboBuchhaltungXml.setWidth(20, Unit.EM);
-        comboBuchhaltungJson.setWidth(20, Unit.EM);
+        comboBuchhaltung.setWidth(20, Unit.EM);
 
         List<Adresse> adressen = adresseDeltaspikeFacade.findAll();
         if (adressen.size() == 0) {
-            comboAdresseXml.setEnabled(false);
-            downloaderAdressenXml.setEnabled(false);
-            downloaderAdresseXml.setEnabled(false);
-            comboAdresseJson.setEnabled(false);
-            downloaderAdressenJson.setEnabled(false);
-            downloaderAdresseJson.setEnabled(false);
+            comboAdresse.setEnabled(false);
+            downloaderAdressen.setEnabled(false);
+            downloaderAdresse.setEnabled(false);
         } else {
-            comboAdresseJson.setItems(adresseDeltaspikeFacade.findAll());
-            comboAdresseJson.setItemCaptionGenerator(adresse -> adresse.getFirma() + " " + adresse.getNachname() + " " + adresse.getOrt());
-            comboAdresseJson.setEmptySelectionAllowed(false);
-            comboAdresseJson.setSelectedItem(adresseDeltaspikeFacade.findAll().get(0));
+            comboAdresse.setItems(adresseDeltaspikeFacade.findAll());
+            comboAdresse.setItemCaptionGenerator(adresse -> adresse.getFirma() + " " + adresse.getNachname() + " " + adresse.getOrt());
+            comboAdresse.setEmptySelectionAllowed(false);
+            comboAdresse.setSelectedItem(adresseDeltaspikeFacade.findAll().get(0));
         }
-        comboAdresseXml.setWidth(20, Unit.EM);
-        comboAdresseJson.setWidth(20, Unit.EM);
+        comboAdresse.setWidth(20, Unit.EM);
 
+        fileFormatDownloadGroup.addValueChangeListener(valueChangeEvent -> {
+            if (valueChangeEvent.getValue().equals("Json")) {
+                System.err.println("Download Format Json");
+                ((DownloadButton) downloaderAdresse).setFileName("AdresseAnouman.json");
+                ((DownloadButton) downloaderAdressen).setFileName("AdressenAnouman.json");
+                ((DownloadButton) downloaderBuchhaltung).setFileName("BuchhaltungAnouman.json");
+                ((DownloadButton) downloaderBuchhaltungen).setFileName("BuchhaltungenAnouman.json");
+                ((DownloadButton) downloaderTemplateBuchhaltung).setFileName("TemplateBuchhaltungAnouman.json");
+                ((DownloadButton) downloaderTemplateBuchhaltungen).setFileName("TemplateBuchhaltungenAnouman.json");
+            }
+            if (valueChangeEvent.getValue().equals("Xml")) {
+                System.err.println("Download Format Xml");
+                ((DownloadButton) downloaderAdresse).setFileName("AdresseAnouman.xml");
+                ((DownloadButton) downloaderAdressen).setFileName("AdressenAnouman.xml");
+                ((DownloadButton) downloaderBuchhaltung).setFileName("BuchhaltungAnouman.xml");
+                ((DownloadButton) downloaderBuchhaltungen).setFileName("BuchhaltungenAnouman.xml");
+                ((DownloadButton) downloaderTemplateBuchhaltung).setFileName("TemplateBuchhaltungAnouman.xml");
+                ((DownloadButton) downloaderTemplateBuchhaltungen).setFileName("TemplateBuchhaltungenAnouman.xml");
+            }
+
+        });
+
+        //Setze Dateiname für Downloadbuttons
 
         Panel panelBackup = new Panel("Backup");
-
-        Panel panelBackupAdressen = new Panel("Adresse, Rechnung");
+        Panel panelBackupAdressen = new Panel("Adressen, Rechnungen");
         Panel panelBackupBuchhaltungen = new Panel("Buchhaltungen");
         Panel panelBackupTemplateBuchhaltungen = new Panel("Template Buchhaltungen");
-
         panelBackupAdressen.setContent(new HorizontalLayout(
-                downloaderAdressenJson, downloaderAdressenXml,
-                downloaderAdresseJson, comboAdresseJson,
-                downloaderAdresseXml, comboAdresseXml));
-
+                downloaderAdressen,
+                downloaderAdresse, comboAdresse));
 
         panelBackupBuchhaltungen.setContent(new HorizontalLayout(
-                downloaderBuchhaltungenJson, downloaderBuchhaltungenXml,
-                downloaderBuchhaltungXml, comboBuchhaltungXml));
+                downloaderBuchhaltungen, downloaderBuchhaltung, comboBuchhaltung));
 
         panelBackupTemplateBuchhaltungen.setContent(new HorizontalLayout(
-                downloaderTemplateBuchhaltungenXml,
-                downloaderTemplateBuchhaltungXml, comboTemplateBuchhaltungXml));
+                downloaderTemplateBuchhaltungen, downloaderTemplateBuchhaltung, comboTemplateBuchhaltung));
 
         panelBackup.setContent(
-                new VerticalLayout(fileFormatGroup, panelBackupAdressen, panelBackupBuchhaltungen, panelBackupTemplateBuchhaltungen));
-
+                new VerticalLayout(fileFormatDownloadGroup, panelBackupAdressen, panelBackupBuchhaltungen, panelBackupTemplateBuchhaltungen));
 
         Panel panelRestore = new Panel("Restore");
 
-        Panel panelRestoreXML = new Panel("XML");
-        Panel panelRestoreJSON = new Panel("JSON");
+        UploadComponent uploadAdressen = new UploadComponent();
+        uploadAdressen.setCaption("Adressen");
+        uploadAdressen.setReceivedCallback(this::uploadReceivedAdressen);
 
-        Upload uploadXmlAdressen = new Upload("Upload Adressen XML", adressenJSONUploadReceiver);
-        Upload uploadXmlBuchhaltungen = new Upload("Upload Buchhaltungen XML", buchhaltungenJSONUploadReceiver);
-        Upload uploadXmlTemplateBuchhaltungen = new Upload("Upload Template Buchhaltungen XML", templateBuchhaltungenJSONUploadReceiver);
+        UploadComponent uploadBuchhaltungen = new UploadComponent();
+        uploadBuchhaltungen.setCaption("Buchhaltungen");
+        uploadBuchhaltungen.setReceivedCallback(this::uploadReceivedBuchhaltungen);
 
-        Upload uploadJSONAdressen = new Upload("Upload Adressen JSON", adressenJSONUploadReceiver);
-        Upload uploadJSONBuchhaltungen = new Upload("Upload Buchhaltungen JSON", buchhaltungenJSONUploadReceiver);
-        Upload uploadJSONTemplateBuchhaltungen = new Upload("Upload Template Buchhaltungen JSON", templateBuchhaltungenJSONUploadReceiver);
+        UploadComponent uploadTemplateBuchhaltungen = new UploadComponent();
+        uploadTemplateBuchhaltungen.setCaption("Template Buchhaltungen");
+        uploadTemplateBuchhaltungen.setReceivedCallback(this::uploadReceivedTemplateBuchhaltungen);
 
-        uploadXmlAdressen.addSucceededListener(adressenJSONUploadReceiver);
-        uploadXmlAdressen.setReceiver(adressenJSONUploadReceiver);
-
-        uploadXmlBuchhaltungen.addSucceededListener(buchhaltungenJSONUploadReceiver);
-        uploadXmlBuchhaltungen.setReceiver(buchhaltungenJSONUploadReceiver);
-
-        uploadXmlTemplateBuchhaltungen.addSucceededListener(templateBuchhaltungenJSONUploadReceiver);
-        uploadXmlTemplateBuchhaltungen.setReceiver(templateBuchhaltungenJSONUploadReceiver);
-
-        uploadJSONAdressen.addSucceededListener(adressenJSONUploadReceiver);
-        uploadJSONAdressen.setReceiver(adressenJSONUploadReceiver);
-
-        uploadJSONBuchhaltungen.addSucceededListener(buchhaltungenJSONUploadReceiver);
-        uploadJSONBuchhaltungen.setReceiver(buchhaltungenJSONUploadReceiver);
-
-        uploadJSONTemplateBuchhaltungen.addSucceededListener(templateBuchhaltungenJSONUploadReceiver);
-        uploadJSONTemplateBuchhaltungen.setReceiver(templateBuchhaltungenJSONUploadReceiver);
-
-        panelRestoreXML.setContent(new VerticalLayout(uploadXmlAdressen, uploadXmlBuchhaltungen, uploadXmlTemplateBuchhaltungen));
-        panelRestoreJSON.setContent(new VerticalLayout(uploadJSONAdressen, uploadJSONBuchhaltungen, uploadJSONTemplateBuchhaltungen));
-
-        panelRestore.setContent(
-                new VerticalLayout(panelRestoreJSON, panelRestoreXML));
-
-        if (fileFormatGroup.getValue().equals("Xml")) {
-            downloaderAdressenXml.setVisible(true);
-            downloaderAdressenJson.setVisible(false);
-
-            downloaderAdresseXml.setVisible(true);
-            downloaderAdresseJson.setVisible(false);
-
-            comboAdresseXml.setVisible(true);
-            comboAdresseJson.setVisible(false);
-
-            downloaderBuchhaltungenXml.setVisible(true);
-            downloaderBuchhaltungenJson.setVisible(false);
-
-            downloaderBuchhaltungXml.setVisible(true);
-            downloaderBuchhaltungJson.setVisible(false);
-
-            comboBuchhaltungXml.setVisible(true);
-            comboBuchhaltungJson.setVisible(false);
-
-            downloaderTemplateBuchhaltungenXml.setVisible(true);
-            downloaderTemplateBuchhaltungenJson.setVisible(false);
-
-            downloaderTemplateBuchhaltungXml.setVisible(true);
-            downloaderTemplateBuchhaltungJson.setVisible(false);
-
-            comboTemplateBuchhaltungXml.setVisible(true);
-            comboTemplateBuchhaltungJson.setVisible(false);
-        }
-        if (fileFormatGroup.getValue().equals("Json")) {
-            downloaderAdressenXml.setVisible(false);
-            downloaderAdressenJson.setVisible(true);
-
-            downloaderAdresseXml.setVisible(false);
-            downloaderAdresseJson.setVisible(false);
-
-            comboAdresseXml.setVisible(false);
-            comboAdresseJson.setVisible(true);
-
-            downloaderBuchhaltungenXml.setVisible(false);
-            downloaderBuchhaltungenJson.setVisible(true);
-
-            downloaderBuchhaltungXml.setVisible(false);
-            downloaderBuchhaltungJson.setVisible(true);
-
-            comboBuchhaltungXml.setVisible(false);
-            comboBuchhaltungJson.setVisible(true);
-
-            downloaderTemplateBuchhaltungenXml.setVisible(false);
-            downloaderTemplateBuchhaltungenJson.setVisible(true);
-
-            downloaderTemplateBuchhaltungXml.setVisible(false);
-            downloaderTemplateBuchhaltungJson.setVisible(true);
-
-            comboTemplateBuchhaltungXml.setVisible(false);
-            comboTemplateBuchhaltungJson.setVisible(true);
-        }
-
+        panelRestore.setContent(new VerticalLayout(fileFormatUploadGroup, uploadAdressen, uploadBuchhaltungen, uploadTemplateBuchhaltungen));
         layout.addComponents(panelBackup, panelRestore);
         layout.setSizeFull();
         return layout;
+    }
+
+    private void uploadReceivedAdressen(String s, Path path) {
+        try {
+            if (fileFormatUploadGroup.getValue().equals("Xml")) {
+                XmlMapper mapper = new XmlMapper();
+                BackupAdressen backupAdressen = mapper.readValue(new FileInputStream(path.toFile()), BackupAdressen.class);
+                logger.debug("XML:" + backupAdressen);
+
+            }
+            if (fileFormatUploadGroup.getValue().equals("Json")) {
+                ObjectMapper mapper = new ObjectMapper();
+                BackupAdressen backupAdressen = mapper.readValue(new FileInputStream(path.toFile()), BackupAdressen.class);
+                System.err.println("Upload Adressen:" + backupAdressen);
+            }
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+    }
+
+    private void uploadReceivedBuchhaltungen(String s, Path path) {
+        try {
+            if (fileFormatUploadGroup.getValue().equals("Xml")) {
+                XmlMapper mapper = new XmlMapper();
+                BackupBuchhaltungen backupBuchhaltungen = mapper.readValue(path.getFileName().toFile(), BackupBuchhaltungen.class);
+                logger.debug("XML:" + backupBuchhaltungen);
+
+            }
+            if (fileFormatUploadGroup.getValue().equals("Json")) {
+                ObjectMapper mapper = new ObjectMapper();
+                BackupBuchhaltungen backupBuchhaltungen = mapper.readValue(path.getFileName().toFile(), BackupBuchhaltungen.class);
+                logger.debug("Json:" + backupBuchhaltungen);
+            }
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+    }
+
+    private void uploadReceivedTemplateBuchhaltungen(String s, Path path) {
+        try {
+            if (fileFormatUploadGroup.getValue().equals("Xml")) {
+                XmlMapper mapper = new XmlMapper();
+                BackupTemplateBuchhaltungen backupTemplateBuchhaltungen = mapper.readValue(path.getFileName().toFile(), BackupTemplateBuchhaltungen.class);
+                logger.debug("XML:" + backupTemplateBuchhaltungen);
+
+            }
+            if (fileFormatUploadGroup.getValue().equals("Json")) {
+                ObjectMapper mapper = new ObjectMapper();
+                BackupTemplateBuchhaltungen backupTemplateBuchhaltungen = mapper.readValue(path.getFileName().toFile(), BackupTemplateBuchhaltungen.class);
+                logger.debug("Json:" + backupTemplateBuchhaltungen);
+            }
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+    }
+
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 
     @Override

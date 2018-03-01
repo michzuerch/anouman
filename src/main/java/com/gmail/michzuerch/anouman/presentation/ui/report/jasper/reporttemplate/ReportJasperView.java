@@ -54,8 +54,12 @@ public class ReportJasperView extends VerticalLayout implements View {
             form.openInModalPopup();
             form.setSavedHandler(val -> {
                 //val.setTemplateCompiled(form.getCompiledReport());
-                val.setFilename(form.getFilename());
-                System.err.println("ReportJasper:" + val);
+                //val.setFilename(form.getFilename());
+                if (val.getTemplateSource() == null) {
+                    System.err.println("templateSource ist null!!!!!");
+                } else {
+                    System.err.println("ReportJasper Template Source length:" + val.getTemplateSource().length);
+                }
                 facade.save(val);
                 updateList();
                 grid.select(val);
@@ -89,7 +93,7 @@ public class ReportJasperView extends VerticalLayout implements View {
                     form.openInModalPopup();
                     form.setSavedHandler(val -> {
                         //val.setTemplateCompiled(form.getCompiledReport());
-                        val.setFilename(form.getFilename());
+                        //val.setFilename(form.getFilename());
                         facade.save(val);
                         updateList();
                         grid.select(val);

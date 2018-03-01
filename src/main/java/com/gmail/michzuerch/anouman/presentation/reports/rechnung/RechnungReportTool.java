@@ -9,6 +9,7 @@ import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -82,18 +83,17 @@ public class RechnungReportTool implements Serializable {
         Locale locale = new Locale("de", "CH");
         params.put(JRParameter.REPORT_LOCALE, locale);
 
-        byte[] bytes = new byte[0];
+        Byte[] bytes = new Byte[0];
         try {
             byte[] template = reportJasper.getTemplateSource();
-
             JasperDesign jasperDesign = JRXmlLoader.load(new ByteArrayInputStream(template));
             report = JasperCompileManager.compileReport(jasperDesign);
             print = JasperFillManager.fillReport(report, params, collectionDataSource);
-            bytes = JasperExportManager.exportReportToPdf(print);
+            bytes = ArrayUtils.toObject(JasperExportManager.exportReportToPdf(print));
         } catch (JRException e1) {
             e1.printStackTrace();
         }
-        return bytes;
+        return ArrayUtils.toPrimitive(bytes);
     }
 
 }

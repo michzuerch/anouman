@@ -1,23 +1,15 @@
 package com.gmail.michzuerch.anouman.presentation.ui.backup.dto.buchhaltungen;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
  * Created by michzuerch on 15.11.15.
  */
-@XmlAccessorType(XmlAccessType.NONE)
 public class BackupBuchhaltung {
-    @XmlAttribute
     private String bezeichnung;
-    @XmlAttribute
     private int jahr;
 
-    @XmlElement(name = "kontoklasse")
     private Set<BackupKontoklasse> kontoklasses = new HashSet<>();
 
     public BackupBuchhaltung() {

@@ -1,19 +1,11 @@
 package com.gmail.michzuerch.anouman.presentation.ui.backup.dto.adressen;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import java.time.LocalDateTime;
 
-@XmlAccessorType(XmlAccessType.NONE)
 public class BackupAufwand {
-    @XmlElement
     private String titel;
-    @XmlElement
     private String bezeichnung;
-    @XmlElement
     private LocalDateTime start;
-    @XmlElement
     private LocalDateTime end;
 
     public String getTitel() {
@@ -46,5 +38,15 @@ public class BackupAufwand {
 
     public void setEnd(LocalDateTime end) {
         this.end = end;
+    }
+
+    @Override
+    public String toString() {
+        return "BackupAufwand{" +
+                "titel='" + titel + '\'' +
+                ", bezeichnung='" + bezeichnung + '\'' +
+                ", start=" + start +
+                ", end=" + end +
+                '}';
     }
 }

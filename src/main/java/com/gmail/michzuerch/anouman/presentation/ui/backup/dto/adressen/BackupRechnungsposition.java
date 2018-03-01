@@ -1,20 +1,10 @@
 package com.gmail.michzuerch.anouman.presentation.ui.backup.dto.adressen;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-
-@XmlAccessorType(XmlAccessType.NONE)
 public class BackupRechnungsposition {
-    @XmlElement
     private String bezeichnung;
-    @XmlElement
     private String bezeichnunglang;
-    @XmlElement
     private String mengeneinheit;
-    @XmlElement
     private Double stueckpreis;
-    @XmlElement
     private Double anzahl;
 
     public String getBezeichnung() {
@@ -55,5 +45,16 @@ public class BackupRechnungsposition {
 
     public void setAnzahl(Double anzahl) {
         this.anzahl = anzahl;
+    }
+
+    @Override
+    public String toString() {
+        return "BackupRechnungsposition{" +
+                "bezeichnung='" + bezeichnung + '\'' +
+                ", bezeichnunglang='" + bezeichnunglang + '\'' +
+                ", mengeneinheit='" + mengeneinheit + '\'' +
+                ", stueckpreis=" + stueckpreis +
+                ", anzahl=" + anzahl +
+                '}';
     }
 }

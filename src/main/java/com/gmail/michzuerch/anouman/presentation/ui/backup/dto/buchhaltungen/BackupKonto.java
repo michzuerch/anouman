@@ -1,9 +1,5 @@
 package com.gmail.michzuerch.anouman.presentation.ui.backup.dto.buchhaltungen;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,23 +7,14 @@ import java.util.Set;
  * Created by michzuerch on 16.11.15.
  */
 
-@XmlAccessorType(XmlAccessType.NONE)
 public class BackupKonto {
-    @XmlAttribute
     private String bezeichnung;
-    @XmlAttribute
     private String bemerkung;
-    @XmlAttribute
     private String kontonummer;
-    @XmlElement
     private String showKontonummer;
-    @XmlElement
     private Double anfangsbestand;
-    @XmlAttribute
     private Long id;
-    @XmlElement(name = "buchung")
     private Set<BackupBuchung> buchungen = new HashSet<>();
-    @XmlElement(name = "mehrwersteuercode")
     private Set<BackupMehrwertsteuercode> mehrwertsteuercodes = new HashSet<>();
 
     public BackupKonto() {

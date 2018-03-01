@@ -1,32 +1,17 @@
 package com.gmail.michzuerch.anouman.presentation.ui.report.jasper.reporttemplate;
 
 import com.gmail.michzuerch.anouman.backend.entity.report.jasper.ReportJasper;
-import com.gmail.michzuerch.anouman.presentation.ui.converter.ByteToStringConverter;
-import com.gmail.michzuerch.anouman.presentation.ui.field.TestTextField;
-import com.vaadin.server.UserError;
+import com.gmail.michzuerch.anouman.presentation.ui.field.JasperXmlField;
 import com.vaadin.ui.*;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperReport;
-import org.apache.commons.lang3.SerializationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.viritin.form.AbstractForm;
-import server.droporchoose.UploadComponent;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class ReportJasperForm extends AbstractForm<ReportJasper> {
     private static Logger logger = LoggerFactory.getLogger(ReportJasperForm.class.getName());
 
-    TestTextField bezeichnung = new TestTextField("Bezeichnung");
-    UploadComponent upload = new UploadComponent();
-    Button validateAndCompileButton = new Button("Validate and Compile");
-    TextArea templateSource = new TextArea("Template JRXML");
-    TextArea templateCompiled = new TextArea("Compiled Source");
+    TextField bezeichnung = new TextField("Bezeichnung");
+    JasperXmlField templateSource = new JasperXmlField();
 
     private String filename;
 
@@ -43,68 +28,43 @@ public class ReportJasperForm extends AbstractForm<ReportJasper> {
 
     @Override
     protected Component createContent() {
-        getBinder().forField(templateSource).withConverter(new ByteToStringConverter()).withValidator(new ReportJasperValidator()).bind("templateSource");
-        getBinder().forField(templateCompiled).withConverter(new ByteToStringConverter()).bind("templateCompiled");
+        //getBinder().forField(templateSource).withConverter(new ByteToStringConverter()).withValidator(new ReportJasperValidator()).bind("templateSource");
+        //getBinder().forField(templateCompiled).withConverter(new ByteToStringConverter()).bind("templateCompiled");
 
         //StreamResource templateResource = createStreamResource();
         //FileDownloader fileDownloader = new FileDownloader(templateResource);
         //fileDownloader.extend(downloadButton);
 
-        validateAndCompileButton.addClickListener(event -> {
-            if (compileJRXML(getEntity().getTemplateSource())) {
-                Notification.show("Compiling verfolgreich", Notification.Type.TRAY_NOTIFICATION);
-            } else {
-                Notification.show("Fehler beim Compilieren", Notification.Type.ERROR_MESSAGE);
-            }
-
-        });
-
-        validateAndCompileButton.setEnabled(false);
-
-        templateSource.addValueChangeListener(event -> {
-            if (getEntity().getTemplateSource() != null) {
-                if (getEntity().getTemplateSource().length > 1) {
-                    validateAndCompileButton.setEnabled(true);
-                }
-            }
-        });
-
-        templateSource.setWidth(700, Unit.PIXELS);
-        templateSource.setRows(15);
-
-        upload.setCaption("Upload");
-        upload.setReceivedCallback(this::uploadReceived);
+//        validateAndCompileButton.addClickListener(event -> {
+//            if (compileJRXML(getEntity().getTemplateSource())) {
+//                Notification.show("Compiling verfolgreich", Notification.Type.TRAY_NOTIFICATION);
+//            } else {
+//                Notification.show("Fehler beim Compilieren", Notification.Type.ERROR_MESSAGE);
+//            }
+//
+//        });
 
         return new VerticalLayout(new FormLayout(
-                bezeichnung, validateAndCompileButton, templateSource, upload), getToolbar());
+                bezeichnung, templateSource), getToolbar());
     }
 
-    private void uploadReceived(String fileName, Path path) {
-        try {
-            byte[] data = Files.readAllBytes(Paths.get(path.toUri()));
-            setFilename(fileName);
-            templateSource.setValue(new String(data, "UTF-8"));
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
-    }
 
-    private boolean compileJRXML(byte[] val) {
-        JasperReport jasperReport = null;
-        try {
-            jasperReport = JasperCompileManager
-                    .compileReport(new ByteArrayInputStream(val));
-            templateCompiled.setValue(new String(SerializationUtils.serialize(jasperReport), "UTF-8"));
-            //templateCompiled.setValue(jasperReport.toString());
-            Notification.show("Report erfolgreich compiliert: " + jasperReport.getCompilerClass(), Notification.Type.TRAY_NOTIFICATION);
-        } catch (Exception e) {
-            e.printStackTrace();
-            templateSource.setComponentError(new UserError(e.getMessage()));
-            Notification.show("Fehler beim Compilieren: " + e.getLocalizedMessage(), Notification.Type.TRAY_NOTIFICATION);
-            return false;
-        }
-        return true;
-    }
+//    private boolean compileJRXML(byte[] val) {
+//        JasperReport jasperReport = null;
+//        try {
+//            jasperReport = JasperCompileManager
+//                    .compileReport(new ByteArrayInputStream(val));
+//            templateCompiled.setValue(new String(SerializationUtils.serialize(jasperReport), "UTF-8"));
+//            //templateCompiled.setValue(jasperReport.toString());
+//            Notification.show("Report erfolgreich compiliert: " + jasperReport.getCompilerClass(), Notification.Type.TRAY_NOTIFICATION);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            templateSource.setComponentError(new UserError(e.getMessage()));
+//            Notification.show("Fehler beim Compilieren: " + e.getLocalizedMessage(), Notification.Type.TRAY_NOTIFICATION);
+//            return false;
+//        }
+//        return true;
+//    }
 
 //    private StreamResource createStreamResource() {
 //        return new StreamResource(new StreamResource.StreamSource() {
@@ -173,14 +133,6 @@ public class ReportJasperForm extends AbstractForm<ReportJasper> {
 //            return false;
 //        }
 //    }
-
-    public String getFilename() {
-        return filename;
-    }
-
-    public void setFilename(String filename) {
-        this.filename = filename;
-    }
 
 
 }

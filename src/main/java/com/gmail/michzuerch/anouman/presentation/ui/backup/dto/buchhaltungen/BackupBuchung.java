@@ -1,38 +1,26 @@
 package com.gmail.michzuerch.anouman.presentation.ui.backup.dto.buchhaltungen;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import java.util.Date;
+
+import java.time.LocalDate;
 
 /**
  * Created by michzuerch on 16.11.15.
  */
-@XmlAccessorType(XmlAccessType.NONE)
 public class BackupBuchung {
-    @XmlElement
     private String buchungstext;
 
-    @XmlElement
-    private Date buchungsdatum;
+    private LocalDate buchungsdatum;
 
-    @XmlElement
     private Integer laufnummer;
 
-    @XmlElement
     private Float betrag;
 
-    @XmlElement
     private Long kontoSoll;
 
-    @XmlElement
     private Long kontoHaben;
 
-    @XmlAttribute
     private Long id;
 
-    @XmlElement
     private Long mehrwertsteuercode;
 
     public BackupBuchung() {
@@ -46,11 +34,11 @@ public class BackupBuchung {
         this.buchungstext = buchungstext;
     }
 
-    public Date getBuchungsdatum() {
+    public LocalDate getBuchungsdatum() {
         return buchungsdatum;
     }
 
-    public void setBuchungsdatum(Date buchungsdatum) {
+    public void setBuchungsdatum(LocalDate buchungsdatum) {
         this.buchungsdatum = buchungsdatum;
     }
 

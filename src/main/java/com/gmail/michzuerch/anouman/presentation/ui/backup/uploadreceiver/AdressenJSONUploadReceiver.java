@@ -55,6 +55,7 @@ public class AdressenJSONUploadReceiver implements Serializable, Upload.Receiver
     //@todo Problem mit outputStream in unmarshal
     @Override
     public void uploadSucceeded(Upload.SucceededEvent succeededEvent) {
+
         ObjectMapper objectMapper = new ObjectMapper();
         BackupAdressen backupAdressen = new BackupAdressen();
         try {

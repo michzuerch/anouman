@@ -1,35 +1,16 @@
 package com.gmail.michzuerch.anouman.presentation.ui.backup.dto.adressen;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@XmlAccessorType(XmlAccessType.NONE)
 public class BackupRechnung {
-
-    @XmlElement
     private LocalDate rechnungsdatum;
-
-    @XmlElement
     private String bezeichnung;
-
-    @XmlElement
     private int faelligInTagen;
-
-    @XmlElement
     private boolean bezahlt;
-
-    @XmlElement
     private boolean verschickt;
-
-
-    @XmlElement(name = "rechnungsposition")
     private List<BackupRechnungsposition> rechnungspositions = new ArrayList<>();
-
-    @XmlElement(name = "aufwand")
     private List<BackupAufwand> aufwands = new ArrayList<>();
 
     public LocalDate getRechnungsdatum() {
@@ -86,5 +67,18 @@ public class BackupRechnung {
 
     public void setAufwands(List<BackupAufwand> aufwands) {
         this.aufwands = aufwands;
+    }
+
+    @Override
+    public String toString() {
+        return "BackupRechnung{" +
+                "rechnungsdatum=" + rechnungsdatum +
+                ", bezeichnung='" + bezeichnung + '\'' +
+                ", faelligInTagen=" + faelligInTagen +
+                ", bezahlt=" + bezahlt +
+                ", verschickt=" + verschickt +
+                ", rechnungspositions=" + rechnungspositions +
+                ", aufwands=" + aufwands +
+                '}';
     }
 }

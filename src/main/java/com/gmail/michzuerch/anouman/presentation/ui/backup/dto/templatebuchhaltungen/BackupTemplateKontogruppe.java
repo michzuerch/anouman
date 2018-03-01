@@ -1,22 +1,14 @@
 package com.gmail.michzuerch.anouman.presentation.ui.backup.dto.templatebuchhaltungen;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
  * Created by michzuerch on 16.11.15.
  */
-@XmlAccessorType(XmlAccessType.NONE)
 public class BackupTemplateKontogruppe {
-    @XmlAttribute
     private String bezeichnung;
-    @XmlAttribute
     private String kontonummer;
-    @XmlElement(name = "konto")
     private Set<BackupTemplateKonto> backupTemplateKontos = new HashSet<>();
 
     public BackupTemplateKontogruppe() {

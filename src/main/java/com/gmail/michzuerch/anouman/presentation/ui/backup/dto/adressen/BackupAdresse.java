@@ -1,49 +1,17 @@
 package com.gmail.michzuerch.anouman.presentation.ui.backup.dto.adressen;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import java.util.ArrayList;
 import java.util.List;
 
-@XmlAccessorType(XmlAccessType.NONE)
 public class BackupAdresse {
-    @XmlElement
-    @JsonProperty("firma")
     private String firma;
-
-    @XmlElement
-    @JsonProperty("anrede")
     private String anrede;
-
-    @XmlElement
-    @JsonProperty("vorname")
     private String vorname;
-
-    @XmlElement
-    @JsonProperty("nachname")
     private String nachname;
-
-    @XmlElement
-    @JsonProperty("strasse")
     private String strasse;
-
-    @XmlElement
-    @JsonProperty("ort")
     private String ort;
-
-    @XmlElement
-    @JsonProperty("postleitzahl")
     private String postleitzahl;
-
-    @XmlElement
-    @JsonProperty("stundensatz")
     private Double stundensatz;
-
-    @XmlElement(name = "rechnung")
-    @JsonProperty("rechnungen")
     private List<BackupRechnung> rechnungen = new ArrayList<>();
 
 
@@ -117,5 +85,20 @@ public class BackupAdresse {
 
     public void setRechnungen(List<BackupRechnung> rechnungen) {
         this.rechnungen = rechnungen;
+    }
+
+    @Override
+    public String toString() {
+        return "BackupAdresse{" +
+                "firma='" + firma + '\'' +
+                ", anrede='" + anrede + '\'' +
+                ", vorname='" + vorname + '\'' +
+                ", nachname='" + nachname + '\'' +
+                ", strasse='" + strasse + '\'' +
+                ", ort='" + ort + '\'' +
+                ", postleitzahl='" + postleitzahl + '\'' +
+                ", stundensatz=" + stundensatz +
+                ", rechnungen=" + rechnungen +
+                '}';
     }
 }

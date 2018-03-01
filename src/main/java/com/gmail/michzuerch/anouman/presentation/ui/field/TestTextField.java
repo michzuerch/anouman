@@ -25,7 +25,6 @@ public class TestTextField extends CustomField<String> {
         layout.addComponents(textField);
         textField.addValueChangeListener(
                 event -> {
-
                     fireEvent(new ValueChangeEvent<>(this,
                             event.getValue(), event.isUserOriginated()));
                     System.err.println("VcE:" + event.getValue());
