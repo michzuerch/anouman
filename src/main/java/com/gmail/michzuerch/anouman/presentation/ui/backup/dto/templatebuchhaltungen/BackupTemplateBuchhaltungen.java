@@ -1,5 +1,10 @@
 package com.gmail.michzuerch.anouman.presentation.ui.backup.dto.templatebuchhaltungen;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -8,6 +13,8 @@ import java.util.Set;
  * Created by michzuerch on 25.07.15.
  */
 public class BackupTemplateBuchhaltungen {
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime backupdatum;
     private Set<BackupTemplateBuchhaltung> buchhaltungen = new HashSet<>();
 

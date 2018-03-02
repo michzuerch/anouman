@@ -1,10 +1,17 @@
 package com.gmail.michzuerch.anouman.presentation.ui.backup.dto.adressen;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class BackupRechnung {
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate rechnungsdatum;
     private String bezeichnung;
     private int faelligInTagen;

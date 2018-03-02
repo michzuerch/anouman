@@ -84,7 +84,7 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.immutables:value:2.6.0.alpha0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.slf4j:slf4j-api:1.8.0-beta1" level="project" />
     <orderEntry type="library" name="Maven: javax.validation:validation-api:2.0.1.Final" level="project" />
-    <orderEntry type="library" name="Maven: org.vaadin:viritin:2.3" level="project" />
+    <orderEntry type="library" name="Maven: org.vaadin:viritin:2.4" level="project" />
     <orderEntry type="library" name="Maven: org.vaadin.addon:confirmdialog:3.1.1" level="project" />
     <orderEntry type="library" name="Maven: org.commonjava.googlecode.markdown4j:markdown4j:2.2-cj-1.1" level="project" />
     <orderEntry type="library" name="Maven: commons-io:commons-io:2.4" level="project" />

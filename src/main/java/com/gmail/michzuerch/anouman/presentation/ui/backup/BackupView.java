@@ -16,7 +16,6 @@ import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.Templa
 import com.gmail.michzuerch.anouman.presentation.ui.backup.dto.adressen.*;
 import com.gmail.michzuerch.anouman.presentation.ui.backup.dto.buchhaltungen.*;
 import com.gmail.michzuerch.anouman.presentation.ui.backup.dto.templatebuchhaltungen.*;
-import com.gmail.michzuerch.anouman.presentation.ui.backup.uploadreceiver.*;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
@@ -60,23 +59,6 @@ public class BackupView extends VerticalLayout implements View {
     @Inject
     TemplateBuchhaltungDeltaspikeFacade templateBuchhaltungDeltaspikeFacade;
 
-    @Inject
-    TemplateBuchhaltungenXmlUploadReceiver templateXmlBuchhaltungenUploadReceiver;
-
-    @Inject
-    AdressenXmlUploadReceiver adressenXmlUploadReceiver;
-
-    @Inject
-    BuchhaltungenXmlUploadReceiver buchhaltungenXmlUploadReceiver;
-
-    @Inject
-    TemplateBuchhaltungenJSONUploadReceiver templateBuchhaltungenJSONUploadReceiver;
-
-    @Inject
-    AdressenJSONUploadReceiver adressenJSONUploadReceiver;
-
-    @Inject
-    BuchhaltungenJSONUploadReceiver buchhaltungenJSONUploadReceiver;
     private RadioButtonGroup<String> fileFormatDownloadGroup;
     private RadioButtonGroup<String> fileFormatUploadGroup;
 
