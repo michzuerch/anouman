@@ -1,6 +1,11 @@
 package com.gmail.michzuerch.anouman.presentation.ui.backup.dto.buchhaltungen;
 
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+
 import java.time.LocalDate;
 
 /**
@@ -9,6 +14,8 @@ import java.time.LocalDate;
 public class BackupBuchung {
     private String buchungstext;
 
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate buchungsdatum;
 
     private Integer laufnummer;
