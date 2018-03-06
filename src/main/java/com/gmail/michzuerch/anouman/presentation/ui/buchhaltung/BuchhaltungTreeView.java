@@ -640,7 +640,7 @@ public class BuchhaltungTreeView extends VerticalLayout implements View {
             mehrwertsteuercode.setBuchhaltung(buchhaltungSelect.getValue());
             mehrwertsteuercode.setMehrwertsteuerKonto(createKontoList(buchhaltungSelect.getValue()).get(0));
 
-            mehrwertsteuercode.setProzent(8f);
+            mehrwertsteuercode.setProzent(8d);
 
             mehrwertsteuercodeForm.setWidth(500, Unit.PIXELS);
             mehrwertsteuercodeForm.lockSelect();

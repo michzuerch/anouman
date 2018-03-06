@@ -7,7 +7,7 @@ public class BackupMehrwertsteuercode {
     private Long id;
     private String bezeichnung;
     private String code;
-    private Float prozent;
+    private Double prozent;
     private boolean verkauf;
     private Long konto;
 
@@ -43,11 +43,11 @@ public class BackupMehrwertsteuercode {
         this.code = code;
     }
 
-    public Float getProzent() {
+    public Double getProzent() {
         return prozent;
     }
 
-    public void setProzent(Float prozent) {
+    public void setProzent(Double prozent) {
         this.prozent = prozent;
     }
 

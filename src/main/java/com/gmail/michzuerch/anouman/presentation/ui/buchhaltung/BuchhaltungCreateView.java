@@ -33,6 +33,8 @@ public class BuchhaltungCreateView extends VerticalLayout implements View {
     @Inject
     TemplateBuchhaltungDeltaspikeFacade templateBuchhaltungDeltaspikeFacade;
     @Inject
+    MehrwertsteuercodeDeltaspikeFacade mehrwertsteuercodeDeltaspikeFacade;
+    @Inject
     BuchhaltungForm buchhaltungForm;
 
     private BeanValidationBinder<Buchhaltung> binder = new BeanValidationBinder<>(Buchhaltung.class);
@@ -46,9 +48,9 @@ public class BuchhaltungCreateView extends VerticalLayout implements View {
         FlexLayout layout = new FlexLayout();
 
         layout.setFlexDirection(FlexDirection.Row);
-        layout.setAlignItems(AlignItems.Center);
-        layout.setJustifyContent(JustifyContent.Center);
-        layout.setAlignContent(AlignContent.Center);
+        layout.setAlignItems(AlignItems.FlexStart);
+        layout.setJustifyContent(JustifyContent.FlexStart);
+        layout.setAlignContent(AlignContent.FlexStart);
         layout.setFlexWrap(FlexWrap.Wrap);
 
         templateBuchhaltungSelect.setCaption("Template Buchhaltung");
@@ -125,6 +127,18 @@ public class BuchhaltungCreateView extends VerticalLayout implements View {
                                 konto = kontoDeltaspikeFacade.save(konto);
                                 kontogruppe.getKontos().add(konto);
                                 kontogruppe = kontogruppeDeltaspikeFacade.save(kontogruppe);
+
+                                for (TemplateMehrwertsteuercode templateMehrwertsteuercode : templateKonto.getTemplateMehrwertsteuercodes()) {
+                                    Mehrwertsteuercode mehrwertsteuercode = new Mehrwertsteuercode();
+                                    mehrwertsteuercode.setBezeichnung(templateMehrwertsteuercode.getBezeichnung());
+                                    mehrwertsteuercode.setBuchhaltung(buchhaltung1);
+                                    mehrwertsteuercode.setCode(templateMehrwertsteuercode.getCode());
+                                    mehrwertsteuercode.setMehrwertsteuerKonto(konto);
+                                    mehrwertsteuercode.setProzent(templateMehrwertsteuercode.getProzent());
+                                    mehrwertsteuercode.setVerkauf(templateMehrwertsteuercode.isVerkauf());
+                                    konto.getMehrwertsteuercodes().add(mehrwertsteuercode);
+                                    mehrwertsteuercode = mehrwertsteuercodeDeltaspikeFacade.save(mehrwertsteuercode);
+                                }
                             }
                         }
                     }
@@ -133,7 +147,6 @@ public class BuchhaltungCreateView extends VerticalLayout implements View {
                 Notification.show("Buchhaltung erstellt id: " + buchhaltung1.getId());
                 UI.getCurrent().getNavigator().navigateTo("BuchhaltungTreeView/id/" + buchhaltung1.getId());
             }
-
         });
         layout.setSizeFull();
         return layout;

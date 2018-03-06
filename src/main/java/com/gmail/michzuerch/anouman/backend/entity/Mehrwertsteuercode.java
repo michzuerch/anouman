@@ -26,7 +26,7 @@ public class Mehrwertsteuercode extends AbstractEntity {
     @Digits(integer = 2, fraction = 2, message = "Ungültiges Zahlenformat")
     @DecimalMin(value = "0.1", message = "Minimale Mehrwertsteuer ist 0.1%")
     @DecimalMax(value = "50", message = "Maximale Mehrwertsteuer ist 50%")
-    private Float prozent;
+    private Double prozent;
 
     @Column
     private boolean verkauf;
@@ -56,11 +56,11 @@ public class Mehrwertsteuercode extends AbstractEntity {
         this.bezeichnung = bezeichnung;
     }
 
-    public Float getProzent() {
+    public Double getProzent() {
         return prozent;
     }
 
-    public void setProzent(Float prozent) {
+    public void setProzent(Double prozent) {
         this.prozent = prozent;
     }
 
@@ -93,9 +93,16 @@ public class Mehrwertsteuercode extends AbstractEntity {
     }
 
     public void setProzentString(String prozent) {
-        setProzent(Float.valueOf(prozent));
+        setProzent(Double.valueOf(prozent));
     }
 
+    public List<Buchung> getBuchungen() {
+        return buchungen;
+    }
+
+    public void setBuchungen(List<Buchung> buchungen) {
+        this.buchungen = buchungen;
+    }
 
     @Override
     public String toString() {
