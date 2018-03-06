@@ -66,9 +66,9 @@ public class TemplateMehrwertsteuercodeView extends VerticalLayout implements Vi
 
         formFactory.setErrorListener(e -> Notification.show("Custom error message (simulated error)", Notification.Type.ERROR_MESSAGE));
 
-        formFactory.setVisibleProperties(CrudOperation.READ, "id", "bezeichnung", "code", "prozent", "verkauf", "templateBuchhaltung");
-        formFactory.setVisibleProperties(CrudOperation.ADD, "id", "bezeichnung", "code", "prozent", "verkauf", "templateBuchhaltung");
-        formFactory.setVisibleProperties(CrudOperation.UPDATE, "id", "bezeichnung", "code", "prozent", "verkauf", "templateBuchhaltung");
+        formFactory.setVisibleProperties(CrudOperation.READ, "id", "bezeichnung", "code", "prozent", "verkauf", "templateBuchhaltung", "templateMehrwertsteuerKonto");
+        formFactory.setVisibleProperties(CrudOperation.ADD, "id", "bezeichnung", "code", "prozent", "verkauf", "templateBuchhaltung", "templateMehrwertsteuerKonto");
+        formFactory.setVisibleProperties(CrudOperation.UPDATE, "id", "bezeichnung", "code", "prozent", "verkauf", "templateBuchhaltung", "templateMehrwertsteuerKonto");
         formFactory.setVisibleProperties(CrudOperation.DELETE, "id", "bezeichnung");
 
         formFactory.setDisabledProperties("id");
@@ -83,12 +83,21 @@ public class TemplateMehrwertsteuercodeView extends VerticalLayout implements Vi
                     UI.getCurrent().getNavigator().navigateTo("TemplateBuchhaltungView/id/" + templateMehrwertsteuercode.getTemplateBuchhaltung().getId().toString());
                 })).setCaption("Template Buchhaltung").setStyleGenerator(item -> "v-align-center");
 
+        crud.getGrid().addColumn(templateMehrwertsteuercode ->
+                        templateMehrwertsteuercode.getTemplateMehrwertsteuerKonto().getBezeichnung() + " " +
+                                templateMehrwertsteuercode.getTemplateMehrwertsteuerKonto().getId(),
+                new ButtonRenderer<>(event -> {
+                    TemplateMehrwertsteuercode templateMehrwertsteuercode = event.getItem();
+                    UI.getCurrent().getNavigator().navigateTo("TemplateKontoView/id/" + templateMehrwertsteuercode.getTemplateMehrwertsteuerKonto().getId());
+                })).setCaption("Konto Mehrwertsteuer").setStyleGenerator(item -> "v-align-center");
+
         //formFactory.setFieldType("anzahl", AnzahlField.class);
-        formFactory.setFieldType("pronzent", ProzentField.class);
+        formFactory.setFieldType("prozent", ProzentField.class);
 
         formFactory.setFieldProvider("templateBuchhaltung",
                 new NativeSelectProvider<TemplateBuchhaltung>("Template Buchhaltung", templateBuchhaltungDeltaspikeFacade.findAll(),
                         item -> item.getId() + " " + item.getBezeichnung()));
+
 
         formFactory.setButtonCaption(CrudOperation.ADD, "Neuen Template Mehrwertsteuercode erstellen");
         formFactory.setButtonCaption(CrudOperation.DELETE, "Template Mehrwertsteuercode löschen");

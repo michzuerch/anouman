@@ -88,7 +88,6 @@ public class TemplateBuchhaltungTreeView extends VerticalLayout implements View 
         HorizontalLayout toolsLayout = new HorizontalLayout();
         HorizontalLayout bodyLayout = new HorizontalLayout();
         buchhaltungSelect = createTemplateBuchhaltungSelect();
-        buchhaltungSelect.setWidth(30, Unit.PERCENTAGE);
 
         addBuchhaltungBtn = createButtonAddTemplateBuchhaltung();
         windowMehrwertsteuercode = createTemplateMehrwertsteuerWindow(buchhaltungSelect.getValue());
@@ -198,8 +197,6 @@ public class TemplateBuchhaltungTreeView extends VerticalLayout implements View 
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
         addComponent(createContent());
         setSizeFull();
-
-
     }
 
     private Button createButtonAddTemplateBuchhaltung() {
@@ -291,7 +288,6 @@ public class TemplateBuchhaltungTreeView extends VerticalLayout implements View 
         });
         return button;
     }
-
 
     private Button createButtonAddTemplateKonto(TemplateKontogruppe templateKontogruppe) {
         Button button = new Button();

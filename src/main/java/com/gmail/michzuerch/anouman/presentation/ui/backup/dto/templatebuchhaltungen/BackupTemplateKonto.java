@@ -13,8 +13,6 @@ public class BackupTemplateKonto {
     private String kontonummer;
     private String showKontonummer;
     private Set<BackupTemplateMehrwertsteuercode> backupTemplateMehrwertsteuercodes = new HashSet<>();
-
-
     private Long id;
 
     public BackupTemplateKonto() {

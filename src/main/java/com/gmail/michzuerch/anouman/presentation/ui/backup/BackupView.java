@@ -6,9 +6,7 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
-import com.gmail.michzuerch.anouman.backend.entity.Adresse;
-import com.gmail.michzuerch.anouman.backend.entity.Buchhaltung;
-import com.gmail.michzuerch.anouman.backend.entity.TemplateBuchhaltung;
+import com.gmail.michzuerch.anouman.backend.entity.*;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.AdresseDeltaspikeFacade;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.BuchhaltungDeltaspikeFacade;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.RechnungDeltaspikeFacade;
@@ -85,7 +83,7 @@ public class BackupView extends VerticalLayout implements View {
                             backupKonto.setBezeichnung(konto.getBezeichnung());
                             backupKonto.setKontonummer(konto.getKontonummer());
                             backupKontogruppe.getKontos().add(backupKonto);
-                            konto.getMehrwertsteuercode().stream().forEach(mehrwertsteuercode -> {
+                            konto.getMehrwertsteuercodes().stream().forEach(mehrwertsteuercode -> {
                                 BackupMehrwertsteuercode backupMehrwertsteuercode = new BackupMehrwertsteuercode();
                                 backupMehrwertsteuercode.setId(mehrwertsteuercode.getId());
                                 backupMehrwertsteuercode.setBezeichnung(mehrwertsteuercode.getBezeichnung());
@@ -125,7 +123,7 @@ public class BackupView extends VerticalLayout implements View {
                         backupKonto.setBezeichnung(konto.getBezeichnung());
                         backupKonto.setKontonummer(konto.getKontonummer());
                         backupKontogruppe.getKontos().add(backupKonto);
-                        konto.getMehrwertsteuercode().stream().forEach(mehrwertsteuercode -> {
+                        konto.getMehrwertsteuercodes().stream().forEach(mehrwertsteuercode -> {
                             BackupMehrwertsteuercode backupMehrwertsteuercode = new BackupMehrwertsteuercode();
                             backupMehrwertsteuercode.setId(mehrwertsteuercode.getId());
                             backupMehrwertsteuercode.setBezeichnung(mehrwertsteuercode.getBezeichnung());
@@ -147,46 +145,51 @@ public class BackupView extends VerticalLayout implements View {
         BackupTemplateBuchhaltungen backupTemplateBuchhaltungen = new BackupTemplateBuchhaltungen();
         Instant now = Instant.now();
         backupTemplateBuchhaltungen.setBackupdatum(LocalDateTime.ofInstant(now, ZoneOffset.UTC));
-        templateBuchhaltungDeltaspikeFacade.findAll().stream().forEach(buchhaltung -> {
-            BackupTemplateBuchhaltung backupBuchhaltung = new BackupTemplateBuchhaltung(buchhaltung.getBezeichnung());
-            backupBuchhaltung.getMehrwertsteuercodes().stream().forEach(mehrwertsteuercode -> {
-                BackupTemplateMehrwertsteuercode backupMehrwertsteuercode = new BackupTemplateMehrwertsteuercode();
-                backupMehrwertsteuercode.setId(mehrwertsteuercode.getId());
-                backupMehrwertsteuercode.setBezeichnung(mehrwertsteuercode.getBezeichnung());
-                backupMehrwertsteuercode.setCode(mehrwertsteuercode.getCode());
-                backupMehrwertsteuercode.setProzent(mehrwertsteuercode.getProzent());
-                backupMehrwertsteuercode.setVerkauf(mehrwertsteuercode.isVerkauf());
-                backupMehrwertsteuercode.setKonto(mehrwertsteuercode.getKonto());
-                backupBuchhaltung.getMehrwertsteuercodes().add(backupMehrwertsteuercode);
-            });
-            buchhaltung.getTemplateKontoklasses().stream().forEach(templateKontoklasse -> {
-                BackupTemplateKontoklasse backupKontoklasse = new BackupTemplateKontoklasse(templateKontoklasse.getBezeichnung(), templateKontoklasse.getKontonummer());
+        templateBuchhaltungDeltaspikeFacade.findAll().stream().forEach(templateBuchhaltung -> {
+            BackupTemplateBuchhaltung backupBuchhaltung = new BackupTemplateBuchhaltung();
+            backupBuchhaltung.setBezeichnung(templateBuchhaltung.getBezeichnung());
+            backupBuchhaltung.setId(templateBuchhaltung.getId());
+            templateBuchhaltung.getTemplateKontoklasses().stream().forEach(templateKontoklasse -> {
+                BackupTemplateKontoklasse backupKontoklasse = new BackupTemplateKontoklasse();
+                backupKontoklasse.setBezeichnung(templateKontoklasse.getBezeichnung());
+                backupKontoklasse.setKontonummer(templateKontoklasse.getKontonummer());
+                backupKontoklasse.setId(templateKontoklasse.getId());
                 backupBuchhaltung.getKontoklasses().add(backupKontoklasse);
                 templateKontoklasse.getTemplateKontohauptgruppes().stream().forEach(templateKontohauptgruppe -> {
-                    BackupTemplateKontohauptgruppe backupTemplateKontohauptgruppe = new BackupTemplateKontohauptgruppe(templateKontohauptgruppe.getBezeichnung(), templateKontohauptgruppe.getKontonummer());
+                    BackupTemplateKontohauptgruppe backupTemplateKontohauptgruppe = new BackupTemplateKontohauptgruppe();
+                    backupTemplateKontohauptgruppe.setBezeichnung(templateKontohauptgruppe.getBezeichnung());
+                    backupTemplateKontohauptgruppe.setKontonummer(templateKontohauptgruppe.getKontonummer());
+                    backupTemplateKontohauptgruppe.setId(templateKontohauptgruppe.getId());
                     backupKontoklasse.getKontohauptgruppen().add(backupTemplateKontohauptgruppe);
                     templateKontohauptgruppe.getTemplateKontogruppes().stream().forEach(templateKontogruppe -> {
-                        BackupTemplateKontogruppe backupTemplateKontogruppe = new BackupTemplateKontogruppe(templateKontogruppe.getBezeichnung(), templateKontogruppe.getKontonummer());
+                        BackupTemplateKontogruppe backupTemplateKontogruppe = new BackupTemplateKontogruppe();
+                        backupTemplateKontogruppe.setBezeichnung(templateKontogruppe.getBezeichnung());
+                        backupTemplateKontogruppe.setKontonummer(templateKontogruppe.getKontonummer());
+                        backupTemplateKontogruppe.setId(templateKontogruppe.getId());
                         backupTemplateKontohauptgruppe.getBackupTemplateKontogruppes().add(backupTemplateKontogruppe);
                         templateKontogruppe.getTemplateKontos().stream().forEach(templateKonto -> {
                             BackupTemplateKonto backupTemplateKonto = new BackupTemplateKonto();
                             backupTemplateKonto.setBezeichnung(templateKonto.getBezeichnung());
                             backupTemplateKonto.setKontonummer(templateKonto.getKontonummer());
+                            backupTemplateKonto.setBemerkung(templateKonto.getBemerkung());
+                            backupTemplateKonto.setShowKontonummer(templateKonto.getShowKontonummer());
+                            backupTemplateKonto.setId(templateKonto.getId());
                             backupTemplateKontogruppe.getBackupTemplateKontos().add(backupTemplateKonto);
-
-                            templateKonto.getTemplateMehrwertsteuercode().stream().forEach(templateMehrwertsteuercode -> {
+                            templateKonto.getTemplateMehrwertsteuercodes().stream().forEach(templateMehrwertsteuercode -> {
                                 BackupTemplateMehrwertsteuercode backupTemplateMehrwertsteuercode = new BackupTemplateMehrwertsteuercode();
                                 backupTemplateMehrwertsteuercode.setId(templateMehrwertsteuercode.getId());
+                                backupTemplateMehrwertsteuercode.setCode(templateMehrwertsteuercode.getCode());
                                 backupTemplateMehrwertsteuercode.setBezeichnung(templateMehrwertsteuercode.getBezeichnung());
                                 backupTemplateMehrwertsteuercode.setProzent(templateMehrwertsteuercode.getProzent());
-                                backupTemplateMehrwertsteuercode.setCode(templateMehrwertsteuercode.getCode());
+                                backupTemplateMehrwertsteuercode.setVerkauf(templateMehrwertsteuercode.isVerkauf());
+                                backupTemplateMehrwertsteuercode.setKonto(templateKonto.getId());
                                 backupTemplateKonto.getBackupTemplateMehrwertsteuercodes().add(backupTemplateMehrwertsteuercode);
                             });
                         });
                     });
                 });
+                backupTemplateBuchhaltungen.addBuchhaltung(backupBuchhaltung);
             });
-            backupTemplateBuchhaltungen.addBuchhaltung(backupBuchhaltung);
         });
         return backupTemplateBuchhaltungen;
     }
@@ -196,50 +199,51 @@ public class BackupView extends VerticalLayout implements View {
         Instant now = Instant.now();
         backupTemplateBuchhaltungen.setBackupdatum(LocalDateTime.ofInstant(now, ZoneOffset.UTC));
 
-        BackupTemplateBuchhaltung backupBuchhaltung = new BackupTemplateBuchhaltung(templateBuchhaltung.getBezeichnung());
-
-        templateBuchhaltung.getTemplateMehrwertsteuercodes().stream().forEach(templateMehrwertsteuercode -> {
-            BackupTemplateMehrwertsteuercode backupMehrwertsteuercode = new BackupTemplateMehrwertsteuercode();
-            backupMehrwertsteuercode.setId(templateMehrwertsteuercode.getId());
-            backupMehrwertsteuercode.setBezeichnung(templateMehrwertsteuercode.getBezeichnung());
-            backupMehrwertsteuercode.setCode(templateMehrwertsteuercode.getCode());
-            backupMehrwertsteuercode.setProzent(templateMehrwertsteuercode.getProzent());
-            backupMehrwertsteuercode.setVerkauf(templateMehrwertsteuercode.isVerkauf());
-            //@todo Konto muss stimmen....!
-            backupMehrwertsteuercode.setKonto(1L);
-            backupBuchhaltung.getMehrwertsteuercodes().add(backupMehrwertsteuercode);
-        });
+        BackupTemplateBuchhaltung backupBuchhaltung = new BackupTemplateBuchhaltung();
+        backupBuchhaltung.setBezeichnung(templateBuchhaltung.getBezeichnung());
+        backupBuchhaltung.setId(templateBuchhaltung.getId());
         templateBuchhaltung.getTemplateKontoklasses().stream().forEach(templateKontoklasse -> {
-            BackupTemplateKontoklasse backupKontoklasse = new BackupTemplateKontoklasse(templateKontoklasse.getBezeichnung(), templateKontoklasse.getKontonummer());
+            BackupTemplateKontoklasse backupKontoklasse = new BackupTemplateKontoklasse();
+            backupKontoklasse.setBezeichnung(templateKontoklasse.getBezeichnung());
+            backupKontoklasse.setKontonummer(templateKontoklasse.getKontonummer());
+            backupKontoklasse.setId(templateKontoklasse.getId());
             backupBuchhaltung.getKontoklasses().add(backupKontoklasse);
             templateKontoklasse.getTemplateKontohauptgruppes().stream().forEach(templateKontohauptgruppe -> {
-                BackupTemplateKontohauptgruppe backupKontogruppe = new BackupTemplateKontohauptgruppe(templateKontohauptgruppe.getBezeichnung(), templateKontohauptgruppe.getKontonummer());
-                backupKontoklasse.getKontohauptgruppen().add(backupKontogruppe);
+                BackupTemplateKontohauptgruppe backupTemplateKontohauptgruppe = new BackupTemplateKontohauptgruppe();
+                backupTemplateKontohauptgruppe.setBezeichnung(templateKontohauptgruppe.getBezeichnung());
+                backupTemplateKontohauptgruppe.setKontonummer(templateKontohauptgruppe.getKontonummer());
+                backupTemplateKontohauptgruppe.setId(templateKontohauptgruppe.getId());
+                backupKontoklasse.getKontohauptgruppen().add(backupTemplateKontohauptgruppe);
                 templateKontohauptgruppe.getTemplateKontogruppes().stream().forEach(templateKontogruppe -> {
-                    BackupTemplateKontogruppe backupTemplateKontogruppe = new BackupTemplateKontogruppe(templateKontogruppe.getBezeichnung(), templateKontogruppe.getKontonummer());
-                    backupKontogruppe.getBackupTemplateKontogruppes().add(backupTemplateKontogruppe);
-                    templateKontogruppe.getTemplateKontos().stream().forEach(templateKonto1 -> {
+                    BackupTemplateKontogruppe backupTemplateKontogruppe = new BackupTemplateKontogruppe();
+                    backupTemplateKontogruppe.setBezeichnung(templateKontogruppe.getBezeichnung());
+                    backupTemplateKontogruppe.setKontonummer(templateKontogruppe.getKontonummer());
+                    backupTemplateKontogruppe.setId(templateKontogruppe.getId());
+                    backupTemplateKontohauptgruppe.getBackupTemplateKontogruppes().add(backupTemplateKontogruppe);
+                    templateKontogruppe.getTemplateKontos().stream().forEach(templateKonto -> {
                         BackupTemplateKonto backupTemplateKonto = new BackupTemplateKonto();
-                        backupTemplateKonto.setBezeichnung(templateKonto1.getBezeichnung());
-                        backupTemplateKonto.setKontonummer(templateKonto1.getKontonummer());
+                        backupTemplateKonto.setBezeichnung(templateKonto.getBezeichnung());
+                        backupTemplateKonto.setKontonummer(templateKonto.getKontonummer());
+                        backupTemplateKonto.setBemerkung(templateKonto.getBemerkung());
+                        backupTemplateKonto.setShowKontonummer(templateKonto.getShowKontonummer());
+                        backupTemplateKonto.setId(templateKonto.getId());
                         backupTemplateKontogruppe.getBackupTemplateKontos().add(backupTemplateKonto);
-
-                        backupTemplateKonto.getBackupTemplateMehrwertsteuercodes().stream().forEach(templateMehrwertsteuercode -> {
+                        templateKonto.getTemplateMehrwertsteuercodes().stream().forEach(templateMehrwertsteuercode -> {
                             BackupTemplateMehrwertsteuercode backupTemplateMehrwertsteuercode = new BackupTemplateMehrwertsteuercode();
                             backupTemplateMehrwertsteuercode.setId(templateMehrwertsteuercode.getId());
                             backupTemplateMehrwertsteuercode.setCode(templateMehrwertsteuercode.getCode());
                             backupTemplateMehrwertsteuercode.setBezeichnung(templateMehrwertsteuercode.getBezeichnung());
                             backupTemplateMehrwertsteuercode.setProzent(templateMehrwertsteuercode.getProzent());
                             backupTemplateMehrwertsteuercode.setVerkauf(templateMehrwertsteuercode.isVerkauf());
+                            backupTemplateMehrwertsteuercode.setKonto(templateKonto.getId());
                             backupTemplateKonto.getBackupTemplateMehrwertsteuercodes().add(backupTemplateMehrwertsteuercode);
                         });
                     });
                 });
+                backupTemplateBuchhaltungen.addBuchhaltung(backupBuchhaltung);
             });
-            backupTemplateBuchhaltungen.addBuchhaltung(backupBuchhaltung);
         });
         return backupTemplateBuchhaltungen;
-
     }
 
     private BackupAdressen getBackupAdressen() {
@@ -260,6 +264,7 @@ public class BackupView extends VerticalLayout implements View {
             adresse.getRechnungen().stream().forEach(rechnung -> {
                 BackupRechnung backupRechnung = new BackupRechnung();
                 backupRechnung.setBezeichnung(rechnung.getBezeichnung());
+                backupRechnung.setFaelligInTagen(rechnung.getFaelligInTagen());
                 backupRechnung.setBezahlt(rechnung.isBezahlt());
                 backupRechnung.setVerschickt(rechnung.isVerschickt());
                 backupRechnung.setRechnungsdatum(rechnung.getRechnungsdatum());
@@ -367,12 +372,7 @@ public class BackupView extends VerticalLayout implements View {
                     stream.flush();
 
                     mapper.writerWithDefaultPrettyPrinter().writeValue(new FileOutputStream(new File("test.json")), getBackupAdressen());
-//Test
-                    BackupAdressen backupAdressen = mapper.readValue(new FileInputStream(new File("test.json")), BackupAdressen.class);
-                    logger.debug("backupAdressen:" + backupAdressen.getBackupdatum().toString());
-                    System.err.println("backupAdressen:" + backupAdressen);
-
-
+                    //BackupAdressen backupAdressen = mapper.readValue(new FileInputStream(new File("test.json")), BackupAdressen.class);
                     stream.close();
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
@@ -549,6 +549,12 @@ public class BackupView extends VerticalLayout implements View {
                 }
             }
         }).withCaption("Template Buchhaltung").withIcon(VaadinIcons.DOWNLOAD);
+        ((DownloadButton) downloaderAdresse).setFileName("AdresseAnouman.json");
+        ((DownloadButton) downloaderAdressen).setFileName("AdressenAnouman.json");
+        ((DownloadButton) downloaderBuchhaltung).setFileName("BuchhaltungAnouman.json");
+        ((DownloadButton) downloaderBuchhaltungen).setFileName("BuchhaltungenAnouman.json");
+        ((DownloadButton) downloaderTemplateBuchhaltung).setFileName("TemplateBuchhaltungAnouman.json");
+        ((DownloadButton) downloaderTemplateBuchhaltungen).setFileName("TemplateBuchhaltungenAnouman.json");
 
 
         List<TemplateBuchhaltung> templateBuchhaltungen = templateBuchhaltungDeltaspikeFacade.findAll();
@@ -592,7 +598,6 @@ public class BackupView extends VerticalLayout implements View {
 
         fileFormatDownloadGroup.addValueChangeListener(valueChangeEvent -> {
             if (valueChangeEvent.getValue().equals("Json")) {
-                System.err.println("Download Format Json");
                 ((DownloadButton) downloaderAdresse).setFileName("AdresseAnouman.json");
                 ((DownloadButton) downloaderAdressen).setFileName("AdressenAnouman.json");
                 ((DownloadButton) downloaderBuchhaltung).setFileName("BuchhaltungAnouman.json");
@@ -601,7 +606,6 @@ public class BackupView extends VerticalLayout implements View {
                 ((DownloadButton) downloaderTemplateBuchhaltungen).setFileName("TemplateBuchhaltungenAnouman.json");
             }
             if (valueChangeEvent.getValue().equals("Xml")) {
-                System.err.println("Download Format Xml");
                 ((DownloadButton) downloaderAdresse).setFileName("AdresseAnouman.xml");
                 ((DownloadButton) downloaderAdressen).setFileName("AdressenAnouman.xml");
                 ((DownloadButton) downloaderBuchhaltung).setFileName("BuchhaltungAnouman.xml");
@@ -656,13 +660,100 @@ public class BackupView extends VerticalLayout implements View {
             if (fileFormatUploadGroup.getValue().equals("Xml")) {
                 XmlMapper mapper = new XmlMapper();
                 BackupAdressen backupAdressen = mapper.readValue(new FileInputStream(path.toFile()), BackupAdressen.class);
-                logger.debug("XML:" + backupAdressen);
+                backupAdressen.getAdressen().stream().forEach(backupAdresse -> {
+                    Adresse adresse = new Adresse();
+                    adresse.setAnrede(backupAdresse.getAnrede());
+                    adresse.setFirma(backupAdresse.getFirma());
+                    adresse.setNachname(backupAdresse.getNachname());
+                    adresse.setOrt(backupAdresse.getOrt());
+                    adresse.setPostleitzahl(backupAdresse.getPostleitzahl());
+                    adresse.setStrasse(backupAdresse.getStrasse());
+                    adresse.setVorname(backupAdresse.getVorname());
+                    adresse.setStundensatz(backupAdresse.getStundensatz());
 
+                    backupAdresse.getRechnungen().stream().forEach(backupRechnung -> {
+                        Rechnung rechnung = new Rechnung();
+                        rechnung.setBezeichnung(backupRechnung.getBezeichnung());
+                        rechnung.setFaelligInTagen(backupRechnung.getFaelligInTagen());
+                        rechnung.setRechnungsdatum(backupRechnung.getRechnungsdatum());
+                        rechnung.setVerschickt(backupRechnung.isVerschickt());
+                        rechnung.setBezahlt(backupRechnung.isBezahlt());
+                        rechnung.setAdresse(adresse);
+                        adresse.getRechnungen().add(rechnung);
+
+                        backupRechnung.getRechnungspositions().stream().forEach(backupRechnungsposition -> {
+                            Rechnungsposition rechnungsposition = new Rechnungsposition();
+                            rechnungsposition.setAnzahl(backupRechnungsposition.getAnzahl());
+                            rechnungsposition.setStueckpreis(backupRechnungsposition.getStueckpreis());
+                            rechnungsposition.setBezeichnung(backupRechnungsposition.getBezeichnung());
+                            rechnungsposition.setBezeichnunglang(backupRechnungsposition.getBezeichnunglang());
+                            rechnungsposition.setMengeneinheit(backupRechnungsposition.getMengeneinheit());
+                            rechnungsposition.setRechnung(rechnung);
+                            rechnung.getRechnungspositionen().add(rechnungsposition);
+                        });
+
+                        backupRechnung.getAufwands().stream().forEach(backupAufwand -> {
+                            Aufwand aufwand = new Aufwand();
+                            aufwand.setBezeichnung(backupAufwand.getBezeichnung());
+                            aufwand.setTitel(backupAufwand.getTitel());
+                            aufwand.setStart(backupAufwand.getStart());
+                            aufwand.setEnd(backupAufwand.getEnd());
+                            aufwand.setRechnung(rechnung);
+                            rechnung.getAufwands().add(aufwand);
+                        });
+                    });
+                    adresseDeltaspikeFacade.save(adresse);
+                });
+                Notification.show("Anzahl Adressen wiederhergestellt: " + backupAdressen.getAdressen().size(), Notification.Type.HUMANIZED_MESSAGE);
             }
             if (fileFormatUploadGroup.getValue().equals("Json")) {
                 ObjectMapper mapper = new ObjectMapper();
                 BackupAdressen backupAdressen = mapper.readValue(new FileInputStream(path.toFile()), BackupAdressen.class);
-                System.err.println("Upload Adressen:" + backupAdressen);
+                backupAdressen.getAdressen().stream().forEach(backupAdresse -> {
+                    Adresse adresse = new Adresse();
+                    adresse.setAnrede(backupAdresse.getAnrede());
+                    adresse.setFirma(backupAdresse.getFirma());
+                    adresse.setNachname(backupAdresse.getNachname());
+                    adresse.setOrt(backupAdresse.getOrt());
+                    adresse.setPostleitzahl(backupAdresse.getPostleitzahl());
+                    adresse.setStrasse(backupAdresse.getStrasse());
+                    adresse.setVorname(backupAdresse.getVorname());
+                    adresse.setStundensatz(backupAdresse.getStundensatz());
+
+                    backupAdresse.getRechnungen().stream().forEach(backupRechnung -> {
+                        Rechnung rechnung = new Rechnung();
+                        rechnung.setBezeichnung(backupRechnung.getBezeichnung());
+                        rechnung.setFaelligInTagen(backupRechnung.getFaelligInTagen());
+                        rechnung.setRechnungsdatum(backupRechnung.getRechnungsdatum());
+                        rechnung.setVerschickt(backupRechnung.isVerschickt());
+                        rechnung.setBezahlt(backupRechnung.isBezahlt());
+                        rechnung.setAdresse(adresse);
+                        adresse.getRechnungen().add(rechnung);
+
+                        backupRechnung.getRechnungspositions().stream().forEach(backupRechnungsposition -> {
+                            Rechnungsposition rechnungsposition = new Rechnungsposition();
+                            rechnungsposition.setAnzahl(backupRechnungsposition.getAnzahl());
+                            rechnungsposition.setStueckpreis(backupRechnungsposition.getStueckpreis());
+                            rechnungsposition.setBezeichnung(backupRechnungsposition.getBezeichnung());
+                            rechnungsposition.setBezeichnunglang(backupRechnungsposition.getBezeichnunglang());
+                            rechnungsposition.setMengeneinheit(backupRechnungsposition.getMengeneinheit());
+                            rechnungsposition.setRechnung(rechnung);
+                            rechnung.getRechnungspositionen().add(rechnungsposition);
+                        });
+
+                        backupRechnung.getAufwands().stream().forEach(backupAufwand -> {
+                            Aufwand aufwand = new Aufwand();
+                            aufwand.setBezeichnung(backupAufwand.getBezeichnung());
+                            aufwand.setTitel(backupAufwand.getTitel());
+                            aufwand.setStart(backupAufwand.getStart());
+                            aufwand.setEnd(backupAufwand.getEnd());
+                            aufwand.setRechnung(rechnung);
+                            rechnung.getAufwands().add(aufwand);
+                        });
+                    });
+                    adresseDeltaspikeFacade.save(adresse);
+                });
+                Notification.show("Anzahl Adressen wiederhergestellt: " + backupAdressen.getAdressen().size(), Notification.Type.HUMANIZED_MESSAGE);
             }
         } catch (IOException e1) {
             e1.printStackTrace();
@@ -674,8 +765,52 @@ public class BackupView extends VerticalLayout implements View {
             if (fileFormatUploadGroup.getValue().equals("Xml")) {
                 XmlMapper mapper = new XmlMapper();
                 BackupBuchhaltungen backupBuchhaltungen = mapper.readValue(path.getFileName().toFile(), BackupBuchhaltungen.class);
-                logger.debug("XML:" + backupBuchhaltungen);
+                backupBuchhaltungen.getBuchhaltungen().stream().forEach(backupBuchhaltung -> {
+                    Buchhaltung buchhaltung = new Buchhaltung();
+                    buchhaltung.setBezeichnung(backupBuchhaltung.getBezeichnung());
+                    buchhaltung.setJahr(backupBuchhaltung.getJahr());
 
+                    backupBuchhaltung.getKontoklasses().stream().forEach(backupKontoklasse -> {
+                        Kontoklasse kontoklasse = new Kontoklasse();
+                        kontoklasse.setBezeichnung(backupKontoklasse.getBezeichnung());
+                        kontoklasse.setKontonummer(backupKontoklasse.getKontonummer());
+                        kontoklasse.setBuchhaltung(buchhaltung);
+                        buchhaltung.getKontoklasse().add(kontoklasse);
+
+                        backupKontoklasse.getBackupKontohauptgruppes().stream().forEach(backupKontohauptgruppe -> {
+                            Kontohauptgruppe kontohauptgruppe = new Kontohauptgruppe();
+                            kontohauptgruppe.setBezeichnung(backupKontohauptgruppe.getBezeichnung());
+                            kontohauptgruppe.setKontonummer(backupKontohauptgruppe.getKontonummer());
+                            kontohauptgruppe.setKontoklasse(kontoklasse);
+                            kontoklasse.getKontohauptgruppes().add(kontohauptgruppe);
+
+                            backupKontohauptgruppe.getBackupKontogruppes().stream().forEach(backupKontogruppe -> {
+                                Kontogruppe kontogruppe = new Kontogruppe();
+                                kontogruppe.setBezeichnung(backupKontogruppe.getBezeichnung());
+                                kontogruppe.setKontonummer(backupKontogruppe.getKontonummer());
+
+                                backupKontogruppe.getKontos().stream().forEach(backupKonto -> {
+                                    Konto konto = new Konto();
+                                    konto.setAnfangsbestand(backupKonto.getAnfangsbestand());
+                                    konto.setBemerkung(backupKonto.getBemerkung());
+                                    konto.setBezeichnung(backupKonto.getBezeichnung());
+                                    konto.setKontonummer(backupKonto.getKontonummer());
+                                    konto.setKontogruppe(kontogruppe);
+                                    kontogruppe.getKontos().add(konto);
+
+                                    backupKonto.getBuchungen().stream().forEach(backupBuchung -> {
+                                        Buchung buchung = new Buchung();
+                                        //buchung.setBelegnummer(backupBuchung.get);
+                                    });
+
+                                });
+
+                            });
+                        });
+
+
+                    });
+                });
             }
             if (fileFormatUploadGroup.getValue().equals("Json")) {
                 ObjectMapper mapper = new ObjectMapper();
@@ -698,20 +833,50 @@ public class BackupView extends VerticalLayout implements View {
             if (fileFormatUploadGroup.getValue().equals("Json")) {
                 ObjectMapper mapper = new ObjectMapper();
                 BackupTemplateBuchhaltungen backupTemplateBuchhaltungen = mapper.readValue(path.getFileName().toFile(), BackupTemplateBuchhaltungen.class);
-                logger.debug("Json:" + backupTemplateBuchhaltungen);
+                backupTemplateBuchhaltungen.getBuchhaltungen().stream().forEach(backupTemplateBuchhaltung -> {
+                    TemplateBuchhaltung templateBuchhaltung = new TemplateBuchhaltung();
+                    templateBuchhaltung.setBezeichnung(backupTemplateBuchhaltung.getBezeichnung());
+
+                    backupTemplateBuchhaltung.getKontoklasses().stream().forEach(backupTemplateKontoklasse -> {
+                        TemplateKontoklasse templateKontoklasse = new TemplateKontoklasse();
+                        templateKontoklasse.setBezeichnung(backupTemplateKontoklasse.getBezeichnung());
+                        templateKontoklasse.setKontonummer(backupTemplateKontoklasse.getKontonummer());
+                        templateKontoklasse.setTemplateBuchhaltung(templateBuchhaltung);
+                        templateBuchhaltung.getTemplateKontoklasses().add(templateKontoklasse);
+
+                        backupTemplateKontoklasse.getKontohauptgruppen().stream().forEach(backupTemplateKontohauptgruppe -> {
+                            TemplateKontohauptgruppe templateKontohauptgruppe = new TemplateKontohauptgruppe();
+                            templateKontohauptgruppe.setBezeichnung(backupTemplateKontohauptgruppe.getBezeichnung());
+                            templateKontohauptgruppe.setKontonummer(backupTemplateKontohauptgruppe.getKontonummer());
+                            templateKontohauptgruppe.setTemplateKontoklasse(templateKontoklasse);
+                            templateKontoklasse.getTemplateKontohauptgruppes().add(templateKontohauptgruppe);
+
+                            backupTemplateKontohauptgruppe.getBackupTemplateKontogruppes().stream().forEach(backupTemplateKontogruppe -> {
+                                TemplateKontogruppe templateKontogruppe = new TemplateKontogruppe();
+                                templateKontogruppe.setBezeichnung(backupTemplateKontogruppe.getBezeichnung());
+                                templateKontogruppe.setKontonummer(backupTemplateKontogruppe.getKontonummer());
+                                templateKontogruppe.setTemplateKontohauptgruppe(templateKontohauptgruppe);
+                                templateKontohauptgruppe.getTemplateKontogruppes().add(templateKontogruppe);
+
+                                backupTemplateKontogruppe.getBackupTemplateKontos().stream().forEach(backupTemplateKonto -> {
+                                    TemplateKonto templateKonto = new TemplateKonto();
+                                    templateKonto.setBemerkung(backupTemplateKonto.getBemerkung());
+                                    templateKonto.setBezeichnung(backupTemplateKonto.getBezeichnung());
+                                    templateKonto.setKontonummer(backupTemplateKonto.getKontonummer());
+                                    templateKonto.setTemplateKontogruppe(templateKontogruppe);
+                                    templateKontogruppe.getTemplateKontos().add(templateKonto);
+
+                                });
+                            });
+                        });
+                    });
+                });
+
+                Notification.show("Anzahl erstellter Template Buchhaltungen: " + backupTemplateBuchhaltungen.getBuchhaltungen().size(), Notification.Type.HUMANIZED_MESSAGE);
             }
         } catch (IOException e1) {
             e1.printStackTrace();
         }
-    }
-
-
-    public String getFilename() {
-        return filename;
-    }
-
-    public void setFilename(String filename) {
-        this.filename = filename;
     }
 
     @Override

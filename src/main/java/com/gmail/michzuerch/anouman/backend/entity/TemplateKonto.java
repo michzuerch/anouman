@@ -29,7 +29,7 @@ public class TemplateKonto extends AbstractEntity {
     private TemplateKontogruppe templateKontogruppe;
 
     @OneToMany(mappedBy = "templateMehrwertsteuerKonto", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<TemplateMehrwertsteuercode> templateMehrwertsteuercode = new ArrayList<>();
+    private List<TemplateMehrwertsteuercode> templateMehrwertsteuercodes = new ArrayList<>();
 
     public TemplateKonto() {
     }
@@ -78,12 +78,12 @@ public class TemplateKonto extends AbstractEntity {
         this.templateKontogruppe = templateKontogruppe;
     }
 
-    public List<TemplateMehrwertsteuercode> getTemplateMehrwertsteuercode() {
-        return templateMehrwertsteuercode;
+    public List<TemplateMehrwertsteuercode> getTemplateMehrwertsteuercodes() {
+        return templateMehrwertsteuercodes;
     }
 
-    public void setTemplateMehrwertsteuercode(List<TemplateMehrwertsteuercode> templateMehrwertsteuercode) {
-        this.templateMehrwertsteuercode = templateMehrwertsteuercode;
+    public void setTemplateMehrwertsteuercodes(List<TemplateMehrwertsteuercode> templateMehrwertsteuercode) {
+        this.templateMehrwertsteuercodes = templateMehrwertsteuercode;
     }
 
 

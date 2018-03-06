@@ -113,7 +113,7 @@ public class TemplateBuchhaltungenJSONUploadReceiver implements Serializable, Up
                                     templateMehrwertsteuercode.setVerkauf(backupTemplateMehrwertsteuercode.isVerkauf());
                                     templateMehrwertsteuercode.setTemplateBuchhaltung(templateBuchhaltung);
                                     templateMehrwertsteuercode = templateMehrwertsteuercodeDeltaspikeFacade.save(templateMehrwertsteuercode);
-                                    templateKonto.getTemplateMehrwertsteuercode().add(templateMehrwertsteuercode);
+                                    templateKonto.getTemplateMehrwertsteuercodes().add(templateMehrwertsteuercode);
                                     templateKonto = templateKontoDeltaspikeFacade.save(templateKonto);
                                 }
                             }

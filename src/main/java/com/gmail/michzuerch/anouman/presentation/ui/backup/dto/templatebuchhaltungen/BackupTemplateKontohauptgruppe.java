@@ -9,6 +9,7 @@ import java.util.Set;
 public class BackupTemplateKontohauptgruppe {
     private String bezeichnung;
     private String kontonummer;
+    private Long id;
     private Set<BackupTemplateKontogruppe> backupTemplateKontogruppes = new HashSet<>();
 
     public BackupTemplateKontohauptgruppe() {
@@ -33,6 +34,14 @@ public class BackupTemplateKontohauptgruppe {
 
     public void setKontonummer(String kontonummer) {
         this.kontonummer = kontonummer;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Set<BackupTemplateKontogruppe> getBackupTemplateKontogruppes() {

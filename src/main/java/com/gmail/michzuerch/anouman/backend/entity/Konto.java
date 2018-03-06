@@ -31,7 +31,7 @@ public class Konto extends AbstractEntity {
     private Kontogruppe kontogruppe;
 
     @OneToMany(mappedBy = "mehrwertsteuerKonto", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Mehrwertsteuercode> mehrwertsteuercode = new ArrayList<>();
+    private List<Mehrwertsteuercode> mehrwertsteuercodes = new ArrayList<>();
 
     @Column
     private Double anfangsbestand;
@@ -97,11 +97,11 @@ public class Konto extends AbstractEntity {
         this.bemerkung = bemerkung;
     }
 
-    public List<Mehrwertsteuercode> getMehrwertsteuercode() {
-        return mehrwertsteuercode;
+    public List<Mehrwertsteuercode> getMehrwertsteuercodes() {
+        return mehrwertsteuercodes;
     }
 
-    public void setMehrwertsteuercode(List<Mehrwertsteuercode> mehrwertsteuercode) {
-        this.mehrwertsteuercode = mehrwertsteuercode;
+    public void setMehrwertsteuercodes(List<Mehrwertsteuercode> mehrwertsteuercode) {
+        this.mehrwertsteuercodes = mehrwertsteuercode;
     }
 }
