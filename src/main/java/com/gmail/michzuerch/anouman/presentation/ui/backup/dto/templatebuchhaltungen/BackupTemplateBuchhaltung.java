@@ -8,14 +8,10 @@ import java.util.Set;
  */
 public class BackupTemplateBuchhaltung {
     private String bezeichnung;
+    private Long id;
     private Set<BackupTemplateKontoklasse> kontoklasses = new HashSet<>();
-    private Set<BackupTemplateMehrwertsteuercode> mehrwertsteuercodes = new HashSet<>();
 
     public BackupTemplateBuchhaltung() {
-    }
-
-    public BackupTemplateBuchhaltung(String bezeichnung) {
-        this.bezeichnung = bezeichnung;
     }
 
     public String getBezeichnung() {
@@ -26,6 +22,14 @@ public class BackupTemplateBuchhaltung {
         this.bezeichnung = bezeichnung;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Set<BackupTemplateKontoklasse> getKontoklasses() {
         return kontoklasses;
     }
@@ -34,11 +38,4 @@ public class BackupTemplateBuchhaltung {
         this.kontoklasses = kontoklasses;
     }
 
-    public Set<BackupTemplateMehrwertsteuercode> getMehrwertsteuercodes() {
-        return mehrwertsteuercodes;
-    }
-
-    public void setMehrwertsteuercodes(Set<BackupTemplateMehrwertsteuercode> mehrwertsteuercodes) {
-        this.mehrwertsteuercodes = mehrwertsteuercodes;
-    }
 }

@@ -9,7 +9,6 @@ import org.vaadin.addon.calendar.handler.BasicDateClickHandler;
 import org.vaadin.addon.calendar.ui.CalendarComponentEvents;
 
 import java.time.Month;
-import java.time.ZonedDateTime;
 import java.util.GregorianCalendar;
 import java.util.Random;
 
@@ -92,12 +91,13 @@ public class AufwandCalendar extends CustomComponent {
 //        calendar.setZoneId(ZoneId.of("America/Chicago"));
 //        calendar.setWeeklyCaptionProvider(date ->  "<br>" + DateTimeFormatter.ofPattern("dd.MM.YYYY", getLocale()).format(date));
 //        calendar.setWeeklyCaptionProvider(date -> DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(getLocale()).format(date));
-
+//
         calendar.withVisibleDays(1, 7);
 //        calendar.withMonth(ZonedDateTime.now().getMonth());
 
-        calendar.setStartDate(ZonedDateTime.of(2017, 9, 10, 0, 0, 0, 0, calendar.getZoneId()));
-        calendar.setEndDate(ZonedDateTime.of(2017, 9, 16, 0, 0, 0, 0, calendar.getZoneId()));
+//        calendar.setStartDate(ZonedDateTime.of(2017, 9, 10, 0, 0, 0, 0, calendar.getZoneId()));
+//        calendar.setEndDate(ZonedDateTime.of(2017, 9, 16, 0, 0, 0, 0, calendar.getZoneId()));
+
 
         addCalendarEventListeners();
 
