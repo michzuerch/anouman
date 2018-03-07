@@ -10,7 +10,7 @@ public class BackupTemplateKontoklasse {
     private String bezeichnung;
     private String kontonummer;
     private Long id;
-    private Set<BackupTemplateKontohauptgruppe> kontohauptgruppen = new HashSet<>();
+    private Set<BackupTemplateKontohauptgruppe> backupTemplateKontohauptgruppes = new HashSet<>();
 
     public BackupTemplateKontoklasse(String bezeichnung, String kontonummer) {
         this.bezeichnung = bezeichnung;
@@ -44,11 +44,11 @@ public class BackupTemplateKontoklasse {
         this.id = id;
     }
 
-    public Set<BackupTemplateKontohauptgruppe> getKontohauptgruppen() {
-        return kontohauptgruppen;
+    public Set<BackupTemplateKontohauptgruppe> getBackupTemplateKontohauptgruppes() {
+        return backupTemplateKontohauptgruppes;
     }
 
-    public void setKontohauptgruppen(Set<BackupTemplateKontohauptgruppe> kontohauptgruppen) {
-        this.kontohauptgruppen = kontohauptgruppen;
+    public void setBackupTemplateKontohauptgruppes(Set<BackupTemplateKontohauptgruppe> backupTemplateKontohauptgruppes) {
+        this.backupTemplateKontohauptgruppes = backupTemplateKontohauptgruppes;
     }
 }

@@ -78,7 +78,7 @@ public class TemplateBuchhaltungenXmlUploadReceiver implements Serializable, Upl
                     templateBuchhaltung.getTemplateKontoklasses().add(templateKontoklasse);
                     templateBuchhaltung = templateBuchhaltungDeltaspikeFacade.save(templateBuchhaltung);
 
-                    for (BackupTemplateKontohauptgruppe backupTemplateKontohauptgruppe : backupTemplateKontoklasse.getKontohauptgruppen()) {
+                    for (BackupTemplateKontohauptgruppe backupTemplateKontohauptgruppe : backupTemplateKontoklasse.getBackupTemplateKontohauptgruppes()) {
                         TemplateKontohauptgruppe templateKontohauptgruppe = new TemplateKontohauptgruppe();
                         templateKontohauptgruppe.setBezeichnung(backupTemplateKontohauptgruppe.getBezeichnung());
                         templateKontohauptgruppe.setKontonummer(backupTemplateKontohauptgruppe.getKontonummer());

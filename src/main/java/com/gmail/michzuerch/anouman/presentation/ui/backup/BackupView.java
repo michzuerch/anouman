@@ -7,10 +7,7 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import com.gmail.michzuerch.anouman.backend.entity.*;
-import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.AdresseDeltaspikeFacade;
-import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.BuchhaltungDeltaspikeFacade;
-import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.RechnungDeltaspikeFacade;
-import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.TemplateBuchhaltungDeltaspikeFacade;
+import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.*;
 import com.gmail.michzuerch.anouman.presentation.ui.backup.dto.adressen.*;
 import com.gmail.michzuerch.anouman.presentation.ui.backup.dto.buchhaltungen.*;
 import com.gmail.michzuerch.anouman.presentation.ui.backup.dto.templatebuchhaltungen.*;
@@ -27,10 +24,7 @@ import org.vaadin.viritin.button.DownloadButton;
 import server.droporchoose.UploadComponent;
 
 import javax.inject.Inject;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Path;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -56,6 +50,36 @@ public class BackupView extends VerticalLayout implements View {
 
     @Inject
     TemplateBuchhaltungDeltaspikeFacade templateBuchhaltungDeltaspikeFacade;
+
+    @Inject
+    TemplateKontoklasseDeltaspikeFacade templateKontoklasseDeltaspikeFacade;
+
+    @Inject
+    TemplateKontohauptgruppeDeltaspikeFacade templateKontohauptgruppeDeltaspikeFacade;
+
+    @Inject
+    TemplateKontogruppeDeltaspikeFacade templateKontogruppeDeltaspikeFacade;
+
+    @Inject
+    TemplateKontoDeltaspikeFacade templateKontoDeltaspikeFacade;
+
+    @Inject
+    TemplateMehrwertsteuercodeDeltaspikeFacade templateMehrwertsteuercodeDeltaspikeFacade;
+
+    @Inject
+    KontoklasseDeltaspikeFacade kontoklasseDeltaspikeFacade;
+
+    @Inject
+    KontohauptgruppeDeltaspikeFacade kontohauptgruppeDeltaspikeFacade;
+
+    @Inject
+    KontogruppeDeltaspikeFacade kontogruppeDeltaspikeFacade;
+
+    @Inject
+    KontoDeltaspikeFacade kontoDeltaspikeFacade;
+
+    @Inject
+    BuchungDeltaspikeFacade buchungDeltaspikeFacade;
 
     private RadioButtonGroup<String> fileFormatDownloadGroup;
     private RadioButtonGroup<String> fileFormatUploadGroup;
@@ -98,7 +122,6 @@ public class BackupView extends VerticalLayout implements View {
             });
             backupBuchhaltungen.addBuchhaltung(backupBuchhaltung);
         });
-
         return backupBuchhaltungen;
     }
 
@@ -160,7 +183,7 @@ public class BackupView extends VerticalLayout implements View {
                     backupTemplateKontohauptgruppe.setBezeichnung(templateKontohauptgruppe.getBezeichnung());
                     backupTemplateKontohauptgruppe.setKontonummer(templateKontohauptgruppe.getKontonummer());
                     backupTemplateKontohauptgruppe.setId(templateKontohauptgruppe.getId());
-                    backupKontoklasse.getKontohauptgruppen().add(backupTemplateKontohauptgruppe);
+                    backupKontoklasse.getBackupTemplateKontohauptgruppes().add(backupTemplateKontohauptgruppe);
                     templateKontohauptgruppe.getTemplateKontogruppes().stream().forEach(templateKontogruppe -> {
                         BackupTemplateKontogruppe backupTemplateKontogruppe = new BackupTemplateKontogruppe();
                         backupTemplateKontogruppe.setBezeichnung(templateKontogruppe.getBezeichnung());
@@ -213,7 +236,7 @@ public class BackupView extends VerticalLayout implements View {
                 backupTemplateKontohauptgruppe.setBezeichnung(templateKontohauptgruppe.getBezeichnung());
                 backupTemplateKontohauptgruppe.setKontonummer(templateKontohauptgruppe.getKontonummer());
                 backupTemplateKontohauptgruppe.setId(templateKontohauptgruppe.getId());
-                backupKontoklasse.getKontohauptgruppen().add(backupTemplateKontohauptgruppe);
+                backupKontoklasse.getBackupTemplateKontohauptgruppes().add(backupTemplateKontohauptgruppe);
                 templateKontohauptgruppe.getTemplateKontogruppes().stream().forEach(templateKontogruppe -> {
                     BackupTemplateKontogruppe backupTemplateKontogruppe = new BackupTemplateKontogruppe();
                     backupTemplateKontogruppe.setBezeichnung(templateKontogruppe.getBezeichnung());
@@ -657,6 +680,9 @@ public class BackupView extends VerticalLayout implements View {
 
     private void uploadReceivedAdressen(String s, Path path) {
         try {
+            BufferedReader reader = new BufferedReader(new FileReader(path.toFile()));
+            String startOfUpload = reader.readLine();
+            System.err.println("SoU:" + startOfUpload);
             if (fileFormatUploadGroup.getValue().equals("Xml")) {
                 XmlMapper mapper = new XmlMapper();
                 BackupAdressen backupAdressen = mapper.readValue(new FileInputStream(path.toFile()), BackupAdressen.class);
@@ -704,7 +730,7 @@ public class BackupView extends VerticalLayout implements View {
                     });
                     adresseDeltaspikeFacade.save(adresse);
                 });
-                Notification.show("Anzahl Adressen wiederhergestellt: " + backupAdressen.getAdressen().size(), Notification.Type.HUMANIZED_MESSAGE);
+                Notification.show("Anzahl Adressen wiederhergestellt: " + backupAdressen.getAdressen().size(), Notification.Type.TRAY_NOTIFICATION);
             }
             if (fileFormatUploadGroup.getValue().equals("Json")) {
                 ObjectMapper mapper = new ObjectMapper();
@@ -753,7 +779,7 @@ public class BackupView extends VerticalLayout implements View {
                     });
                     adresseDeltaspikeFacade.save(adresse);
                 });
-                Notification.show("Anzahl Adressen wiederhergestellt: " + backupAdressen.getAdressen().size(), Notification.Type.HUMANIZED_MESSAGE);
+                Notification.show("Anzahl Adressen wiederhergestellt: " + backupAdressen.getAdressen().size(), Notification.Type.TRAY_NOTIFICATION);
             }
         } catch (IOException e1) {
             e1.printStackTrace();
@@ -764,61 +790,113 @@ public class BackupView extends VerticalLayout implements View {
         try {
             if (fileFormatUploadGroup.getValue().equals("Xml")) {
                 XmlMapper mapper = new XmlMapper();
-                BackupBuchhaltungen backupBuchhaltungen = mapper.readValue(path.getFileName().toFile(), BackupBuchhaltungen.class);
-                backupBuchhaltungen.getBuchhaltungen().stream().forEach(backupBuchhaltung -> {
+                BackupBuchhaltungen backupBuchhaltungen = mapper.readValue(new FileInputStream(path.toFile()), BackupBuchhaltungen.class);
+                for (BackupBuchhaltung backupBuchhaltung : backupBuchhaltungen.getBuchhaltungen()) {
                     Buchhaltung buchhaltung = new Buchhaltung();
                     buchhaltung.setBezeichnung(backupBuchhaltung.getBezeichnung());
                     buchhaltung.setJahr(backupBuchhaltung.getJahr());
-
-                    backupBuchhaltung.getKontoklasses().stream().forEach(backupKontoklasse -> {
+                    buchhaltung = buchhaltungDeltaspikeFacade.save(buchhaltung);
+                    for (BackupKontoklasse backupKontoklasse : backupBuchhaltung.getKontoklasses()) {
                         Kontoklasse kontoklasse = new Kontoklasse();
                         kontoklasse.setBezeichnung(backupKontoklasse.getBezeichnung());
                         kontoklasse.setKontonummer(backupKontoklasse.getKontonummer());
                         kontoklasse.setBuchhaltung(buchhaltung);
                         buchhaltung.getKontoklasse().add(kontoklasse);
+                        kontoklasse = kontoklasseDeltaspikeFacade.save(kontoklasse);
+                        buchhaltung = buchhaltungDeltaspikeFacade.save(buchhaltung);
 
-                        backupKontoklasse.getBackupKontohauptgruppes().stream().forEach(backupKontohauptgruppe -> {
+                        for (BackupKontohauptgruppe backupKontohauptgruppe : backupKontoklasse.getBackupKontohauptgruppes()) {
                             Kontohauptgruppe kontohauptgruppe = new Kontohauptgruppe();
                             kontohauptgruppe.setBezeichnung(backupKontohauptgruppe.getBezeichnung());
                             kontohauptgruppe.setKontonummer(backupKontohauptgruppe.getKontonummer());
                             kontohauptgruppe.setKontoklasse(kontoklasse);
                             kontoklasse.getKontohauptgruppes().add(kontohauptgruppe);
+                            kontohauptgruppe = kontohauptgruppeDeltaspikeFacade.save(kontohauptgruppe);
+                            kontoklasse = kontoklasseDeltaspikeFacade.save(kontoklasse);
 
-                            backupKontohauptgruppe.getBackupKontogruppes().stream().forEach(backupKontogruppe -> {
+                            for (BackupKontogruppe backupKontogruppe : backupKontohauptgruppe.getBackupKontogruppes()) {
                                 Kontogruppe kontogruppe = new Kontogruppe();
                                 kontogruppe.setBezeichnung(backupKontogruppe.getBezeichnung());
                                 kontogruppe.setKontonummer(backupKontogruppe.getKontonummer());
+                                kontogruppe.setKontohauptgruppe(kontohauptgruppe);
+                                kontohauptgruppe.getKontogruppes().add(kontogruppe);
+                                kontogruppe = kontogruppeDeltaspikeFacade.save(kontogruppe);
+                                kontohauptgruppe = kontohauptgruppeDeltaspikeFacade.save(kontohauptgruppe);
 
-                                backupKontogruppe.getKontos().stream().forEach(backupKonto -> {
+                                for (BackupKonto backupKonto : backupKontogruppe.getKontos()) {
                                     Konto konto = new Konto();
-                                    konto.setAnfangsbestand(backupKonto.getAnfangsbestand());
-                                    konto.setBemerkung(backupKonto.getBemerkung());
                                     konto.setBezeichnung(backupKonto.getBezeichnung());
+                                    konto.setBemerkung(backupKonto.getBemerkung());
+                                    konto.setAnfangsbestand(backupKonto.getAnfangsbestand());
                                     konto.setKontonummer(backupKonto.getKontonummer());
                                     konto.setKontogruppe(kontogruppe);
                                     kontogruppe.getKontos().add(konto);
-
-                                    backupKonto.getBuchungen().stream().forEach(backupBuchung -> {
-                                        Buchung buchung = new Buchung();
-                                        //buchung.setBelegnummer(backupBuchung.get);
-                                    });
-
-                                });
-
-                            });
-                        });
-
-
-                    });
-                });
+                                    konto = kontoDeltaspikeFacade.save(konto);
+                                    kontogruppe = kontogruppeDeltaspikeFacade.save(kontogruppe);
+                                }
+                            }
+                        }
+                    }
+                }
+                Notification.show("Anzahl Buchhaltungen wiederhergestellt: " + backupBuchhaltungen.getBuchhaltungen().size(),
+                        Notification.Type.TRAY_NOTIFICATION);
             }
             if (fileFormatUploadGroup.getValue().equals("Json")) {
                 ObjectMapper mapper = new ObjectMapper();
-                BackupBuchhaltungen backupBuchhaltungen = mapper.readValue(path.getFileName().toFile(), BackupBuchhaltungen.class);
-                logger.debug("Json:" + backupBuchhaltungen);
+                BackupBuchhaltungen backupBuchhaltungen = mapper.readValue(new FileInputStream(path.toFile()), BackupBuchhaltungen.class);
+                for (BackupBuchhaltung backupBuchhaltung : backupBuchhaltungen.getBuchhaltungen()) {
+                    Buchhaltung buchhaltung = new Buchhaltung();
+                    buchhaltung.setBezeichnung(backupBuchhaltung.getBezeichnung());
+                    buchhaltung.setJahr(backupBuchhaltung.getJahr());
+                    buchhaltung = buchhaltungDeltaspikeFacade.save(buchhaltung);
+                    for (BackupKontoklasse backupKontoklasse : backupBuchhaltung.getKontoklasses()) {
+                        Kontoklasse kontoklasse = new Kontoklasse();
+                        kontoklasse.setBezeichnung(backupKontoklasse.getBezeichnung());
+                        kontoklasse.setKontonummer(backupKontoklasse.getKontonummer());
+                        kontoklasse.setBuchhaltung(buchhaltung);
+                        buchhaltung.getKontoklasse().add(kontoklasse);
+                        kontoklasse = kontoklasseDeltaspikeFacade.save(kontoklasse);
+                        buchhaltung = buchhaltungDeltaspikeFacade.save(buchhaltung);
+
+                        for (BackupKontohauptgruppe backupKontohauptgruppe : backupKontoklasse.getBackupKontohauptgruppes()) {
+                            Kontohauptgruppe kontohauptgruppe = new Kontohauptgruppe();
+                            kontohauptgruppe.setBezeichnung(backupKontohauptgruppe.getBezeichnung());
+                            kontohauptgruppe.setKontonummer(backupKontohauptgruppe.getKontonummer());
+                            kontohauptgruppe.setKontoklasse(kontoklasse);
+                            kontoklasse.getKontohauptgruppes().add(kontohauptgruppe);
+                            kontohauptgruppe = kontohauptgruppeDeltaspikeFacade.save(kontohauptgruppe);
+                            kontoklasse = kontoklasseDeltaspikeFacade.save(kontoklasse);
+
+                            for (BackupKontogruppe backupKontogruppe : backupKontohauptgruppe.getBackupKontogruppes()) {
+                                Kontogruppe kontogruppe = new Kontogruppe();
+                                kontogruppe.setBezeichnung(backupKontogruppe.getBezeichnung());
+                                kontogruppe.setKontonummer(backupKontogruppe.getKontonummer());
+                                kontogruppe.setKontohauptgruppe(kontohauptgruppe);
+                                kontohauptgruppe.getKontogruppes().add(kontogruppe);
+                                kontogruppe = kontogruppeDeltaspikeFacade.save(kontogruppe);
+                                kontohauptgruppe = kontohauptgruppeDeltaspikeFacade.save(kontohauptgruppe);
+
+                                for (BackupKonto backupKonto : backupKontogruppe.getKontos()) {
+                                    Konto konto = new Konto();
+                                    konto.setBezeichnung(backupKonto.getBezeichnung());
+                                    konto.setBemerkung(backupKonto.getBemerkung());
+                                    konto.setAnfangsbestand(backupKonto.getAnfangsbestand());
+                                    konto.setKontonummer(backupKonto.getKontonummer());
+                                    konto.setKontogruppe(kontogruppe);
+                                    kontogruppe.getKontos().add(konto);
+                                    konto = kontoDeltaspikeFacade.save(konto);
+                                    kontogruppe = kontogruppeDeltaspikeFacade.save(kontogruppe);
+                                }
+                            }
+                        }
+                    }
+                }
+                Notification.show("Anzahl Buchhaltungen wiederhergestellt: " + backupBuchhaltungen.getBuchhaltungen().size(),
+                        Notification.Type.TRAY_NOTIFICATION);
             }
-        } catch (IOException e1) {
-            e1.printStackTrace();
+        } catch (IOException ex) {
+            Notification.show("Fehler: " + ex.getLocalizedMessage(), Notification.Type.ERROR_MESSAGE);
+            System.err.println(ex.getLocalizedMessage());
         }
     }
 
@@ -826,53 +904,119 @@ public class BackupView extends VerticalLayout implements View {
         try {
             if (fileFormatUploadGroup.getValue().equals("Xml")) {
                 XmlMapper mapper = new XmlMapper();
-                BackupTemplateBuchhaltungen backupTemplateBuchhaltungen = mapper.readValue(path.getFileName().toFile(), BackupTemplateBuchhaltungen.class);
-                logger.debug("XML:" + backupTemplateBuchhaltungen);
-
-            }
-            if (fileFormatUploadGroup.getValue().equals("Json")) {
-                ObjectMapper mapper = new ObjectMapper();
-                BackupTemplateBuchhaltungen backupTemplateBuchhaltungen = mapper.readValue(path.getFileName().toFile(), BackupTemplateBuchhaltungen.class);
-                backupTemplateBuchhaltungen.getBuchhaltungen().stream().forEach(backupTemplateBuchhaltung -> {
+                BackupTemplateBuchhaltungen backupTemplateBuchhaltungen = mapper.readValue(new FileInputStream(path.toFile()), BackupTemplateBuchhaltungen.class);
+                for (BackupTemplateBuchhaltung backupTemplateBuchhaltung : backupTemplateBuchhaltungen.getBuchhaltungen()) {
                     TemplateBuchhaltung templateBuchhaltung = new TemplateBuchhaltung();
                     templateBuchhaltung.setBezeichnung(backupTemplateBuchhaltung.getBezeichnung());
-
-                    backupTemplateBuchhaltung.getKontoklasses().stream().forEach(backupTemplateKontoklasse -> {
+                    templateBuchhaltung = templateBuchhaltungDeltaspikeFacade.save(templateBuchhaltung);
+                    for (BackupTemplateKontoklasse backupTemplateKontoklasse : backupTemplateBuchhaltung.getKontoklasses()) {
                         TemplateKontoklasse templateKontoklasse = new TemplateKontoklasse();
                         templateKontoklasse.setBezeichnung(backupTemplateKontoklasse.getBezeichnung());
                         templateKontoklasse.setKontonummer(backupTemplateKontoklasse.getKontonummer());
                         templateKontoklasse.setTemplateBuchhaltung(templateBuchhaltung);
                         templateBuchhaltung.getTemplateKontoklasses().add(templateKontoklasse);
+                        templateKontoklasse = templateKontoklasseDeltaspikeFacade.save(templateKontoklasse);
 
-                        backupTemplateKontoklasse.getKontohauptgruppen().stream().forEach(backupTemplateKontohauptgruppe -> {
+                        for (BackupTemplateKontohauptgruppe backupTemplateKontohauptgruppe : backupTemplateKontoklasse.getBackupTemplateKontohauptgruppes()) {
                             TemplateKontohauptgruppe templateKontohauptgruppe = new TemplateKontohauptgruppe();
                             templateKontohauptgruppe.setBezeichnung(backupTemplateKontohauptgruppe.getBezeichnung());
                             templateKontohauptgruppe.setKontonummer(backupTemplateKontohauptgruppe.getKontonummer());
                             templateKontohauptgruppe.setTemplateKontoklasse(templateKontoklasse);
                             templateKontoklasse.getTemplateKontohauptgruppes().add(templateKontohauptgruppe);
+                            templateKontohauptgruppe = templateKontohauptgruppeDeltaspikeFacade.save(templateKontohauptgruppe);
 
-                            backupTemplateKontohauptgruppe.getBackupTemplateKontogruppes().stream().forEach(backupTemplateKontogruppe -> {
+                            for (BackupTemplateKontogruppe backupTemplateKontogruppe : backupTemplateKontohauptgruppe.getBackupTemplateKontogruppes()) {
                                 TemplateKontogruppe templateKontogruppe = new TemplateKontogruppe();
                                 templateKontogruppe.setBezeichnung(backupTemplateKontogruppe.getBezeichnung());
                                 templateKontogruppe.setKontonummer(backupTemplateKontogruppe.getKontonummer());
                                 templateKontogruppe.setTemplateKontohauptgruppe(templateKontohauptgruppe);
                                 templateKontohauptgruppe.getTemplateKontogruppes().add(templateKontogruppe);
+                                templateKontogruppe = templateKontogruppeDeltaspikeFacade.save(templateKontogruppe);
 
-                                backupTemplateKontogruppe.getBackupTemplateKontos().stream().forEach(backupTemplateKonto -> {
+                                for (BackupTemplateKonto backupTemplateKonto : backupTemplateKontogruppe.getBackupTemplateKontos()) {
                                     TemplateKonto templateKonto = new TemplateKonto();
                                     templateKonto.setBemerkung(backupTemplateKonto.getBemerkung());
                                     templateKonto.setBezeichnung(backupTemplateKonto.getBezeichnung());
                                     templateKonto.setKontonummer(backupTemplateKonto.getKontonummer());
                                     templateKonto.setTemplateKontogruppe(templateKontogruppe);
                                     templateKontogruppe.getTemplateKontos().add(templateKonto);
+                                    templateKonto = templateKontoDeltaspikeFacade.save(templateKonto);
 
-                                });
-                            });
-                        });
-                    });
-                });
+                                    for (BackupTemplateMehrwertsteuercode backupTemplateMehrwertsteuercode : backupTemplateKonto.getBackupTemplateMehrwertsteuercodes()) {
+                                        TemplateMehrwertsteuercode templateMehrwertsteuercode = new TemplateMehrwertsteuercode();
+                                        templateMehrwertsteuercode.setBezeichnung(backupTemplateMehrwertsteuercode.getBezeichnung());
+                                        templateMehrwertsteuercode.setCode(backupTemplateMehrwertsteuercode.getCode());
+                                        templateMehrwertsteuercode.setProzent(backupTemplateMehrwertsteuercode.getProzent());
+                                        templateMehrwertsteuercode.setVerkauf(backupTemplateMehrwertsteuercode.isVerkauf());
+                                        templateMehrwertsteuercode.setTemplateMehrwertsteuerKonto(templateKonto);
+                                        templateMehrwertsteuercode.setTemplateBuchhaltung(templateBuchhaltung);
+                                        templateMehrwertsteuercode = templateMehrwertsteuercodeDeltaspikeFacade.save(templateMehrwertsteuercode);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                Notification.show("Anzahl erstellter Template Buchhaltungen: " + backupTemplateBuchhaltungen.getBuchhaltungen().size(),
+                        Notification.Type.TRAY_NOTIFICATION);
+            }
+            if (fileFormatUploadGroup.getValue().equals("Json")) {
+                ObjectMapper mapper = new ObjectMapper();
+                BackupTemplateBuchhaltungen backupTemplateBuchhaltungen = mapper.readValue(new FileInputStream(path.toFile()), BackupTemplateBuchhaltungen.class);
+                for (BackupTemplateBuchhaltung backupTemplateBuchhaltung : backupTemplateBuchhaltungen.getBuchhaltungen()) {
+                    TemplateBuchhaltung templateBuchhaltung = new TemplateBuchhaltung();
+                    templateBuchhaltung.setBezeichnung(backupTemplateBuchhaltung.getBezeichnung());
+                    templateBuchhaltung = templateBuchhaltungDeltaspikeFacade.save(templateBuchhaltung);
+                    for (BackupTemplateKontoklasse backupTemplateKontoklasse : backupTemplateBuchhaltung.getKontoklasses()) {
+                        TemplateKontoklasse templateKontoklasse = new TemplateKontoklasse();
+                        templateKontoklasse.setBezeichnung(backupTemplateKontoklasse.getBezeichnung());
+                        templateKontoklasse.setKontonummer(backupTemplateKontoklasse.getKontonummer());
+                        templateKontoklasse.setTemplateBuchhaltung(templateBuchhaltung);
+                        templateBuchhaltung.getTemplateKontoklasses().add(templateKontoklasse);
+                        templateKontoklasse = templateKontoklasseDeltaspikeFacade.save(templateKontoklasse);
 
-                Notification.show("Anzahl erstellter Template Buchhaltungen: " + backupTemplateBuchhaltungen.getBuchhaltungen().size(), Notification.Type.HUMANIZED_MESSAGE);
+                        for (BackupTemplateKontohauptgruppe backupTemplateKontohauptgruppe : backupTemplateKontoklasse.getBackupTemplateKontohauptgruppes()) {
+                            TemplateKontohauptgruppe templateKontohauptgruppe = new TemplateKontohauptgruppe();
+                            templateKontohauptgruppe.setBezeichnung(backupTemplateKontohauptgruppe.getBezeichnung());
+                            templateKontohauptgruppe.setKontonummer(backupTemplateKontohauptgruppe.getKontonummer());
+                            templateKontohauptgruppe.setTemplateKontoklasse(templateKontoklasse);
+                            templateKontoklasse.getTemplateKontohauptgruppes().add(templateKontohauptgruppe);
+                            templateKontohauptgruppe = templateKontohauptgruppeDeltaspikeFacade.save(templateKontohauptgruppe);
+
+                            for (BackupTemplateKontogruppe backupTemplateKontogruppe : backupTemplateKontohauptgruppe.getBackupTemplateKontogruppes()) {
+                                TemplateKontogruppe templateKontogruppe = new TemplateKontogruppe();
+                                templateKontogruppe.setBezeichnung(backupTemplateKontogruppe.getBezeichnung());
+                                templateKontogruppe.setKontonummer(backupTemplateKontogruppe.getKontonummer());
+                                templateKontogruppe.setTemplateKontohauptgruppe(templateKontohauptgruppe);
+                                templateKontohauptgruppe.getTemplateKontogruppes().add(templateKontogruppe);
+                                templateKontogruppe = templateKontogruppeDeltaspikeFacade.save(templateKontogruppe);
+
+                                for (BackupTemplateKonto backupTemplateKonto : backupTemplateKontogruppe.getBackupTemplateKontos()) {
+                                    TemplateKonto templateKonto = new TemplateKonto();
+                                    templateKonto.setBemerkung(backupTemplateKonto.getBemerkung());
+                                    templateKonto.setBezeichnung(backupTemplateKonto.getBezeichnung());
+                                    templateKonto.setKontonummer(backupTemplateKonto.getKontonummer());
+                                    templateKonto.setTemplateKontogruppe(templateKontogruppe);
+                                    templateKontogruppe.getTemplateKontos().add(templateKonto);
+                                    templateKonto = templateKontoDeltaspikeFacade.save(templateKonto);
+
+                                    for (BackupTemplateMehrwertsteuercode backupTemplateMehrwertsteuercode : backupTemplateKonto.getBackupTemplateMehrwertsteuercodes()) {
+                                        TemplateMehrwertsteuercode templateMehrwertsteuercode = new TemplateMehrwertsteuercode();
+                                        templateMehrwertsteuercode.setBezeichnung(backupTemplateMehrwertsteuercode.getBezeichnung());
+                                        templateMehrwertsteuercode.setCode(backupTemplateMehrwertsteuercode.getCode());
+                                        templateMehrwertsteuercode.setProzent(backupTemplateMehrwertsteuercode.getProzent());
+                                        templateMehrwertsteuercode.setVerkauf(backupTemplateMehrwertsteuercode.isVerkauf());
+                                        templateMehrwertsteuercode.setTemplateMehrwertsteuerKonto(templateKonto);
+                                        templateMehrwertsteuercode.setTemplateBuchhaltung(templateBuchhaltung);
+                                        templateMehrwertsteuercode = templateMehrwertsteuercodeDeltaspikeFacade.save(templateMehrwertsteuercode);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                Notification.show("Anzahl erstellter Template Buchhaltungen: " + backupTemplateBuchhaltungen.getBuchhaltungen().size(),
+                        Notification.Type.TRAY_NOTIFICATION);
             }
         } catch (IOException e1) {
             e1.printStackTrace();
