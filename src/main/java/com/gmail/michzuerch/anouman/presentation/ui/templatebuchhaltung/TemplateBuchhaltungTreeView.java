@@ -117,7 +117,7 @@ public class TemplateBuchhaltungTreeView extends VerticalLayout implements View 
 //        });
 
         bodyLayout.addComponent(buchhaltungPanel);
-        bodyLayout.setExpandRatio(buchhaltungPanel, 0);
+        bodyLayout.setExpandRatio(buchhaltungPanel, 1);
         bodyLayout.setSizeFull();
 
         addGridBtn = createButtonAddTemplateKontoklasse();
