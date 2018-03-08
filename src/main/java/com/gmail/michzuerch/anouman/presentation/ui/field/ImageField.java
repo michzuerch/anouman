@@ -3,7 +3,6 @@ package com.gmail.michzuerch.anouman.presentation.ui.field;
 import com.vaadin.server.StreamResource;
 import com.vaadin.ui.*;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.ArrayUtils;
 import server.droporchoose.UploadComponent;
 
 import javax.imageio.ImageIO;
@@ -16,8 +15,8 @@ import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class ImageField extends CustomField<Byte[]> {
-    private Byte[] imageData;
+public class ImageField extends CustomField<byte[]> {
+    private byte[] imageData;
     private UploadComponent upload = new UploadComponent();
     private Image image = new Image();
 
@@ -25,9 +24,9 @@ public class ImageField extends CustomField<Byte[]> {
     private String mimeType;
 
     @Override
-    public Byte[] getEmptyValue() {
+    public byte[] getEmptyValue() {
         try {
-            return ArrayUtils.toObject(IOUtils.toByteArray(getClass().getClassLoader().getResourceAsStream("/images/EmptyImage.jpg")));
+            return IOUtils.toByteArray(getClass().getClassLoader().getResourceAsStream("/images/EmptyImage.jpg"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -41,13 +40,13 @@ public class ImageField extends CustomField<Byte[]> {
 //    }
 
     @Override
-    protected void doSetValue(Byte[] value) {
+    protected void doSetValue(byte[] value) {
         this.imageData = value;
         update();
     }
 
     @Override
-    public Byte[] getValue() {
+    public byte[] getValue() {
         return imageData;
     }
 
@@ -57,7 +56,7 @@ public class ImageField extends CustomField<Byte[]> {
         VerticalLayout layout = new VerticalLayout();
         layout.setMargin(false);
         layout.setSpacing(false);
-        image.setSource(new StreamResource(new ImageSource(ArrayUtils.toPrimitive(getValue())), "EmptyImage.jpg"));
+        image.setSource(new StreamResource(new ImageSource(getValue()), "EmptyImage.jpg"));
         image.setHeight(100, Unit.PIXELS);
         layout.addComponents(image, upload);
         return layout;
@@ -65,7 +64,7 @@ public class ImageField extends CustomField<Byte[]> {
 
     private void uploadReceived(String s, Path path) {
         try {
-            Byte[] uploadData = ArrayUtils.toObject(Files.readAllBytes(Paths.get(path.toUri())));
+            byte[] uploadData = Files.readAllBytes(Paths.get(path.toUri()));
             setFilename(s);
             setMimeType(Files.probeContentType(path));
             if (getMimeType().equals("image/jpeg") || (getMimeType().equals("image/png"))) {
@@ -80,12 +79,12 @@ public class ImageField extends CustomField<Byte[]> {
 
     private void update() {
         try {
-            if (ImageIO.read(new ByteArrayInputStream(ArrayUtils.toPrimitive(getValue()))) != null) {
+            if (ImageIO.read(new ByteArrayInputStream(getValue())) != null) {
                 // Update the image according to
                 // https://vaadin.com/book/vaadin7/-/page/components.embedded.html
                 SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmssSSS");
                 String filename = df.format(new Date()) + "-image.jpg";
-                StreamResource resource = new StreamResource(new ImageSource(ArrayUtils.toPrimitive(getValue())), filename);
+                StreamResource resource = new StreamResource(new ImageSource(getValue()), filename);
                 resource.setCacheTime(0);
                 image.setSource(resource);
             } else {

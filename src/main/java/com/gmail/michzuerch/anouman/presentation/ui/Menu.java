@@ -282,6 +282,14 @@ public class Menu extends CustomComponent {
             }
         });
 
+        testsComponents.addItem("ReportUI Test", VaadinIcons.MAGIC, new MenuBar.Command() {
+            @Override
+            public void menuSelected(MenuBar.MenuItem selectedItem) {
+                getUI().getNavigator().navigateTo("ReportUITestView");
+            }
+        });
+
+
         layout.addComponent(menuBar);
         setCompositionRoot(layout);
     }

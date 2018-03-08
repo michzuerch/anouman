@@ -11,7 +11,7 @@ public class ReportJasperForm extends AbstractForm<ReportJasper> {
     private static Logger logger = LoggerFactory.getLogger(ReportJasperForm.class.getName());
 
     TextField bezeichnung = new TextField("Bezeichnung");
-    JasperXmlField templateSource = new JasperXmlField();
+    JasperXmlField templateSource = new JasperXmlField("JRXML Source");
 
     private String filename;
 
@@ -23,6 +23,7 @@ public class ReportJasperForm extends AbstractForm<ReportJasper> {
     public Window openInModalPopup() {
         final Window openInModalPopup = super.openInModalPopup();
         openInModalPopup.setCaption("Report Jasper");
+        openInModalPopup.setWidth(800, Unit.PIXELS);
         return openInModalPopup;
     }
 

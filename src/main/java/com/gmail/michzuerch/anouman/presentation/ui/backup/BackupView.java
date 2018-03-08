@@ -37,50 +37,35 @@ import java.util.List;
 @CDIView("BackupView")
 public class BackupView extends VerticalLayout implements View {
     private static Logger logger = LoggerFactory.getLogger(BackupView.class.getName());
-    private String filename = new String();
-
     @Inject
     AdresseDeltaspikeFacade adresseDeltaspikeFacade;
-
     @Inject
     RechnungDeltaspikeFacade rechnungDeltaspikeFacade;
-
     @Inject
     BuchhaltungDeltaspikeFacade buchhaltungDeltaspikeFacade;
-
     @Inject
     TemplateBuchhaltungDeltaspikeFacade templateBuchhaltungDeltaspikeFacade;
-
     @Inject
     TemplateKontoklasseDeltaspikeFacade templateKontoklasseDeltaspikeFacade;
-
     @Inject
     TemplateKontohauptgruppeDeltaspikeFacade templateKontohauptgruppeDeltaspikeFacade;
-
     @Inject
     TemplateKontogruppeDeltaspikeFacade templateKontogruppeDeltaspikeFacade;
-
     @Inject
     TemplateKontoDeltaspikeFacade templateKontoDeltaspikeFacade;
-
     @Inject
     TemplateMehrwertsteuercodeDeltaspikeFacade templateMehrwertsteuercodeDeltaspikeFacade;
-
     @Inject
     KontoklasseDeltaspikeFacade kontoklasseDeltaspikeFacade;
-
     @Inject
     KontohauptgruppeDeltaspikeFacade kontohauptgruppeDeltaspikeFacade;
-
     @Inject
     KontogruppeDeltaspikeFacade kontogruppeDeltaspikeFacade;
-
     @Inject
     KontoDeltaspikeFacade kontoDeltaspikeFacade;
-
     @Inject
     BuchungDeltaspikeFacade buchungDeltaspikeFacade;
-
+    private String filename = new String();
     private RadioButtonGroup<String> fileFormatDownloadGroup;
     private RadioButtonGroup<String> fileFormatUploadGroup;
 

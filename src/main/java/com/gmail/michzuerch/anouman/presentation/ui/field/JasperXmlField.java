@@ -1,6 +1,11 @@
 package com.gmail.michzuerch.anouman.presentation.ui.field;
 
-import com.vaadin.ui.*;
+import com.gmail.michzuerch.anouman.presentation.ui.validator.JRXMLValidator;
+import com.vaadin.data.Validator;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.CustomField;
+import com.vaadin.ui.TextArea;
+import com.vaadin.ui.VerticalLayout;
 import server.droporchoose.UploadComponent;
 
 import java.io.IOException;
@@ -10,11 +15,17 @@ import java.nio.file.Paths;
 
 public class JasperXmlField extends CustomField<byte[]> {
     private byte[] fielddata;
-
-    private Button validateButton = new Button("Validate");
     private UploadComponent upload = new UploadComponent();
     private TextArea textArea = new TextArea("JXRML");
 
+    public JasperXmlField(String caption) {
+        setCaption(caption);
+    }
+
+    @Override
+    public Validator<byte[]> getDefaultValidator() {
+        return new JRXMLValidator();
+    }
 
     @Override
     protected Component initContent() {
@@ -22,25 +33,16 @@ public class JasperXmlField extends CustomField<byte[]> {
         VerticalLayout layout = new VerticalLayout();
         layout.setSpacing(false);
         layout.setMargin(false);
+
+        textArea.setWidth(600, Unit.PIXELS);
+        textArea.setRows(12);
+        textArea.setWordWrap(false);
+
         layout.addComponent(upload);
-        layout.addComponent(validateButton);
         layout.addComponent(textArea);
         textArea.addValueChangeListener(
                 event -> fireEvent(new ValueChangeEvent<byte[]>(this,
                         event.getOldValue().getBytes(), event.isUserOriginated())));
-
-
-        //        textArea.addValueChangeListener(
-//                event -> {
-//                    fireEvent(new ValueChangeEvent<>(this,
-//                            event.getValue(), event.isUserOriginated()));
-//                    System.err.println("VcE:" + event.getValue());
-////                   textValue=event.getValue();
-//                    this.textArea = event.getValue();
-//                }
-//        );
-
-
         return layout;
     }
 

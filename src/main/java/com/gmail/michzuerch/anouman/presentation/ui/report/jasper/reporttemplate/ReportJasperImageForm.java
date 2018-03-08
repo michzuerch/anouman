@@ -32,6 +32,7 @@ public class ReportJasperImageForm extends AbstractForm<ReportJasperImage> {
     public Window openInModalPopup() {
         final Window openInModalPopup = super.openInModalPopup();
         openInModalPopup.setCaption("Report Jasper Image");
+        openInModalPopup.setWidth(600, Unit.PIXELS);
         return openInModalPopup;
     }
 
