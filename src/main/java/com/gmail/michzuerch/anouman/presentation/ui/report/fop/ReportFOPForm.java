@@ -2,7 +2,7 @@ package com.gmail.michzuerch.anouman.presentation.ui.report.fop;
 
 import com.gmail.michzuerch.anouman.backend.entity.report.fop.ReportFOP;
 import com.gmail.michzuerch.anouman.presentation.ui.converter.ByteToStringConverter;
-import com.gmail.michzuerch.anouman.presentation.ui.report.jasper.reporttemplate.xmlvalidation.ResourceResolver;
+import com.gmail.michzuerch.anouman.presentation.ui.report.jasper.xmlvalidation.ResourceResolver;
 import com.vaadin.server.UserError;
 import com.vaadin.ui.*;
 import org.slf4j.Logger;

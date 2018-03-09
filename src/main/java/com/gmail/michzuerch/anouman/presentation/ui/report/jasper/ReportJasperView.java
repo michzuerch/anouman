@@ -1,4 +1,4 @@
-package com.gmail.michzuerch.anouman.presentation.ui.report.jasper.reporttemplate;
+package com.gmail.michzuerch.anouman.presentation.ui.report.jasper;
 
 import com.gmail.michzuerch.anouman.backend.entity.report.jasper.ReportJasper;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.ReportJasperDeltaspikeFacade;

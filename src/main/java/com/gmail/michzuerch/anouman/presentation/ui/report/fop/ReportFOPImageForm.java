@@ -3,7 +3,7 @@ package com.gmail.michzuerch.anouman.presentation.ui.report.fop;
 import com.gmail.michzuerch.anouman.backend.entity.report.fop.ReportFOP;
 import com.gmail.michzuerch.anouman.backend.entity.report.fop.ReportFOPImage;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.ReportFOPDeltaspikeFacade;
-import com.gmail.michzuerch.anouman.presentation.ui.field.ImageField;
+import com.gmail.michzuerch.anouman.presentation.ui.util.field.ImageField;
 import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +19,7 @@ public class ReportFOPImageForm extends AbstractForm<ReportFOPImage> {
 
     NativeSelect<ReportFOP> reportFop = new NativeSelect<>("Report FOP");
     TextField bezeichnung = new TextField("Bezeichnung");
-    ImageField image = new ImageField();
+    ImageField image = new ImageField("Image");
     //Button downloadButton = new Button("Download Image");
 
     private String filename;

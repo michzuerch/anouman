@@ -4,7 +4,7 @@ import com.gmail.michzuerch.anouman.backend.entity.TemplateBuchhaltung;
 import com.gmail.michzuerch.anouman.backend.entity.TemplateMehrwertsteuercode;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.TemplateBuchhaltungDeltaspikeFacade;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.TemplateMehrwertsteuercodeDeltaspikeFacade;
-import com.gmail.michzuerch.anouman.presentation.ui.field.ProzentField;
+import com.gmail.michzuerch.anouman.presentation.ui.util.field.ProzentField;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;

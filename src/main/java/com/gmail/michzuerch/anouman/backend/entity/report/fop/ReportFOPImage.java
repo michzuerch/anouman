@@ -3,7 +3,6 @@ package com.gmail.michzuerch.anouman.backend.entity.report.fop;
 import com.gmail.michzuerch.anouman.backend.entity.AbstractEntity;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 
 @Entity
 public class ReportFOPImage extends AbstractEntity {
@@ -16,7 +15,6 @@ public class ReportFOPImage extends AbstractEntity {
 
     @Column
     @Basic(fetch = FetchType.LAZY)
-    @NotEmpty
     private byte[] image;
 
 

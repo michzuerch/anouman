@@ -4,19 +4,11 @@ import com.gmail.michzuerch.anouman.backend.entity.Artikel;
 import com.gmail.michzuerch.anouman.backend.entity.Artikelbild;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.ArtikelDeltaspikeFacade;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.ArtikelbildDeltaspikeFacade;
-import com.vaadin.server.StreamResource;
+import com.gmail.michzuerch.anouman.presentation.ui.util.field.ImageField;
 import com.vaadin.ui.*;
-import org.apache.commons.lang3.ArrayUtils;
 import org.vaadin.viritin.form.AbstractForm;
-import server.droporchoose.UploadComponent;
 
 import javax.inject.Inject;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class ArtikelbildForm extends AbstractForm<Artikelbild> {
     @Inject
@@ -27,8 +19,7 @@ public class ArtikelbildForm extends AbstractForm<Artikelbild> {
 
     NativeSelect<Artikel> artikel = new NativeSelect<>();
     TextField titel = new TextField("Titel");
-    UploadComponent bild = new UploadComponent();
-    Image image = new Image("Bild");
+    ImageField bild = new ImageField("Bild");
 
     public ArtikelbildForm() {
         super(Artikelbild.class);
@@ -52,42 +43,8 @@ public class ArtikelbildForm extends AbstractForm<Artikelbild> {
         artikel.setItemCaptionGenerator(artikel1 -> artikel1.getBezeichnung() + " id:" + artikel1.getId());
         artikel.setItems(artikelDeltaspikeFacade.findAll());
         artikel.setEmptySelectionAllowed(false);
-        bild.setWidth(100, Unit.PIXELS);
-        bild.setHeight(60, Unit.PIXELS);
-        bild.setCaption("File upload");
-        bild.setReceivedCallback(this::uploadReceived);
-
-        image.setHeight(100, Unit.PIXELS);
-
-        // optional callbacks
-        //	uploadComponent.setStartedCallback(this::uploadStarted);
-        //	uploadComponent.setProgressCallback(this::uploadProgress);
-        //	uploadComponent.setFailedCallback(this::uploadFailed);
-
         return new VerticalLayout(new FormLayout(
-                artikel, titel, bild, image
+                artikel, titel, bild
         ), getToolbar());
     }
-
-    private void uploadReceived(String fileName, Path path) {
-        try {
-            byte[] data = Files.readAllBytes(Paths.get(path.toUri()));
-            getEntity().setBild(ArrayUtils.toObject(data));
-            getEntity().setMimetype(Files.probeContentType(path));
-
-            StreamResource.StreamSource streamSource = new StreamResource.StreamSource() {
-                public InputStream getStream() {
-                    return (data == null) ? null : new ByteArrayInputStream(data);
-                }
-            };
-            StreamResource imageResource = new StreamResource(streamSource, fileName);
-
-            image.setCaption("Testbild");
-            image.setSource(imageResource);
-            markAsDirty();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
 }

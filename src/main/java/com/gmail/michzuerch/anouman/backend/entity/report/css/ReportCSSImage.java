@@ -1,7 +1,6 @@
 package com.gmail.michzuerch.anouman.backend.entity.report.css;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 
 @Entity
 public class ReportCSSImage extends com.gmail.michzuerch.anouman.backend.entity.AbstractEntity {
@@ -14,7 +13,6 @@ public class ReportCSSImage extends com.gmail.michzuerch.anouman.backend.entity.
 
     @Column
     @Basic(fetch = FetchType.LAZY)
-    @NotEmpty
     private byte[] image;
 
 

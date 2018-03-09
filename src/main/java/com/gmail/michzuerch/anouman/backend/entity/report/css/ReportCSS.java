@@ -3,7 +3,6 @@ package com.gmail.michzuerch.anouman.backend.entity.report.css;
 import com.gmail.michzuerch.anouman.backend.entity.AbstractEntity;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,12 +15,10 @@ public class ReportCSS extends AbstractEntity {
 
     @Column
     @Basic(fetch = FetchType.LAZY)
-    @NotEmpty
     private byte[] css;
 
     @Column
     @Basic(fetch = FetchType.LAZY)
-    @NotEmpty
     private byte[] html;
 
     @Column

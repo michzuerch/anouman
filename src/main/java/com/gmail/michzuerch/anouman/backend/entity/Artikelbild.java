@@ -12,10 +12,9 @@ public class Artikelbild extends com.gmail.michzuerch.anouman.backend.entity.Abs
     @Column
     private String mimetype;
 
-
     @Column
     @Basic(fetch = FetchType.LAZY)
-    private Byte[] bild;
+    private byte[] bild;
 
     @ManyToOne
     private com.gmail.michzuerch.anouman.backend.entity.Artikel artikel;
@@ -36,11 +35,11 @@ public class Artikelbild extends com.gmail.michzuerch.anouman.backend.entity.Abs
         this.mimetype = mimetype;
     }
 
-    public Byte[] getBild() {
+    public byte[] getBild() {
         return bild;
     }
 
-    public void setBild(Byte[] bild) {
+    public void setBild(byte[] bild) {
         this.bild = bild;
     }
 

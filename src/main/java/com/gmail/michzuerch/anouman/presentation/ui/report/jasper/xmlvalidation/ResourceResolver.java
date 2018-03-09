@@ -1,4 +1,4 @@
-package com.gmail.michzuerch.anouman.presentation.ui.report.jasper.reporttemplate.xmlvalidation;
+package com.gmail.michzuerch.anouman.presentation.ui.report.jasper.xmlvalidation;
 
 import org.w3c.dom.ls.LSInput;
 import org.w3c.dom.ls.LSResourceResolver;

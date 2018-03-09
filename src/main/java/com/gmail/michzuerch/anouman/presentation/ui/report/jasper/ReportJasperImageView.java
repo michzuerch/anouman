@@ -1,4 +1,4 @@
-package com.gmail.michzuerch.anouman.presentation.ui.report.jasper.reporttemplate;
+package com.gmail.michzuerch.anouman.presentation.ui.report.jasper;
 
 import com.gmail.michzuerch.anouman.backend.entity.report.jasper.ReportJasper;
 import com.gmail.michzuerch.anouman.backend.entity.report.jasper.ReportJasperImage;
@@ -60,7 +60,7 @@ public class ReportJasperImageView extends VerticalLayout implements View {
             form.openInModalPopup();
             form.setSavedHandler(val -> {
                 System.err.println("Save:" + val);
-                //reportJasperImageDeltaspikeFacade.save(val);
+                reportJasperImageDeltaspikeFacade.save(val);
                 updateList();
                 grid.select(val);
                 form.closePopup();

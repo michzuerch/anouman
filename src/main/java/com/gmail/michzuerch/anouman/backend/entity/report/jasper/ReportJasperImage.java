@@ -65,15 +65,4 @@ public class ReportJasperImage extends AbstractEntity {
     public void setSize(int size) {
         this.size = size;
     }
-
-    @Override
-    public String toString() {
-        return "ReportJasperImage{" +
-                "bezeichnung='" + bezeichnung + '\'' +
-                ", reportJasper=" + reportJasper +
-                ", mimeType='" + mimeType + '\'' +
-                ", size=" + size +
-                ", id=" + id +
-                '}';
-    }
 }

@@ -20,7 +20,6 @@ public class ReportFOP extends AbstractEntity {
     @OneToMany(mappedBy = "reportFOP", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ReportFOPImage> reportFOPImages = new ArrayList<>();
 
-
     @Transient
     private int size;
 

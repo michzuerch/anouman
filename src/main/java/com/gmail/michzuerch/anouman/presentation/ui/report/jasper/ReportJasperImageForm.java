@@ -1,9 +1,9 @@
-package com.gmail.michzuerch.anouman.presentation.ui.report.jasper.reporttemplate;
+package com.gmail.michzuerch.anouman.presentation.ui.report.jasper;
 
 import com.gmail.michzuerch.anouman.backend.entity.report.jasper.ReportJasper;
 import com.gmail.michzuerch.anouman.backend.entity.report.jasper.ReportJasperImage;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.ReportJasperDeltaspikeFacade;
-import com.gmail.michzuerch.anouman.presentation.ui.field.ImageField;
+import com.gmail.michzuerch.anouman.presentation.ui.util.field.ImageField;
 import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +19,7 @@ public class ReportJasperImageForm extends AbstractForm<ReportJasperImage> {
 
     NativeSelect<ReportJasper> reportJasper = new NativeSelect<>("Report Jasper");
     TextField bezeichnung = new TextField("Bezeichnung");
-    ImageField image = new ImageField();
+    ImageField image = new ImageField("Image");
     //Button downloadButton = new Button("Download Image");
 
     private String filename;
