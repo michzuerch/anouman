@@ -43,9 +43,9 @@ public class JasperXmlField extends CustomField<byte[]> {
         textArea.addValueChangeListener(
                 event -> fireEvent(new ValueChangeEvent<byte[]>(this,
                         event.getOldValue().getBytes(), event.isUserOriginated())));
-        addValueChangeListener(
-                event -> fireEvent(new ValueChangeEvent<byte[]>(this,
-                        event.getOldValue(), event.isUserOriginated())));
+//        addValueChangeListener(
+//                event -> fireEvent(new ValueChangeEvent<byte[]>(this,
+//                        event.getOldValue(), event.isUserOriginated())));
         return layout;
     }
 
@@ -56,8 +56,10 @@ public class JasperXmlField extends CustomField<byte[]> {
 
     private void upload(String s, Path path) {
         try {
-            System.err.println("Uploaded Bytes: " + Files.readAllBytes(Paths.get(path.toUri())));
-            doSetValue(Files.readAllBytes(Paths.get(path.toUri())));
+            byte[] uploaded = Files.readAllBytes(Paths.get(path.toUri()));
+            System.err.println("Uploaded Bytes: " + uploaded);
+            fireEvent(new ValueChangeEvent<byte[]>(this, getValue(), true));
+            doSetValue(uploaded);
         } catch (IOException e) {
             e.printStackTrace();
         }

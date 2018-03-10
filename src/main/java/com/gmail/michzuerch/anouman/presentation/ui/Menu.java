@@ -240,6 +240,13 @@ public class Menu extends CustomComponent {
 
         MenuBar.MenuItem testsComponents = testsMenu.addItem("Komponenten testen", VaadinIcons.FACTORY, null);
 
+        testsComponents.addItem("Image Test", VaadinIcons.PUZZLE_PIECE, new MenuBar.Command() {
+            @Override
+            public void menuSelected(MenuBar.MenuItem selectedItem) {
+                getUI().getNavigator().navigateTo("ImageTestView");
+            }
+        });
+
         testsComponents.addItem("EditorTest", VaadinIcons.EDIT, new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem selectedItem) {

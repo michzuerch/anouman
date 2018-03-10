@@ -10,7 +10,7 @@ import com.vaadin.ui.VerticalLayout;
 import org.slf4j.LoggerFactory;
 import org.vaadin.teemusa.flexlayout.*;
 
-@CDIView("ImageTestView")
+@CDIView("ImageTest2View")
 public class ImageTestView extends VerticalLayout implements View {
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(ImageTestView.class.getName());
 

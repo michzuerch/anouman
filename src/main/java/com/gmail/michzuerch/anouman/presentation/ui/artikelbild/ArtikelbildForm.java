@@ -21,6 +21,8 @@ public class ArtikelbildForm extends AbstractForm<Artikelbild> {
     TextField titel = new TextField("Titel");
     ImageField image = new ImageField("Image");
 
+    Button debugButton = new Button("Debug");
+
     public ArtikelbildForm() {
         super(Artikelbild.class);
     }
@@ -43,8 +45,15 @@ public class ArtikelbildForm extends AbstractForm<Artikelbild> {
         artikel.setItemCaptionGenerator(artikel1 -> artikel1.getBezeichnung() + " id:" + artikel1.getId());
         artikel.setItems(artikelDeltaspikeFacade.findAll());
         artikel.setEmptySelectionAllowed(false);
+
+        debugButton.addClickListener(event -> {
+            //Notification.show(String.valueOf(image.getValue().length),Notification.Type.ERROR_MESSAGE);
+            getBinder().getFields().forEach(hasValue -> System.err.println("Field:" + hasValue.getValue()));
+            //Notification.show(getBinder().getFields()String.valueOf(image.getValue().length),Notification.Type.ERROR_MESSAGE);
+        });
+
         return new VerticalLayout(new FormLayout(
-                artikel, titel, image
+                artikel, titel, image, debugButton
         ), getToolbar());
     }
 }

@@ -12,14 +12,15 @@ import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.themes.ValoTheme;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.LoggerFactory;
 import org.vaadin.teemusa.flexlayout.*;
 
 import javax.inject.Inject;
+import java.io.IOException;
 
 
 // @todo : java.lang.IllegalStateException: Property type 'java.util.Date' doesn't match the field type 'java.time.LocalDateTime'.
-// Binding should be configured manually using converter.
 @CDIView("ArtikelbildView")
 public class ArtikelbildView extends VerticalLayout implements View {
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(ArtikelbildView.class.getName());
@@ -36,7 +37,6 @@ public class ArtikelbildView extends VerticalLayout implements View {
 
     @Inject
     private ArtikelbildForm artikelbildForm;
-
 
     private Component createContent() {
         FlexLayout layout = new FlexLayout();
@@ -68,9 +68,17 @@ public class ArtikelbildView extends VerticalLayout implements View {
         addBtn.addClickListener(event -> {
             grid.asSingleSelect().clear();
             Artikelbild artikelbild = new Artikelbild();
+            try {
+                artikelbild.setImage(IOUtils.toByteArray(getClass().getClassLoader().getResourceAsStream("/images/EmptyImage.jpg")));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
             artikelbildForm.setEntity(artikelbild);
             artikelbildForm.openInModalPopup();
+
             artikelbildForm.setSavedHandler(val -> {
+                System.err.println("savedHandler image len:" + val.getImage().length);
                 artikelbildDeltaspikeFacade.save(val);
                 updateList();
                 grid.select(val);
@@ -84,7 +92,6 @@ public class ArtikelbildView extends VerticalLayout implements View {
         grid.addColumn(Artikelbild::getId).setCaption("id");
         grid.addColumn(Artikelbild::getTitel).setCaption("Titel");
         grid.addColumn(Artikelbild::getSize).setCaption("Size");
-        grid.addColumn(Artikelbild::getMimetype).setCaption("Mimetype");
         grid.addColumn(artikelbild -> artikelbild.getArtikel().getBezeichnung() + " id:" + artikelbild.getArtikel().getId(),
                 new ButtonRenderer(event -> {
                     Artikelbild artikelbild = (Artikelbild) event.getItem();

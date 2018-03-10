@@ -10,9 +10,6 @@ public class Artikelbild extends com.gmail.michzuerch.anouman.backend.entity.Abs
     private String titel;
 
     @Column
-    private String mimetype;
-
-    @Column
     @NotNull
     @Basic(fetch = FetchType.LAZY)
     private byte[] image;
@@ -27,14 +24,6 @@ public class Artikelbild extends com.gmail.michzuerch.anouman.backend.entity.Abs
 
     public void setTitel(String titel) {
         this.titel = titel;
-    }
-
-    public String getMimetype() {
-        return mimetype;
-    }
-
-    public void setMimetype(String mimetype) {
-        this.mimetype = mimetype;
     }
 
     public byte[] getImage() {
