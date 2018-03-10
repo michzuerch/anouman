@@ -174,6 +174,10 @@ public class TestDataCreateView extends VerticalLayout implements View {
         aufwand.setEnd(LocalDateTime.ofInstant(now.plus(Duration.ofHours(3)), ZoneOffset.UTC));
 
         aufwand.setRechnung(rechnung);
+
+        aufwand.setMoveable(true);
+        aufwand.setResizable(true);
+
         aufwand = aufwandDeltaspikeFacade.save(aufwand);
 
         Notification.show("Testdaten Rechnung erstellt", Notification.Type.TRAY_NOTIFICATION);

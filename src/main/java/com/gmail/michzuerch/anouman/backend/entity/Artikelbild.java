@@ -13,10 +13,12 @@ public class Artikelbild extends com.gmail.michzuerch.anouman.backend.entity.Abs
     private String mimetype;
 
     @Column
+    @NotNull
     @Basic(fetch = FetchType.LAZY)
-    private byte[] bild;
+    private byte[] image;
 
     @ManyToOne
+    @NotNull
     private com.gmail.michzuerch.anouman.backend.entity.Artikel artikel;
 
     public String getTitel() {
@@ -35,12 +37,12 @@ public class Artikelbild extends com.gmail.michzuerch.anouman.backend.entity.Abs
         this.mimetype = mimetype;
     }
 
-    public byte[] getBild() {
-        return bild;
+    public byte[] getImage() {
+        return image;
     }
 
-    public void setBild(byte[] bild) {
-        this.bild = bild;
+    public void setImage(byte[] val) {
+        this.image = val;
     }
 
     public com.gmail.michzuerch.anouman.backend.entity.Artikel getArtikel() {
@@ -52,8 +54,8 @@ public class Artikelbild extends com.gmail.michzuerch.anouman.backend.entity.Abs
     }
 
     public int getSize() {
-        if (getBild() != null) {
-            return getBild().length;
+        if (getImage() != null) {
+            return getImage().length;
         } else return 0;
     }
 }

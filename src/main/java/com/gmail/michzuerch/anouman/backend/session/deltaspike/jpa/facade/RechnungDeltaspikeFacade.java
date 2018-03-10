@@ -21,7 +21,7 @@ public class RechnungDeltaspikeFacade {
 
     @GET
     @Path("/findBy/{id}")
-    @Produces(MediaType.APPLICATION_XML)
+    @Produces(MediaType.APPLICATION_JSON)
     public Rechnung findBy(@PathParam(value = "id") Long id) {
         return repo.findBy(id);
     }
@@ -36,7 +36,7 @@ public class RechnungDeltaspikeFacade {
 
     @GET
     @Path("/findAll")
-    @Produces(MediaType.APPLICATION_XML)
+    @Produces(MediaType.APPLICATION_JSON)
     public List<Rechnung> findAll() {
         return repo.findAll();
     }

@@ -1,6 +1,6 @@
-package com.gmail.michzuerch.anouman.presentation.ui.validator;
+package com.gmail.michzuerch.anouman.presentation.ui.util.validator;
 
-import com.gmail.michzuerch.anouman.presentation.ui.report.jasper.reporttemplate.xmlvalidation.ResourceResolver;
+import com.gmail.michzuerch.anouman.presentation.ui.report.jasper.xmlvalidation.ResourceResolver;
 import com.vaadin.data.ValidationResult;
 import com.vaadin.data.Validator;
 import com.vaadin.data.ValueContext;
@@ -21,7 +21,6 @@ import javax.xml.validation.SchemaFactory;
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 
 public class JRXMLValidator implements Validator<byte[]> {
     String errormessage = new String();
@@ -31,37 +30,26 @@ public class JRXMLValidator implements Validator<byte[]> {
         try {
             jasperReport = JasperCompileManager
                     .compileReport(new ByteArrayInputStream(val));
-            //templateCompiled.setValue(new String(SerializationUtils.serialize(jasperReport), "UTF-8"));
-            //templateCompiled.setValue(jasperReport.toString());
-            //Notification.show("Report erfolgreich compiliert: " + jasperReport.getCompilerClass(), Notification.Type.TRAY_NOTIFICATION);
         } catch (Exception e) {
             e.printStackTrace();
             errormessage = e.getMessage();
-            //Notification.show("Fehler beim Compilieren: " + e.getLocalizedMessage(), Notification.Type.TRAY_NOTIFICATION);
             return false;
         }
         return true;
     }
 
     private boolean verifyValidatesInternalXsd(byte[] val) {
-        InputStream xmlStream = null;
         try {
             DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
             builderFactory.setNamespaceAware(true);
 
             DocumentBuilder parser = builderFactory
                     .newDocumentBuilder();
-
-            // parse the XML into a document object
             Document document = parser.parse(new ByteArrayInputStream(val));
 
             SchemaFactory factory = SchemaFactory
                     .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-
-            // associate the schema factory with the resource resolver, which is responsible for resolving the imported XSD's
             factory.setResourceResolver(new ResourceResolver());
-
-            // note that if your XML already declares the XSD to which it has to conform, then there's no need to create a validator from a Schema object
             Source schemaFile = new StreamSource(getClass().getClassLoader()
                     .getResourceAsStream("/schema/jasperreport.xsd"));
 
@@ -88,7 +76,9 @@ public class JRXMLValidator implements Validator<byte[]> {
 
     @Override
     public ValidationResult apply(byte[] value, ValueContext context) {
-        if (compileJRXML(value) == false) return ValidationResult.error("Compiler-Fehler: " + errormessage);
+        //@todo Wildfly hängt nach Compilierung
+        //if (compileJRXML(value) == false) return ValidationResult.error("Compiler-Fehler: " + errormessage);
+        //if (verifyValidatesInternalXsd(value)==false) return ValidationResult.error("Validierung XML-Schema fehlgeschlagen" + errormessage);
         return ValidationResult.ok();
     }
 }

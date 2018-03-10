@@ -71,8 +71,6 @@ public class ArtikelbildView extends VerticalLayout implements View {
             artikelbildForm.setEntity(artikelbild);
             artikelbildForm.openInModalPopup();
             artikelbildForm.setSavedHandler(val -> {
-                if (val.getBild() == null) System.err.println("Bild ist null");
-                if (val != null) System.err.println("savedHandler:  " + val.getBild().length);
                 artikelbildDeltaspikeFacade.save(val);
                 updateList();
                 grid.select(val);

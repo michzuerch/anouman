@@ -94,10 +94,10 @@ public class ArtikelbildOldView extends VerticalLayout implements View {
         grid.addColumn(Artikelbild::getSize).setCaption("Size");
         grid.addColumn(Artikelbild::getMimetype).setCaption("Mimetype");
 
-//        grid.addColumn(bild -> bild.getArtikel().getBezeichnung() + " id:" + bild.getArtikel().getId(),
+//        grid.addColumn(image -> image.getArtikel().getBezeichnung() + " id:" + image.getArtikel().getId(),
 //                new ButtonRenderer(event -> {
-//                    Artikelbild bild = (Artikelbild) event.getItem();
-//                    UI.getCurrent().getNavigator().navigateTo("Artikel/id/" + bild.getArtikel().getId());
+//                    Artikelbild image = (Artikelbild) event.getItem();
+//                    UI.getCurrent().getNavigator().navigateTo("Artikel/id/" + image.getArtikel().getId());
 //                })
 //        ).setCaption("Artikel").setStyleGenerator(item -> "v-align-center");
 

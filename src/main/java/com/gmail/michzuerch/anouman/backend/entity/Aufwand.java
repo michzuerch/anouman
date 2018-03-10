@@ -17,7 +17,8 @@ import java.time.LocalDateTime;
 @NamedQueries({
         @NamedQuery(name = "Aufwand.findAll", query = "SELECT a FROM Aufwand a order by a.start"),
         @NamedQuery(name = "Aufwand.findById", query = "SELECT a FROM Aufwand a where a.id = :id"),
-        @NamedQuery(name = "Aufwand.findByTitel", query = "SELECT a FROM Aufwand a where a.titel LIKE :titel")
+        @NamedQuery(name = "Aufwand.findByTitel", query = "SELECT a FROM Aufwand a where a.titel LIKE :titel"),
+        @NamedQuery(name = "Aufwand.findByDateToDate", query = "SELECT a FROM Aufwand a where a.start BETWEEN :startdate and :enddate")
 })
 public class Aufwand extends AbstractEntity {
     @Column
@@ -32,6 +33,12 @@ public class Aufwand extends AbstractEntity {
 
     @Column(name = "endzeit")
     private LocalDateTime end;
+
+    @Column
+    private boolean resizable;
+
+    @Column
+    private boolean moveable;
 
     @ManyToOne
     private Rechnung rechnung;
@@ -76,6 +83,23 @@ public class Aufwand extends AbstractEntity {
         this.rechnung = rechnung;
     }
 
+
+    public boolean isResizable() {
+        return resizable;
+    }
+
+    public void setResizable(boolean resizable) {
+        this.resizable = resizable;
+    }
+
+    public boolean isMoveable() {
+        return moveable;
+    }
+
+    public void setMoveable(boolean moveable) {
+        this.moveable = moveable;
+    }
+
     @Transient
     public Long getDauerInMinuten() {
 
@@ -100,6 +124,7 @@ public class Aufwand extends AbstractEntity {
         BigDecimal total = stk.multiply(anz);
         return total.doubleValue();
     }
+
 
     @Override
     public String toString() {

@@ -19,7 +19,7 @@ public class ArtikelbildForm extends AbstractForm<Artikelbild> {
 
     NativeSelect<Artikel> artikel = new NativeSelect<>();
     TextField titel = new TextField("Titel");
-    ImageField bild = new ImageField("Bild");
+    ImageField image = new ImageField("Image");
 
     public ArtikelbildForm() {
         super(Artikelbild.class);
@@ -44,7 +44,7 @@ public class ArtikelbildForm extends AbstractForm<Artikelbild> {
         artikel.setItems(artikelDeltaspikeFacade.findAll());
         artikel.setEmptySelectionAllowed(false);
         return new VerticalLayout(new FormLayout(
-                artikel, titel, bild
+                artikel, titel, image
         ), getToolbar());
     }
 }

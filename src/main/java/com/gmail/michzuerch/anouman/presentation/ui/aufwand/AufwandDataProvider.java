@@ -1,23 +1,33 @@
 package com.gmail.michzuerch.anouman.presentation.ui.aufwand;
 
-import org.vaadin.addon.calendar.item.BasicItemProvider;
+import org.vaadin.addon.calendar.item.CalendarEditableItemProvider;
 
 import java.time.ZonedDateTime;
+import java.util.Collection;
 import java.util.List;
 
-public class AufwandDataProvider extends BasicItemProvider<AufwandItem> {
+public class AufwandDataProvider implements CalendarEditableItemProvider<AufwandItem> {
     public AufwandDataProvider() {
         super();
     }
 
     @Override
-    //@todo Query für Datum???
-    public List<AufwandItem> getItems(ZonedDateTime startDate, ZonedDateTime endDate) {
-        return super.getItems(startDate, endDate);
+    public void addItem(AufwandItem item) {
+
     }
 
-    void removeAllEvents() {
-        this.itemList.clear();
-        fireItemSetChanged();
+    @Override
+    public void removeItem(AufwandItem item) {
+
+    }
+
+    @Override
+    public void setItems(Collection<AufwandItem> items) {
+
+    }
+
+    @Override
+    public List<AufwandItem> getItems(ZonedDateTime startDate, ZonedDateTime endDate) {
+        return null;
     }
 }

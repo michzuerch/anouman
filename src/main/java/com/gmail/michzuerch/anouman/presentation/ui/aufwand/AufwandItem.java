@@ -1,28 +1,28 @@
 package com.gmail.michzuerch.anouman.presentation.ui.aufwand;
 
 import com.gmail.michzuerch.anouman.backend.entity.Aufwand;
+import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.AufwandDeltaspikeFacade;
+import com.vaadin.cdi.ViewScoped;
 import com.vaadin.icons.VaadinIcons;
-import org.vaadin.addon.calendar.item.BasicItem;
+import org.vaadin.addon.calendar.item.EditableCalendarItem;
 
-import java.time.ZoneId;
+import javax.inject.Inject;
 import java.time.ZonedDateTime;
 
-public class AufwandItem extends BasicItem {
+@ViewScoped
+public class AufwandItem implements EditableCalendarItem {
 
+    @Inject
+    AufwandDeltaspikeFacade aufwandDeltaspikeFacade;
 
-    private final Aufwand aufwand;
+    private Aufwand aufwand;
 
-    /**
-     * constructor
-     *
-     * @param aufwand A aufwand
-     */
+    public AufwandItem() {
+        aufwand = aufwandDeltaspikeFacade.findAll().get(0);
+    }
 
-    public AufwandItem(Aufwand aufwand) {
-        super(aufwand.getTitel(), aufwand.getBezeichnung(),
-                aufwand.getStart().atZone(ZoneId.systemDefault()),
-                aufwand.getEnd().atZone(ZoneId.systemDefault()));
-        this.aufwand = aufwand;
+    public AufwandItem(Aufwand val) {
+        aufwand = val;
     }
 
 
@@ -38,13 +38,65 @@ public class AufwandItem extends BasicItem {
         return getAufwand().equals(that.getAufwand());
     }
 
+
     public Aufwand getAufwand() {
         return aufwand;
     }
 
     @Override
+    public ZonedDateTime getStart() {
+        return null;
+    }
+
+    @Override
+    public void setStart(ZonedDateTime start) {
+        getAufwand().setStart(start.toLocalDateTime());
+    }
+
+    @Override
+    public ZonedDateTime getEnd() {
+        return null;
+    }
+
+    @Override
+    public void setEnd(ZonedDateTime end) {
+        getAufwand().setEnd(end.toLocalDateTime());
+    }
+
+    @Override
+    public String getCaption() {
+        return null;
+    }
+
+    @Override
+    public void setCaption(String caption) {
+        getAufwand().getTitel();
+    }
+
+    @Override
+    public String getDescription() {
+        return null;
+    }
+
+    @Override
+    public void setDescription(String description) {
+
+    }
+
+    @Override
     public String getStyleName() {
-        return "state-" + aufwand.getBezeichnung().toLowerCase();
+        return "state-" + getAufwand().getBezeichnung().toLowerCase();
+    }
+
+
+//    @Override
+//    public boolean isClickable() {
+//        return aufwand.isEditable();
+//    }
+
+    @Override
+    public void setStyleName(String styleName) {
+
     }
 
     @Override
@@ -59,32 +111,25 @@ public class AufwandItem extends BasicItem {
     }
 
     @Override
+    public void setAllDay(boolean isAllDay) {
+
+    }
+
+    @Override
     public boolean isMoveable() {
-        return false;
+        return getAufwand().isMoveable();
         //return aufwand.isEditable();
     }
 
     @Override
     public boolean isResizeable() {
-        return false;
+        return getAufwand().isResizable();
         //return aufwand.isEditable();
     }
 
-//    @Override
-//    public boolean isClickable() {
-//        return aufwand.isEditable();
-//    }
-
     @Override
-    public void setEnd(ZonedDateTime end) {
-        aufwand.setEnd(end.toLocalDateTime());
-        super.setEnd(end);
-    }
-
-    @Override
-    public void setStart(ZonedDateTime start) {
-        aufwand.setStart(start.toLocalDateTime());
-        super.setStart(start);
+    public ItemChangeNotifier getNotifier() {
+        return null;
     }
 
     @Override
