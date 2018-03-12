@@ -61,8 +61,13 @@
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
-            <version>[7.0,)</version>
+            <version>7.0</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.enterprise</groupId>
+            <artifactId>cdi-api</artifactId>
+            <version>2.0</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -333,45 +338,45 @@
                     </filesets>
                 </configuration>
             </plugin>
-            <!--<plugin>-->
-            <!--<groupId>com.mysema.maven</groupId>-->
-            <!--<artifactId>apt-maven-plugin</artifactId>-->
-            <!--<version>1.1.3</version>-->
-            <!--<executions>-->
-            <!--<execution>-->
-            <!--<id>querydsl</id>-->
-            <!--<goals>-->
-            <!--<goal>process</goal>-->
-            <!--</goals>-->
-            <!--<configuration>-->
-            <!--<outputDirectory>target/generated-sources/querydsl</outputDirectory>-->
-            <!--<processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>-->
-            <!--</configuration>-->
-            <!--</execution>-->
-            <!--<execution>-->
-            <!--<id>metamodel</id>-->
-            <!--<goals>-->
-            <!--<goal>process</goal>-->
-            <!--</goals>-->
-            <!--<configuration>-->
-            <!--<outputDirectory>target/generated-sources/metamodel</outputDirectory>-->
-            <!--<processor>org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor</processor>-->
-            <!--</configuration>-->
-            <!--</execution>-->
-            <!--</executions>-->
-            <!--<dependencies>-->
-            <!--<dependency>-->
-            <!--<groupId>org.hibernate</groupId>-->
-            <!--<artifactId>hibernate-jpamodelgen</artifactId>-->
-            <!--<version>5.2.12.Final</version>-->
-            <!--</dependency>-->
-            <!--<dependency>-->
-            <!--<groupId>com.querydsl</groupId>-->
-            <!--<artifactId>querydsl-apt</artifactId>-->
-            <!--<version>4.1.4</version>-->
-            <!--</dependency>-->
-            <!--</dependencies>-->
-            <!--</plugin>-->
+            <plugin>
+                <groupId>com.mysema.maven</groupId>
+                <artifactId>apt-maven-plugin</artifactId>
+                <version>1.1.3</version>
+                <executions>
+                    <execution>
+                        <id>querydsl</id>
+                        <goals>
+                            <goal>process</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>target/generated-sources/querydsl</outputDirectory>
+                            <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>metamodel</id>
+                        <goals>
+                            <goal>process</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>target/generated-sources/metamodel</outputDirectory>
+                            <processor>org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor</processor>
+                        </configuration>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.hibernate</groupId>
+                        <artifactId>hibernate-jpamodelgen</artifactId>
+                        <version>5.3.0.CR1</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>com.querydsl</groupId>
+                        <artifactId>querydsl-apt</artifactId>
+                        <version>4.1.4</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
             <plugin>
                 <groupId>org.wildfly.plugins</groupId>
                 <artifactId>wildfly-maven-plugin</artifactId>

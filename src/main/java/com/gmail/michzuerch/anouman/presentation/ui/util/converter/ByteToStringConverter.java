@@ -1,4 +1,4 @@
-package com.gmail.michzuerch.anouman.presentation.ui.converter;
+package com.gmail.michzuerch.anouman.presentation.ui.util.converter;
 
 import com.vaadin.data.Converter;
 import com.vaadin.data.Result;

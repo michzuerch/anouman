@@ -1,10 +1,8 @@
-package com.gmail.michzuerch.anouman.presentation.ui.editortest;
+package com.gmail.michzuerch.anouman.presentation.ui.testviews.editortest;
 
 import com.gmail.michzuerch.anouman.backend.entity.EditorTest;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.EditorTestDeltaspikeFacade;
-import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.cdi.CDIView;
-import com.vaadin.data.Binder;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -18,22 +16,18 @@ import javax.inject.Inject;
 import java.util.List;
 import java.util.logging.Logger;
 
-@PreserveOnRefresh
-@CDIView("EditorTestGridEditView")
-public class EditorTestGridEditView extends VerticalLayout implements View {
-    private static final Logger LOGGER = Logger.getLogger(EditorTestGridEditView.class.getName());
-
-    @Inject
-    EditorTestDeltaspikeFacade facade;
+@CDIView("EditorTestView")
+public class EditorTestView extends VerticalLayout implements View {
+    private static final Logger LOGGER = Logger.getLogger(EditorTestView.class.getName());
 
     TextField filterText = new TextField();
-    Grid<EditorTest> grid = new Grid<>();
+    Grid<EditorTest> grid = new Grid<>(EditorTest.class);
+
+    @Inject
+    private EditorTestDeltaspikeFacade editorTestDeltaspikeFacade;
 
     @Inject
     private EditorTestForm form;
-
-    private TextField ersterFld = new TextField();
-    private TextField zweiterFld = new TextField();
 
     private Component createContent() {
         FlexLayout layout = new FlexLayout();
@@ -48,25 +42,6 @@ public class EditorTestGridEditView extends VerticalLayout implements View {
         filterText.addValueChangeListener(e -> updateList());
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
 
-        grid.addColumn(EditorTest::getId).setCaption("id");
-        grid.addColumn(EditorTest::getVersion).setCaption("Version");
-        grid.addColumn(EditorTest::getErster).setEditorComponent(ersterFld, EditorTest::setErster);
-        grid.addColumn(EditorTest::getZweiter).setEditorComponent(zweiterFld, EditorTest::setZweiter);
-        Binder<EditorTest> binder = grid.getEditor().getBinder();
-
-        binder.bind(ersterFld, EditorTest::getErster, EditorTest::setErster);
-        binder.bind(zweiterFld, EditorTest::getZweiter, EditorTest::setZweiter);
-
-        grid.getEditor().setBinder(binder);
-        grid.getEditor().setEnabled(true);
-        grid.getEditor().addSaveListener(event -> {
-            if (binder.isValid()) {
-                facade.save(event.getBean());
-            }
-            updateList();
-            grid.select(event.getBean());
-        });
-
         Button clearFilterTextBtn = new Button(VaadinIcons.RECYCLE);
         clearFilterTextBtn.setDescription("Entferne Filter");
         clearFilterTextBtn.addClickListener(e -> filterText.clear());
@@ -77,7 +52,7 @@ public class EditorTestGridEditView extends VerticalLayout implements View {
             form.setEntity(new EditorTest());
             form.openInModalPopup();
             form.setSavedHandler(val -> {
-                facade.save(val);
+                editorTestDeltaspikeFacade.save(val);
                 updateList();
                 grid.select(val);
                 form.closePopup();
@@ -88,39 +63,55 @@ public class EditorTestGridEditView extends VerticalLayout implements View {
         tools.addComponents(filterText, clearFilterTextBtn, addBtn);
         tools.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 
+        grid.setCaption("<h2>EditorTest</h2>");
+        grid.setCaptionAsHtml(true);
+        //grid.setColumns("id", "erster", "zweiter");
         grid.setSizeFull();
 
         // Render a button that deletes the data row (item)
         grid.addColumn(editorTest -> "löschen",
                 new ButtonRenderer(event -> {
                     Notification.show("Lösche EditorTest id:" + event.getItem(), Notification.Type.HUMANIZED_MESSAGE);
-                    facade.delete((EditorTest) event.getItem());
+                    editorTestDeltaspikeFacade.delete((EditorTest) event.getItem());
                     updateList();
                 })
-        ).setCaption("Löschen");
+        );
+
+        grid.addColumn(editorTest -> "ändern",
+                new ButtonRenderer(event -> {
+                    form.setEntity((EditorTest) event.getItem());
+                    form.openInModalPopup();
+                    form.setSavedHandler(val -> {
+                        editorTestDeltaspikeFacade.save(val);
+                        updateList();
+                        grid.select(val);
+                        form.closePopup();
+                    });
+                    form.setResetHandler(val -> {
+                        updateList();
+                        grid.select(val);
+                        form.closePopup();
+                    });
+                }));
 
         layout.addComponents(tools, grid);
         layout.setSizeFull();
         return layout;
 
-
     }
+
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
         addComponent(createContent());
         setSizeFull();
-
         updateList();
     }
 
     public void updateList() {
         List<EditorTest> items;
-        if (!filterText.isEmpty()) {
-            items = facade.findAll();
-        } else {
-            items = facade.findAll();
-        }
+        items = editorTestDeltaspikeFacade.findAll();
         grid.setItems(items);
     }
+
 }

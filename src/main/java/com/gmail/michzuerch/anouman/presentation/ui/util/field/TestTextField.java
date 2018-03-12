@@ -26,7 +26,7 @@ public class TestTextField extends CustomField<String> {
         textField.addValueChangeListener(
                 event -> {
                     fireEvent(new ValueChangeEvent<>(this,
-                            event.getValue(), event.isUserOriginated()));
+                            event.getOldValue(), event.isUserOriginated()));
                     System.err.println("VcE:" + event.getValue());
 //                   textValue=event.getValue();
                     this.textValue = event.getValue();
@@ -35,11 +35,11 @@ public class TestTextField extends CustomField<String> {
         return layout;
     }
 
-//    @Override
-//    public String getEmptyValue() {
-//        System.err.println("getEmptyValue()");
-//        return new String();
-//    }
+    @Override
+    public String getEmptyValue() {
+        System.err.println("getEmptyValue()");
+        return new String();
+    }
 
     @Override
     protected void doSetValue(String value) {

@@ -1,6 +1,7 @@
-package com.gmail.michzuerch.anouman.presentation.ui.editortest;
+package com.gmail.michzuerch.anouman.presentation.ui.testviews.editortest;
 
 import com.gmail.michzuerch.anouman.backend.entity.EditorTest;
+import com.gmail.michzuerch.anouman.presentation.ui.util.field.TestTextField;
 import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +13,7 @@ import org.vaadin.viritin.form.AbstractForm;
 public class EditorTestForm extends AbstractForm<EditorTest> {
     private static Logger logger = LoggerFactory.getLogger(EditorTestForm.class.getName());
 
-    TextField erster = new TextField("Erster");
+    TestTextField erster = new TestTextField("Erster");
     TextField zweiter = new TextField("Zweiter");
 
     public EditorTestForm() {

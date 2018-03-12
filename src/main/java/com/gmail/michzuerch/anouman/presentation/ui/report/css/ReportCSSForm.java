@@ -1,7 +1,7 @@
 package com.gmail.michzuerch.anouman.presentation.ui.report.css;
 
 import com.gmail.michzuerch.anouman.backend.entity.report.css.ReportCSS;
-import com.gmail.michzuerch.anouman.presentation.ui.converter.ByteToStringConverter;
+import com.gmail.michzuerch.anouman.presentation.ui.util.converter.ByteToStringConverter;
 import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
