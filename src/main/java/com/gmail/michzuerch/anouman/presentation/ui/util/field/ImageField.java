@@ -1,5 +1,6 @@
 package com.gmail.michzuerch.anouman.presentation.ui.util.field;
 
+import com.vaadin.server.FileDownloader;
 import com.vaadin.server.StreamResource;
 import com.vaadin.ui.*;
 import org.apache.commons.io.IOUtils;
@@ -11,15 +12,19 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
+//@todo JPG und PNG unterscheiden wegen Dateiendung
 public class ImageField extends CustomField<byte[]> {
     private byte[] fieldData;
     private UploadComponent upload = new UploadComponent();
     private Image image = new Image();
+    private Label size = new Label("Size:");
+    private Button downloadButton = new Button("Download Image");
 
     public ImageField(String caption) {
         super();
-        clear();
         setCaption(caption);
     }
 
@@ -42,17 +47,34 @@ public class ImageField extends CustomField<byte[]> {
 //        return new ImageValidator();
 //    }
 
+    protected String getFilename() {
+        SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+        return df.format(new Date()) + "-image.jpg";
+    }
+
+
     @Override
     protected void doSetValue(byte[] value) {
         byte[] oldValue = getValue();
         this.fieldData = value;
-        System.err.println("doSetValue len:" + value.length);
+        size.setValue(String.valueOf(value.length));
+        StreamResource streamResource = new StreamResource(new ImageSource(), getFilename());
+        streamResource.setCacheTime(0);
+        image = new Image();
+        image.setSource(streamResource);
+        image.markAsDirty();
+        //System.err.println("doSetValue len:" + value.length);
         fireEvent(new ValueChangeEvent<byte[]>(this, oldValue, true));
     }
 
     @Override
     public byte[] getValue() {
         if (fieldData != null) System.err.println("getValue len:" + fieldData.length);
+        size.setValue(String.valueOf(fieldData));
+        StreamResource streamResource = new StreamResource(new ImageSource(), getFilename());
+        streamResource.setCacheTime(0);
+        image.setSource(streamResource);
+        image.markAsDirty();
         return fieldData;
     }
 
@@ -62,12 +84,14 @@ public class ImageField extends CustomField<byte[]> {
         VerticalLayout layout = new VerticalLayout();
         layout.setMargin(false);
         layout.setSpacing(true);
-        image.setSource(new StreamResource(new ImageSource(), "EmptyImage.jpg"));
+
+        StreamResource streamResource = new StreamResource(new ImageSource(), getFilename());
+        streamResource.setCacheTime(0);
+        FileDownloader fileDownloader = new FileDownloader(streamResource);
+        fileDownloader.extend(downloadButton);
+
         image.setHeight(300, Unit.PIXELS);
-//        addValueChangeListener(
-//                event -> fireEvent(new ValueChangeEvent<byte[]>(this,
-//                        event.getOldValue(), event.isUserOriginated())));
-        layout.addComponents(image, upload);
+        layout.addComponents(image, upload, size, downloadButton);
         return layout;
     }
 
@@ -76,10 +100,9 @@ public class ImageField extends CustomField<byte[]> {
             byte[] uploaded = Files.readAllBytes(Paths.get(path.toUri()));
             String mimeType = (Files.probeContentType(path));
             if (mimeType.equals("image/jpeg") || (mimeType.equals("image/png"))) {
-                //fireEvent(new ValueChangeEvent<byte[]>(this, getValue(), true));
                 doSetValue(uploaded);
-                image.setSource(new StreamResource(new ImageSource(), "image.jpg"));
             } else {
+                doSetValue(getEmptyValue());
                 Notification.show("Nur Bilder als JPG oder PNG erlaubt (MIME-Type)", Notification.Type.ERROR_MESSAGE);
             }
         } catch (IOException e1) {
@@ -90,7 +113,7 @@ public class ImageField extends CustomField<byte[]> {
     public class ImageSource implements StreamResource.StreamSource {
         @Override
         public InputStream getStream() {
-            return new ByteArrayInputStream(getValue());
+            return new ByteArrayInputStream(fieldData);
         }
     }
 }
