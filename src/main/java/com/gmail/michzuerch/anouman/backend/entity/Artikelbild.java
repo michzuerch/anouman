@@ -2,11 +2,13 @@ package com.gmail.michzuerch.anouman.backend.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Artikelbild extends com.gmail.michzuerch.anouman.backend.entity.AbstractEntity {
     @Column
     @NotNull
+    @Size(min = 3)
     private String titel;
 
     @Column

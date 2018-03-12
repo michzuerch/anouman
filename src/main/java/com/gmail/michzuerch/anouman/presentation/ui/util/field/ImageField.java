@@ -2,17 +2,15 @@ package com.gmail.michzuerch.anouman.presentation.ui.util.field;
 
 import com.vaadin.server.StreamResource;
 import com.vaadin.ui.*;
+import org.apache.commons.io.IOUtils;
 import server.droporchoose.UploadComponent;
 
-import javax.imageio.ImageIO;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class ImageField extends CustomField<byte[]> {
     private byte[] fieldData;
@@ -20,20 +18,23 @@ public class ImageField extends CustomField<byte[]> {
     private Image image = new Image();
 
     public ImageField(String caption) {
+        super();
+        clear();
         setCaption(caption);
     }
 
-//    @Override
-//    public byte[] getEmptyValue() {
-//        byte[] emptyImage = new byte[0];
-//        try {
-//            emptyImage = IOUtils.toByteArray(getClass().getClassLoader().getResourceAsStream("/images/EmptyImage.jpg"));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        System.err.println("Call getEmptyValue() len:"+emptyImage.length);
-//        return emptyImage;
-//    }
+
+    @Override
+    public byte[] getEmptyValue() {
+        byte[] emptyImage = new byte[0];
+        try {
+            emptyImage = IOUtils.toByteArray(getClass().getClassLoader().getResourceAsStream("/images/EmptyImage.jpg"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.err.println("Call getEmptyValue() len:" + emptyImage.length);
+        return emptyImage;
+    }
 //
 //    //@todo Validator für Bilder (NPE)
 //    @Override
@@ -43,8 +44,10 @@ public class ImageField extends CustomField<byte[]> {
 
     @Override
     protected void doSetValue(byte[] value) {
-        System.err.println("doSetValue len:" + value.length);
+        byte[] oldValue = getValue();
         this.fieldData = value;
+        System.err.println("doSetValue len:" + value.length);
+        fireEvent(new ValueChangeEvent<byte[]>(this, oldValue, true));
     }
 
     @Override
@@ -61,9 +64,9 @@ public class ImageField extends CustomField<byte[]> {
         layout.setSpacing(true);
         image.setSource(new StreamResource(new ImageSource(), "EmptyImage.jpg"));
         image.setHeight(300, Unit.PIXELS);
-        addValueChangeListener(
-                event -> fireEvent(new ValueChangeEvent<byte[]>(this,
-                        event.getOldValue(), event.isUserOriginated())));
+//        addValueChangeListener(
+//                event -> fireEvent(new ValueChangeEvent<byte[]>(this,
+//                        event.getOldValue(), event.isUserOriginated())));
         layout.addComponents(image, upload);
         return layout;
     }
@@ -75,31 +78,12 @@ public class ImageField extends CustomField<byte[]> {
             if (mimeType.equals("image/jpeg") || (mimeType.equals("image/png"))) {
                 //fireEvent(new ValueChangeEvent<byte[]>(this, getValue(), true));
                 doSetValue(uploaded);
-                update();
+                image.setSource(new StreamResource(new ImageSource(), "image.jpg"));
             } else {
                 Notification.show("Nur Bilder als JPG oder PNG erlaubt (MIME-Type)", Notification.Type.ERROR_MESSAGE);
             }
         } catch (IOException e1) {
             e1.printStackTrace();
-        }
-    }
-
-    private void update() {
-        try {
-            if (ImageIO.read(new ByteArrayInputStream(getValue())) != null) {
-                SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-                String filename = df.format(new Date()) + "-image.jpg";
-                StreamResource resource = new StreamResource(new ImageSource(), filename);
-                resource.setCacheTime(0);
-                image.setSource(resource);
-            } else {
-                System.err.println("Datei ist kein image");
-                image.setSource(null);
-                setValue(null);
-            }
-            image.markAsDirty();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
