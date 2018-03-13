@@ -16,21 +16,21 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 //@todo JPG und PNG unterscheiden wegen Dateiendung
-public class ImageField extends CustomField<byte[]> {
-    private byte[] fieldData;
+public class ImageAndMimetypeField extends CustomField<ImageAndMimetype> {
+    private ImageAndMimetype fieldData = new ImageAndMimetype();
     private UploadComponent upload = new UploadComponent();
     private Image image = new Image();
     private Label size = new Label("Size:");
     private Button downloadButton = new Button("Download Image");
 
-    public ImageField(String caption) {
+    public ImageAndMimetypeField(String caption) {
         super();
         setCaption(caption);
     }
 
 
     @Override
-    public byte[] getEmptyValue() {
+    public ImageAndMimetype getEmptyValue() {
         byte[] emptyImage = new byte[0];
         try {
             emptyImage = IOUtils.toByteArray(getClass().getClassLoader().getResourceAsStream("/images/EmptyImage.jpg"));
@@ -38,7 +38,9 @@ public class ImageField extends CustomField<byte[]> {
             e.printStackTrace();
         }
         System.err.println("Call getEmptyValue() len:" + emptyImage.length);
-        return emptyImage;
+        fieldData.setImage(emptyImage);
+        fieldData.setMimetype("image/jpeg");
+        return fieldData;
     }
 //
 //    //@todo Validator für Bilder (NPE)
@@ -47,35 +49,42 @@ public class ImageField extends CustomField<byte[]> {
 //        return new ImageValidator();
 //    }
 
+    //@todo dateiendung
     protected String getFilename() {
         SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-        return df.format(new Date()) + "-image.jpg";
+        String filename = df.format(new Date()) + "-image";
+        if (fieldData.getMimetype().equals("image/jpeg")) {
+            filename.concat(".jpeg");
+        }
+        if (fieldData.getMimetype().equals("image/png")) {
+            filename.concat(".png");
+        }
+        return filename;
     }
 
 
     @Override
-    protected void doSetValue(byte[] value) {
-        byte[] oldValue = getValue();
+    protected void doSetValue(ImageAndMimetype value) {
+        ImageAndMimetype oldValue = getValue();
         this.fieldData = value;
-        size.setValue(String.valueOf(value.length));
         StreamResource streamResource = new StreamResource(new ImageSource(), getFilename());
         streamResource.setCacheTime(0);
         image = new Image();
         image.setSource(streamResource);
         image.markAsDirty();
         //System.err.println("doSetValue len:" + value.length);
-        fireEvent(new ValueChangeEvent<byte[]>(this, oldValue, true));
+        fireEvent(new ValueChangeEvent<ImageAndMimetype>(this, oldValue, true));
     }
 
     @Override
-    public byte[] getValue() {
-        if (fieldData != null) System.err.println("getValue len:" + fieldData.length);
-        size.setValue(String.valueOf(fieldData));
+    public ImageAndMimetype getValue() {
+        if (fieldData.getImage() != null) System.err.println("getValue len:" + fieldData.getImage().length);
+        size.setValue(String.valueOf(fieldData.getImage().length));
         StreamResource streamResource = new StreamResource(new ImageSource(), getFilename());
         streamResource.setCacheTime(0);
         image.setSource(streamResource);
         image.markAsDirty();
-        return fieldData;
+        return new ImageAndMimetype(fieldData.getImage(), fieldData.getMimetype());
     }
 
     @Override
@@ -87,8 +96,10 @@ public class ImageField extends CustomField<byte[]> {
 
         StreamResource streamResource = new StreamResource(new ImageSource(), getFilename());
         streamResource.setCacheTime(0);
+
         FileDownloader fileDownloader = new FileDownloader(streamResource);
         fileDownloader.extend(downloadButton);
+
 
         image.setHeight(300, Unit.PIXELS);
         layout.addComponents(image, upload, size, downloadButton);
@@ -100,7 +111,7 @@ public class ImageField extends CustomField<byte[]> {
             byte[] uploaded = Files.readAllBytes(Paths.get(path.toUri()));
             String mimeType = (Files.probeContentType(path));
             if (mimeType.equals("image/jpeg") || (mimeType.equals("image/png"))) {
-                doSetValue(uploaded);
+                doSetValue(new ImageAndMimetype(uploaded, mimeType));
             } else {
                 doSetValue(getEmptyValue());
                 Notification.show("Nur Bilder als JPG oder PNG erlaubt (MIME-Type)", Notification.Type.ERROR_MESSAGE);
@@ -113,7 +124,7 @@ public class ImageField extends CustomField<byte[]> {
     public class ImageSource implements StreamResource.StreamSource {
         @Override
         public InputStream getStream() {
-            return new ByteArrayInputStream(fieldData);
+            return new ByteArrayInputStream(fieldData.getImage());
         }
     }
 }

@@ -83,6 +83,7 @@ public class ArtikelbildView extends VerticalLayout implements View {
         tools.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
         grid.addColumn(Artikelbild::getId).setCaption("id");
         grid.addColumn(Artikelbild::getTitel).setCaption("Titel");
+        grid.addColumn(Artikelbild::getMimetype).setCaption("Mimetype");
         grid.addColumn(Artikelbild::getSize).setCaption("Size");
         grid.addColumn(artikelbild -> artikelbild.getArtikel().getBezeichnung() + " id:" + artikelbild.getArtikel().getId(),
                 new ButtonRenderer(event -> {

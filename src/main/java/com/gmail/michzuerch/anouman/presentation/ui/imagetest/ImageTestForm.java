@@ -2,7 +2,7 @@ package com.gmail.michzuerch.anouman.presentation.ui.imagetest;
 
 import com.gmail.michzuerch.anouman.backend.entity.ImageTest;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.ImageTestDeltaspikeFacade;
-import com.gmail.michzuerch.anouman.presentation.ui.util.field.ImageField;
+import com.gmail.michzuerch.anouman.presentation.ui.util.field.ImageAndMimetypeField;
 import com.vaadin.ui.*;
 import org.vaadin.viritin.form.AbstractForm;
 
@@ -13,7 +13,7 @@ public class ImageTestForm extends AbstractForm<ImageTest> {
     ImageTestDeltaspikeFacade imageTestDeltaspikeFacade;
 
     TextField titel = new TextField("Titel");
-    ImageField bild = new ImageField("Image");
+    ImageAndMimetypeField bild = new ImageAndMimetypeField("Image");
 
     public ImageTestForm() {
         super(ImageTest.class);

@@ -4,7 +4,7 @@ import com.gmail.michzuerch.anouman.backend.entity.Artikel;
 import com.gmail.michzuerch.anouman.backend.entity.Artikelbild;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.ArtikelDeltaspikeFacade;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.ArtikelbildDeltaspikeFacade;
-import com.gmail.michzuerch.anouman.presentation.ui.util.field.ImageField;
+import com.gmail.michzuerch.anouman.presentation.ui.util.field.ImageAndMimetypeField;
 import com.vaadin.ui.*;
 import org.vaadin.viritin.form.AbstractForm;
 
@@ -19,9 +19,7 @@ public class ArtikelbildForm extends AbstractForm<Artikelbild> {
 
     NativeSelect<Artikel> artikel = new NativeSelect<>();
     TextField titel = new TextField("Titel");
-    ImageField image = new ImageField("Image");
-
-    Button debugButton = new Button("Debug");
+    ImageAndMimetypeField imageAndMimetype = new ImageAndMimetypeField("Image");
 
     public ArtikelbildForm() {
         super(Artikelbild.class);
@@ -45,15 +43,8 @@ public class ArtikelbildForm extends AbstractForm<Artikelbild> {
         artikel.setItemCaptionGenerator(artikel1 -> artikel1.getBezeichnung() + " id:" + artikel1.getId());
         artikel.setItems(artikelDeltaspikeFacade.findAll());
         artikel.setEmptySelectionAllowed(false);
-
-        debugButton.addClickListener(event -> {
-            //Notification.show(String.valueOf(image.getValue().length),Notification.Type.ERROR_MESSAGE);
-            getBinder().getFields().forEach(hasValue -> System.err.println("Field:" + hasValue.getValue()));
-            //Notification.show(getBinder().getFields()String.valueOf(image.getValue().length),Notification.Type.ERROR_MESSAGE);
-        });
-
         return new VerticalLayout(new FormLayout(
-                artikel, titel, image, debugButton
+                artikel, titel, imageAndMimetype
         ), getToolbar());
     }
 }
