@@ -27,8 +27,7 @@ public class TestTextField extends CustomField<String> {
                 event -> {
                     fireEvent(new ValueChangeEvent<>(this,
                             event.getOldValue(), event.isUserOriginated()));
-                    System.err.println("VcE:" + event.getValue());
-//                   textValue=event.getValue();
+                    System.err.println("TestTextField VcE:" + event.getValue());
                     this.textValue = event.getValue();
                 }
         );
@@ -37,26 +36,21 @@ public class TestTextField extends CustomField<String> {
 
     @Override
     public String getEmptyValue() {
-        System.err.println("getEmptyValue()");
+        System.err.println("TestTextField getEmptyValue()");
         return new String();
     }
 
     @Override
     protected void doSetValue(String value) {
-        System.err.println("doSetValue:" + value);
+        System.err.println("TestTextField doSetValue:" + value);
         this.textValue = value;
         textField.setValue(value);
-
-        //@todo Event für Upload ReportJasper jrxml??
-        //fireEvent(new ValueChangeEvent<> (textField, textField.getValue(),false));
-        //textField.setValue(value);
-        //textField.markAsDirty();
     }
 
     @Override
     public String getValue() {
         this.textValue = textField.getValue();
-        System.err.println("getValue:" + this.textValue);
+        System.err.println("TestTextField getValue:" + this.textValue);
         return this.textValue;
     }
 }

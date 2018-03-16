@@ -66,6 +66,14 @@ public class ArtikelbildView extends VerticalLayout implements View {
         addBtn.addClickListener(event -> {
             grid.asSingleSelect().clear();
             Artikelbild artikelbild = new Artikelbild();
+//            byte[] emptyImage = new byte[0];
+//            try {
+//                emptyImage = IOUtils.toByteArray(getClass().getClassLoader().getResourceAsStream("/images/EmptyImage.jpg"));
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            ImageAndMimetype imageAndMimetype = new ImageAndMimetype(emptyImage,"image/jpeg");
+//            artikelbild.setImageAndMimetype(imageAndMimetype);
             artikelbildForm.setEntity(artikelbild);
             artikelbildForm.openInModalPopup();
 
@@ -111,10 +119,13 @@ public class ArtikelbildView extends VerticalLayout implements View {
 
         grid.addColumn(adresse -> "ändern",
                 new ButtonRenderer(event -> {
-                    artikelbildForm.setEntity((Artikelbild) event.getItem());
+                    Artikelbild artikelbild = (Artikelbild) event.getItem();
+                    System.err.println("ändern setEntity size: " + artikelbild.getImage().length);
+                    artikelbildForm.setEntity(artikelbild);
                     artikelbildForm.openInModalPopup();
                     artikelbildForm.setSavedHandler(val -> {
                         artikelbildDeltaspikeFacade.save(val);
+                        System.err.println("ändern SavedHandler size: " + val.getImage().length);
                         updateList();
                         grid.select(val);
                         artikelbildForm.closePopup();
