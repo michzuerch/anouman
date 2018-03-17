@@ -1,8 +1,10 @@
 package com.gmail.michzuerch.anouman.presentation.ui.util.field;
 
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.FileDownloader;
 import com.vaadin.server.StreamResource;
 import com.vaadin.ui.*;
+import org.apache.commons.io.IOUtils;
 import server.droporchoose.UploadComponent;
 
 import java.io.ByteArrayInputStream;
@@ -15,35 +17,44 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ImageAndMimetypeField extends CustomField<ImageAndMimetype> {
-    private String fieldDataMimetype = new String();
-    private byte[] fieldDataImage;
+    private ImageAndMimetype fieldValue = new ImageAndMimetype();
+    private StreamResource streamResource = new StreamResource(new ImageSource(), "image.jpg");
 
-    private ImageAndMimetype oldValue = new ImageAndMimetype();
-    //private ImageAndMimetype fieldData = new ImageAndMimetype();
     private UploadComponent upload = new UploadComponent();
     private Image image = new Image();
-    private Label size = new Label("Size:");
     private Button downloadButton = new Button("Download Image");
 
-    public ImageAndMimetypeField(String caption) {
-        super();
-        setCaption(caption);
+    @Override
+    protected Component initContent() {
+        upload.setReceivedCallback(this::uploadReceived);
+        VerticalLayout layout = new VerticalLayout();
+        layout.setMargin(false);
+        layout.setSpacing(true);
+        image.setWidth(300, Unit.PIXELS);
+        FileDownloader fileDownloader = new FileDownloader(streamResource);
+        fileDownloader.extend(downloadButton);
+        downloadButton.setIcon(VaadinIcons.DOWNLOAD);
+        downloadButton.setWidth(200, Unit.PIXELS);
+        upload.setWidth(200, Unit.PIXELS);
+
+        layout.addComponents(image, new HorizontalLayout(upload, downloadButton));
+        return layout;
     }
 
 
-//    @Override
-//    public ImageAndMimetype getEmptyValue() {
-//        byte[] emptyImage = new byte[0];
-//        try {
-//            emptyImage = IOUtils.toByteArray(getClass().getClassLoader().getResourceAsStream("/images/EmptyImage.jpg"));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        System.err.println("Call getEmptyValue() len:" + emptyImage.length);
-//        fieldData.setImage(emptyImage);
-//        fieldData.setMimetype("image/jpeg");
-//        return fieldData;
-//    }
+    @Override
+    public ImageAndMimetype getEmptyValue() {
+        byte[] emptyImage = new byte[0];
+        try {
+            emptyImage = IOUtils.toByteArray(getClass().getClassLoader().getResourceAsStream("/images/EmptyImage.jpg"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.err.println("Call getEmptyValue() len:" + emptyImage.length);
+        fieldValue.setImage(emptyImage);
+        fieldValue.setMimetype("image/jpeg");
+        return fieldValue;
+    }
 
     //
 //    //@todo Validator für Bilder (NPE)
@@ -55,10 +66,10 @@ public class ImageAndMimetypeField extends CustomField<ImageAndMimetype> {
     protected String getFilename() {
         SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmssSSS");
         StringBuffer filename = new StringBuffer(df.format(new Date()) + "-image");
-        if (fieldDataMimetype.equals("image/jpeg")) {
+        if (fieldValue.getMimetype().equals("image/jpeg")) {
             filename.append(".jpeg");
         }
-        if (fieldDataMimetype.equals("image/png")) {
+        if (fieldValue.getMimetype().equals("image/png")) {
             filename.append(".png");
         }
         System.err.println("ImageAndMimetypeField getFilename(): " + filename);
@@ -67,43 +78,20 @@ public class ImageAndMimetypeField extends CustomField<ImageAndMimetype> {
 
     @Override
     protected void doSetValue(ImageAndMimetype value) {
-        oldValue = new ImageAndMimetype(fieldDataImage, fieldDataMimetype);
-        fieldDataImage = value.getImage();
-        fieldDataMimetype = value.getMimetype();
-
-        StreamResource streamResource = new StreamResource(new ImageSource(), getFilename());
+        ImageAndMimetype oldValue = fieldValue;
+        System.err.println("ImageAndMimetypeField doSetValue len:" + value.getImage().length + " Mimetype: " + value.getMimetype());
+        fieldValue = value;
+        streamResource = new StreamResource(new ImageSource(), getFilename());
         streamResource.setCacheTime(0);
         image.setSource(streamResource);
         image.markAsDirty();
-        System.err.println("ImageAndMimetypeField doSetValue len:" + value.getImage().length + " Mimetype: " + value.getMimetype());
         fireEvent(new ValueChangeEvent<ImageAndMimetype>(this, oldValue, true));
     }
 
     @Override
     public ImageAndMimetype getValue() {
-        if (fieldDataImage != null)
-            System.err.println("ImageAndMimetypeField getValue len:" + fieldDataImage.length + " Mimetype: " + fieldDataMimetype);
-        if (fieldDataImage != null) size.setValue(String.valueOf(fieldDataImage.length));
-        StreamResource streamResource = new StreamResource(new ImageSource(), getFilename());
-        streamResource.setCacheTime(0);
-        image.setSource(streamResource);
-        image.markAsDirty();
-        return new ImageAndMimetype(fieldDataImage, fieldDataMimetype);
-    }
-
-    @Override
-    protected Component initContent() {
-        upload.setReceivedCallback(this::uploadReceived);
-        VerticalLayout layout = new VerticalLayout();
-        layout.setMargin(false);
-        layout.setSpacing(true);
-        StreamResource streamResource = new StreamResource(new ImageSource(), getFilename());
-        streamResource.setCacheTime(0);
-        FileDownloader fileDownloader = new FileDownloader(streamResource);
-        fileDownloader.extend(downloadButton);
-        image.setHeight(300, Unit.PIXELS);
-        layout.addComponents(image, upload, size, downloadButton);
-        return layout;
+        System.err.println("ImageAndMimetypeField getValue: " + fieldValue.getImage().length);
+        return fieldValue;
     }
 
     private void uploadReceived(String s, Path path) {
@@ -123,7 +111,7 @@ public class ImageAndMimetypeField extends CustomField<ImageAndMimetype> {
     public class ImageSource implements StreamResource.StreamSource {
         @Override
         public InputStream getStream() {
-            return new ByteArrayInputStream(fieldDataImage);
+            return new ByteArrayInputStream(fieldValue.getImage());
         }
     }
 }

@@ -13,7 +13,7 @@ public class ImageTestForm extends AbstractForm<ImageTest> {
     ImageTestDeltaspikeFacade imageTestDeltaspikeFacade;
 
     TextField titel = new TextField("Titel");
-    ImageAndMimetypeField bild = new ImageAndMimetypeField("Image");
+    ImageAndMimetypeField bild = new ImageAndMimetypeField();
 
     public ImageTestForm() {
         super(ImageTest.class);

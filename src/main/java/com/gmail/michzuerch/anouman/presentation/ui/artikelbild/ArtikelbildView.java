@@ -66,19 +66,12 @@ public class ArtikelbildView extends VerticalLayout implements View {
         addBtn.addClickListener(event -> {
             grid.asSingleSelect().clear();
             Artikelbild artikelbild = new Artikelbild();
-//            byte[] emptyImage = new byte[0];
-//            try {
-//                emptyImage = IOUtils.toByteArray(getClass().getClassLoader().getResourceAsStream("/images/EmptyImage.jpg"));
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//            ImageAndMimetype imageAndMimetype = new ImageAndMimetype(emptyImage,"image/jpeg");
-//            artikelbild.setImageAndMimetype(imageAndMimetype);
             artikelbildForm.setEntity(artikelbild);
             artikelbildForm.openInModalPopup();
 
             artikelbildForm.setSavedHandler(val -> {
-                System.err.println("savedHandler image len:" + val.getImage().length);
+                System.err.println("ArtikelbildView savedHandler image len:" + val.getImage().length);
+                artikelbild.setMimetype(artikelbildForm.image.getMimetype());
                 artikelbildDeltaspikeFacade.save(val);
                 updateList();
                 grid.select(val);
@@ -120,12 +113,13 @@ public class ArtikelbildView extends VerticalLayout implements View {
         grid.addColumn(adresse -> "ändern",
                 new ButtonRenderer(event -> {
                     Artikelbild artikelbild = (Artikelbild) event.getItem();
-                    System.err.println("ändern setEntity size: " + artikelbild.getImage().length);
+                    System.err.println("ArtikelbildView ändern setEntity size: " + artikelbild.getImage().length);
                     artikelbildForm.setEntity(artikelbild);
                     artikelbildForm.openInModalPopup();
                     artikelbildForm.setSavedHandler(val -> {
+                        artikelbild.setMimetype(artikelbildForm.image.getMimetype());
                         artikelbildDeltaspikeFacade.save(val);
-                        System.err.println("ändern SavedHandler size: " + val.getImage().length);
+                        System.err.println("ArtikelbildView ändern SavedHandler size: " + val.getImage().length);
                         updateList();
                         grid.select(val);
                         artikelbildForm.closePopup();
@@ -139,8 +133,6 @@ public class ArtikelbildView extends VerticalLayout implements View {
         layout.addComponents(tools, grid);
         layout.setSizeFull();
         return layout;
-
-
     }
 
     @Override

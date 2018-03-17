@@ -225,7 +225,6 @@ public class Menu extends CustomComponent {
             }
         });
 
-
         MenuBar.MenuItem testsMenu = menuBar.addItem("Tests", null);
         testsMenu.setIcon(VaadinIcons.TEETH);
 

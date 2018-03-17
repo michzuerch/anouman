@@ -19,7 +19,7 @@ public class ReportJasperImageForm extends AbstractForm<ReportJasperImage> {
 
     NativeSelect<ReportJasper> reportJasper = new NativeSelect<>("Report Jasper");
     TextField bezeichnung = new TextField("Bezeichnung");
-    ImageAndMimetypeField image = new ImageAndMimetypeField("Image");
+    ImageAndMimetypeField image = new ImageAndMimetypeField();
     //Button downloadButton = new Button("Download Image");
 
     private String filename;

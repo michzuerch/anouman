@@ -18,6 +18,8 @@ import java.util.Date;
 
 public class ImageField extends CustomField<byte[]> {
     private byte[] fieldValue = new byte[0];
+    private String mimetype = new String();
+
     private StreamResource streamResource = new StreamResource(new ImageSource(), "image.jpg");
 
     private UploadComponent upload = new UploadComponent();
@@ -30,10 +32,7 @@ public class ImageField extends CustomField<byte[]> {
         VerticalLayout layout = new VerticalLayout();
         layout.setMargin(false);
         layout.setSpacing(true);
-        //image.setHeight(300, Unit.PIXELS);
-        image.setWidth(400, Unit.PIXELS);
-        streamResource.setCacheTime(0);
-
+        image.setWidth(300, Unit.PIXELS);
         FileDownloader fileDownloader = new FileDownloader(streamResource);
         fileDownloader.extend(downloadButton);
         downloadButton.setIcon(VaadinIcons.DOWNLOAD);
@@ -88,6 +87,7 @@ public class ImageField extends CustomField<byte[]> {
             byte[] uploaded = Files.readAllBytes(Paths.get(path.toUri()));
             String mimeType = (Files.probeContentType(path));
             if (mimeType.equals("image/jpeg") || (mimeType.equals("image/png"))) {
+                setMimetype(mimeType);
                 doSetValue(uploaded);
             } else {
                 Notification.show("Nur Bilder als JPG oder PNG erlaubt (MIME-Type)", Notification.Type.ERROR_MESSAGE);
@@ -104,4 +104,11 @@ public class ImageField extends CustomField<byte[]> {
         }
     }
 
+    public String getMimetype() {
+        return mimetype;
+    }
+
+    public void setMimetype(String mimetype) {
+        this.mimetype = mimetype;
+    }
 }

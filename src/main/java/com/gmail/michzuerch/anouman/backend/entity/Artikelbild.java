@@ -13,7 +13,6 @@ public class Artikelbild extends com.gmail.michzuerch.anouman.backend.entity.Abs
     @Size(min = 3)
     private String titel;
 
-
     @Column
     private String mimetype;
 

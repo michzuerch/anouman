@@ -5,7 +5,6 @@ import com.gmail.michzuerch.anouman.backend.entity.Artikelbild;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.ArtikelDeltaspikeFacade;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.ArtikelbildDeltaspikeFacade;
 import com.gmail.michzuerch.anouman.presentation.ui.util.field.ImageField;
-import com.gmail.michzuerch.anouman.presentation.ui.util.field.TestTextField;
 import com.vaadin.ui.*;
 import org.vaadin.viritin.form.AbstractForm;
 
@@ -18,8 +17,8 @@ public class ArtikelbildForm extends AbstractForm<Artikelbild> {
     @Inject
     ArtikelbildDeltaspikeFacade artikelbildDeltaspikeFacade;
 
-    NativeSelect<Artikel> artikel = new NativeSelect<>();
-    TestTextField titel = new TestTextField("Titel");
+    ComboBox<Artikel> artikel = new ComboBox<>();
+    TextField titel = new TextField("Titel");
     ImageField image = new ImageField();
 
     public ArtikelbildForm() {
@@ -41,12 +40,12 @@ public class ArtikelbildForm extends AbstractForm<Artikelbild> {
     @Override
     protected Component createContent() {
         artikel.setCaption("Artikel");
-        image.setCaption("Bild");
+        artikel.setEmptySelectionAllowed(false);
         artikel.setItemCaptionGenerator(artikel1 -> artikel1.getBezeichnung() + " id:" + artikel1.getId());
         artikel.setItems(artikelDeltaspikeFacade.findAll());
-        artikel.setEmptySelectionAllowed(false);
         return new VerticalLayout(new FormLayout(
                 artikel, titel, image
         ), getToolbar());
     }
+
 }

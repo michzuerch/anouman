@@ -19,7 +19,7 @@ public class ReportFOPImageForm extends AbstractForm<ReportFOPImage> {
 
     NativeSelect<ReportFOP> reportFop = new NativeSelect<>("Report FOP");
     TextField bezeichnung = new TextField("Bezeichnung");
-    ImageAndMimetypeField image = new ImageAndMimetypeField("Image");
+    ImageAndMimetypeField image = new ImageAndMimetypeField();
     //Button downloadButton = new Button("Download Image");
 
     private String filename;
