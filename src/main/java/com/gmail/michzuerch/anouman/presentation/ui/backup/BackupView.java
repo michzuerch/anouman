@@ -8,6 +8,10 @@ import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import com.gmail.michzuerch.anouman.backend.entity.*;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.*;
 import com.gmail.michzuerch.anouman.presentation.ui.backup.dto.adressen.*;
+import com.gmail.michzuerch.anouman.presentation.ui.backup.dto.artikel.BackupArtikel;
+import com.gmail.michzuerch.anouman.presentation.ui.backup.dto.artikel.BackupArtikelbild;
+import com.gmail.michzuerch.anouman.presentation.ui.backup.dto.artikel.BackupArtikelkategorie;
+import com.gmail.michzuerch.anouman.presentation.ui.backup.dto.artikel.BackupArtikelkategories;
 import com.gmail.michzuerch.anouman.presentation.ui.backup.dto.buchhaltungen.*;
 import com.gmail.michzuerch.anouman.presentation.ui.backup.dto.templatebuchhaltungen.*;
 import com.vaadin.cdi.CDIView;
@@ -63,6 +67,12 @@ public class BackupView extends VerticalLayout implements View {
     KontoDeltaspikeFacade kontoDeltaspikeFacade;
     @Inject
     BuchungDeltaspikeFacade buchungDeltaspikeFacade;
+    @Inject
+    ArtikelkategorieDeltaspikeFacade artikelkategorieDeltaspikeFacade;
+    @Inject
+    ArtikelDeltaspikeFacade artikelDeltaspikeFacade;
+    @Inject
+    ArtikelbildDeltaspikeFacade artikelbildDeltaspikeFacade;
 
     private BackupBuchhaltungen getBackupBuchhaltungen() {
         BackupBuchhaltungen backupBuchhaltungen = new BackupBuchhaltungen();
@@ -103,6 +113,37 @@ public class BackupView extends VerticalLayout implements View {
             backupBuchhaltungen.addBuchhaltung(backupBuchhaltung);
         });
         return backupBuchhaltungen;
+    }
+
+    private BackupArtikelkategories getBackupArtikelkategories() {
+        BackupArtikelkategories backupArtikelkategories = new BackupArtikelkategories();
+        Instant now = Instant.now();
+        backupArtikelkategories.setBackupdatum(LocalDateTime.ofInstant(now, ZoneOffset.UTC));
+
+        artikelkategorieDeltaspikeFacade.findAll().stream().forEach(artikelkategorie -> {
+            BackupArtikelkategorie backupArtikelkategorie = new BackupArtikelkategorie();
+            backupArtikelkategorie.setBezeichnung(artikelkategorie.getBezeichnung());
+            backupArtikelkategories.getBackupArtikelkategories().add(backupArtikelkategorie);
+
+            artikelkategorie.getArtikels().stream().forEach(artikel -> {
+                BackupArtikel backupArtikel = new BackupArtikel();
+                backupArtikel.setAnzahl(artikel.getAnzahl());
+                backupArtikel.setBezeichnung(artikel.getBezeichnung());
+                backupArtikel.setBezeichnungLang(artikel.getBezeichnungLang());
+                backupArtikel.setMengeneinheit(artikel.getMengeneinheit());
+                backupArtikel.setStueckpreis(artikel.getStueckpreis());
+                backupArtikelkategorie.getBackupArtikels().add(backupArtikel);
+
+                artikel.getArtikelbilds().stream().forEach(artikelbild -> {
+                    BackupArtikelbild backupArtikelbild = new BackupArtikelbild();
+                    backupArtikelbild.setTitel(artikelbild.getTitel());
+                    backupArtikelbild.setMimetype(artikelbild.getMimetype());
+                    backupArtikelbild.setBild(artikelbild.getImage());
+                    backupArtikel.getBackupArtikelbilds().add(backupArtikelbild);
+                });
+            });
+        });
+        return backupArtikelkategories;
     }
 
     private BackupBuchhaltungen getBackupBuchhaltung(Buchhaltung buchhaltung) {
@@ -441,6 +482,23 @@ public class BackupView extends VerticalLayout implements View {
             }
         }).withCaption("Alle Template Buchhaltungen").withIcon(VaadinIcons.DOWNLOAD);
 
+        //Artikels
+        Button downloaderArtikel = new DownloadButton(stream -> {
+            ObjectMapper mapper = new ObjectMapper()
+                    .registerModule(new ParameterNamesModule())
+                    .registerModule(new Jdk8Module())
+                    .registerModule(new JavaTimeModule()); // new module, NOT JSR310Module
+            try {
+                mapper.writerWithDefaultPrettyPrinter().writeValue(stream, getBackupArtikelkategories());
+                stream.flush();
+                stream.close();
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).withCaption("Alle Artikel").withIcon(VaadinIcons.DOWNLOAD);
+
         ComboBox<TemplateBuchhaltung> comboTemplateBuchhaltung = new ComboBox<>();
         Button downloaderTemplateBuchhaltung = new DownloadButton(stream -> {
             ObjectMapper mapper = new ObjectMapper()
@@ -463,6 +521,7 @@ public class BackupView extends VerticalLayout implements View {
         ((DownloadButton) downloaderBuchhaltungen).setFileName("BuchhaltungenAnouman.json");
         ((DownloadButton) downloaderTemplateBuchhaltung).setFileName("TemplateBuchhaltungAnouman.json");
         ((DownloadButton) downloaderTemplateBuchhaltungen).setFileName("TemplateBuchhaltungenAnouman.json");
+        ((DownloadButton) downloaderArtikel).setFileName("ArtikelAnouman.json");
 
 
         List<TemplateBuchhaltung> templateBuchhaltungen = templateBuchhaltungDeltaspikeFacade.findAll();
@@ -517,6 +576,7 @@ public class BackupView extends VerticalLayout implements View {
         Panel panelBackupAdressen = new Panel("Adressen, Rechnungen");
         Panel panelBackupBuchhaltungen = new Panel("Buchhaltungen");
         Panel panelBackupTemplateBuchhaltungen = new Panel("Template Buchhaltungen");
+        Panel panelBackupArtikel = new Panel("Artikel");
         panelBackupAdressen.setContent(new HorizontalLayout(
                 downloaderAdressen,
                 downloaderAdresse, comboAdresse));
@@ -527,8 +587,10 @@ public class BackupView extends VerticalLayout implements View {
         panelBackupTemplateBuchhaltungen.setContent(new HorizontalLayout(
                 downloaderTemplateBuchhaltungen, downloaderTemplateBuchhaltung, comboTemplateBuchhaltung));
 
+        panelBackupArtikel.setContent(new HorizontalLayout(downloaderArtikel));
+
         panelBackup.setContent(
-                new VerticalLayout(panelBackupAdressen, panelBackupBuchhaltungen, panelBackupTemplateBuchhaltungen));
+                new VerticalLayout(panelBackupAdressen, panelBackupBuchhaltungen, panelBackupTemplateBuchhaltungen, panelBackupArtikel));
 
         Panel panelRestore = new Panel("Restore");
 
@@ -544,7 +606,11 @@ public class BackupView extends VerticalLayout implements View {
         uploadTemplateBuchhaltungen.setCaption("Template Buchhaltungen");
         uploadTemplateBuchhaltungen.setReceivedCallback(this::uploadReceivedTemplateBuchhaltungen);
 
-        panelRestore.setContent(new VerticalLayout(uploadAdressen, uploadBuchhaltungen, uploadTemplateBuchhaltungen));
+        UploadComponent uploadArtikel = new UploadComponent();
+        uploadArtikel.setCaption("Artikel");
+        uploadArtikel.setReceivedCallback(this::uploadReceivedArtikel);
+
+        panelRestore.setContent(new VerticalLayout(uploadAdressen, uploadBuchhaltungen, uploadTemplateBuchhaltungen, uploadArtikel));
         layout.addComponents(panelBackup, panelRestore);
         layout.setSizeFull();
         return layout;
@@ -727,9 +793,47 @@ public class BackupView extends VerticalLayout implements View {
         }
     }
 
+
+    private void uploadReceivedArtikel(String s, Path path) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            BackupArtikelkategories backupArtikelkategories = mapper.readValue(new FileInputStream(path.toFile()), BackupArtikelkategories.class);
+            for (BackupArtikelkategorie backupArtikelkategorie : backupArtikelkategories.getBackupArtikelkategories()) {
+                Artikelkategorie artikelkategorie = new Artikelkategorie();
+                artikelkategorie.setBezeichnung(backupArtikelkategorie.getBezeichnung());
+                artikelkategorie = artikelkategorieDeltaspikeFacade.save(artikelkategorie);
+                for (BackupArtikel backupArtikel : backupArtikelkategorie.getBackupArtikels()) {
+                    Artikel artikel = new Artikel();
+                    artikel.setAnzahl(backupArtikel.getAnzahl());
+                    artikel.setBezeichnung(backupArtikel.getBezeichnung());
+                    artikel.setBezeichnungLang(backupArtikel.getBezeichnungLang());
+                    artikel.setMengeneinheit(backupArtikel.getMengeneinheit());
+                    artikel.setStueckpreis(backupArtikel.getStueckpreis());
+                    artikel.setArtikelkategorie(artikelkategorie);
+                    artikel = artikelDeltaspikeFacade.save(artikel);
+
+                    for (BackupArtikelbild backupArtikelbild : backupArtikel.getBackupArtikelbilds()) {
+                        Artikelbild artikelbild = new Artikelbild();
+                        artikelbild.setTitel(backupArtikelbild.getTitel());
+                        artikelbild.setMimetype(backupArtikelbild.getMimetype());
+                        artikelbild.setImage(backupArtikelbild.getBild());
+                        artikelbild.setArtikel(artikel);
+                        artikelbild = artikelbildDeltaspikeFacade.save(artikelbild);
+
+                    }
+                }
+                Notification.show("Anzahl erstellter Artikelkategorien: " + backupArtikelkategories.getBackupArtikelkategories().size(),
+                        Notification.Type.TRAY_NOTIFICATION);
+            }
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+    }
+
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
         addComponent(createContent());
         setSizeFull();
     }
 }
+
