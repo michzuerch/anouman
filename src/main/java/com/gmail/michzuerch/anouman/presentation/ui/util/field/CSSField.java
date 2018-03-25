@@ -13,13 +13,13 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class JasperXmlField extends CustomField<byte[]> {
+public class CSSField extends CustomField<byte[]> {
     private byte[] fieldValue;
     private String filename = new String();
-    private StreamResource streamResource = new StreamResource(new JasperSource(), "Jasper.jrxml");
+    private StreamResource streamResource = new StreamResource(new CssSource(), "report.css");
     private UploadComponent upload = new UploadComponent();
-    private TextArea textArea = new TextArea("JRXML");
-    private Button btnDownloadJasperSource = new Button("Download");
+    private TextArea textArea = new TextArea("CSS");
+    private Button btnDownloadCssSource = new Button("Download");
 
     @Override
     protected Component initContent() {
@@ -33,9 +33,9 @@ public class JasperXmlField extends CustomField<byte[]> {
         textArea.setWordWrap(false);
 
         FileDownloader fileDownloader = new FileDownloader(streamResource);
-        fileDownloader.extend(btnDownloadJasperSource);
+        fileDownloader.extend(btnDownloadCssSource);
 
-        layout.addComponent(new HorizontalLayout(upload, btnDownloadJasperSource));
+        layout.addComponent(new HorizontalLayout(upload, btnDownloadCssSource));
         layout.addComponent(textArea);
         textArea.addValueChangeListener(new ValueChangeListener<String>() {
             @Override
@@ -48,7 +48,7 @@ public class JasperXmlField extends CustomField<byte[]> {
 
     @Override
     public byte[] getEmptyValue() {
-        btnDownloadJasperSource.setEnabled(false);
+        btnDownloadCssSource.setEnabled(false);
         return new byte[0];
     }
 
@@ -64,7 +64,7 @@ public class JasperXmlField extends CustomField<byte[]> {
             streamResource.setFilename(getFilename());
             System.err.println("Uploaded Bytes: " + uploaded.length);
             doSetValue(uploaded);
-            btnDownloadJasperSource.setEnabled(true);
+            btnDownloadCssSource.setEnabled(true);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -72,14 +72,14 @@ public class JasperXmlField extends CustomField<byte[]> {
 
     @Override
     protected void doSetValue(byte[] value) {
-        streamResource = new StreamResource(new JasperSource(), getFilename());
+        streamResource = new StreamResource(new CssSource(), getFilename());
         byte[] oldValue = getValue();
         this.fieldValue = value;
         textArea.setValue(new String(value));
         if (fieldValue.length == 0) {
-            btnDownloadJasperSource.setEnabled(false);
+            btnDownloadCssSource.setEnabled(false);
         } else {
-            btnDownloadJasperSource.setEnabled(true);
+            btnDownloadCssSource.setEnabled(true);
         }
         fireEvent(new ValueChangeEvent<byte[]>(this, oldValue, true));
     }
@@ -97,7 +97,7 @@ public class JasperXmlField extends CustomField<byte[]> {
         this.filename = filename;
     }
 
-    public class JasperSource implements StreamResource.StreamSource {
+    public class CssSource implements StreamResource.StreamSource {
         @Override
         public InputStream getStream() {
             return new ByteArrayInputStream(fieldValue);

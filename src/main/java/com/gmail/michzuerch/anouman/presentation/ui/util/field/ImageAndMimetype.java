@@ -6,6 +6,14 @@ public class ImageAndMimetype implements Serializable {
     private byte[] image;
     private String mimetype;
 
+    public ImageAndMimetype() {
+    }
+
+    public ImageAndMimetype(byte[] image, String mimetype) {
+        this.image = image;
+        this.mimetype = mimetype;
+    }
+
     public byte[] getImage() {
         return image;
     }
@@ -19,14 +27,6 @@ public class ImageAndMimetype implements Serializable {
     }
 
     public void setMimetype(String mimetype) {
-        this.mimetype = mimetype;
-    }
-
-    public ImageAndMimetype() {
-    }
-
-    public ImageAndMimetype(byte[] image, String mimetype) {
-        this.image = image;
         this.mimetype = mimetype;
     }
 }

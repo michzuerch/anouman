@@ -1,3 +1,4 @@
+
 package com.gmail.michzuerch.anouman.presentation.ui.util.validator;
 
 import com.gmail.michzuerch.anouman.presentation.ui.util.validator.xmlvalidation.ResourceResolver;
@@ -22,7 +23,7 @@ import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-public class JRXMLValidator implements Validator<byte[]> {
+public class FOPXmlValidator implements Validator<byte[]> {
     private String errormessage = new String();
 
     private boolean compileJRXML(byte[] val) {

@@ -4,8 +4,6 @@ import com.gmail.michzuerch.anouman.presentation.ui.util.validator.xmlvalidation
 import com.vaadin.data.ValidationResult;
 import com.vaadin.data.Validator;
 import com.vaadin.data.ValueContext;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperReport;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -22,22 +20,10 @@ import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-public class JRXMLValidator implements Validator<byte[]> {
-    private String errormessage = new String();
 
-    private boolean compileJRXML(byte[] val) {
-        JasperReport jasperReport = null;
-        try {
-            jasperReport = JasperCompileManager
-                    .compileReport(new ByteArrayInputStream(val));
-        } catch (Exception e) {
-            e.printStackTrace();
-            errormessage = e.getMessage();
-            return false;
-        }
-        System.err.println("Validate Compile erfolgreich");
-        return true;
-    }
+//@todo Schema für Javascript??
+public class JavascriptValidator implements Validator<byte[]> {
+    private String errormessage = new String();
 
     public boolean verifyValidatesInternalXsd(byte[] val) {
         try {
@@ -84,7 +70,6 @@ public class JRXMLValidator implements Validator<byte[]> {
     public ValidationResult apply(byte[] value, ValueContext context) {
         System.err.println("Validator apply len: " + value.length);
         if (value.length == 0) return ValidationResult.error("Länge 0");
-        if (compileJRXML(value) == false) return ValidationResult.error("Compiler-Fehler: " + errormessage);
         if (verifyValidatesInternalXsd(value) == false)
             return ValidationResult.error("Validierung XML-Schema fehlgeschlagen" + errormessage);
         return ValidationResult.ok();

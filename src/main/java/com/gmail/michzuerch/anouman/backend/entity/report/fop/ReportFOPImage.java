@@ -14,6 +14,9 @@ public class ReportFOPImage extends AbstractEntity {
     private ReportFOP reportFOP;
 
     @Column
+    private String mimeType;
+
+    @Column
     @Basic(fetch = FetchType.LAZY)
     private byte[] image;
 
@@ -32,6 +35,14 @@ public class ReportFOPImage extends AbstractEntity {
 
     public void setReportFOP(ReportFOP reportFOP) {
         this.reportFOP = reportFOP;
+    }
+
+    public String getMimeType() {
+        return mimeType;
+    }
+
+    public void setMimeType(String mimeType) {
+        this.mimeType = mimeType;
     }
 
     public byte[] getImage() {

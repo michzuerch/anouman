@@ -11,7 +11,7 @@ public class ReportJasperForm extends AbstractForm<ReportJasper> {
     private static Logger logger = LoggerFactory.getLogger(ReportJasperForm.class.getName());
 
     TextField bezeichnung = new TextField("Bezeichnung");
-    JasperXmlField templateSource = new JasperXmlField("JRXML Source");
+    JasperXmlField templateSource = new JasperXmlField();
 
     private String filename;
 

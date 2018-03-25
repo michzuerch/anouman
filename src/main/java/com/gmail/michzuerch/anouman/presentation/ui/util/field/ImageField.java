@@ -97,18 +97,18 @@ public class ImageField extends CustomField<byte[]> {
         }
     }
 
-    public class ImageSource implements StreamResource.StreamSource {
-        @Override
-        public InputStream getStream() {
-            return new ByteArrayInputStream(fieldValue);
-        }
-    }
-
     public String getMimetype() {
         return mimetype;
     }
 
     public void setMimetype(String mimetype) {
         this.mimetype = mimetype;
+    }
+
+    public class ImageSource implements StreamResource.StreamSource {
+        @Override
+        public InputStream getStream() {
+            return new ByteArrayInputStream(fieldValue);
+        }
     }
 }
