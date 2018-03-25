@@ -1,6 +1,6 @@
 package com.gmail.michzuerch.anouman.presentation.ui.report.jasper;
 
-import com.gmail.michzuerch.anouman.presentation.ui.report.jasper.xmlvalidation.ResourceResolver;
+import com.gmail.michzuerch.anouman.presentation.ui.util.validator.xmlvalidation.ResourceResolver;
 import com.vaadin.data.ValidationResult;
 import com.vaadin.data.Validator;
 import com.vaadin.data.ValueContext;

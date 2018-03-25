@@ -14,15 +14,19 @@ public class ReportCSS extends AbstractEntity {
     private String bezeichnung;
 
     @Column
+    @NotNull
     @Basic(fetch = FetchType.LAZY)
     private byte[] css;
 
     @Column
+    @NotNull
     @Basic(fetch = FetchType.LAZY)
     private byte[] html;
 
     @Column
-    private String filename;
+    @NotNull
+    @Basic(fetch = FetchType.LAZY)
+    private byte[] javascript;
 
     @OneToMany(mappedBy = "reportCSS", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ReportCSSImage> reportCSSImages = new ArrayList<>();
@@ -33,6 +37,9 @@ public class ReportCSS extends AbstractEntity {
 
     @Transient
     private int sizeHTML;
+
+    @Transient
+    private int sizeJavascript;
 
     public int getSizeCSS() {
         return css.length;
@@ -74,12 +81,20 @@ public class ReportCSS extends AbstractEntity {
         this.html = html;
     }
 
-    public String getFilename() {
-        return filename;
+    public byte[] getJavascript() {
+        return javascript;
     }
 
-    public void setFilename(String filename) {
-        this.filename = filename;
+    public void setJavascript(byte[] javascript) {
+        this.javascript = javascript;
+    }
+
+    public int getSizeJavascript() {
+        return sizeJavascript;
+    }
+
+    public void setSizeJavascript(int sizeJavascript) {
+        this.sizeJavascript = sizeJavascript;
     }
 
     public List<ReportCSSImage> getReportCSSImages() {

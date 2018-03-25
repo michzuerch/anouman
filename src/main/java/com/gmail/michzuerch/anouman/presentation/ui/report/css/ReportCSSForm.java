@@ -1,28 +1,28 @@
 package com.gmail.michzuerch.anouman.presentation.ui.report.css;
 
 import com.gmail.michzuerch.anouman.backend.entity.report.css.ReportCSS;
-import com.gmail.michzuerch.anouman.presentation.ui.util.converter.ByteToStringConverter;
+import com.gmail.michzuerch.anouman.presentation.ui.util.field.CSSField;
+import com.gmail.michzuerch.anouman.presentation.ui.util.field.HtmlField;
+import com.gmail.michzuerch.anouman.presentation.ui.util.field.JavascriptField;
 import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.viritin.form.AbstractForm;
-import server.droporchoose.UploadComponent;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class ReportCSSForm extends AbstractForm<ReportCSS> {
     private static Logger logger = LoggerFactory.getLogger(ReportCSSForm.class.getName());
 
     TextField bezeichnung = new TextField("Bezeichnung");
-    UploadComponent uploadCSS = new UploadComponent();
-    UploadComponent uploadHtml = new UploadComponent();
-    TextArea css = new TextArea("CSS");
-    TextArea html = new TextArea("HTML");
 
-    private String filename;
+    CSSField css = new CSSField();
+    HtmlField html = new HtmlField();
+    JavascriptField javascript = new JavascriptField();
+
+    TabSheet tabSheet = new TabSheet();
+
+    VerticalLayout tabCSS = new VerticalLayout();
+    VerticalLayout tabHTML = new VerticalLayout();
+    VerticalLayout tabJavascript = new VerticalLayout();
 
     public ReportCSSForm() {
         super(ReportCSS.class);
@@ -32,50 +32,22 @@ public class ReportCSSForm extends AbstractForm<ReportCSS> {
     public Window openInModalPopup() {
         final Window openInModalPopup = super.openInModalPopup();
         openInModalPopup.setCaption("Report CSS");
+        openInModalPopup.setWidth(900, Unit.PIXELS);
         return openInModalPopup;
     }
 
     @Override
     protected Component createContent() {
-        getBinder().forField(css).withConverter(new ByteToStringConverter()).bind("css");
-        getBinder().forField(html).withConverter(new ByteToStringConverter()).bind("html");
+        tabCSS.addComponent(css);
+        tabHTML.addComponent(html);
+        tabJavascript.addComponent(javascript);
 
-        css.setWidth(700, Unit.PIXELS);
-        css.setRows(10);
-
-        html.setWidth(700, Unit.PIXELS);
-        html.setRows(10);
-
-        uploadCSS.setCaption("Upload CSS");
-        uploadCSS.setReceivedCallback(this::uploadReceivedCSS);
-
-        uploadHtml.setCaption("Upload Html");
-        uploadHtml.setReceivedCallback(this::uploadReceivedHtml);
+        tabSheet.addTab(tabCSS, "CSS");
+        tabSheet.addTab(tabHTML, "HTML");
+        tabSheet.addTab(tabJavascript, "Javascript");
 
         return new VerticalLayout(new FormLayout(
-                bezeichnung, css, uploadCSS, html, uploadHtml), getToolbar());
-    }
-
-    private void uploadReceivedCSS(String fileName, Path path) {
-        try {
-            byte[] data = Files.readAllBytes(Paths.get(path.toUri()));
-            getEntity().setCss(data);
-            css.setValue(new String(data, "UTF-8"));
-        } catch (IOException e) {
-            Notification.show(e.getLocalizedMessage(), Notification.Type.ERROR_MESSAGE);
-            e.printStackTrace();
-        }
-    }
-
-    private void uploadReceivedHtml(String fileName, Path path) {
-        try {
-            byte[] data = Files.readAllBytes(Paths.get(path.toUri()));
-            getEntity().setHtml(data);
-            html.setValue(new String(data, "UTF-8"));
-        } catch (IOException e) {
-            Notification.show(e.getLocalizedMessage(), Notification.Type.ERROR_MESSAGE);
-            e.printStackTrace();
-        }
+                bezeichnung, tabSheet), getToolbar());
     }
 
 

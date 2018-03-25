@@ -1,6 +1,8 @@
 package com.gmail.michzuerch.anouman.presentation.ui.report.css;
 
+import com.gmail.michzuerch.anouman.backend.entity.report.css.ReportCSS;
 import com.gmail.michzuerch.anouman.backend.entity.report.css.ReportCSSImage;
+import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.ReportCSSDeltaspikeFacade;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.ReportCSSImageDeltaspikeFacade;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
@@ -10,80 +12,26 @@ import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.themes.ValoTheme;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.vaadin.crudui.crud.Crud;
-import org.vaadin.crudui.crud.CrudListener;
-import org.vaadin.crudui.crud.CrudOperation;
-import org.vaadin.crudui.crud.impl.GridCrud;
-import org.vaadin.crudui.form.impl.form.factory.VerticalCrudFormFactory;
-import org.vaadin.crudui.layout.impl.WindowBasedCrudLayout;
 import org.vaadin.teemusa.flexlayout.*;
 
 import javax.inject.Inject;
-import java.util.Collection;
 
-
-//@todo Umstellung auf Form
 @CDIView("ReportCSSImageView")
-public class ReportCSSImageView extends VerticalLayout implements View, CrudListener<ReportCSSImage> {
-    private static Logger logger = LoggerFactory.getLogger(ReportCSSImageView.class.getName());
+public class ReportCSSImageView extends HorizontalLayout implements View {
+    private static org.slf4j.Logger logger = LoggerFactory.getLogger(ReportCSSImageView.class.getName());
 
-    @Inject
-    ReportCSSImageDeltaspikeFacade facade;
-
-    GridCrud<ReportCSSImage> crud;
-    CssLayout filterToolbar = new CssLayout();
+    Grid<ReportCSSImage> grid = new Grid<>();
     TextField filterTextBezeichnung = new TextField();
 
-    private Collection<ReportCSSImage> getItems() {
-        if (!filterTextBezeichnung.isEmpty()) {
-            //Suche mit Bezeichnung
-            logger.debug("Suche mit Bezeichnung:" + filterTextBezeichnung.getValue());
-            return facade.findByBezeichnungLikeIgnoreCase(filterTextBezeichnung.getValue() + "%");
-        }
-        return facade.findAll();
-    }
+    @Inject
+    private ReportCSSDeltaspikeFacade reportCSSDeltaspikeFacade;
 
-    private Crud createCrud() {
-        crud = new GridCrud<ReportCSSImage>(ReportCSSImage.class, new WindowBasedCrudLayout());
-        crud.setCrudListener(this);
+    @Inject
+    private ReportCSSImageDeltaspikeFacade reportCSSImageDeltaspikeFacade;
 
-        VerticalCrudFormFactory<ReportCSSImage> formFactory = new VerticalCrudFormFactory<>(ReportCSSImage.class);
-
-        crud.setCrudFormFactory(formFactory);
-
-        formFactory.setUseBeanValidation(true);
-
-        formFactory.setErrorListener(e -> Notification.show("Custom error message (simulated error)", Notification.Type.ERROR_MESSAGE));
-
-        formFactory.setVisibleProperties(CrudOperation.READ, "id", "bezeichnung");
-        formFactory.setVisibleProperties(CrudOperation.ADD, "id", "bezeichnung");
-        formFactory.setVisibleProperties(CrudOperation.UPDATE, "id", "bezeichnung");
-        formFactory.setVisibleProperties(CrudOperation.DELETE, "id", "bezeichnung");
-
-        formFactory.setDisabledProperties("id");
-
-        crud.getGrid().setColumns("id", "bezeichnung");
-
-        crud.getGrid().addColumn(reportCSSImage -> reportCSSImage.getReportCSS().getId(), new ButtonRenderer(event -> {
-            ReportCSSImage reportCSSImage = (ReportCSSImage) event.getItem();
-            UI.getCurrent().getNavigator().navigateTo("ReportCSSView/adresseId/" + reportCSSImage.getId().toString());
-        })).setCaption("Report CSS").setStyleGenerator(item -> "v-align-center");
-
-        formFactory.setButtonCaption(CrudOperation.ADD, "Neues Report CSS Image erstellen");
-        formFactory.setButtonCaption(CrudOperation.DELETE, "Report CSS Image löschen");
-
-        crud.setRowCountCaption("%d Report CSS Images gefunden");
-
-        crud.getCrudLayout().addToolbarComponent(filterToolbar);
-        crud.setClickRowToUpdate(false);
-        crud.setUpdateOperationVisible(true);
-        crud.setDeleteOperationVisible(true);
-
-        return crud;
-    }
-
+    @Inject
+    private ReportCSSImageForm form;
 
     private Component createContent() {
         FlexLayout layout = new FlexLayout();
@@ -95,7 +43,7 @@ public class ReportCSSImageView extends VerticalLayout implements View, CrudList
         layout.setFlexWrap(FlexWrap.Wrap);
 
         filterTextBezeichnung.setPlaceholder("Filter für Bezeichnung");
-        filterTextBezeichnung.addValueChangeListener(e -> crud.getGrid().setItems(getItems()));
+        filterTextBezeichnung.addValueChangeListener(e -> updateList());
         filterTextBezeichnung.setValueChangeMode(ValueChangeMode.LAZY);
 
         Button clearFilterTextBtn = new Button(VaadinIcons.RECYCLE);
@@ -104,53 +52,82 @@ public class ReportCSSImageView extends VerticalLayout implements View, CrudList
             filterTextBezeichnung.clear();
         });
 
-        filterToolbar.addComponents(filterTextBezeichnung, clearFilterTextBtn);
-        filterToolbar.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+        Button addBtn = new Button(VaadinIcons.PLUS);
+        addBtn.addClickListener(event -> {
+            grid.asSingleSelect().clear();
+            ReportCSSImage reportCSSImage = new ReportCSSImage();
+            form.setEntity(reportCSSImage);
+            form.openInModalPopup();
+            form.setSavedHandler(val -> {
+                System.err.println("Save:" + val);
+                //reportCSSImageDeltaspikeFacade.save(val);
+                updateList();
+                grid.select(val);
+                form.closePopup();
+            });
+        });
 
-        layout.addComponents(filterToolbar, createCrud());
+
+        CssLayout tools = new CssLayout();
+        tools.addComponents(filterTextBezeichnung, clearFilterTextBtn, addBtn);
+        tools.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+
+        grid.addColumn(ReportCSSImage::getId).setCaption("id");
+        grid.addColumn(ReportCSSImage::getBezeichnung).setCaption("Bezeichnung");
+        //grid.addColumn(ReportFOPImage::getSize).setCaption("Grösse");
+
+        // Render a button that deletes the data row (item)
+        grid.addColumn(report -> "löschen",
+                new ButtonRenderer(event -> {
+                    ReportCSSImage reportCSSImage = (ReportCSSImage) event.getItem();
+                    ReportCSS reportCSS = reportCSSDeltaspikeFacade.findBy(reportCSSImage.getReportCSS().getId());
+                    reportCSS.getReportCSSImages().remove(reportCSSImage);
+                    reportCSSDeltaspikeFacade.save(reportCSS);
+                    reportCSSImageDeltaspikeFacade.delete((ReportCSSImage) event.getItem());
+                    updateList();
+                    Notification.show("Lösche id:" + reportCSSImage.getId(), Notification.Type.HUMANIZED_MESSAGE);
+                })
+        );
+        grid.addColumn(report -> "ändern",
+                new ButtonRenderer(event -> {
+                    form.setEntity((ReportCSSImage) event.getItem());
+                    form.openInModalPopup();
+                    form.setSavedHandler(val -> {
+                        reportCSSImageDeltaspikeFacade.save(val);
+                        updateList();
+                        grid.select(val);
+                        form.closePopup();
+                    });
+                    form.setResetHandler(val -> {
+                        updateList();
+                        grid.select(val);
+                        form.closePopup();
+                    });
+                }));
+
+        //@todo Downloadbutton für Report
+        grid.setSizeFull();
+
+        layout.addComponents(tools, grid);
         layout.setSizeFull();
         return layout;
     }
 
     @Override
-    public void enter(ViewChangeListener.ViewChangeEvent event) {
+    public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
         addComponent(createContent());
         setSizeFull();
 
-        if (event.getParameters() != null) {
-            String[] msgs = event.getParameters().split("/");
-            String target = new String();
-            Long id = new Long(0);
-            for (String msg : msgs) {
-                if (target.isEmpty()) {
-                    target = msg;
-                } else {
-                    id = Long.valueOf(msg);
-                }
-            }
-            if (target.equals("id")) {
-                crud.getGrid().select(facade.findBy(id));
-            }
+        updateList();
+    }
+
+    private void updateList() {
+        if (!filterTextBezeichnung.isEmpty()) {
+            //Suche mit Bezeichnung
+            logger.debug("Suche mit Bezeichnung:" + filterTextBezeichnung.getValue());
+            grid.setItems(reportCSSImageDeltaspikeFacade.findByBezeichnungLikeIgnoreCase(filterTextBezeichnung.getValue() + "%"));
+            return;
         }
-    }
-
-    @Override
-    public Collection<ReportCSSImage> findAll() {
-        return getItems();
-    }
-
-    @Override
-    public ReportCSSImage add(ReportCSSImage reportCSSImage) {
-        return facade.save(reportCSSImage);
-    }
-
-    @Override
-    public ReportCSSImage update(ReportCSSImage reportCSSImage) {
-        return facade.save(reportCSSImage);
-    }
-
-    @Override
-    public void delete(ReportCSSImage reportCSSImage) {
-        facade.delete(reportCSSImage);
+        grid.setItems(reportCSSImageDeltaspikeFacade.findAll());
     }
 }

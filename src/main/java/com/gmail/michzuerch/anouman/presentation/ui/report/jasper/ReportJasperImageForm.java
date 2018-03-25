@@ -3,7 +3,7 @@ package com.gmail.michzuerch.anouman.presentation.ui.report.jasper;
 import com.gmail.michzuerch.anouman.backend.entity.report.jasper.ReportJasper;
 import com.gmail.michzuerch.anouman.backend.entity.report.jasper.ReportJasperImage;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.ReportJasperDeltaspikeFacade;
-import com.gmail.michzuerch.anouman.presentation.ui.util.field.ImageAndMimetypeField;
+import com.gmail.michzuerch.anouman.presentation.ui.util.field.ImageField;
 import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,8 +19,7 @@ public class ReportJasperImageForm extends AbstractForm<ReportJasperImage> {
 
     NativeSelect<ReportJasper> reportJasper = new NativeSelect<>("Report Jasper");
     TextField bezeichnung = new TextField("Bezeichnung");
-    ImageAndMimetypeField image = new ImageAndMimetypeField();
-    //Button downloadButton = new Button("Download Image");
+    ImageField image = new ImageField();
 
     private String filename;
 
@@ -38,11 +37,6 @@ public class ReportJasperImageForm extends AbstractForm<ReportJasperImage> {
 
     @Override
     protected Component createContent() {
-        //getBinder().forField(image).bind("image");
-        //StreamResource templateResource = new StreamResource(new ImageStreamSource(image.getValue()), "image.jpg");
-        //FileDownloader fileDownloader = new FileDownloader(templateResource);
-        //fileDownloader.extend(downloadButton);
-
         reportJasper.setItems(reportJasperDeltaspikeFacade.findAll());
         reportJasper.setItemCaptionGenerator(item -> item.getBezeichnung() + " " + item.getId());
 

@@ -18,7 +18,7 @@ import org.vaadin.teemusa.flexlayout.*;
 import javax.inject.Inject;
 
 @CDIView("ReportJasperImageView")
-public class ReportJasperImageView extends VerticalLayout implements View {
+public class ReportJasperImageView extends HorizontalLayout implements View {
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(ReportJasperImageView.class.getName());
 
     Grid<ReportJasperImage> grid = new Grid<>();
@@ -60,6 +60,7 @@ public class ReportJasperImageView extends VerticalLayout implements View {
             form.openInModalPopup();
             form.setSavedHandler(val -> {
                 System.err.println("Save:" + val);
+                val.setMimeType(form.image.getMimetype());
                 reportJasperImageDeltaspikeFacade.save(val);
                 updateList();
                 grid.select(val);
@@ -74,6 +75,7 @@ public class ReportJasperImageView extends VerticalLayout implements View {
 
         grid.addColumn(ReportJasperImage::getId).setCaption("id");
         grid.addColumn(ReportJasperImage::getBezeichnung).setCaption("Bezeichnung");
+        grid.addColumn(ReportJasperImage::getMimeType).setCaption("MIME Type");
         grid.addColumn(ReportJasperImage::getSize).setCaption("Grösse");
 
         // Render a button that deletes the data row (item)
@@ -93,7 +95,7 @@ public class ReportJasperImageView extends VerticalLayout implements View {
                     form.setEntity((ReportJasperImage) event.getItem());
                     form.openInModalPopup();
                     form.setSavedHandler(val -> {
-                        //val.setTemplateCompiled(form.getCompiledReport());
+                        val.setMimeType(form.image.getMimetype());
                         reportJasperImageDeltaspikeFacade.save(val);
                         updateList();
                         grid.select(val);
@@ -105,8 +107,6 @@ public class ReportJasperImageView extends VerticalLayout implements View {
                         form.closePopup();
                     });
                 }));
-
-        //@todo Downloadbutton für Report
         grid.setSizeFull();
 
         layout.addComponents(tools, grid);

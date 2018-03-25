@@ -17,7 +17,7 @@ import javax.inject.Inject;
 import java.io.File;
 
 @CDIView("ReportCSSView")
-public class ReportCSSView extends VerticalLayout implements View {
+public class ReportCSSView extends HorizontalLayout implements View {
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(ReportCSSView.class.getName());
 
     File tempFile;
@@ -71,9 +71,9 @@ public class ReportCSSView extends VerticalLayout implements View {
 
         grid.addColumn(ReportCSS::getId).setCaption("id");
         grid.addColumn(ReportCSS::getBezeichnung).setCaption("Bezeichnung");
-        grid.addColumn(ReportCSS::getFilename).setCaption("Dateiname");
         grid.addColumn(ReportCSS::getSizeCSS).setCaption("CSS Grösse");
         grid.addColumn(ReportCSS::getSizeHTML).setCaption("HTML Grösse");
+        grid.addColumn(ReportCSS::getSizeJavascript).setCaption("Javascript Grösse");
 
         // Render a button that deletes the data row (item)
         grid.addColumn(report -> "löschen",

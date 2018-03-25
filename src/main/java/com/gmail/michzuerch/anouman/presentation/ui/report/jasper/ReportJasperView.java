@@ -2,6 +2,7 @@ package com.gmail.michzuerch.anouman.presentation.ui.report.jasper;
 
 import com.gmail.michzuerch.anouman.backend.entity.report.jasper.ReportJasper;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.ReportJasperDeltaspikeFacade;
+import com.gmail.michzuerch.anouman.presentation.ui.util.JasperReportCompiler;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
@@ -16,7 +17,7 @@ import org.vaadin.teemusa.flexlayout.*;
 import javax.inject.Inject;
 
 @CDIView("ReportJasperView")
-public class ReportJasperView extends VerticalLayout implements View {
+public class ReportJasperView extends HorizontalLayout implements View {
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(ReportJasperView.class.getName());
 
     Grid<ReportJasper> grid = new Grid<>();
@@ -53,13 +54,8 @@ public class ReportJasperView extends VerticalLayout implements View {
             form.setEntity(reportJasper);
             form.openInModalPopup();
             form.setSavedHandler(val -> {
-                //val.setTemplateCompiled(form.getCompiledReport());
-                //val.setFilename(form.getFilename());
-                if (val.getTemplateSource() == null) {
-                    System.err.println("templateSource ist null!!!!!");
-                } else {
-                    System.err.println("ReportJasper Template Source length:" + val.getTemplateSource().length);
-                }
+                val.setTemplateCompiled(JasperReportCompiler.compileJRXML(val.getTemplateSource()));
+                val.setFilename(form.templateSource.getFilename());
                 facade.save(val);
                 updateList();
                 grid.select(val);
@@ -74,7 +70,7 @@ public class ReportJasperView extends VerticalLayout implements View {
 
         grid.addColumn(ReportJasper::getId).setCaption("id");
         grid.addColumn(ReportJasper::getBezeichnung).setCaption("Bezeichnung");
-        grid.addColumn(ReportJasper::getFilename).setCaption("Dateiname");
+//        grid.addColumn(ReportJasper::getFilename).setCaption("Dateiname");
         grid.addColumn(ReportJasper::getSizeSource).setCaption("Source Size");
         grid.addColumn(ReportJasper::getSizeCompiled).setCaption("Compiled Size");
         grid.addColumn(ReportJasper::getAnzahlReportJasperImages).setCaption("Anzahl Bilder");
@@ -92,8 +88,8 @@ public class ReportJasperView extends VerticalLayout implements View {
                     form.setEntity((ReportJasper) event.getItem());
                     form.openInModalPopup();
                     form.setSavedHandler(val -> {
-                        //val.setTemplateCompiled(form.getCompiledReport());
-                        //val.setFilename(form.getFilename());
+                        val.setTemplateCompiled(JasperReportCompiler.compileJRXML(val.getTemplateSource()));
+                        val.setFilename(form.templateSource.getFilename());
                         facade.save(val);
                         updateList();
                         grid.select(val);
