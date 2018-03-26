@@ -46,7 +46,7 @@ public class ImageAndMimetypeField extends CustomField<ImageAndMimetype> {
     public ImageAndMimetype getEmptyValue() {
         byte[] emptyImage = new byte[0];
         try {
-            emptyImage = IOUtils.toByteArray(getClass().getClassLoader().getResourceAsStream("/images/EmptyImage.jpg"));
+            emptyImage = IOUtils.toByteArray(getClass().getClassLoader().getResourceAsStream("/EmptyFieldValues/EmptyImage.jpg"));
         } catch (IOException e) {
             e.printStackTrace();
         }

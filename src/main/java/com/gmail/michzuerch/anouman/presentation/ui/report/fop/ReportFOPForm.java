@@ -133,12 +133,12 @@ public class ReportFOPForm extends AbstractForm<ReportFOP> {
             SchemaFactory factory = SchemaFactory
                     .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
-            // associate the schema factory with the resource resolver, which is responsible for resolving the imported XSD's
+            // associate the XmlLocalValidationSchema factory with the resource resolver, which is responsible for resolving the imported XSD's
             factory.setResourceResolver(new ResourceResolver());
 
             // note that if your XML already declares the XSD to which it has to conform, then there's no need to create a validator from a Schema object
             Source schemaFile = new StreamSource(getClass().getClassLoader()
-                    .getResourceAsStream("/schema/jasperreport.xsd"));
+                    .getResourceAsStream("/XmlLocalValidationSchema/jasperreport.xsd"));
 
             Schema schema = factory.newSchema(schemaFile);
 

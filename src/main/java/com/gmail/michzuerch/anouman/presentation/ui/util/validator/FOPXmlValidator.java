@@ -53,7 +53,7 @@ public class FOPXmlValidator implements Validator<byte[]> {
                     .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
             factory.setResourceResolver(new ResourceResolver());
             Source schemaFile = new StreamSource(getClass().getClassLoader()
-                    .getResourceAsStream("/schema/jasperreport.xsd"));
+                    .getResourceAsStream("/XmlLocalValidationSchema/jasperreport.xsd"));
 
             Schema schema = factory.newSchema(schemaFile);
 

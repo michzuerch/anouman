@@ -54,7 +54,7 @@ public class ImageTestView extends VerticalLayout implements View {
             grid.asSingleSelect().clear();
             ImageTest imageTest = new ImageTest();
 //            try {
-//                imageTest.setBild(IOUtils.toByteArray(getClass().getClassLoader().getResourceAsStream("/images/EmptyImage.jpg")));
+//                imageTest.setBild(IOUtils.toByteArray(getClass().getClassLoader().getResourceAsStream("/EmptyFieldValues/EmptyImage.jpg")));
 //            } catch (IOException e) {
 //                e.printStackTrace();
 //            }
