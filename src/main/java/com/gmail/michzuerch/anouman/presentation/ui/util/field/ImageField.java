@@ -51,7 +51,6 @@ public class ImageField extends CustomField<byte[]> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.err.println("Call getEmptyValue() len:" + emptyImage.length);
         return emptyImage;
     }
 
@@ -59,7 +58,6 @@ public class ImageField extends CustomField<byte[]> {
         SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmssSSS");
         StringBuffer filename = new StringBuffer(df.format(new Date()) + "-image");
         filename.append(".jpeg");
-        System.err.println("ImageField getFilename(): " + filename);
         return filename.toString();
     }
 
@@ -67,7 +65,6 @@ public class ImageField extends CustomField<byte[]> {
     @Override
     protected void doSetValue(byte[] value) {
         byte[] oldValue = fieldValue;
-        System.err.println("ImageField doSetValue: " + value.length);
         fieldValue = value;
         streamResource = new StreamResource(new ImageSource(), getFilename());
         streamResource.setCacheTime(0);
@@ -78,7 +75,6 @@ public class ImageField extends CustomField<byte[]> {
 
     @Override
     public byte[] getValue() {
-        System.err.println("ImageField getValue: " + fieldValue.length);
         return fieldValue;
     }
 
