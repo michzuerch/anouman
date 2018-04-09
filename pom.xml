@@ -8,8 +8,8 @@
     <version>1</version>
     <name>Anouman</name>
     <properties>
-        <vaadin.version>8.4.0.alpha1</vaadin.version>
-        <vaadin.plugin.version>8.4.0.alpha1</vaadin.plugin.version>
+        <vaadin.version>8.4-SNAPSHOT</vaadin.version>
+        <vaadin.plugin.version>8.4-SNAPSHOT</vaadin.plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -35,6 +35,16 @@
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
+        </repository>
+        <repository>
+            <id>jasperreports</id>
+            <name>Jasperreports</name>
+            <url>http://jasperreports.sourceforge.net/maven2</url>
+        </repository>
+        <repository>
+            <id>jasperreports-third-party</id>
+            <name>Jasperreports-third-party</name>
+            <url>http://jaspersoft.artifactoryonline.com/jaspersoft/third-party-ce-artifacts</url>
         </repository>
     </repositories>
 
@@ -218,6 +228,11 @@
             <version>2.2</version>
         </dependency>
         <dependency>
+            <groupId>net.sourceforge.dynamicreports</groupId>
+            <artifactId>dynamicreports-core</artifactId>
+            <version>5.1.0</version>
+        </dependency>
+        <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
             <version>3.17</version>
@@ -284,11 +299,6 @@
             <artifactId>flexlayout</artifactId>
             <version>0.1.0</version>
         </dependency>
-        <!--<dependency>-->
-        <!--<groupId>org.vaadin.addon</groupId>-->
-        <!--<artifactId>easyuploads</artifactId>-->
-        <!--<version>8.0.0</version>-->
-        <!--</dependency>-->
     </dependencies>
 
     <build>
