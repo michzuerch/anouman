@@ -21,7 +21,6 @@ import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.vaadin.teemusa.flexlayout.*;
 import org.vaadin.viritin.button.DownloadButton;
 import server.droporchoose.UploadComponent;
 
@@ -386,13 +385,7 @@ public class BackupView extends VerticalLayout implements View {
     }
 
     private Component createContent() {
-        FlexLayout layout = new FlexLayout();
-
-        layout.setFlexDirection(FlexDirection.Row);
-        layout.setAlignItems(AlignItems.FlexStart);
-        layout.setJustifyContent(JustifyContent.Center);
-        layout.setAlignContent(AlignContent.Center);
-        layout.setFlexWrap(FlexWrap.Nowrap);
+        HorizontalLayout layout = new HorizontalLayout();
 
         //Adressen, Rechnungen
         Button downloaderAdressen = new DownloadButton(stream -> {

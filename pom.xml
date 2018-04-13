@@ -5,11 +5,11 @@
     <groupId>com.gmail.michzuerch.anouman</groupId>
     <artifactId>Anouman</artifactId>
     <packaging>war</packaging>
-    <version>1</version>
+    <version>0.1</version>
     <name>Anouman</name>
     <properties>
-        <vaadin.version>8.4-SNAPSHOT</vaadin.version>
-        <vaadin.plugin.version>8.4-SNAPSHOT</vaadin.plugin.version>
+        <vaadin.version>8.3.3</vaadin.version>
+        <vaadin.plugin.version>8.3.3</vaadin.plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -46,6 +46,13 @@
             <name>Jasperreports-third-party</name>
             <url>http://jaspersoft.artifactoryonline.com/jaspersoft/third-party-ce-artifacts</url>
         </repository>
+        <repository>
+            <id>JBoss3rdParty</id>
+            <name>JBoss 3rd Party</name>
+            <url>https://repository.jboss.org/nexus/content/repositories/thirdparty-releases/</url>
+        </repository>
+
+
     </repositories>
 
     <dependencyManagement>
@@ -225,13 +232,13 @@
         <dependency>
             <groupId>org.apache.xmlgraphics</groupId>
             <artifactId>fop</artifactId>
-            <version>2.2</version>
+            <version>svn-r784789</version>
         </dependency>
-        <dependency>
-            <groupId>net.sourceforge.dynamicreports</groupId>
-            <artifactId>dynamicreports-core</artifactId>
-            <version>5.1.0</version>
-        </dependency>
+        <!--<dependency>-->
+        <!--<groupId>net.sourceforge.dynamicreports</groupId>-->
+        <!--<artifactId>dynamicreports-core</artifactId>-->
+        <!--<version>5.1.0</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
@@ -293,11 +300,6 @@
             <groupId>org.vaadin.crudui</groupId>
             <artifactId>crudui</artifactId>
             <version>2.3.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.vaadin.teemusa</groupId>
-            <artifactId>flexlayout</artifactId>
-            <version>0.1.0</version>
         </dependency>
     </dependencies>
 

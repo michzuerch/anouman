@@ -4,10 +4,10 @@ import com.vaadin.cdi.CDIView;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import org.slf4j.LoggerFactory;
-import org.vaadin.teemusa.flexlayout.*;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -18,13 +18,8 @@ public class PushTestView extends VerticalLayout implements View {
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(PushTestView.class.getName());
 
     private Component createContent() {
-        FlexLayout layout = new FlexLayout();
+        HorizontalLayout layout = new HorizontalLayout();
 
-        layout.setFlexDirection(FlexDirection.Row);
-        layout.setAlignItems(AlignItems.Center);
-        layout.setJustifyContent(JustifyContent.SpaceBetween);
-        layout.setAlignContent(AlignContent.Center);
-        layout.setFlexWrap(FlexWrap.Wrap);
 
         final Label labelTime = new Label("???");
 

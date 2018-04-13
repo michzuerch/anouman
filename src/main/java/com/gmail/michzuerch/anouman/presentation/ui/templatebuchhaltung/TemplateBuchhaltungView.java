@@ -18,7 +18,6 @@ import org.vaadin.crudui.crud.CrudOperation;
 import org.vaadin.crudui.crud.impl.GridCrud;
 import org.vaadin.crudui.form.impl.form.factory.VerticalCrudFormFactory;
 import org.vaadin.crudui.layout.impl.WindowBasedCrudLayout;
-import org.vaadin.teemusa.flexlayout.*;
 
 import javax.inject.Inject;
 import java.util.Collection;
@@ -88,13 +87,7 @@ public class TemplateBuchhaltungView extends VerticalLayout implements View, Cru
     }
 
     private Component createContent() {
-        FlexLayout layout = new FlexLayout();
-
-        layout.setFlexDirection(FlexDirection.Row);
-        layout.setAlignItems(AlignItems.FlexEnd);
-        layout.setJustifyContent(JustifyContent.SpaceBetween);
-        layout.setAlignContent(AlignContent.Stretch);
-        layout.setFlexWrap(FlexWrap.Wrap);
+        HorizontalLayout layout = new HorizontalLayout();
 
         filterTextBezeichnung.setPlaceholder("Filter für Bezeichnung");
         filterTextBezeichnung.addValueChangeListener(e -> crud.getGrid().setItems(getItems()));

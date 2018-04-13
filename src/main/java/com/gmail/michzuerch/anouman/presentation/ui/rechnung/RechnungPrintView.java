@@ -14,7 +14,6 @@ import com.vaadin.ui.*;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.vaadin.teemusa.flexlayout.*;
 import org.vaadin.viritin.button.DownloadButton;
 import org.vaadin.viritin.fields.IntegerField;
 
@@ -86,13 +85,7 @@ public class RechnungPrintView extends VerticalLayout implements View {
     }
 
     private Component createContent() {
-        FlexLayout layout = new FlexLayout();
-
-        layout.setFlexDirection(FlexDirection.Row);
-        layout.setAlignItems(AlignItems.FlexEnd);
-        layout.setJustifyContent(JustifyContent.SpaceBetween);
-        layout.setAlignContent(AlignContent.Stretch);
-        layout.setFlexWrap(FlexWrap.Wrap);
+        HorizontalLayout layout = new HorizontalLayout();
 
         fieldId.setEnabled(false);
         fieldAdresseFirma.setEnabled(false);

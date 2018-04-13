@@ -12,7 +12,6 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 import org.slf4j.LoggerFactory;
-import org.vaadin.teemusa.flexlayout.*;
 
 import javax.inject.Inject;
 
@@ -30,13 +29,8 @@ public class ReportJasperView extends HorizontalLayout implements View {
     private ReportJasperForm form;
 
     private Component createContent() {
-        FlexLayout layout = new FlexLayout();
+        HorizontalLayout layout = new HorizontalLayout();
 
-        layout.setFlexDirection(FlexDirection.Row);
-        layout.setAlignItems(AlignItems.FlexEnd);
-        layout.setJustifyContent(JustifyContent.SpaceBetween);
-        layout.setAlignContent(AlignContent.Stretch);
-        layout.setFlexWrap(FlexWrap.Wrap);
         filterTextBezeichnung.setPlaceholder("Filter für Bezeichnung");
         filterTextBezeichnung.addValueChangeListener(e -> updateList());
         filterTextBezeichnung.setValueChangeMode(ValueChangeMode.LAZY);

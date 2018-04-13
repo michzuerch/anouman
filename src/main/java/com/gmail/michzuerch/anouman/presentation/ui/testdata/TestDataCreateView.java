@@ -7,12 +7,8 @@ import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
 import org.slf4j.LoggerFactory;
-import org.vaadin.teemusa.flexlayout.*;
 
 import javax.inject.Inject;
 import java.time.*;
@@ -298,13 +294,7 @@ public class TestDataCreateView extends VerticalLayout implements View {
     }
 
     private Component createContent() {
-        FlexLayout layout = new FlexLayout();
-
-        layout.setFlexDirection(FlexDirection.Row);
-        layout.setAlignItems(AlignItems.FlexStart);
-        layout.setJustifyContent(JustifyContent.Center);
-        layout.setAlignContent(AlignContent.Center);
-        layout.setFlexWrap(FlexWrap.Wrap);
+        HorizontalLayout layout = new HorizontalLayout();
 
         Button createRechnungTestBtn = new Button("Create TestData Rechnung", clickEvent -> {
             createTestDataRechnung();

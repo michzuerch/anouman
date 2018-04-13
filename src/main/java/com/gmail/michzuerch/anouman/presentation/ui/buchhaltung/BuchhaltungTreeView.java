@@ -15,7 +15,6 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 import org.slf4j.LoggerFactory;
-import org.vaadin.teemusa.flexlayout.*;
 
 import javax.inject.Inject;
 import java.time.LocalDate;
@@ -77,14 +76,7 @@ public class BuchhaltungTreeView extends VerticalLayout implements View {
     private MehrwertsteuercodeForm mehrwertsteuercodeForm;
 
     private Component createContent() {
-        FlexLayout layout = new FlexLayout();
-
-        layout.setFlexDirection(FlexDirection.Row);
-        layout.setAlignItems(AlignItems.FlexEnd);
-        layout.setJustifyContent(JustifyContent.SpaceBetween);
-        layout.setAlignContent(AlignContent.Stretch);
-        layout.setFlexWrap(FlexWrap.Wrap);
-
+        HorizontalLayout layout = new HorizontalLayout();
 
         buchhaltungSelect = createBuchhaltungSelect();
         buchhaltungSelect.setWidth(30, Unit.PERCENTAGE);

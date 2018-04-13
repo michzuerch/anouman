@@ -11,13 +11,10 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 import org.slf4j.LoggerFactory;
-import org.vaadin.teemusa.flexlayout.*;
 
 import javax.inject.Inject;
 
 
-// @todo : java.lang.IllegalStateException: Property type 'java.util.Date' doesn't match the field type 'java.time.LocalDateTime'.
-// Binding should be configured manually using converter.
 @CDIView("ArtikelkategorieView")
 public class ArtikelkategorieView extends VerticalLayout implements View {
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(ArtikelkategorieView.class.getName());
@@ -32,13 +29,7 @@ public class ArtikelkategorieView extends VerticalLayout implements View {
     private ArtikelkategorieForm artikelkategorieForm;
 
     private Component createContent() {
-        FlexLayout layout = new FlexLayout();
-
-        layout.setFlexDirection(FlexDirection.Row);
-        layout.setAlignItems(AlignItems.FlexEnd);
-        layout.setJustifyContent(JustifyContent.SpaceBetween);
-        layout.setAlignContent(AlignContent.Stretch);
-        layout.setFlexWrap(FlexWrap.Wrap);
+        HorizontalLayout layout = new HorizontalLayout();
 
         filterTextBezeichnung.setPlaceholder("Filter Bezeichnung");
         filterTextBezeichnung.addValueChangeListener(e -> updateList());

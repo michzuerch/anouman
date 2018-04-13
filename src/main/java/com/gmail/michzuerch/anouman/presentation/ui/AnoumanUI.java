@@ -9,11 +9,11 @@ import com.vaadin.cdi.CDIViewProvider;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.shared.communication.PushMode;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import org.slf4j.LoggerFactory;
-import org.vaadin.teemusa.flexlayout.FlexLayout;
 
 import javax.inject.Inject;
 
@@ -38,8 +38,7 @@ public class AnoumanUI extends UI {
 
         Navigator navigator = new Navigator(this, container);
         navigator.addProvider(cdiViewProvider);
-        FlexLayout naviBar = FlexLayout.create().horizontal().justifyContent()
-                .spaceAround().alignContent().end().nowrap().build();
+        HorizontalLayout naviBar = new HorizontalLayout();
         naviBar.addComponents(new Menu());
         naviBar.setHeight("45px");
 

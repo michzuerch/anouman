@@ -17,7 +17,6 @@ import org.vaadin.crudui.crud.impl.EditableGridCrud;
 import org.vaadin.crudui.crud.impl.GridCrud;
 import org.vaadin.crudui.form.impl.form.factory.VerticalCrudFormFactory;
 import org.vaadin.crudui.layout.impl.WindowBasedCrudLayout;
-import org.vaadin.teemusa.flexlayout.*;
 
 import javax.inject.Inject;
 import java.util.Collection;
@@ -114,13 +113,8 @@ public class EditGridCrudTestView extends VerticalLayout implements View, CrudLi
     }
 
     private Component createContent() {
-        FlexLayout layout = new FlexLayout();
+        HorizontalLayout layout = new HorizontalLayout();
 
-        layout.setFlexDirection(FlexDirection.Row);
-        layout.setAlignItems(AlignItems.FlexEnd);
-        layout.setJustifyContent(JustifyContent.SpaceBetween);
-        layout.setAlignContent(AlignContent.Stretch);
-        layout.setFlexWrap(FlexWrap.Wrap);
 
         layout.addComponent(tabSheet);
         //addCrud(getDefaultCrud(), "Default");

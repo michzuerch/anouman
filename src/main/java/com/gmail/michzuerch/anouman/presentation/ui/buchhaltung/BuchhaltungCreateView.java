@@ -11,7 +11,6 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.*;
 import org.slf4j.LoggerFactory;
-import org.vaadin.teemusa.flexlayout.*;
 import org.vaadin.viritin.fields.IntegerField;
 
 import javax.inject.Inject;
@@ -45,13 +44,7 @@ public class BuchhaltungCreateView extends VerticalLayout implements View {
 
 
     private Component createContent() {
-        FlexLayout layout = new FlexLayout();
-
-        layout.setFlexDirection(FlexDirection.Row);
-        layout.setAlignItems(AlignItems.FlexStart);
-        layout.setJustifyContent(JustifyContent.FlexStart);
-        layout.setAlignContent(AlignContent.FlexStart);
-        layout.setFlexWrap(FlexWrap.Wrap);
+        HorizontalLayout layout = new HorizontalLayout();
 
         templateBuchhaltungSelect.setCaption("Template Buchhaltung");
         templateBuchhaltungSelect.setItemCaptionGenerator(templateBuchhaltung -> templateBuchhaltung.getBezeichnung() + " " + templateBuchhaltung.getId());

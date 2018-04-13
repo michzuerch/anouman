@@ -12,7 +12,6 @@ import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.themes.ValoTheme;
-import org.vaadin.teemusa.flexlayout.*;
 
 import javax.inject.Inject;
 import java.util.Collection;
@@ -39,13 +38,8 @@ public class UzerRoleView extends VerticalLayout implements View {
 
 
     private Component createContent() {
-        FlexLayout layout = new FlexLayout();
+        HorizontalLayout layout = new HorizontalLayout();
 
-        layout.setFlexDirection(FlexDirection.Row);
-        layout.setAlignItems(AlignItems.FlexEnd);
-        layout.setJustifyContent(JustifyContent.SpaceBetween);
-        layout.setAlignContent(AlignContent.Stretch);
-        layout.setFlexWrap(FlexWrap.Wrap);
         filterText.setPlaceholder("Filter für Erster...");
         filterText.addValueChangeListener(e -> updateList());
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
