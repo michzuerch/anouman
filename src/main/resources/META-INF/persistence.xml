@@ -5,7 +5,7 @@
         http://xmlns.jcp.org/xml/ns/persistence
         http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
     <persistence-unit name="AnoumanPU" transaction-type="JTA">
-        <jta-data-source>java:jboss/datasources/PostgreSQLDS</jta-data-source>
+        <jta-data-source>java:jboss/datasources/AnoumanDS</jta-data-source>
         <class>com.gmail.michzuerch.anouman.backend.entity.Artikelkategorie</class>
         <class>com.gmail.michzuerch.anouman.backend.entity.Artikel</class>
         <class>com.gmail.michzuerch.anouman.backend.entity.Artikelbild</class>
