@@ -112,10 +112,7 @@ public class TemplateMehrwertsteuercodeView extends VerticalLayout implements Vi
     }
 
 
-    private Component createContent() {
-        HorizontalLayout layout = new HorizontalLayout();
-
-
+    private void createContent() {
         filterTextBezeichnung.setPlaceholder("Filter für Bezeichnung");
         filterTextBezeichnung.addValueChangeListener(e -> crud.getGrid().setItems(getItems()));
         filterTextBezeichnung.setValueChangeMode(ValueChangeMode.LAZY);
@@ -135,16 +132,17 @@ public class TemplateMehrwertsteuercodeView extends VerticalLayout implements Vi
         filterToolbar.addComponents(filterTextBezeichnung, filterTemplateBuchhaltung, clearFilterTextBtn);
         filterToolbar.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 
-        layout.addComponents(filterToolbar, createCrud());
-        layout.setSizeFull();
-        return layout;
-
+        crud.setSizeFull();
+        setMargin(false);
+        setSpacing(false);
+        addComponents(filterToolbar, crud);
+        setExpandRatio(crud, 1);
+        setSizeFull();
     }
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
-        addComponent(createContent());
-        setSizeFull();
+        createContent();
         if (event.getParameters() != null) {
             String[] msgs = event.getParameters().split("/");
             String target = new String();
@@ -160,7 +158,6 @@ public class TemplateMehrwertsteuercodeView extends VerticalLayout implements Vi
                 crud.getGrid().select(templateMehrwertsteuercodeDeltaspikeFacade.findBy(id));
             }
         }
-
     }
 
     @Override

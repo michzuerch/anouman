@@ -384,8 +384,7 @@ public class BackupView extends VerticalLayout implements View {
         return backupAdressen;
     }
 
-    private Component createContent() {
-        HorizontalLayout layout = new HorizontalLayout();
+    private void createContent() {
 
         //Adressen, Rechnungen
         Button downloaderAdressen = new DownloadButton(stream -> {
@@ -604,9 +603,12 @@ public class BackupView extends VerticalLayout implements View {
         uploadArtikel.setReceivedCallback(this::uploadReceivedArtikel);
 
         panelRestore.setContent(new VerticalLayout(uploadAdressen, uploadBuchhaltungen, uploadTemplateBuchhaltungen, uploadArtikel));
-        layout.addComponents(panelBackup, panelRestore);
-        layout.setSizeFull();
-        return layout;
+
+        setMargin(false);
+        setSpacing(false);
+        addComponents(panelBackup, panelRestore);
+        setSizeFull();
+
     }
 
     private void uploadReceivedAdressen(String s, Path path) {
@@ -825,8 +827,7 @@ public class BackupView extends VerticalLayout implements View {
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
-        addComponent(createContent());
-        setSizeFull();
+        createContent();
     }
 }
 

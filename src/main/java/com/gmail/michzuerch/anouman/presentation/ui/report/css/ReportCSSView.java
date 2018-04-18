@@ -13,14 +13,10 @@ import com.vaadin.ui.themes.ValoTheme;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import java.io.File;
 
 @CDIView("ReportCSSView")
-public class ReportCSSView extends HorizontalLayout implements View {
+public class ReportCSSView extends VerticalLayout implements View {
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(ReportCSSView.class.getName());
-
-    File tempFile;
-    String filename;
 
     Grid<ReportCSS> grid = new Grid<>();
     TextField filterTextBezeichnung = new TextField();
@@ -31,9 +27,7 @@ public class ReportCSSView extends HorizontalLayout implements View {
     @Inject
     private ReportCSSForm form;
 
-    private Component createContent() {
-        HorizontalLayout layout = new HorizontalLayout();
-
+    private void createContent() {
         filterTextBezeichnung.setPlaceholder("Filter für Bezeichnung");
         filterTextBezeichnung.addValueChangeListener(e -> updateList());
         filterTextBezeichnung.setValueChangeMode(ValueChangeMode.LAZY);
@@ -76,20 +70,18 @@ public class ReportCSSView extends HorizontalLayout implements View {
                     updateList();
                 })
         );
-
-        //@todo Downloadbutton für Report
         grid.setSizeFull();
-
-        layout.addComponents(tools, grid);
-        layout.setSizeFull();
-        return layout;
+        setMargin(false);
+        setSpacing(false);
+        addComponents(tools, grid);
+        setExpandRatio(grid, 1);
+        setSizeFull();
     }
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
-        addComponent(createContent());
+        createContent();
         setSizeFull();
-
         updateList();
     }
 

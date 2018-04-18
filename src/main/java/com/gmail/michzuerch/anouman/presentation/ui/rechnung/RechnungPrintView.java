@@ -84,9 +84,7 @@ public class RechnungPrintView extends VerticalLayout implements View {
         selectReport.setItemCaptionGenerator(reportTemplate -> reportTemplate.getBezeichnung());
     }
 
-    private Component createContent() {
-        HorizontalLayout layout = new HorizontalLayout();
-
+    private void createContent() {
         fieldId.setEnabled(false);
         fieldAdresseFirma.setEnabled(false);
         fieldAdresseNachname.setEnabled(false);
@@ -105,22 +103,21 @@ public class RechnungPrintView extends VerticalLayout implements View {
 
         btnPrint = getPrintButton();
 
-        layout.addComponents(new HorizontalLayout(
+        addComponents(new HorizontalLayout(
                 new FormLayout(fieldId, fieldBezeichnung, fieldRechnungsdatum),
                 new FormLayout(fieldAdresseFirma, fieldAdresseNachname, fieldAdresseOrt),
                 new FormLayout(fieldFaelligkeitsdatum, fieldFaelligInTagen),
                 new FormLayout(fieldZwischentotal, fieldMehrwertsteuer, fieldRechnungstotal)
         ), selectReport, btnPrint);
-        layout.setSizeFull();
-        return layout;
+        setMargin(false);
+        setSpacing(false);
+        setSizeFull();
     }
 
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
-        addComponent(createContent());
-        setSizeFull();
-
+        createContent();
         if (viewChangeEvent.getParameters() != null) {
             String[] msgs = viewChangeEvent.getParameters().split("/");
             String target = new String();

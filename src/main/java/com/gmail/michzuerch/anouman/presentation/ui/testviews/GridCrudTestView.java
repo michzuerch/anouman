@@ -7,7 +7,10 @@ import com.gmail.michzuerch.anouman.presentation.ui.util.field.BetragField;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.ui.*;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.TabSheet;
+import com.vaadin.ui.UI;
+import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -120,24 +123,19 @@ public class GridCrudTestView extends VerticalLayout implements View, CrudListen
         return crud;
     }
 
-    private Component createContent() {
-        HorizontalLayout layout = new HorizontalLayout();
-
-        layout.addComponent(tabSheet);
+    private void createContent() {
+        addComponent(tabSheet);
         //addCrud(getDefaultCrud(), "Default");
         //addCrud(getDefaultCrudWithFixes(), "Default (with fixes)");
         addCrud(getCrud(), "Configured");
         //addCrud(getEditableGridCrud(), "Editable Grid");
-        layout.setSizeFull();
-        return layout;
+        setSizeFull();
     }
 
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
-        addComponent(createContent());
-        setSizeFull();
-
+        createContent();
         logger.debug("GridCrudTest enter");
     }
 

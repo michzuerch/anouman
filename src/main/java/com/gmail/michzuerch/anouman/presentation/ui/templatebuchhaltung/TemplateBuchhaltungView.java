@@ -86,9 +86,7 @@ public class TemplateBuchhaltungView extends VerticalLayout implements View, Cru
         return crud;
     }
 
-    private Component createContent() {
-        HorizontalLayout layout = new HorizontalLayout();
-
+    private void createContent() {
         filterTextBezeichnung.setPlaceholder("Filter für Bezeichnung");
         filterTextBezeichnung.addValueChangeListener(e -> crud.getGrid().setItems(getItems()));
         filterTextBezeichnung.setValueChangeMode(ValueChangeMode.LAZY);
@@ -102,17 +100,18 @@ public class TemplateBuchhaltungView extends VerticalLayout implements View, Cru
         filterToolbar.addComponents(filterTextBezeichnung, clearFilterTextBtn);
         filterToolbar.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 
-        layout.addComponent(createCrud());
-        layout.setSizeFull();
-        return layout;
+        crud.setSizeFull();
+        setMargin(false);
+        setSpacing(false);
+        addComponents(filterToolbar, crud);
+        setExpandRatio(crud, 1);
+        setSizeFull();
     }
 
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
-        addComponent(createContent());
-        setSizeFull();
-
+        createContent();
         if (event.getParameters() != null) {
             String[] msgs = event.getParameters().split("/");
             String target = new String();

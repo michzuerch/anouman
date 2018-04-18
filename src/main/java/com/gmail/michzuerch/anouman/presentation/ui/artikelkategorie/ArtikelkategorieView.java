@@ -28,9 +28,7 @@ public class ArtikelkategorieView extends VerticalLayout implements View {
     @Inject
     private ArtikelkategorieForm artikelkategorieForm;
 
-    private Component createContent() {
-        HorizontalLayout layout = new HorizontalLayout();
-
+    private void createContent() {
         filterTextBezeichnung.setPlaceholder("Filter Bezeichnung");
         filterTextBezeichnung.addValueChangeListener(e -> updateList());
         filterTextBezeichnung.setValueChangeMode(ValueChangeMode.LAZY);
@@ -68,9 +66,6 @@ public class ArtikelkategorieView extends VerticalLayout implements View {
             }
         })).setCaption("Anzahl Artikel").setStyleGenerator(item -> "v-align-center");
 
-
-        grid.setSizeFull();
-
         // Render a button that deletes the data row (item)
         grid.addColumn(aufwand -> "löschen",
                 new ButtonRenderer(event -> {
@@ -98,18 +93,18 @@ public class ArtikelkategorieView extends VerticalLayout implements View {
                         artikelkategorieForm.closePopup();
                     });
                 }));
-
-        layout.addComponents(tools, grid);
-        layout.setSizeFull();
-        return layout;
+        grid.setSizeFull();
+        setMargin(false);
+        setSpacing(false);
+        addComponents(tools, grid);
+        setExpandRatio(grid, 1);
+        setSizeFull();
     }
 
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
-
-        addComponent(createContent());
-        setSizeFull();
+        createContent();
         if (viewChangeEvent.getParameters() != null) {
             String[] msgs = viewChangeEvent.getParameters().split("/");
             String target = new String();

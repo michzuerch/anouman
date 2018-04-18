@@ -28,9 +28,7 @@ public class EditorTestView extends VerticalLayout implements View {
     @Inject
     private EditorTestForm form;
 
-    private Component createContent() {
-        HorizontalLayout layout = new HorizontalLayout();
-
+    private void createContent() {
         filterText.setPlaceholder("Filter für Erster...");
         filterText.addValueChangeListener(e -> updateList());
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
@@ -59,8 +57,6 @@ public class EditorTestView extends VerticalLayout implements View {
         grid.setCaption("<h2>EditorTest</h2>");
         grid.setCaptionAsHtml(true);
         //grid.setColumns("id", "erster", "zweiter");
-        grid.setSizeFull();
-
         // Render a button that deletes the data row (item)
         grid.addColumn(editorTest -> "löschen",
                 new ButtonRenderer(event -> {
@@ -86,18 +82,18 @@ public class EditorTestView extends VerticalLayout implements View {
                         form.closePopup();
                     });
                 }));
-
-        layout.addComponents(tools, grid);
-        layout.setSizeFull();
-        return layout;
-
+        grid.setSizeFull();
+        setMargin(false);
+        setSpacing(false);
+        addComponents(tools, grid);
+        setExpandRatio(grid, 1);
+        setSizeFull();
     }
 
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
-        addComponent(createContent());
-        setSizeFull();
+        createContent();
         updateList();
     }
 

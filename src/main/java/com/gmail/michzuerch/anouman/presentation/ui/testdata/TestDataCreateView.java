@@ -7,7 +7,9 @@ import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.ui.*;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.VerticalLayout;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
@@ -293,9 +295,7 @@ public class TestDataCreateView extends VerticalLayout implements View {
         Notification.show("Testdaten Template Buchhaltung erstellt", Notification.Type.TRAY_NOTIFICATION);
     }
 
-    private Component createContent() {
-        HorizontalLayout layout = new HorizontalLayout();
-
+    private void createContent() {
         Button createRechnungTestBtn = new Button("Create TestData Rechnung", clickEvent -> {
             createTestDataRechnung();
         });
@@ -316,15 +316,14 @@ public class TestDataCreateView extends VerticalLayout implements View {
         });
         createArtikelstammBtn.setIcon(VaadinIcons.EYE);
 
-        layout.addComponents(createRechnungTestBtn, createTemplateBuchhaltungBtn, createArtikelstammBtn);
-        layout.setSizeFull();
-        return layout;
+        setMargin(false);
+        setSpacing(false);
+        addComponents(createRechnungTestBtn, createTemplateBuchhaltungBtn, createArtikelstammBtn);
+        setSizeFull();
     }
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
-        addComponent(createContent());
-        setSizeFull();
-
+        createContent();
     }
 }

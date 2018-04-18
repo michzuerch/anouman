@@ -1,4 +1,4 @@
-package com.gmail.michzuerch.anouman.presentation;
+package com.gmail.michzuerch.anouman.backend;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;

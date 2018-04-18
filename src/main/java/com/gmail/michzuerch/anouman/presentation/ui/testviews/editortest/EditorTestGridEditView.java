@@ -34,9 +34,7 @@ public class EditorTestGridEditView extends VerticalLayout implements View {
     private TextField ersterFld = new TextField();
     private TextField zweiterFld = new TextField();
 
-    private Component createContent() {
-        HorizontalLayout layout = new HorizontalLayout();
-
+    private void createContent() {
         filterText.setPlaceholder("Filter für Erster...");
         filterText.addValueChangeListener(e -> updateList());
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
@@ -92,18 +90,17 @@ public class EditorTestGridEditView extends VerticalLayout implements View {
                 })
         ).setCaption("Löschen");
 
-        layout.addComponents(tools, grid);
-        layout.setSizeFull();
-        return layout;
-
-
+        grid.setSizeFull();
+        setMargin(false);
+        setSpacing(false);
+        addComponents(tools, grid);
+        setExpandRatio(grid, 1);
+        setSizeFull();
     }
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
-        addComponent(createContent());
-        setSizeFull();
-
+        createContent();
         updateList();
     }
 

@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 
 @CDIView("ReportJasperImageView")
-public class ReportJasperImageView extends HorizontalLayout implements View {
+public class ReportJasperImageView extends VerticalLayout implements View {
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(ReportJasperImageView.class.getName());
 
     Grid<ReportJasperImage> grid = new Grid<>();
@@ -32,9 +32,7 @@ public class ReportJasperImageView extends HorizontalLayout implements View {
     private ReportJasperImageForm form;
 
 
-    private Component createContent() {
-        HorizontalLayout layout = new HorizontalLayout();
-
+    private void createContent() {
         Button clearFilterTextBtn = new Button(VaadinIcons.RECYCLE);
         clearFilterTextBtn.setDescription("Entferne Filter");
         clearFilterTextBtn.addClickListener(e -> {
@@ -56,7 +54,6 @@ public class ReportJasperImageView extends HorizontalLayout implements View {
                 form.closePopup();
             });
         });
-
 
         CssLayout tools = new CssLayout();
         tools.addComponents(filterTextBezeichnung, clearFilterTextBtn, addBtn);
@@ -97,17 +94,17 @@ public class ReportJasperImageView extends HorizontalLayout implements View {
                     });
                 }));
         grid.setSizeFull();
-
-        layout.addComponents(tools, grid);
-        layout.setSizeFull();
-        return layout;
+        setMargin(false);
+        setSpacing(false);
+        addComponents(tools, grid);
+        setExpandRatio(grid, 1);
+        setSizeFull();
     }
 
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
-        addComponent(createContent());
-        setSizeFull();
+        createContent();
         updateList();
     }
 

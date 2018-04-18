@@ -153,32 +153,17 @@ public class BuchungsmaskeView extends VerticalLayout implements View {
     }
 
 
-    private Component createContent() {
-        HorizontalLayout layout = new HorizontalLayout();
-
+    private void createContent() {
         buchhaltungNativeSelect.setCaption("Buchhaltung");
         buchhaltungNativeSelect.setEmptySelectionAllowed(false);
         buchhaltungNativeSelect.setItemCaptionGenerator(buchhaltung -> buchhaltung.getBezeichnung() + " " + buchhaltung.getJahr() + " " + buchhaltung.getId());
         buchhaltungNativeSelect.setItems(buchhaltungDeltaspikeFacade.findAll());
         buchhaltungNativeSelect.setSelectedItem(buchhaltungDeltaspikeFacade.findAll().get(0));
 
-
-        addComponent(buchhaltungNativeSelect);
-        addComponent(new HorizontalLayout(createSollPanel(), createHabenPanel()));
-
-        layout.setSizeFull();
-        return layout;
-    }
-
-
-    @Override
-    public void enter(ViewChangeListener.ViewChangeEvent event) {
-
         mehrwertsteuercodeNativeSelect.setItemCaptionGenerator(mehrwertsteuercode -> mehrwertsteuercode.getBezeichnung());
         mehrwertsteuercodeNativeSelect.setEmptySelectionAllowed(false);
         mehrwertsteuercodeNativeSelect.setItems(mehrwertsteuercodeDeltaspikeFacade.findByBuchhaltung(buchhaltungNativeSelect.getValue()));
         mehrwertsteuercodeNativeSelect.setCaption("Mehrwertsteuercode");
-
 
         betragField.setLocale(Locale.GERMAN);
         betragField.setDecimalPrecision(2);
@@ -192,14 +177,16 @@ public class BuchungsmaskeView extends VerticalLayout implements View {
 //                NumberField.getConverter("Muss Betrag sein")
 //        ).bind("stundensatz");
 
-        buchenLayout.addComponents(mehrwertsteuercodeNativeSelect, betragField, buchenButton);
-        buchenLayout.setMargin(true);
-        buchenPanel.setContent(buchenLayout);
-        addComponent(buchenPanel);
-
-
-        addComponent(createContent());
+        setMargin(false);
+        setSpacing(false);
+        addComponent(buchhaltungNativeSelect);
+        addComponent(new HorizontalLayout(createSollPanel(), createHabenPanel()));
         setSizeFull();
+    }
 
+
+    @Override
+    public void enter(ViewChangeListener.ViewChangeEvent event) {
+        createContent();
     }
 }

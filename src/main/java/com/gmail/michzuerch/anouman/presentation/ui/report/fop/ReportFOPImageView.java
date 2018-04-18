@@ -32,9 +32,7 @@ public class ReportFOPImageView extends VerticalLayout implements View {
     @Inject
     private ReportFOPImageForm form;
 
-    private Component createContent() {
-        HorizontalLayout layout = new HorizontalLayout();
-
+    private void createContent() {
         filterTextBezeichnung.setPlaceholder("Filter für Bezeichnung");
         filterTextBezeichnung.addValueChangeListener(e -> updateList());
         filterTextBezeichnung.setValueChangeMode(ValueChangeMode.LAZY);
@@ -98,20 +96,17 @@ public class ReportFOPImageView extends VerticalLayout implements View {
                         form.closePopup();
                     });
                 }));
-
-        //@todo Downloadbutton für Report
         grid.setSizeFull();
-
-        layout.addComponents(tools, grid);
-        layout.setSizeFull();
-        return layout;
+        setMargin(false);
+        setSpacing(false);
+        addComponents(tools, grid);
+        setExpandRatio(grid, 1);
+        setSizeFull();
     }
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
-        addComponent(createContent());
-        setSizeFull();
-
+        createContent();
         updateList();
     }
 

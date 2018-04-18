@@ -3,8 +3,6 @@ package com.gmail.michzuerch.anouman.presentation.ui.testviews;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import org.slf4j.LoggerFactory;
@@ -17,10 +15,7 @@ import java.util.concurrent.ForkJoinPool;
 public class PushTestView extends VerticalLayout implements View {
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(PushTestView.class.getName());
 
-    private Component createContent() {
-        HorizontalLayout layout = new HorizontalLayout();
-
-
+    private void createContent() {
         final Label labelTime = new Label("???");
 
         labelTime.addStyleName("h1");
@@ -37,14 +32,16 @@ public class PushTestView extends VerticalLayout implements View {
                 }
             }
         });
-        layout.addComponents(labelTime);
-        layout.setSizeFull();
-        return layout;
+        labelTime.setSizeFull();
+        setMargin(false);
+        setSpacing(false);
+        addComponents(labelTime);
+        setExpandRatio(labelTime, 1);
+        setSizeFull();
     }
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
-        addComponent(createContent());
-        setSizeFull();
+        createContent();
     }
 }

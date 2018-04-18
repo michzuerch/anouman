@@ -75,9 +75,7 @@ public class TemplateBuchhaltungTreeView extends VerticalLayout implements View 
     private TemplateMehrwertsteuercodeForm templateMehrwertsteuercodeForm;
 
 
-    private Component createContent() {
-        HorizontalLayout layout = new HorizontalLayout();
-
+    private void createContent() {
         HorizontalLayout toolsLayout = new HorizontalLayout();
         HorizontalLayout bodyLayout = new HorizontalLayout();
         buchhaltungSelect = createTemplateBuchhaltungSelect();
@@ -179,16 +177,19 @@ public class TemplateBuchhaltungTreeView extends VerticalLayout implements View 
                 //Notification.show("Selected from Tree:" + selectedItem.getType() + " id:" + selectedItem.getId(), Notification.Type.TRAY_NOTIFICATION);
             }
         });
+        bodyLayout.setSizeFull();
+        setMargin(false);
+        setSpacing(false);
+        addComponents(toolsLayout, bodyLayout);
+        setExpandRatio(bodyLayout, 1);
+        setSizeFull();
 
-        layout.addComponents(toolsLayout, bodyLayout);
-        layout.setSizeFull();
-        return layout;
     }
 
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
-        addComponent(createContent());
+        createContent();
         setSizeFull();
     }
 

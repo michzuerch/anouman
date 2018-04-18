@@ -28,9 +28,7 @@ public class UzerView extends VerticalLayout implements View {
     @Inject
     private UzerForm form;
 
-    private Component createContent() {
-        HorizontalLayout layout = new HorizontalLayout();
-
+    private void createContent() {
         filterText.setPlaceholder("Filter für Erster...");
         filterText.addValueChangeListener(e -> updateList());
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
@@ -57,7 +55,6 @@ public class UzerView extends VerticalLayout implements View {
         tools.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 
         grid.setColumns("id", "principal", "pazzword", "description", "anzahlUzerRoles");
-        grid.setSizeFull();
 
         // Render a button that deletes the data row (item)
         grid.addColumn(rechnung -> "löschen",
@@ -84,15 +81,17 @@ public class UzerView extends VerticalLayout implements View {
                         form.closePopup();
                     });
                 }));
-        layout.addComponents(tools, grid);
-        layout.setSizeFull();
-        return layout;
+        grid.setSizeFull();
+        setMargin(false);
+        setSpacing(false);
+        addComponents(tools, grid);
+        setExpandRatio(grid, 1);
+        setSizeFull();
     }
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
-        addComponent(createContent());
-        setSizeFull();
+        createContent();
         updateList();
     }
 

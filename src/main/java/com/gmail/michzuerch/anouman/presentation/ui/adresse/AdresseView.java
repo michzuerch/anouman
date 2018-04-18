@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 
 @CDIView("AdresseView")
-public class AdresseView extends HorizontalLayout implements View {
+public class AdresseView extends VerticalLayout implements View {
     private static Logger logger = LoggerFactory.getLogger(AdresseView.class.getName());
 
     TextField filterTextFirma = new TextField();
@@ -31,9 +31,7 @@ public class AdresseView extends HorizontalLayout implements View {
     @Inject
     private AdresseForm form;
 
-    private Component createContent() {
-        HorizontalLayout layout = new HorizontalLayout();
-
+    private void createContent() {
         filterTextFirma.setPlaceholder("Filter für Firma");
         filterTextFirma.addValueChangeListener(e -> updateList());
         filterTextFirma.setValueChangeMode(ValueChangeMode.LAZY);
@@ -85,7 +83,6 @@ public class AdresseView extends HorizontalLayout implements View {
                 UI.getCurrent().getNavigator().navigateTo("RechnungView/adresseId/" + adresse.getId().toString());
             }
         })).setCaption("Anzahl Rechnungen").setStyleGenerator(item -> "v-align-center");
-        grid.setSizeFull();
 
         // Render a button that deletes the data row (item)
         grid.addColumn(adresse -> "löschen",
@@ -113,15 +110,17 @@ public class AdresseView extends HorizontalLayout implements View {
                         form.closePopup();
                     });
                 }));
-        layout.addComponents(tools, grid);
-        layout.setSizeFull();
-        return layout;
+        grid.setSizeFull();
+        setMargin(false);
+        setSpacing(false);
+        addComponents(tools, grid);
+        setExpandRatio(grid, 1);
+        setSizeFull();
     }
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
-        addComponent(createContent());
-        setSizeFull();
+        createContent();
         if (viewChangeEvent.getParameters() != null) {
             String[] msgs = viewChangeEvent.getParameters().split("/");
             String target = new String();

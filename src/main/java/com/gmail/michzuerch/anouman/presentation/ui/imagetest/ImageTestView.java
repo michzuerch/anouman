@@ -29,9 +29,7 @@ public class ImageTestView extends VerticalLayout implements View {
     @Inject
     private ImageTestForm imageTestForm;
 
-    private Component createContent() {
-        HorizontalLayout layout = new HorizontalLayout();
-
+    private void createContent() {
         filterTextTitel.setPlaceholder("Filter Titel");
         filterTextTitel.addValueChangeListener(e -> updateList());
         filterTextTitel.setValueChangeMode(ValueChangeMode.LAZY);
@@ -72,8 +70,6 @@ public class ImageTestView extends VerticalLayout implements View {
         grid.addColumn(ImageTest::getTitel).setCaption("Titel");
         grid.addColumn(imageTest -> imageTest.getBild().length).setCaption("Length");
 
-        grid.setSizeFull();
-
         // Render a button that deletes the data row (item)
         grid.addColumn(imageTest1 -> "löschen",
                 new ButtonRenderer(event -> {
@@ -100,18 +96,17 @@ public class ImageTestView extends VerticalLayout implements View {
                         imageTestForm.closePopup();
                     });
                 }));
-        layout.addComponents(tools, grid);
-        layout.setSizeFull();
-        return layout;
-
-
+        grid.setSizeFull();
+        setMargin(false);
+        setSpacing(false);
+        addComponents(tools, grid);
+        setExpandRatio(grid, 1);
+        setSizeFull();
     }
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
-        addComponent(createContent());
-        setSizeFull();
-
+        createContent();
         if (viewChangeEvent.getParameters() != null) {
             String[] msgs = viewChangeEvent.getParameters().split("/");
             String target = new String();

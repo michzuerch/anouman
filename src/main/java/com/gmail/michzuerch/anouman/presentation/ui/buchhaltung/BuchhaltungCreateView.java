@@ -43,9 +43,7 @@ public class BuchhaltungCreateView extends VerticalLayout implements View {
     private Button createBuchhaltungBtn = new Button("Erstelle Buchhaltung");
 
 
-    private Component createContent() {
-        HorizontalLayout layout = new HorizontalLayout();
-
+    private void createContent() {
         templateBuchhaltungSelect.setCaption("Template Buchhaltung");
         templateBuchhaltungSelect.setItemCaptionGenerator(templateBuchhaltung -> templateBuchhaltung.getBezeichnung() + " " + templateBuchhaltung.getId());
         templateBuchhaltungSelect.setItems(templateBuchhaltungDeltaspikeFacade.findAll());
@@ -77,7 +75,7 @@ public class BuchhaltungCreateView extends VerticalLayout implements View {
 
         FormLayout formLayout = new FormLayout();
         formLayout.addComponents(templateBuchhaltungSelect, bezeichnungField, jahrField, createBuchhaltungBtn);
-        layout.addComponent(formLayout);
+        addComponent(formLayout);
 
         createBuchhaltungBtn.addClickListener(clickEvent -> {
             if (binder.isValid()) {
@@ -141,13 +139,13 @@ public class BuchhaltungCreateView extends VerticalLayout implements View {
                 UI.getCurrent().getNavigator().navigateTo("BuchhaltungTreeView/id/" + buchhaltung1.getId());
             }
         });
-        layout.setSizeFull();
-        return layout;
+        setMargin(false);
+        setSpacing(false);
+        setSizeFull();
     }
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
-        addComponent(createContent());
-        setSizeFull();
+        createContent();
     }
 }

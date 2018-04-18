@@ -32,9 +32,7 @@ public class AufwandCalendarView extends VerticalLayout implements View {
     @Inject
     private AufwandForm form;
 
-    private Component createContent() {
-        HorizontalLayout layout = new HorizontalLayout();
-
+    private void createContent() {
         filterTextTitel.setPlaceholder("Filter für Titel");
         filterTextTitel.addValueChangeListener(e -> updateList());
         filterTextTitel.setValueChangeMode(ValueChangeMode.LAZY);
@@ -70,15 +68,17 @@ public class AufwandCalendarView extends VerticalLayout implements View {
         tools.setWidth(50, Unit.PERCENTAGE);
         tools.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 
-        layout.addComponents(tools, aufwandCalendar);
-        layout.setSizeFull();
-        return layout;
+        aufwandCalendar.setSizeFull();
+        setMargin(false);
+        setSpacing(false);
+        addComponents(tools, aufwandCalendar);
+        setExpandRatio(aufwandCalendar, 1);
+        setSizeFull();
     }
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
-        addComponent(createContent());
-        setSizeFull();
+        createContent();
         updateList();
     }
 

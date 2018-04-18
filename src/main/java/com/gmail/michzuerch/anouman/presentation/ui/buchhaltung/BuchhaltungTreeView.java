@@ -75,9 +75,7 @@ public class BuchhaltungTreeView extends VerticalLayout implements View {
     @Inject
     private MehrwertsteuercodeForm mehrwertsteuercodeForm;
 
-    private Component createContent() {
-        HorizontalLayout layout = new HorizontalLayout();
-
+    private void createContent() {
         buchhaltungSelect = createBuchhaltungSelect();
         buchhaltungSelect.setWidth(30, Unit.PERCENTAGE);
         HorizontalLayout toolsLayout = new HorizontalLayout();
@@ -181,19 +179,19 @@ public class BuchhaltungTreeView extends VerticalLayout implements View {
                 //Notification.show("Selected from Tree:" + selectedItem.getType() + " id:" + selectedItem.getId(), Notification.Type.TRAY_NOTIFICATION);
             }
         });
-        layout.addComponents(toolsLayout, bodyLayout);
-        bodyLayout.setExpandRatio(buchhaltungPanel, 1);
-        layout.setSizeFull();
-        return layout;
+        bodyLayout.setSizeFull();
+        setMargin(false);
+        setSpacing(false);
+        addComponents(toolsLayout, bodyLayout);
+        setExpandRatio(bodyLayout, 1);
+        setSizeFull();
 
     }
 
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
-        addComponent(createContent());
-        setSizeFull();
-
+        createContent();
         if (viewChangeEvent.getParameters() != null) {
             String[] msgs = viewChangeEvent.getParameters().split("/");
             String target = new String();

@@ -10,7 +10,6 @@ import com.vaadin.navigator.Navigator;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.shared.communication.PushMode;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Panel;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import org.slf4j.LoggerFactory;
@@ -34,20 +33,20 @@ public class AnoumanUI extends UI {
 
     @Override
     protected void init(VaadinRequest request) {
-        Panel container = new Panel();
+        HorizontalLayout container = new HorizontalLayout();
 
         Navigator navigator = new Navigator(this, container);
         navigator.addProvider(cdiViewProvider);
+
         HorizontalLayout naviBar = new HorizontalLayout();
         naviBar.addComponents(new Menu());
-        naviBar.setHeight("45px");
 
         VerticalLayout content = new VerticalLayout(naviBar, container);
-        setContent(content);
-        navigator.navigateTo("AboutView");
-        setSizeFull();
         content.setSizeFull();
+        setContent(content);
+        setSizeFull();
         container.setSizeFull();
         content.setExpandRatio(container, 1.0f);
+        navigator.navigateTo("AboutView");
     }
 }

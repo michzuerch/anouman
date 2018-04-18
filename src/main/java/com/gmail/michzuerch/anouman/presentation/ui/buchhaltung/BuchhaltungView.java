@@ -27,8 +27,7 @@ public class BuchhaltungView extends VerticalLayout implements View {
     @Inject
     private BuchhaltungForm form;
 
-    private Component createContent() {
-        HorizontalLayout layout = new HorizontalLayout();
+    private void createContent() {
         filterTextBezeichnung.setPlaceholder("Filter für Bezeichnung...");
         filterTextBezeichnung.addValueChangeListener(e -> updateList());
         filterTextBezeichnung.setValueChangeMode(ValueChangeMode.LAZY);
@@ -85,16 +84,18 @@ public class BuchhaltungView extends VerticalLayout implements View {
                         form.closePopup();
                     });
                 }));
-        layout.addComponents(tools, grid);
-        layout.setSizeFull();
-        return layout;
+        grid.setSizeFull();
+        setMargin(false);
+        setSpacing(false);
+        addComponents(tools, grid);
+        setExpandRatio(grid, 1);
+        setSizeFull();
     }
 
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
-        addComponent(createContent());
-        setSizeFull();
+        createContent();
         updateList();
     }
 
