@@ -7,7 +7,7 @@ function print_today() {
     // ( http://www.cgiscript.net/scripts.htm )
     // ***********************************************
     var now = new Date();
-    var months = new Array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
+    var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     var date = ((now.getDate() < 10) ? "0" : "") + now.getDate();
 
     function fourdigits(number) {
