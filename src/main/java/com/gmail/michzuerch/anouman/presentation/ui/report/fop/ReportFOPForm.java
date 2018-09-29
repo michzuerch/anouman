@@ -1,6 +1,6 @@
 package com.gmail.michzuerch.anouman.presentation.ui.report.fop;
 
-import com.gmail.michzuerch.anouman.backend.entity.report.fop.ReportFOP;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.report.fop.ReportFOP;
 import com.gmail.michzuerch.anouman.presentation.ui.util.converter.ByteToStringConverter;
 import com.gmail.michzuerch.anouman.presentation.ui.util.validator.xmlvalidation.ResourceResolver;
 import com.vaadin.server.UserError;
@@ -26,6 +26,7 @@ import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -93,7 +94,7 @@ public class ReportFOPForm extends AbstractForm<ReportFOP> {
             if (verifyValidatesInternalXsd(data)) {
                 getEntity().setTemplate(data);
                 setFilename(fileName);
-                template.setValue(new String(data, "UTF-8"));
+                template.setValue(new String(data, StandardCharsets.UTF_8));
             }
         } catch (IOException e) {
             Notification.show(e.getLocalizedMessage(), Notification.Type.ERROR_MESSAGE);

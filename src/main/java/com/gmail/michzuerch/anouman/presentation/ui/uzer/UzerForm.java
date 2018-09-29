@@ -1,6 +1,6 @@
 package com.gmail.michzuerch.anouman.presentation.ui.uzer;
 
-import com.gmail.michzuerch.anouman.backend.entity.Uzer;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.Uzer;
 import com.vaadin.ui.*;
 import org.vaadin.viritin.form.AbstractForm;
 

@@ -1,6 +1,6 @@
 package com.gmail.michzuerch.anouman.presentation.ui.testviews.editortest;
 
-import com.gmail.michzuerch.anouman.backend.entity.EditorTest;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.EditorTest;
 import com.gmail.michzuerch.anouman.presentation.ui.util.field.TestTextField;
 import com.vaadin.ui.*;
 import org.slf4j.Logger;

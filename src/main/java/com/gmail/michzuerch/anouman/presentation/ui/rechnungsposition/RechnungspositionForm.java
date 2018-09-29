@@ -1,7 +1,7 @@
 package com.gmail.michzuerch.anouman.presentation.ui.rechnungsposition;
 
-import com.gmail.michzuerch.anouman.backend.entity.Rechnung;
-import com.gmail.michzuerch.anouman.backend.entity.Rechnungsposition;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.Rechnung;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.Rechnungsposition;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.RechnungDeltaspikeFacade;
 import com.gmail.michzuerch.anouman.presentation.ui.util.field.AnzahlField;
 import com.gmail.michzuerch.anouman.presentation.ui.util.field.BetragField;

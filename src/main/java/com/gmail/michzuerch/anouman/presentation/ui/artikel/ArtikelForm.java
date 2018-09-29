@@ -1,7 +1,7 @@
 package com.gmail.michzuerch.anouman.presentation.ui.artikel;
 
-import com.gmail.michzuerch.anouman.backend.entity.Artikel;
-import com.gmail.michzuerch.anouman.backend.entity.Artikelkategorie;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.Artikel;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.Artikelkategorie;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.ArtikelkategorieDeltaspikeFacade;
 import com.gmail.michzuerch.anouman.presentation.ui.util.field.AnzahlField;
 import com.gmail.michzuerch.anouman.presentation.ui.util.field.BetragField;

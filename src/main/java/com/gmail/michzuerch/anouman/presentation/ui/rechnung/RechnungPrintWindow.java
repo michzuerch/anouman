@@ -1,7 +1,7 @@
 package com.gmail.michzuerch.anouman.presentation.ui.rechnung;
 
-import com.gmail.michzuerch.anouman.backend.entity.Rechnung;
-import com.gmail.michzuerch.anouman.backend.entity.report.jasper.ReportJasper;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.Rechnung;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.report.jasper.ReportJasper;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.ReportJasperDeltaspikeFacade;
 import com.gmail.michzuerch.anouman.presentation.reports.rechnung.RechnungReportTool;
 import com.vaadin.icons.VaadinIcons;

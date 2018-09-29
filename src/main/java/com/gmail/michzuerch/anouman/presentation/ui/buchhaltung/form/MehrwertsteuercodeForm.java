@@ -1,8 +1,8 @@
 package com.gmail.michzuerch.anouman.presentation.ui.buchhaltung.form;
 
-import com.gmail.michzuerch.anouman.backend.entity.Buchhaltung;
-import com.gmail.michzuerch.anouman.backend.entity.Konto;
-import com.gmail.michzuerch.anouman.backend.entity.Mehrwertsteuercode;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.Buchhaltung;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.Konto;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.Mehrwertsteuercode;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.BuchhaltungDeltaspikeFacade;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.KontoDeltaspikeFacade;
 import com.vaadin.data.converter.StringToFloatConverter;

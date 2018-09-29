@@ -1,6 +1,6 @@
 package com.gmail.michzuerch.anouman.presentation.ui.buchhaltung;
 
-import com.gmail.michzuerch.anouman.backend.entity.*;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.*;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.*;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.navigator.View;

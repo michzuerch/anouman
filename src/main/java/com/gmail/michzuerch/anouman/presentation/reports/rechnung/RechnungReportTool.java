@@ -1,9 +1,9 @@
 package com.gmail.michzuerch.anouman.presentation.reports.rechnung;
 
-import com.gmail.michzuerch.anouman.backend.entity.Adresse;
-import com.gmail.michzuerch.anouman.backend.entity.Aufwand;
-import com.gmail.michzuerch.anouman.backend.entity.Rechnung;
-import com.gmail.michzuerch.anouman.backend.entity.report.jasper.ReportJasper;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.Adresse;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.Aufwand;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.Rechnung;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.report.jasper.ReportJasper;
 import com.gmail.michzuerch.anouman.backend.util.Runden;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -68,7 +68,7 @@ public class RechnungReportTool implements Serializable {
         params.put("Mehrwertsteuer", Runden.runden(val.getMehrwertsteuer()));
         params.put("Rechnungstotal", Runden.runden(val.getRechnungstotal()));
         List<Rechnungsposition> list = new ArrayList<>();
-        for (com.gmail.michzuerch.anouman.backend.entity.Rechnungsposition rp : val.getRechnungspositionen()) {
+        for (com.gmail.michzuerch.anouman.backend.jpa.domain.Rechnungsposition rp : val.getRechnungspositionen()) {
             list.add(new Rechnungsposition(rp.getBezeichnung(), rp.getBezeichnunglang(), rp.getMengeneinheit(),
                     rp.getStueckpreis(), rp.getAnzahl(), rp.getPositionstotal()));
         }

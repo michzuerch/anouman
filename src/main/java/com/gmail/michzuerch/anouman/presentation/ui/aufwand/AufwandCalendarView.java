@@ -1,7 +1,7 @@
 package com.gmail.michzuerch.anouman.presentation.ui.aufwand;
 
-import com.gmail.michzuerch.anouman.backend.entity.Aufwand;
-import com.gmail.michzuerch.anouman.backend.entity.Rechnung;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.Aufwand;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.Rechnung;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.AufwandDeltaspikeFacade;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.RechnungDeltaspikeFacade;
 import com.vaadin.cdi.CDIView;

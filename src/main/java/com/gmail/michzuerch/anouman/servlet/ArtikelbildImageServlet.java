@@ -1,6 +1,6 @@
 package com.gmail.michzuerch.anouman.servlet;
 
-import com.gmail.michzuerch.anouman.backend.entity.Artikelbild;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.Artikelbild;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.ArtikelbildDeltaspikeFacade;
 import org.apache.fop.servlet.ServletContextURIResolver;
 

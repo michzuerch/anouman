@@ -1,6 +1,6 @@
 package com.gmail.michzuerch.anouman.presentation.ui.buchung;
 
-import com.gmail.michzuerch.anouman.backend.entity.Buchung;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.Buchung;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.VerticalLayout;

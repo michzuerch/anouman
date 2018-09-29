@@ -1,6 +1,6 @@
 package com.gmail.michzuerch.anouman.servlet;
 
-import com.gmail.michzuerch.anouman.backend.entity.report.jasper.ReportJasperImage;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.report.jasper.ReportJasperImage;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.ReportJasperImageDeltaspikeFacade;
 import org.apache.fop.servlet.ServletContextURIResolver;
 

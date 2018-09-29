@@ -1,6 +1,6 @@
 package com.gmail.michzuerch.anouman.presentation.ui.report.css;
 
-import com.gmail.michzuerch.anouman.backend.entity.report.css.ReportCSS;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.report.css.ReportCSS;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.ReportCSSDeltaspikeFacade;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;

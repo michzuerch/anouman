@@ -1,6 +1,6 @@
 package com.gmail.michzuerch.anouman.servlet;
 
-import com.gmail.michzuerch.anouman.backend.entity.report.css.ReportCSSImage;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.report.css.ReportCSSImage;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.ReportCSSImageDeltaspikeFacade;
 import org.apache.fop.servlet.ServletContextURIResolver;
 

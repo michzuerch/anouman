@@ -1,6 +1,6 @@
 package com.gmail.michzuerch.anouman.presentation.ui.report.css;
 
-import com.gmail.michzuerch.anouman.backend.entity.report.css.ReportCSS;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.report.css.ReportCSS;
 import com.gmail.michzuerch.anouman.presentation.ui.util.field.CSSField;
 import com.gmail.michzuerch.anouman.presentation.ui.util.field.HtmlField;
 import com.gmail.michzuerch.anouman.presentation.ui.util.field.JavascriptField;

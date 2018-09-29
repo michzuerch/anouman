@@ -1,7 +1,7 @@
 package com.gmail.michzuerch.anouman.presentation.ui.rechnung;
 
-import com.gmail.michzuerch.anouman.backend.entity.Adresse;
-import com.gmail.michzuerch.anouman.backend.entity.Rechnung;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.Adresse;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.Rechnung;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.AdresseDeltaspikeFacade;
 import com.vaadin.ui.*;
 import org.slf4j.Logger;

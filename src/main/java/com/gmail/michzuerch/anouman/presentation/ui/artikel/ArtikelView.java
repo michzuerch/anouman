@@ -1,7 +1,7 @@
 package com.gmail.michzuerch.anouman.presentation.ui.artikel;
 
-import com.gmail.michzuerch.anouman.backend.entity.Artikel;
-import com.gmail.michzuerch.anouman.backend.entity.Artikelkategorie;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.Artikel;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.Artikelkategorie;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.ArtikelDeltaspikeFacade;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.ArtikelkategorieDeltaspikeFacade;
 import com.vaadin.cdi.CDIView;
@@ -137,7 +137,7 @@ public class ArtikelView extends VerticalLayout implements View {
         setSizeFull();
         if (viewChangeEvent.getParameters() != null) {
             String[] msgs = viewChangeEvent.getParameters().split("/");
-            String target = new String();
+            String target = "";
             Long id = new Long(0);
             for (String msg : msgs) {
                 if (target.isEmpty()) {

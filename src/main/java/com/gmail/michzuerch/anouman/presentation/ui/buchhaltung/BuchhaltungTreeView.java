@@ -1,7 +1,7 @@
 package com.gmail.michzuerch.anouman.presentation.ui.buchhaltung;
 
 
-import com.gmail.michzuerch.anouman.backend.entity.*;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.*;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.*;
 import com.gmail.michzuerch.anouman.presentation.ui.buchhaltung.form.*;
 import com.vaadin.cdi.CDIView;
@@ -204,7 +204,7 @@ public class BuchhaltungTreeView extends VerticalLayout implements View {
 
         if (viewChangeEvent.getParameters() != null) {
             String[] msgs = viewChangeEvent.getParameters().split("/");
-            String target = new String();
+            String target = "";
             Long id = new Long(0);
             for (String msg : msgs) {
                 if (target.isEmpty()) {

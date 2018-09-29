@@ -1,7 +1,7 @@
 package com.gmail.michzuerch.anouman.presentation.ui.uzerrole;
 
-import com.gmail.michzuerch.anouman.backend.entity.Uzer;
-import com.gmail.michzuerch.anouman.backend.entity.UzerRole;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.Uzer;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.UzerRole;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.UzerDeltaspikeFacade;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.UzerRoleDeltaspikeFacade;
 import com.vaadin.cdi.CDIView;

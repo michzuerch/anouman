@@ -1,6 +1,6 @@
 package com.gmail.michzuerch.anouman.presentation.ui.report.jasper;
 
-import com.gmail.michzuerch.anouman.backend.entity.report.jasper.ReportJasper;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.report.jasper.ReportJasper;
 import com.gmail.michzuerch.anouman.presentation.ui.util.field.JasperXmlField;
 import com.vaadin.ui.*;
 import org.slf4j.Logger;

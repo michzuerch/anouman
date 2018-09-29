@@ -1,6 +1,6 @@
 package com.gmail.michzuerch.anouman.presentation.ui.adresse;
 
-import com.gmail.michzuerch.anouman.backend.entity.Adresse;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.Adresse;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.AdresseDeltaspikeFacade;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
@@ -131,7 +131,7 @@ public class AdresseView extends HorizontalLayout implements View {
         setSizeFull();
         if (viewChangeEvent.getParameters() != null) {
             String[] msgs = viewChangeEvent.getParameters().split("/");
-            String target = new String();
+            String target = "";
             Long id = new Long(0);
             for (String msg : msgs) {
                 if (target.isEmpty()) {

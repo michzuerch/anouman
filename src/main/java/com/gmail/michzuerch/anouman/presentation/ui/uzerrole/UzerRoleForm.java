@@ -1,6 +1,6 @@
 package com.gmail.michzuerch.anouman.presentation.ui.uzerrole;
 
-import com.gmail.michzuerch.anouman.backend.entity.UzerRole;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.UzerRole;
 import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

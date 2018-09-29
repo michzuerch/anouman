@@ -1,6 +1,6 @@
 package com.gmail.michzuerch.anouman.presentation.ui.testviews.editortest;
 
-import com.gmail.michzuerch.anouman.backend.entity.EditorTest;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.EditorTest;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.EditorTestDeltaspikeFacade;
 import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.cdi.CDIView;

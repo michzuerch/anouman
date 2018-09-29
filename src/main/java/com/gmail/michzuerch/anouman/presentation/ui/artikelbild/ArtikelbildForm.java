@@ -1,7 +1,7 @@
 package com.gmail.michzuerch.anouman.presentation.ui.artikelbild;
 
-import com.gmail.michzuerch.anouman.backend.entity.Artikel;
-import com.gmail.michzuerch.anouman.backend.entity.Artikelbild;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.Artikel;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.Artikelbild;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.ArtikelDeltaspikeFacade;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.ArtikelbildDeltaspikeFacade;
 import com.gmail.michzuerch.anouman.presentation.ui.util.field.ImageField;

@@ -1,7 +1,7 @@
 package com.gmail.michzuerch.anouman.presentation.ui.aufwand;
 
-import com.gmail.michzuerch.anouman.backend.entity.Aufwand;
-import com.gmail.michzuerch.anouman.backend.entity.Rechnung;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.Aufwand;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.Rechnung;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.AufwandDeltaspikeFacade;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.RechnungDeltaspikeFacade;
 import com.vaadin.cdi.CDIView;
@@ -138,7 +138,7 @@ public class AufwandView extends VerticalLayout implements View {
 
         if (viewChangeEvent.getParameters() != null) {
             String[] msgs = viewChangeEvent.getParameters().split("/");
-            String target = new String();
+            String target = "";
             Long id = new Long(0);
             for (String msg : msgs) {
                 if (target.isEmpty()) {

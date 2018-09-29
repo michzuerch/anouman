@@ -1,6 +1,6 @@
 package com.gmail.michzuerch.anouman.presentation.ui.imagetest;
 
-import com.gmail.michzuerch.anouman.backend.entity.ImageTest;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.ImageTest;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.ImageTestDeltaspikeFacade;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
@@ -121,7 +121,7 @@ public class ImageTestView extends VerticalLayout implements View {
 
         if (viewChangeEvent.getParameters() != null) {
             String[] msgs = viewChangeEvent.getParameters().split("/");
-            String target = new String();
+            String target = "";
             Long id = new Long(0);
             for (String msg : msgs) {
                 if (target.isEmpty()) {

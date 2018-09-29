@@ -1,6 +1,6 @@
 package com.gmail.michzuerch.anouman.presentation.ui.adresse;
 
-import com.gmail.michzuerch.anouman.backend.entity.Adresse;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.Adresse;
 import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

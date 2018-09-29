@@ -1,6 +1,6 @@
 package com.gmail.michzuerch.anouman.presentation.ui.templatebuchhaltung.form;
 
-import com.gmail.michzuerch.anouman.backend.entity.TemplateKontogruppe;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.TemplateKontogruppe;
 import com.vaadin.ui.*;
 import org.vaadin.viritin.form.AbstractForm;
 

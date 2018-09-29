@@ -1,7 +1,7 @@
 package com.gmail.michzuerch.anouman.presentation.ui.rechnungsposition;
 
-import com.gmail.michzuerch.anouman.backend.entity.Rechnung;
-import com.gmail.michzuerch.anouman.backend.entity.Rechnungsposition;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.Rechnung;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.Rechnungsposition;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.RechnungDeltaspikeFacade;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.RechnungspositionDeltaspikeFacade;
 import com.vaadin.cdi.CDIView;
@@ -137,7 +137,7 @@ public class RechnungspositionView extends VerticalLayout implements View {
 
         if (viewChangeEvent.getParameters() != null) {
             String[] msgs = viewChangeEvent.getParameters().split("/");
-            String target = new String();
+            String target = "";
             Long id = new Long(0);
             for (String msg : msgs) {
                 if (target.isEmpty()) {

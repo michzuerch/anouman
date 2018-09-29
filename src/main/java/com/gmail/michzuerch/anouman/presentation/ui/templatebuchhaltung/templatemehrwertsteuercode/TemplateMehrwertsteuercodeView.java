@@ -1,7 +1,7 @@
 package com.gmail.michzuerch.anouman.presentation.ui.templatebuchhaltung.templatemehrwertsteuercode;
 
-import com.gmail.michzuerch.anouman.backend.entity.TemplateBuchhaltung;
-import com.gmail.michzuerch.anouman.backend.entity.TemplateMehrwertsteuercode;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.TemplateBuchhaltung;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.TemplateMehrwertsteuercode;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.TemplateBuchhaltungDeltaspikeFacade;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.TemplateMehrwertsteuercodeDeltaspikeFacade;
 import com.gmail.michzuerch.anouman.presentation.ui.util.field.ProzentField;
@@ -153,7 +153,7 @@ public class TemplateMehrwertsteuercodeView extends VerticalLayout implements Vi
         setSizeFull();
         if (event.getParameters() != null) {
             String[] msgs = event.getParameters().split("/");
-            String target = new String();
+            String target = "";
             Long id = new Long(0);
             for (String msg : msgs) {
                 if (target.isEmpty()) {

@@ -1,6 +1,6 @@
 package com.gmail.michzuerch.anouman.presentation.ui.templatebuchhaltung;
 
-import com.gmail.michzuerch.anouman.backend.entity.TemplateBuchhaltung;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.TemplateBuchhaltung;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.TemplateBuchhaltungDeltaspikeFacade;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;
@@ -122,7 +122,7 @@ public class TemplateBuchhaltungView extends VerticalLayout implements View, Cru
 
         if (event.getParameters() != null) {
             String[] msgs = event.getParameters().split("/");
-            String target = new String();
+            String target = "";
             Long id = new Long(0);
             for (String msg : msgs) {
                 if (target.isEmpty()) {

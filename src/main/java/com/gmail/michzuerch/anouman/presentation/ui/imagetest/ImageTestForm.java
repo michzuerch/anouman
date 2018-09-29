@@ -1,6 +1,6 @@
 package com.gmail.michzuerch.anouman.presentation.ui.imagetest;
 
-import com.gmail.michzuerch.anouman.backend.entity.ImageTest;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.ImageTest;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.ImageTestDeltaspikeFacade;
 import com.gmail.michzuerch.anouman.presentation.ui.util.field.ImageAndMimetypeField;
 import com.vaadin.ui.*;

@@ -1,6 +1,6 @@
 package com.gmail.michzuerch.anouman.presentation.ui.aufwand;
 
-import com.gmail.michzuerch.anouman.backend.entity.Aufwand;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.Aufwand;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Notification.Type;

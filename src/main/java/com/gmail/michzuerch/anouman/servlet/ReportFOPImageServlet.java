@@ -1,6 +1,6 @@
 package com.gmail.michzuerch.anouman.servlet;
 
-import com.gmail.michzuerch.anouman.backend.entity.report.fop.ReportFOPImage;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.report.fop.ReportFOPImage;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.ReportFOPImageDeltaspikeFacade;
 import org.apache.fop.servlet.ServletContextURIResolver;
 

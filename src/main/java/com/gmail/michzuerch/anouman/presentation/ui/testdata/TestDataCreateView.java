@@ -1,6 +1,6 @@
 package com.gmail.michzuerch.anouman.presentation.ui.testdata;
 
-import com.gmail.michzuerch.anouman.backend.entity.*;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.*;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.*;
 import com.gmail.michzuerch.anouman.presentation.ui.Menu;
 import com.vaadin.cdi.CDIView;

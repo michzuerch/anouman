@@ -1,6 +1,6 @@
 package com.gmail.michzuerch.anouman.presentation.ui.templatebuchhaltung;
 
-import com.gmail.michzuerch.anouman.backend.entity.*;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.*;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.*;
 import com.gmail.michzuerch.anouman.presentation.ui.templatebuchhaltung.form.*;
 import com.gmail.michzuerch.anouman.presentation.ui.templatebuchhaltung.templatemehrwertsteuercode.TemplateMehrwertsteuercodeForm;

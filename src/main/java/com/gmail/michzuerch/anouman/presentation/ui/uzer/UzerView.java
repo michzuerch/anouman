@@ -1,6 +1,6 @@
 package com.gmail.michzuerch.anouman.presentation.ui.uzer;
 
-import com.gmail.michzuerch.anouman.backend.entity.Uzer;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.Uzer;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.UzerDeltaspikeFacade;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;

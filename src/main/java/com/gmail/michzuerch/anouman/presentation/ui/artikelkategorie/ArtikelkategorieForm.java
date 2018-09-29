@@ -1,6 +1,6 @@
 package com.gmail.michzuerch.anouman.presentation.ui.artikelkategorie;
 
-import com.gmail.michzuerch.anouman.backend.entity.Artikelkategorie;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.Artikelkategorie;
 import com.vaadin.ui.*;
 import org.vaadin.viritin.form.AbstractForm;
 

@@ -1,6 +1,6 @@
 package com.gmail.michzuerch.anouman.presentation.ui.buchhaltung;
 
-import com.gmail.michzuerch.anouman.backend.entity.Buchhaltung;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.Buchhaltung;
 import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

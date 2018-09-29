@@ -1,6 +1,6 @@
 package com.gmail.michzuerch.anouman.presentation.ui.report.fop;
 
-import com.gmail.michzuerch.anouman.backend.entity.report.fop.ReportFOP;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.report.fop.ReportFOP;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.ReportFOPDeltaspikeFacade;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.icons.VaadinIcons;

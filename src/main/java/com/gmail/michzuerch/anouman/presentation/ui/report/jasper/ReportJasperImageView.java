@@ -1,7 +1,7 @@
 package com.gmail.michzuerch.anouman.presentation.ui.report.jasper;
 
-import com.gmail.michzuerch.anouman.backend.entity.report.jasper.ReportJasper;
-import com.gmail.michzuerch.anouman.backend.entity.report.jasper.ReportJasperImage;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.report.jasper.ReportJasper;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.report.jasper.ReportJasperImage;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.ReportJasperDeltaspikeFacade;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.ReportJasperImageDeltaspikeFacade;
 import com.vaadin.cdi.CDIView;

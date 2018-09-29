@@ -1,6 +1,6 @@
 package com.gmail.michzuerch.anouman.presentation.ui.testviews;
 
-import com.gmail.michzuerch.anouman.backend.entity.Adresse;
+import com.gmail.michzuerch.anouman.backend.jpa.domain.Adresse;
 import com.gmail.michzuerch.anouman.backend.session.deltaspike.jpa.facade.AdresseDeltaspikeFacade;
 import com.gmail.michzuerch.anouman.presentation.ui.Menu;
 import com.gmail.michzuerch.anouman.presentation.ui.util.field.BetragField;
