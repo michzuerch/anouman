@@ -1,6 +1,6 @@
 package com.gmail.michzuerch.anouman.frontend.page;
 
-import com.gmail.michzuerch.TeachersAssistant.frontend.MainLayout;
+import com.gmail.michzuerch.anouman.frontend.MainLayout;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.H5;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;

@@ -1,8 +1,0 @@
-connect 127.0.0.1
-
-batch
-
-data-source add --jndi-name=java:/jboss/datasources/PostgreSQLDS --name=PostgreSQLDS --connection-url=jdbc:postgresql:Anouman --driver-name=postgresql --user-name=michzuerch --password=lx0lc33a
-
-run-batch
-:reload

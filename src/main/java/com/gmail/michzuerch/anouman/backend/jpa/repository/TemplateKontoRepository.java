@@ -1,7 +1,7 @@
 package com.gmail.michzuerch.anouman.backend.jpa.repository;
 
 import com.gmail.michzuerch.anouman.backend.jpa.domain.TemplateKonto;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface TemplateKontoRepository extends CrudRepository<TemplateKonto, Long> {
+public interface TemplateKontoRepository extends JpaRepository<TemplateKonto, Long> {
 }

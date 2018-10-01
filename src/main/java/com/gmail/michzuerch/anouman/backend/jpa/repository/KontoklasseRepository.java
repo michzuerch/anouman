@@ -1,7 +1,7 @@
 package com.gmail.michzuerch.anouman.backend.jpa.repository;
 
 import com.gmail.michzuerch.anouman.backend.jpa.domain.Kontoklasse;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface KontoklasseRepository extends CrudRepository<Kontoklasse, Long> {
+public interface KontoklasseRepository extends JpaRepository<Kontoklasse, Long> {
 }

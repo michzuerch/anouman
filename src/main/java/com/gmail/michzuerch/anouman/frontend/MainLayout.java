@@ -39,7 +39,7 @@ import de.kaesdingeling.hybridmenu.design.DesignItem;
 @Theme(Lumo.class)
 @Viewport("width=device-width")
 @BodySize(height = "100vh", width = "100vw")
-@HtmlImport("styles/shared-styles.html")
+@HtmlImport("shared-styles.html")
 public class MainLayout extends HybridMenu {
     @Override
     public boolean init(VaadinSession vaadinSession, UI ui) {
