@@ -1,11 +1,10 @@
 image:
   file: .gitpod.Dockerfile
 
-
 tasks:
   - init: mvn clean
     command: mvn install
 
 ports:
-- port: 8080
-  onOpen: open-preview
+  - port: 8080
+    onOpen: open-preview
