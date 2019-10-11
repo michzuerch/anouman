@@ -15,3 +15,4 @@ ports:
 vscode:
   extensions:
   - pflannery.vscode-versionlens@0.24.0:FzMGwBqMxkIHqADhVK2e2Q==
+  - vscjava.vscode-maven@0.19.1:BvBDxQECRYP8SiCZ8Csrsg==
