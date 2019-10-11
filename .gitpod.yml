@@ -11,3 +11,7 @@ ports:
   onOpen: open-preview
 - port: 5432
   onOpen: ignore
+
+vscode:
+  extensions:
+  - pflannery.vscode-versionlens@0.24.0:FzMGwBqMxkIHqADhVK2e2Q==
