@@ -1,6 +1,6 @@
 package com.gmail.michzuerch.anouman;
 
-import com.gmail.michzuerch.anouman.backend.util.Runden;
+import com.gmail.michzuerch.anouman.util.Runden;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;

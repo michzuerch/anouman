@@ -1,6 +1,6 @@
 package com.gmail.michzuerch.anouman;
 
-import com.gmail.michzuerch.anouman.backend.util.EsrTool;
+import com.gmail.michzuerch.anouman.util.EsrTool;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

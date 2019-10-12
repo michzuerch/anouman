@@ -1,4 +1,4 @@
-package com.gmail.michael.app;
+package com.gmail.michzuerch.anouman.app;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

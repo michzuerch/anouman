@@ -1,4 +1,4 @@
-package com.gmail.michzuerch.anouman.backend.util;
+package com.gmail.michzuerch.anouman.util;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;

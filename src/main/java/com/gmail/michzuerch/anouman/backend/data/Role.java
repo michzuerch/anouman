@@ -1,4 +1,4 @@
-package com.gmail.michael.backend.data;
+package com.gmail.michzuerch.anouman.backend.data;
 
 public class Role {
 	public static final String BARISTA = "barista";

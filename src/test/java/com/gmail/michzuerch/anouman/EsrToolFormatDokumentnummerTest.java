@@ -1,7 +1,7 @@
 package com.gmail.michzuerch.anouman;
 
-import com.gmail.michzuerch.anouman.backend.util.EsrTool;
-import com.gmail.michzuerch.anouman.backend.util.exception.EsrToolException;
+import com.gmail.michzuerch.anouman.util.EsrTool;
+import com.gmail.michzuerch.anouman.util.exception.EsrToolException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
