@@ -16,3 +16,4 @@ vscode:
   extensions:
   - pflannery.vscode-versionlens@0.24.0:FzMGwBqMxkIHqADhVK2e2Q==
   - vscjava.vscode-maven@0.19.1:BvBDxQECRYP8SiCZ8Csrsg==
+  - redhat.vscode-yaml@0.5.3:9PocMeslVen4COl7FQruRA==
