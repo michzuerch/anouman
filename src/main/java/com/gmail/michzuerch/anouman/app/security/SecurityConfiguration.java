@@ -1,4 +1,4 @@
-package com.gmail.michael.app.security;
+package com.gmail.michzuerch.anouman.app.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -15,10 +15,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
-import com.gmail.michael.backend.data.Role;
-import com.gmail.michael.backend.data.entity.User;
-import com.gmail.michael.backend.repositories.UserRepository;
-import com.gmail.michael.ui.utils.BakeryConst;
+import com.gmail.michzuerch.anouman.backend.data.Role;
+import com.gmail.michzuerch.anouman.backend.data.entity.User;
+import com.gmail.michzuerch.anouman.backend.repositories.UserRepository;
+import com.gmail.michzuerch.anouman.ui.utils.BakeryConst;
 
 /**
  * Configures spring security, doing the following:

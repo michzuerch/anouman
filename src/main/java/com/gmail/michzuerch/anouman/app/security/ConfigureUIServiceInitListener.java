@@ -1,13 +1,13 @@
-package com.gmail.michael.app.security;
+package com.gmail.michzuerch.anouman.app.security;
 
+import com.gmail.michzuerch.anouman.ui.components.OfflineBanner;
+import com.gmail.michzuerch.anouman.ui.exceptions.AccessDeniedException;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.server.ServiceInitEvent;
 import com.vaadin.flow.server.VaadinServiceInitListener;
 import com.vaadin.flow.spring.annotation.SpringComponent;
-import com.gmail.michael.ui.components.OfflineBanner;
-import com.gmail.michael.ui.exceptions.AccessDeniedException;
-import com.gmail.michael.ui.views.login.LoginView;
+import com.gmail.michzuerch.anouman.ui.views.login.LoginView;
 
 /**
  * Adds before enter listener to check access to views.
@@ -16,6 +16,8 @@ import com.gmail.michael.ui.views.login.LoginView;
  */
 @SpringComponent
 public class ConfigureUIServiceInitListener implements VaadinServiceInitListener {
+
+	private static final long serialVersionUID = 1L;
 
 	@Override
 	public void serviceInit(ServiceInitEvent event) {

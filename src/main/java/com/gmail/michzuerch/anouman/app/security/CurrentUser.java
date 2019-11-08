@@ -1,6 +1,6 @@
-package com.gmail.michael.app.security;
+package com.gmail.michzuerch.anouman.app.security;
 
-import com.gmail.michael.backend.data.entity.User;
+import com.gmail.michzuerch.anouman.backend.data.entity.User;
 
 @FunctionalInterface
 public interface CurrentUser {

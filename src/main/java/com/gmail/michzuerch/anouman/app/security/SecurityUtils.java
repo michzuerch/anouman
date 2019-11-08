@@ -1,4 +1,4 @@
-package com.gmail.michael.app.security;
+package com.gmail.michzuerch.anouman.app.security;
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,9 +17,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.vaadin.flow.server.ServletHelper.RequestType;
 import com.vaadin.flow.shared.ApplicationConstants;
-import com.gmail.michael.ui.views.errors.AccessDeniedView;
-import com.gmail.michael.ui.views.errors.CustomRouteNotFoundError;
-import com.gmail.michael.ui.views.login.LoginView;
+import com.gmail.michzuerch.anouman.ui.views.errors.AccessDeniedView;
+import com.gmail.michzuerch.anouman.ui.views.errors.CustomRouteNotFoundError;
+import com.gmail.michzuerch.anouman.ui.views.login.LoginView;
 
 /**
  * SecurityUtils takes care of all such static operations that have to do with

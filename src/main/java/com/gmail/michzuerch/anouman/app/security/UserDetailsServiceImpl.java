@@ -1,4 +1,4 @@
-package com.gmail.michael.app.security;
+package com.gmail.michzuerch.anouman.app.security;
 
 import java.util.Collections;
 
@@ -10,8 +10,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.gmail.michael.backend.data.entity.User;
-import com.gmail.michael.backend.repositories.UserRepository;
+import com.gmail.michzuerch.anouman.backend.data.entity.User;
+import com.gmail.michzuerch.anouman.backend.repositories.UserRepository;
 
 /**
  * Implements the {@link UserDetailsService}.

@@ -12,23 +12,23 @@ import java.util.function.Supplier;
 
 import javax.annotation.PostConstruct;
 
+import com.gmail.michzuerch.anouman.backend.data.OrderState;
+import com.gmail.michzuerch.anouman.backend.data.Role;
+import com.gmail.michzuerch.anouman.backend.repositories.OrderRepository;
+import com.gmail.michzuerch.anouman.backend.repositories.PickupLocationRepository;
+import com.gmail.michzuerch.anouman.backend.repositories.ProductRepository;
+import com.gmail.michzuerch.anouman.backend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.vaadin.flow.spring.annotation.SpringComponent;
-import com.gmail.michael.backend.data.OrderState;
-import com.gmail.michael.backend.data.Role;
-import com.gmail.michael.backend.data.entity.Customer;
-import com.gmail.michael.backend.data.entity.HistoryItem;
-import com.gmail.michael.backend.data.entity.Order;
-import com.gmail.michael.backend.data.entity.OrderItem;
-import com.gmail.michael.backend.data.entity.PickupLocation;
-import com.gmail.michael.backend.data.entity.Product;
-import com.gmail.michael.backend.data.entity.User;
-import com.gmail.michael.backend.repositories.OrderRepository;
-import com.gmail.michael.backend.repositories.PickupLocationRepository;
-import com.gmail.michael.backend.repositories.ProductRepository;
-import com.gmail.michael.backend.repositories.UserRepository;
+import com.gmail.michzuerch.anouman.backend.data.entity.Customer;
+import com.gmail.michzuerch.anouman.backend.data.entity.HistoryItem;
+import com.gmail.michzuerch.anouman.backend.data.entity.Order;
+import com.gmail.michzuerch.anouman.backend.data.entity.OrderItem;
+import com.gmail.michzuerch.anouman.backend.data.entity.PickupLocation;
+import com.gmail.michzuerch.anouman.backend.data.entity.Product;
+import com.gmail.michzuerch.anouman.backend.data.entity.User;
 
 @SpringComponent
 public class DataGenerator implements HasLogger {

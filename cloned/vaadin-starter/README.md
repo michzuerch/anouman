@@ -1,2 +1,0 @@
-# vaadin-starter
-Sample
