@@ -146,6 +146,6 @@ For full terms, see LICENSE
 mvn com.github.eirslett:frontend-maven-plugin:1.7.6:install-node-and-npm -D nodeVersion="v12.13.0"
 
 
-Ok on localhost
-Ok on IntelliJ
+Not tested on localhost
+Not tested on IntelliJ
 Ok on gitpod
