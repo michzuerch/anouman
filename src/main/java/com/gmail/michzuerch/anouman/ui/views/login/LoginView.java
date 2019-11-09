@@ -15,7 +15,7 @@ import com.gmail.michzuerch.anouman.ui.utils.BakeryConst;
 import com.gmail.michzuerch.anouman.ui.views.storefront.StorefrontView;
 
 @Route
-@PageTitle("vaadin-demo-bakery-app")
+@PageTitle("anouman-app")
 @JsModule("./styles/shared-styles.js")
 @Viewport(BakeryConst.VIEWPORT)
 public class LoginView extends LoginOverlay
@@ -26,7 +26,7 @@ public class LoginView extends LoginOverlay
 	public LoginView() {
 		LoginI18n i18n = LoginI18n.createDefault();
 		i18n.setHeader(new LoginI18n.Header());
-		i18n.getHeader().setTitle("vaadin-demo-bakery-app");
+		i18n.getHeader().setTitle("anouman-app");
 		i18n.getHeader().setDescription(
 			"admin@vaadin.com + admin\n" + "barista@vaadin.com + barista");
 		i18n.setAdditionalInformation(null);
@@ -39,7 +39,7 @@ public class LoginView extends LoginOverlay
 		setForgotPasswordButtonVisible(false);
 		setAction("login");
 	}
-	
+
 	@Override
 	public void beforeEnter(BeforeEnterEvent event) {
 		if (SecurityUtils.isUserLoggedIn()) {

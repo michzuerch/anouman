@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Viewport(VIEWPORT)
-@PWA(name = "Bakery App Starter", shortName = "vaadin-demo-bakery-app",
+@PWA(name = "Anouman Starter", shortName = "anouman-app",
 		startPath = "login",
 		backgroundColor = "#227aef", themeColor = "#227aef",
 		offlinePath = "offline-page.html",
@@ -55,7 +55,7 @@ public class MainView extends AppLayout {
 		confirmDialog.setCancelButtonTheme("raised tertiary");
 
 		this.setDrawerOpened(false);
-		Span appName = new Span("vaadin-demo-bakery-app");
+		Span appName = new Span("anouman-app");
 		appName.addClassName("hide-on-mobile");
 
 		menu = createMenuTabs();
