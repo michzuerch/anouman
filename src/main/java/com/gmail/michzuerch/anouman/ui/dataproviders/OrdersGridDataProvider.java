@@ -19,7 +19,7 @@ import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 import com.gmail.michzuerch.anouman.backend.data.entity.Order;
 import com.gmail.michzuerch.anouman.backend.service.OrderService;
-import com.gmail.michzuerch.anouman.ui.utils.BakeryConst;
+import com.gmail.michzuerch.anouman.ui.i18n.I18nConst;
 
 /**
  * A pageable order data provider.
@@ -60,7 +60,7 @@ public class OrdersGridDataProvider extends FilterablePageableDataProvider<Order
 	@Autowired
 	public OrdersGridDataProvider(OrderService orderService) {
 		this.orderService = orderService;
-		setSortOrders(BakeryConst.DEFAULT_SORT_DIRECTION, BakeryConst.ORDER_SORT_FIELDS);
+		setSortOrders(I18nConst.DEFAULT_SORT_DIRECTION, I18nConst.ORDER_SORT_FIELDS);
 	}
 
 	private void setSortOrders(Sort.Direction direction, String[] properties) {

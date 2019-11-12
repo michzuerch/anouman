@@ -16,7 +16,7 @@ import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.gmail.michzuerch.anouman.ui.crud.EntityPresenter;
-import com.gmail.michzuerch.anouman.ui.utils.BakeryConst;
+import com.gmail.michzuerch.anouman.ui.i18n.I18nConst;
 import com.gmail.michzuerch.anouman.ui.views.storefront.beans.OrderCardHeader;
 
 @SpringComponent
@@ -84,7 +84,7 @@ public class OrderPresenter {
 	}
 
 	void edit() {
-		UI.getCurrent().navigate(BakeryConst.PAGE_STOREFRONT_EDIT + "/" + entityPresenter.getEntity().getId());
+		UI.getCurrent().navigate(I18nConst.PAGE_STOREFRONT_EDIT + "/" + entityPresenter.getEntity().getId());
 	}
 
 	void back() {

@@ -1,6 +1,6 @@
 package com.gmail.michzuerch.anouman.ui.views;
 
-import com.gmail.michzuerch.anouman.ui.utils.BakeryConst;
+import com.gmail.michzuerch.anouman.ui.i18n.I18nConst;
 import com.vaadin.flow.component.HasElement;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
@@ -27,7 +27,7 @@ public interface HasNotifications extends HasElement {
 			close.addClickListener(event -> notification.close());
 			notification.open();
 		} else {
-			Notification.show(message, BakeryConst.NOTIFICATION_DURATION, Position.BOTTOM_STRETCH);
+			Notification.show(message, I18nConst.NOTIFICATION_DURATION, Position.BOTTOM_STRETCH);
 		}
 	}
 }

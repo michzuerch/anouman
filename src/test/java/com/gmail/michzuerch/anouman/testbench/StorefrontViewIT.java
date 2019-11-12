@@ -17,7 +17,7 @@ import com.gmail.michzuerch.anouman.testbench.elements.ui.OrderItemEditorElement
 import com.gmail.michzuerch.anouman.testbench.elements.ui.StorefrontViewElement;
 import com.gmail.michzuerch.anouman.testbench.elements.ui.StorefrontViewElement.OrderEditorElement;
 import com.gmail.michzuerch.anouman.testbench.elements.ui.UsersViewElement;
-import com.gmail.michzuerch.anouman.ui.utils.BakeryConst;
+import com.gmail.michzuerch.anouman.ui.i18n.I18nConst;
 
 public class StorefrontViewIT extends AbstractIT<StorefrontViewElement> {
 
@@ -39,7 +39,7 @@ public class StorefrontViewIT extends AbstractIT<StorefrontViewElement> {
 		order.click();
 		ButtonElement editBtn = storefrontPage.getOrderDetails().getEditButton();
 		editBtn.click();
-		Assert.assertThat(getDriver().getCurrentUrl(), containsString(BakeryConst.PAGE_STOREFRONT_EDIT));
+		Assert.assertThat(getDriver().getCurrentUrl(), containsString(I18nConst.PAGE_STOREFRONT_EDIT));
 
 		OrderEditorElement orderEditor = storefrontPage.getOrderEditor();
 		orderEditor.getOrderItemEditor(0).clickAmountFieldPlus();

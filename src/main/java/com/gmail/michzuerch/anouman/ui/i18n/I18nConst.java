@@ -1,12 +1,12 @@
-package com.gmail.michzuerch.anouman.ui.utils;
+package com.gmail.michzuerch.anouman.ui.i18n;
 
 import java.util.Locale;
 
 import org.springframework.data.domain.Sort;
 
-public class BakeryConst {
+public class I18nConst {
 
-	public static final Locale APP_LOCALE = Locale.US;
+	public static final Locale APP_LOCALE = Locale.GERMAN;
 
 	public static final String PAGE_ROOT = "";
 	public static final String PAGE_STOREFRONT = "storefront";

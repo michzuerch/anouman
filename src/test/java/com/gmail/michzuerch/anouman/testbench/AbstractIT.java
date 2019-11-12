@@ -7,7 +7,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.LoggerFactory;
 
 import com.gmail.michzuerch.anouman.testbench.elements.ui.LoginViewElement;
-import com.gmail.michzuerch.anouman.ui.utils.BakeryConst;
+import com.gmail.michzuerch.anouman.ui.i18n.I18nConst;
 import com.vaadin.testbench.IPAddress;
 import com.vaadin.testbench.ScreenshotOnFailureRule;
 import com.vaadin.testbench.TestBenchDriverProxy;
@@ -25,7 +25,7 @@ public abstract class AbstractIT<E extends TestBenchElement> extends ParallelTes
 		Logger root = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
 		root.setLevel(Level.INFO);
 		// Let notifications persist longer during tests
-		BakeryConst.NOTIFICATION_DURATION = 10000;
+		I18nConst.NOTIFICATION_DURATION = 10000;
 	}
 
 	@Rule

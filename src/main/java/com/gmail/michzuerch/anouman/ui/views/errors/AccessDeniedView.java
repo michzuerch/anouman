@@ -14,12 +14,12 @@ import com.vaadin.flow.router.ParentLayout;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.templatemodel.TemplateModel;
 import com.gmail.michzuerch.anouman.ui.MainView;
-import com.gmail.michzuerch.anouman.ui.utils.BakeryConst;
+import com.gmail.michzuerch.anouman.ui.i18n.I18nConst;
 
 @Tag("access-denied-view")
 @JsModule("./src/views/errors/access-denied-view.js")
 @ParentLayout(MainView.class)
-@PageTitle(BakeryConst.TITLE_ACCESS_DENIED)
+@PageTitle(I18nConst.TITLE_ACCESS_DENIED)
 @Route
 public class AccessDeniedView extends PolymerTemplate<TemplateModel> implements HasErrorParameter<AccessDeniedException> {
 

@@ -1,11 +1,11 @@
 package com.gmail.michzuerch.anouman.ui;
 
-import static com.gmail.michzuerch.anouman.ui.utils.BakeryConst.TITLE_DASHBOARD;
-import static com.gmail.michzuerch.anouman.ui.utils.BakeryConst.TITLE_LOGOUT;
-import static com.gmail.michzuerch.anouman.ui.utils.BakeryConst.TITLE_PRODUCTS;
-import static com.gmail.michzuerch.anouman.ui.utils.BakeryConst.TITLE_STOREFRONT;
-import static com.gmail.michzuerch.anouman.ui.utils.BakeryConst.TITLE_USERS;
-import static com.gmail.michzuerch.anouman.ui.utils.BakeryConst.VIEWPORT;
+import static com.gmail.michzuerch.anouman.ui.i18n.I18nConst.TITLE_LOGOUT;
+import static com.gmail.michzuerch.anouman.ui.i18n.I18nConst.TITLE_PRODUCTS;
+import static com.gmail.michzuerch.anouman.ui.i18n.I18nConst.TITLE_DASHBOARD;
+import static com.gmail.michzuerch.anouman.ui.i18n.I18nConst.TITLE_STOREFRONT;
+import static com.gmail.michzuerch.anouman.ui.i18n.I18nConst.TITLE_USERS;
+import static com.gmail.michzuerch.anouman.ui.i18n.I18nConst.VIEWPORT;
 
 import com.gmail.michzuerch.anouman.app.security.SecurityUtils;
 import com.gmail.michzuerch.anouman.ui.components.OfflineBanner;

@@ -15,16 +15,16 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.gmail.michzuerch.anouman.ui.MainView;
 import com.gmail.michzuerch.anouman.ui.crud.AbstractBakeryCrudView;
-import com.gmail.michzuerch.anouman.ui.utils.BakeryConst;
+import com.gmail.michzuerch.anouman.ui.i18n.I18nConst;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 
 import java.util.Currency;
 
-import static com.gmail.michzuerch.anouman.ui.utils.BakeryConst.PAGE_PRODUCTS;
+import static com.gmail.michzuerch.anouman.ui.i18n.I18nConst.PAGE_PRODUCTS;
 
 @Route(value = PAGE_PRODUCTS, layout = MainView.class)
-@PageTitle(BakeryConst.TITLE_PRODUCTS)
+@PageTitle(I18nConst.TITLE_PRODUCTS)
 @Secured(Role.ADMIN)
 public class ProductsView extends AbstractBakeryCrudView<Product> {
 
@@ -63,7 +63,7 @@ public class ProductsView extends AbstractBakeryCrudView<Product> {
 		price.setPattern("\\d+(\\.\\d?\\d?)?$");
 		price.setPreventInvalidInput(true);
 
-		String currencySymbol = Currency.getInstance(BakeryConst.APP_LOCALE).getSymbol();
+		String currencySymbol = Currency.getInstance(I18nConst.APP_LOCALE).getSymbol();
 		price.setPrefixComponent(new Span(currencySymbol));
 
 		return new BinderCrudEditor<Product>(binder, form);
