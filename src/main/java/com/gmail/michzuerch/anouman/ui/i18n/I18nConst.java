@@ -6,7 +6,7 @@ import org.springframework.data.domain.Sort;
 
 public class I18nConst {
 
-	public static final Locale APP_LOCALE = Locale.GERMAN;
+	public static final Locale APP_LOCALE = Locale.US;
 
 	public static final String PAGE_ROOT = "";
 	public static final String PAGE_STOREFRONT = "storefront";
