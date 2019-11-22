@@ -20,6 +20,7 @@ import com.gmail.michzuerch.anouman.backend.repositories.ProductRepository;
 import com.gmail.michzuerch.anouman.backend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.util.StopWatch;
 
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.gmail.michzuerch.anouman.backend.data.entity.Customer;
@@ -66,6 +67,8 @@ public class DataGenerator implements HasLogger {
 
 	@PostConstruct
 	public void loadData() {
+        StopWatch stopWatch = new StopWatch("Anouman DataGenerator.loadData()");
+        stopWatch.start();
 		if (userRepository.count() != 0L) {
 			getLogger().info("Using existing database");
 			return;
@@ -91,6 +94,9 @@ public class DataGenerator implements HasLogger {
 
 		getLogger().info("... generating orders");
 		createOrders(orderRepository, productSupplier, pickupLocationSupplier, barista, baker);
+
+        getLogger().info("... generating addresses");
+        //
 
 		getLogger().info("Generated demo data");
 	}
@@ -331,13 +337,13 @@ public class DataGenerator implements HasLogger {
 	}
 
 	private User createBarista(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-		return userRepository.save(createUser("barista@vaadin.com", "Malin", "Castro",
-				passwordEncoder.encode("barista"), Role.BARISTA, true));
+		return userRepository.save(createUser("barista@michzuerch.gmail.com", "Malin", "Castro",
+				passwordEncoder.encode("pass"), Role.BARISTA, true));
 	}
 
 	private User createAdmin(UserRepository userRepository, PasswordEncoder passwordEncoder) {
 		return userRepository.save(
-				createUser("admin@vaadin.com", "Göran", "Rich", passwordEncoder.encode("admin"), Role.ADMIN, true));
+				createUser("admin@michzuerch.gmail.com", "Michael", "Zürcher", passwordEncoder.encode("admin"), Role.ADMIN, true));
 	}
 
 	private void createDeletableUsers(UserRepository userRepository, PasswordEncoder passwordEncoder) {

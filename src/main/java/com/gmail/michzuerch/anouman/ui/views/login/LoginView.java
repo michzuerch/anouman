@@ -15,7 +15,7 @@ import com.gmail.michzuerch.anouman.ui.i18n.I18nConst;
 import com.gmail.michzuerch.anouman.ui.views.storefront.StorefrontView;
 
 @Route
-@PageTitle("anouman-app")
+@PageTitle("Anouman")
 @JsModule("./styles/shared-styles.js")
 @Viewport(I18nConst.VIEWPORT)
 public class LoginView extends LoginOverlay
@@ -26,9 +26,9 @@ public class LoginView extends LoginOverlay
 	public LoginView() {
 		LoginI18n i18n = LoginI18n.createDefault();
 		i18n.setHeader(new LoginI18n.Header());
-		i18n.getHeader().setTitle("anouman-app");
+		i18n.getHeader().setTitle("Anouman");
 		i18n.getHeader().setDescription(
-			"admin@vaadin.com + admin\n" + "barista@vaadin.com + barista");
+			"admin + admin\n" + "barista + pass");
 		i18n.setAdditionalInformation(null);
 		i18n.setForm(new LoginI18n.Form());
 		i18n.getForm().setSubmit("Sign in");

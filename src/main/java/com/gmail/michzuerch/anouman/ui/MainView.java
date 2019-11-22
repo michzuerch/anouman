@@ -39,7 +39,7 @@ import java.util.Optional;
 		startPath = "login",
 		backgroundColor = "#227aef", themeColor = "#227aef",
 		offlinePath = "offline-page.html",
-		offlineResources = {"images/offline-login-banner.jpg"})
+		offlineResources = {"images/offline.jpg"})
 public class MainView extends AppLayout {
 
 	private static final long serialVersionUID = 1L;
@@ -55,7 +55,7 @@ public class MainView extends AppLayout {
 		confirmDialog.setCancelButtonTheme("raised tertiary");
 
 		this.setDrawerOpened(false);
-		Span appName = new Span("anouman-app");
+		Span appName = new Span("Anouman");
 		appName.addClassName("hide-on-mobile");
 
 		menu = createMenuTabs();
