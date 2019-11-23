@@ -1,13 +1,24 @@
 package com.gmail.michzuerch.anouman.backend.data.entity;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Objects;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedEntityGraphs;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 @Entity(name = "Address") // "Order" is a reserved word
+@NamedEntityGraphs({@NamedEntityGraph(name = "AddressHasInvoices", attributeNodes = {
+		@NamedAttributeNode("invoices")
+})})
 public class Address extends AbstractEntity {
+
+    private static final long serialVersionUID = 1L;
 
     private String companyName;
     
@@ -25,6 +36,9 @@ public class Address extends AbstractEntity {
 
     private BigDecimal hourlyRate;
 
+    @OneToMany(mappedBy = "address", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Invoice> invoices;
+
      @Transient
     public Integer getIncoicesCount() {
         return 0;
@@ -37,14 +51,14 @@ public class Address extends AbstractEntity {
         //for (Rechnung rechnung : getRechnungen()) {
         //    if (rechnung.isBezahlt() == false) total = total + rechnung.getRechnungstotal();
         //}
-        return new Double(total);
+        return Double.valueOf(total);
     }
 
 
     public Address() {
     }
 
-    public Address(String companyName, String salutation, String firstname, String lastname, String street, String zipcode, String city, BigDecimal hourlyRate) {
+    public Address(String companyName, String salutation, String firstname, String lastname, String street, String zipcode, String city, BigDecimal hourlyRate, List<Invoice> invoices) {
         this.companyName = companyName;
         this.salutation = salutation;
         this.firstname = firstname;
@@ -53,6 +67,7 @@ public class Address extends AbstractEntity {
         this.zipcode = zipcode;
         this.city = city;
         this.hourlyRate = hourlyRate;
+        this.invoices = invoices;
     }
 
     public String getCompanyName() {
@@ -119,6 +134,14 @@ public class Address extends AbstractEntity {
         this.hourlyRate = hourlyRate;
     }
 
+    public List<Invoice> getInvoices() {
+        return this.invoices;
+    }
+
+    public void setInvoices(List<Invoice> invoices) {
+        this.invoices = invoices;
+    }
+
     public Address companyName(String companyName) {
         this.companyName = companyName;
         return this;
@@ -159,6 +182,11 @@ public class Address extends AbstractEntity {
         return this;
     }
 
+    public Address invoices(List<Invoice> invoices) {
+        this.invoices = invoices;
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == this)
@@ -167,12 +195,12 @@ public class Address extends AbstractEntity {
             return false;
         }
         Address address = (Address) o;
-        return Objects.equals(companyName, address.companyName) && Objects.equals(salutation, address.salutation) && Objects.equals(firstname, address.firstname) && Objects.equals(lastname, address.lastname) && Objects.equals(street, address.street) && Objects.equals(zipcode, address.zipcode) && Objects.equals(city, address.city) && Objects.equals(hourlyRate, address.hourlyRate);
+        return Objects.equals(companyName, address.companyName) && Objects.equals(salutation, address.salutation) && Objects.equals(firstname, address.firstname) && Objects.equals(lastname, address.lastname) && Objects.equals(street, address.street) && Objects.equals(zipcode, address.zipcode) && Objects.equals(city, address.city) && Objects.equals(hourlyRate, address.hourlyRate) && Objects.equals(invoices, address.invoices);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(companyName, salutation, firstname, lastname, street, zipcode, city, hourlyRate);
+        return Objects.hash(companyName, salutation, firstname, lastname, street, zipcode, city, hourlyRate, invoices);
     }
 
     @Override
@@ -186,6 +214,7 @@ public class Address extends AbstractEntity {
             ", zipcode='" + getZipcode() + "'" +
             ", city='" + getCity() + "'" +
             ", hourlyRate='" + getHourlyRate() + "'" +
+            ", invoices='" + getInvoices() + "'" +
             "}";
     }
 
