@@ -58,7 +58,7 @@ public class Address extends AbstractEntity {
     public Address() {
     }
 
-    public Address(String companyName, String salutation, String firstname, String lastname, String street, String zipcode, String city, BigDecimal hourlyRate, List<Invoice> invoices) {
+    public Address(String companyName, String salutation, String firstname, String lastname, String street, String zipcode, String city, BigDecimal hourlyRate) {
         this.companyName = companyName;
         this.salutation = salutation;
         this.firstname = firstname;
@@ -67,7 +67,6 @@ public class Address extends AbstractEntity {
         this.zipcode = zipcode;
         this.city = city;
         this.hourlyRate = hourlyRate;
-        this.invoices = invoices;
     }
 
     public String getCompanyName() {
@@ -141,82 +140,5 @@ public class Address extends AbstractEntity {
     public void setInvoices(List<Invoice> invoices) {
         this.invoices = invoices;
     }
-
-    public Address companyName(String companyName) {
-        this.companyName = companyName;
-        return this;
-    }
-
-    public Address salutation(String salutation) {
-        this.salutation = salutation;
-        return this;
-    }
-
-    public Address firstname(String firstname) {
-        this.firstname = firstname;
-        return this;
-    }
-
-    public Address lastname(String lastname) {
-        this.lastname = lastname;
-        return this;
-    }
-
-    public Address street(String street) {
-        this.street = street;
-        return this;
-    }
-
-    public Address zipcode(String zipcode) {
-        this.zipcode = zipcode;
-        return this;
-    }
-
-    public Address city(String city) {
-        this.city = city;
-        return this;
-    }
-
-    public Address hourlyRate(BigDecimal hourlyRate) {
-        this.hourlyRate = hourlyRate;
-        return this;
-    }
-
-    public Address invoices(List<Invoice> invoices) {
-        this.invoices = invoices;
-        return this;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof Address)) {
-            return false;
-        }
-        Address address = (Address) o;
-        return Objects.equals(companyName, address.companyName) && Objects.equals(salutation, address.salutation) && Objects.equals(firstname, address.firstname) && Objects.equals(lastname, address.lastname) && Objects.equals(street, address.street) && Objects.equals(zipcode, address.zipcode) && Objects.equals(city, address.city) && Objects.equals(hourlyRate, address.hourlyRate) && Objects.equals(invoices, address.invoices);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(companyName, salutation, firstname, lastname, street, zipcode, city, hourlyRate, invoices);
-    }
-
-    @Override
-    public String toString() {
-        return "{" +
-            " companyName='" + getCompanyName() + "'" +
-            ", salutation='" + getSalutation() + "'" +
-            ", firstname='" + getFirstname() + "'" +
-            ", lastname='" + getLastname() + "'" +
-            ", street='" + getStreet() + "'" +
-            ", zipcode='" + getZipcode() + "'" +
-            ", city='" + getCity() + "'" +
-            ", hourlyRate='" + getHourlyRate() + "'" +
-            ", invoices='" + getInvoices() + "'" +
-            "}";
-    }
-
 }
 
