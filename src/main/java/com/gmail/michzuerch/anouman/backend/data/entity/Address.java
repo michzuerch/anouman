@@ -12,20 +12,19 @@ import javax.persistence.NamedEntityGraphs;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
-@Entity(name = "Address") // "Order" is a reserved word
-@NamedEntityGraphs({@NamedEntityGraph(name = "AddressHasInvoices", attributeNodes = {
-		@NamedAttributeNode("invoices")
-})})
+@Entity(name = "Address")
+@NamedEntityGraphs({
+        @NamedEntityGraph(name = "AddressHasInvoices", attributeNodes = { @NamedAttributeNode("invoices") }) })
 public class Address extends AbstractEntity {
 
     private static final long serialVersionUID = 1L;
 
     private String companyName;
-    
+
     private String salutation;
 
     private String firstname;
-    
+
     private String lastname;
 
     private String street;
@@ -36,29 +35,30 @@ public class Address extends AbstractEntity {
 
     private BigDecimal hourlyRate;
 
-    @OneToMany(mappedBy = "address", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "address", cascade = CascadeType.ALL)
     private List<Invoice> invoices;
 
-     @Transient
+    @Transient
     public Integer getIncoicesCount() {
         return 0;
-        //return new Integer(getRechnungen().size());
+        // return new Integer(getRechnungen().size());
     }
 
     @Transient
     public Double getVacantPositionsTotal() {
         double total = 0;
-        //for (Rechnung rechnung : getRechnungen()) {
-        //    if (rechnung.isBezahlt() == false) total = total + rechnung.getRechnungstotal();
-        //}
+        // for (Rechnung rechnung : getRechnungen()) {
+        // if (rechnung.isBezahlt() == false) total = total +
+        // rechnung.getRechnungstotal();
+        // }
         return Double.valueOf(total);
     }
-
 
     public Address() {
     }
 
-    public Address(String companyName, String salutation, String firstname, String lastname, String street, String zipcode, String city, BigDecimal hourlyRate) {
+    public Address(String companyName, String salutation, String firstname, String lastname, String street,
+            String zipcode, String city, BigDecimal hourlyRate) {
         this.companyName = companyName;
         this.salutation = salutation;
         this.firstname = firstname;
@@ -141,4 +141,3 @@ public class Address extends AbstractEntity {
         this.invoices = invoices;
     }
 }
-

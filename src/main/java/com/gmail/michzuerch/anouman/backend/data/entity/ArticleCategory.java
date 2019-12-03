@@ -1,3 +1,4 @@
+
 package com.gmail.michzuerch.anouman.backend.data.entity;
 
 import java.time.LocalDate;
@@ -13,28 +14,17 @@ import javax.persistence.NamedEntityGraphs;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
-@Entity(name = "Invoice")
+@Entity(name = "ArticleCategory")
 @NamedEntityGraphs({
-        @NamedEntityGraph(name = "InvoiceHasEfforts", attributeNodes = { @NamedAttributeNode("efforts") }) })
-public class Invoice extends AbstractEntity {
+        @NamedEntityGraph(name = "ArticleCategoryHasArticles", attributeNodes = { @NamedAttributeNode("articles") }) })
+public class ArticleCategory extends AbstractEntity {
 
     private static final long serialVersionUID = 1L;
 
     @NotNull
-    private LocalDate date;
-
     private String description;
 
-    private int timeForPayment;
-
-    private boolean paid;
-
-    private boolean forwarded;
-
-    @ManyToOne
-    private Address address;
-
-    @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL)
-    private List<Effort> efforts;
+    @OneToMany(mappedBy = "articleCategory", cascade = CascadeType.ALL)
+    private List<Article> articles;
 
 }
