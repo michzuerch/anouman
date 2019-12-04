@@ -15,6 +15,7 @@ import javax.persistence.NamedEntityGraphs;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import lombok.Data;
 
 @Entity(name = "Konto") 
 @NamedEntityGraphs({
@@ -22,10 +23,8 @@ import javax.validation.constraints.NotNull;
         @NamedEntityGraph(name = "KontoHasHaben", attributeNodes = { @NamedAttributeNode("haben") }),
         @NamedEntityGraph(name = "KontoHasMehrwertsteuercode", attributeNodes = { @NamedAttributeNode("mehrwertsteuercode") })
  })
+@Data
 public class Konto extends AbstractEntity {
-
-    private static final long serialVersionUID = 1L;
-
     @NotBlank
     private String description;
 

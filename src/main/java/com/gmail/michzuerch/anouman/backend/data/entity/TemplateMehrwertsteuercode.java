@@ -7,14 +7,11 @@ import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
+import lombok.Data;
 
-@Entity(name = "TemplateMehrwertsteuercode") 
+@Entity(name = "TemplateMehrwertsteuercode")
+@Data 
 public class TemplateMehrwertsteuercode extends AbstractEntity {
-
-    private static final long serialVersionUID = 1L;
-
     @ManyToOne
     private Address address;
-
-
 }

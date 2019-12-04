@@ -7,14 +7,11 @@ import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
+import lombok.Data;
 
-@Entity(name = "TemplateKontohauptgruppe") // "Order" is a reserved word
+@Entity(name = "TemplateKontohauptgruppe")
+@Data
 public class TemplateKontohauptgruppe extends AbstractEntity {
-
-    private static final long serialVersionUID = 1L;
-
     @ManyToOne
     private Address address;
-
-
 }

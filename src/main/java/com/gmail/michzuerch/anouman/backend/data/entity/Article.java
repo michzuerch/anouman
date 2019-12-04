@@ -14,14 +14,13 @@ import javax.persistence.NamedEntityGraphs;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
+import lombok.Data;
 
 @Entity(name = "Article")
 @NamedEntityGraphs({ @NamedEntityGraph(name = "ArticleHasArticlePictures", attributeNodes = {
         @NamedAttributeNode("articlePictures") }) })
+@Data
 public class Article extends AbstractEntity {
-
-    private static final long serialVersionUID = 1L;
-
     @NotNull
     private String description;
 
@@ -38,5 +37,4 @@ public class Article extends AbstractEntity {
 
     @ManyToOne
     private ArticleCategory articleCategory;
-
 }

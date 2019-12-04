@@ -17,6 +17,7 @@ import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
+import lombok.Data;
 
 @Entity(name = "Bookkeeping") 
 @NamedEntityGraphs({ 
@@ -30,11 +31,8 @@ import javax.validation.constraints.NotNull;
         name = "BookkeepingHasBookEntries", 
         attributeNodes = { @NamedAttributeNode("bookEntries") })
 })
-
+@Data
 public class Bookkeeping extends AbstractEntity {
-
-    private static final long serialVersionUID = 1L;
-
     @NotNull
     private String description;
 
@@ -52,5 +50,4 @@ public class Bookkeeping extends AbstractEntity {
 
     @OneToMany(mappedBy = "bookkeeping", cascade = CascadeType.ALL)
     private List<BookEntry> bookEntries = new ArrayList<>();
-
 }

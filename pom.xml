@@ -20,7 +20,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <failOnMissingWebXml>false</failOnMissingWebXml>
         <!-- Dependencies -->
-        <vaadin.version>14.0.14</vaadin.version>
+        <vaadin.version>14.0.15</vaadin.version>
 
         <!-- Overrides the old version specified by the Spring Boot parent -->
         <selenium.version>3.141.59</selenium.version>
@@ -37,8 +37,8 @@
         <scala-maven-plugin.version>3.4.4</scala-maven-plugin.version>
 
         <!-- Frontend -->
-        <node.version>v12.13.0</node.version>
-        <yarn.version>v1.19.1</yarn.version>
+        <node.version>v12.13.1</node.version>
+        <yarn.version>v1.19.2</yarn.version>
         <buildtools.directory>build-tools</buildtools.directory>
     </properties>
 
@@ -123,6 +123,12 @@
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.10</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
