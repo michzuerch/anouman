@@ -8,8 +8,6 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Entity(name = "Address")
-@NamedEntityGraphs({
-        @NamedEntityGraph(name = "AddressHasInvoices", attributeNodes = {@NamedAttributeNode("invoices")})})
 @Data
 @Builder
 public class Address extends AbstractEntity {

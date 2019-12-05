@@ -12,17 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "Bookkeeping")
-@NamedEntityGraphs({
-        @NamedEntityGraph(
-                name = "BookkeepingHasKontoklasses",
-                attributeNodes = {@NamedAttributeNode("kontoklasses")}),
-        @NamedEntityGraph(
-                name = "BookkeepingHasMehrwertsteuercodes",
-                attributeNodes = {@NamedAttributeNode("mehrwertsteuercodes")}),
-        @NamedEntityGraph(
-                name = "BookkeepingHasBookEntries",
-                attributeNodes = {@NamedAttributeNode("bookEntries")})
-})
 @Data
 @Builder
 public class Bookkeeping extends AbstractEntity {
@@ -37,9 +26,6 @@ public class Bookkeeping extends AbstractEntity {
 
     @OneToMany(mappedBy = "bookkeeping", cascade = CascadeType.ALL)
     private List<Kontoklasse> kontoklasses = new ArrayList<>();
-
-    @OneToMany(mappedBy = "bookkeeping", cascade = CascadeType.ALL)
-    private List<Mehrwertsteuercode> mehrwertsteuercodes = new ArrayList<>();
 
     @OneToMany(mappedBy = "bookkeeping", cascade = CascadeType.ALL)
     private List<BookEntry> bookEntries = new ArrayList<>();

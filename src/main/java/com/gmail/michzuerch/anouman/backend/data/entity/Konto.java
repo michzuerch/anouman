@@ -10,11 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "Konto")
-@NamedEntityGraphs({
-        @NamedEntityGraph(name = "KontoHasSoll", attributeNodes = {@NamedAttributeNode("soll")}),
-        @NamedEntityGraph(name = "KontoHasHaben", attributeNodes = {@NamedAttributeNode("haben")}),
-        @NamedEntityGraph(name = "KontoHasMehrwertsteuercode", attributeNodes = {@NamedAttributeNode("mehrwertsteuercode")})
-})
 @Data
 @Builder
 public class Konto extends AbstractEntity {
@@ -39,8 +34,5 @@ public class Konto extends AbstractEntity {
 
     @OneToMany(mappedBy = "kontoHaben", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Unterbuchung> haben = new ArrayList<>();
-
-    @OneToMany(mappedBy = "mehrwertsteuerKonto", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Mehrwertsteuercode> mehrwertsteuercodes = new ArrayList<>();
 
 }

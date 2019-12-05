@@ -8,8 +8,6 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity(name = "ArticleCategory")
-@NamedEntityGraphs({
-        @NamedEntityGraph(name = "ArticleCategoryHasArticles", attributeNodes = {@NamedAttributeNode("articles")})})
 @Data
 @Builder
 public class ArticleCategory extends AbstractEntity {
