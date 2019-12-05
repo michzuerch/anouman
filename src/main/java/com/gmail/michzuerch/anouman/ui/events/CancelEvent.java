@@ -5,9 +5,9 @@ import com.vaadin.flow.component.ComponentEvent;
 
 public class CancelEvent extends ComponentEvent<Component> {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public CancelEvent(Component source, boolean fromClient) {
-		super(source, fromClient);
-	}
+    public CancelEvent(Component source, boolean fromClient) {
+        super(source, fromClient);
+    }
 }

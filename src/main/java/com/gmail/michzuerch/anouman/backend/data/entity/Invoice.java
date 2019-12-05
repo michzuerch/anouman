@@ -1,5 +1,6 @@
 package com.gmail.michzuerch.anouman.backend.data.entity;
 
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -11,6 +12,7 @@ import java.util.List;
 @NamedEntityGraphs({
         @NamedEntityGraph(name = "InvoiceHasEfforts", attributeNodes = {@NamedAttributeNode("efforts")})})
 @Data
+@Builder
 public class Invoice extends AbstractEntity {
 
     private static final long serialVersionUID = 1L;

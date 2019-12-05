@@ -1,5 +1,32 @@
 package com.gmail.michzuerch.anouman.ui.views.dashboard;
 
+import com.gmail.michzuerch.anouman.backend.data.DashboardData;
+import com.gmail.michzuerch.anouman.backend.data.DeliveryStats;
+import com.gmail.michzuerch.anouman.backend.data.entity.Order;
+import com.gmail.michzuerch.anouman.backend.data.entity.OrderSummary;
+import com.gmail.michzuerch.anouman.backend.data.entity.Product;
+import com.gmail.michzuerch.anouman.backend.service.OrderService;
+import com.gmail.michzuerch.anouman.ui.MainView;
+import com.gmail.michzuerch.anouman.ui.dataproviders.OrdersGridDataProvider;
+import com.gmail.michzuerch.anouman.ui.i18n.I18nConst;
+import com.gmail.michzuerch.anouman.ui.utils.FormattingUtils;
+import com.gmail.michzuerch.anouman.ui.views.storefront.OrderCard;
+import com.gmail.michzuerch.anouman.ui.views.storefront.beans.OrdersCountDataWithChart;
+import com.vaadin.flow.component.ComponentEventListener;
+import com.vaadin.flow.component.Tag;
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.charts.Chart;
+import com.vaadin.flow.component.charts.events.ChartLoadEvent;
+import com.vaadin.flow.component.charts.model.*;
+import com.vaadin.flow.component.dependency.JsModule;
+import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.polymertemplate.Id;
+import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
+import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.Route;
+import com.vaadin.flow.templatemodel.TemplateModel;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.time.LocalDate;
 import java.time.MonthDay;
 import java.time.Year;
@@ -9,43 +36,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import com.gmail.michzuerch.anouman.backend.data.DashboardData;
-import com.gmail.michzuerch.anouman.backend.data.DeliveryStats;
-import com.gmail.michzuerch.anouman.backend.service.OrderService;
-import com.gmail.michzuerch.anouman.ui.dataproviders.OrdersGridDataProvider;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.vaadin.flow.component.ComponentEventListener;
-import com.vaadin.flow.component.Tag;
-import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.charts.Chart;
-import com.vaadin.flow.component.charts.events.ChartLoadEvent;
-import com.vaadin.flow.component.charts.model.Background;
-import com.vaadin.flow.component.charts.model.BackgroundShape;
-import com.vaadin.flow.component.charts.model.ChartType;
-import com.vaadin.flow.component.charts.model.Configuration;
-import com.vaadin.flow.component.charts.model.DataSeries;
-import com.vaadin.flow.component.charts.model.DataSeriesItem;
-import com.vaadin.flow.component.charts.model.ListSeries;
-import com.vaadin.flow.component.charts.model.Pane;
-import com.vaadin.flow.component.charts.model.PlotOptionsPie;
-import com.vaadin.flow.component.charts.model.PlotOptionsSolidgauge;
-import com.vaadin.flow.component.dependency.JsModule;
-import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.polymertemplate.Id;
-import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
-import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
-import com.vaadin.flow.templatemodel.TemplateModel;
-import com.gmail.michzuerch.anouman.backend.data.entity.Order;
-import com.gmail.michzuerch.anouman.backend.data.entity.OrderSummary;
-import com.gmail.michzuerch.anouman.backend.data.entity.Product;
-import com.gmail.michzuerch.anouman.ui.MainView;
-import com.gmail.michzuerch.anouman.ui.i18n.I18nConst;
-import com.gmail.michzuerch.anouman.ui.utils.FormattingUtils;
-import com.gmail.michzuerch.anouman.ui.views.storefront.OrderCard;
-import com.gmail.michzuerch.anouman.ui.views.storefront.beans.OrdersCountDataWithChart;
-
 @Tag("dashboard-view")
 @JsModule("./src/views/dashboard/dashboard-view.js")
 @Route(value = I18nConst.PAGE_DASHBOARD, layout = MainView.class)
@@ -54,8 +44,8 @@ public class DashboardView extends PolymerTemplate<TemplateModel> {
 
     private static final long serialVersionUID = 1L;
 
-    private static final String[] MONTH_LABELS = new String[] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug",
-            "Sep", "Oct", "Nov", "Dec" };
+    private static final String[] MONTH_LABELS = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug",
+            "Sep", "Oct", "Nov", "Dec"};
 
     private final OrderService orderService;
 

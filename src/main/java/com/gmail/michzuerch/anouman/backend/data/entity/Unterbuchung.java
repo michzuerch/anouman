@@ -1,5 +1,6 @@
 package com.gmail.michzuerch.anouman.backend.data.entity;
 
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.Entity;
@@ -10,6 +11,7 @@ import java.time.LocalDate;
 
 @Entity(name = "Unterbuchung")
 @Data
+@Builder
 public class Unterbuchung extends AbstractEntity {
     @NotNull
     private String buchungstext;

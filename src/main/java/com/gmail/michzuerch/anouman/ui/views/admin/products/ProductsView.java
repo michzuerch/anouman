@@ -4,6 +4,9 @@ import com.gmail.michzuerch.anouman.app.security.CurrentUser;
 import com.gmail.michzuerch.anouman.backend.data.Role;
 import com.gmail.michzuerch.anouman.backend.data.entity.Product;
 import com.gmail.michzuerch.anouman.backend.service.ProductService;
+import com.gmail.michzuerch.anouman.ui.MainView;
+import com.gmail.michzuerch.anouman.ui.crud.AbstractBakeryCrudView;
+import com.gmail.michzuerch.anouman.ui.i18n.I18nConst;
 import com.gmail.michzuerch.anouman.ui.utils.converters.CurrencyFormatter;
 import com.vaadin.flow.component.crud.BinderCrudEditor;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -13,9 +16,6 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.gmail.michzuerch.anouman.ui.MainView;
-import com.gmail.michzuerch.anouman.ui.crud.AbstractBakeryCrudView;
-import com.gmail.michzuerch.anouman.ui.i18n.I18nConst;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 
@@ -28,45 +28,45 @@ import static com.gmail.michzuerch.anouman.ui.i18n.I18nConst.PAGE_PRODUCTS;
 @Secured(Role.ADMIN)
 public class ProductsView extends AbstractBakeryCrudView<Product> {
 
-	private static final long serialVersionUID = 1L;
-	private CurrencyFormatter currencyFormatter = new CurrencyFormatter();
+    private static final long serialVersionUID = 1L;
+    private CurrencyFormatter currencyFormatter = new CurrencyFormatter();
 
-	@Autowired
-	public ProductsView(ProductService service, CurrentUser currentUser) {
-		super(Product.class, service, new Grid<>(), createForm(), currentUser);
-	}
+    @Autowired
+    public ProductsView(ProductService service, CurrentUser currentUser) {
+        super(Product.class, service, new Grid<>(), createForm(), currentUser);
+    }
 
-	@Override
-	protected void setupGrid(Grid<Product> grid) {
-		grid.addColumn(Product::getName).setHeader("Product Name").setFlexGrow(10);
-		grid.addColumn(p -> currencyFormatter.encode(p.getPrice())).setHeader("Unit Price");
-	}
+    private static BinderCrudEditor<Product> createForm() {
+        TextField name = new TextField("Product name");
+        name.getElement().setAttribute("colspan", "2");
+        TextField price = new TextField("Unit price");
+        price.getElement().setAttribute("colspan", "2");
 
-	@Override
-	protected String getBasePage() {
-		return PAGE_PRODUCTS;
-	}
+        FormLayout form = new FormLayout(name, price);
 
-	private static BinderCrudEditor<Product> createForm() {
-		TextField name = new TextField("Product name");
-		name.getElement().setAttribute("colspan", "2");
-		TextField price = new TextField("Unit price");
-		price.getElement().setAttribute("colspan", "2");
+        BeanValidationBinder<Product> binder = new BeanValidationBinder<>(Product.class);
 
-		FormLayout form = new FormLayout(name, price);
+        binder.bind(name, "name");
 
-		BeanValidationBinder<Product> binder = new BeanValidationBinder<>(Product.class);
+        binder.forField(price).withConverter(new PriceConverter()).bind("price");
+        price.setPattern("\\d+(\\.\\d?\\d?)?$");
+        price.setPreventInvalidInput(true);
 
-		binder.bind(name, "name");
+        String currencySymbol = Currency.getInstance(I18nConst.APP_LOCALE).getSymbol();
+        price.setPrefixComponent(new Span(currencySymbol));
 
-		binder.forField(price).withConverter(new PriceConverter()).bind("price");
-		price.setPattern("\\d+(\\.\\d?\\d?)?$");
-		price.setPreventInvalidInput(true);
+        return new BinderCrudEditor<Product>(binder, form);
+    }
 
-		String currencySymbol = Currency.getInstance(I18nConst.APP_LOCALE).getSymbol();
-		price.setPrefixComponent(new Span(currencySymbol));
+    @Override
+    protected void setupGrid(Grid<Product> grid) {
+        grid.addColumn(Product::getName).setHeader("Product Name").setFlexGrow(10);
+        grid.addColumn(p -> currencyFormatter.encode(p.getPrice())).setHeader("Unit Price");
+    }
 
-		return new BinderCrudEditor<Product>(binder, form);
-	}
+    @Override
+    protected String getBasePage() {
+        return PAGE_PRODUCTS;
+    }
 
 }

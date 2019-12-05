@@ -1,5 +1,6 @@
 package com.gmail.michzuerch.anouman.backend.data.entity;
 
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.Basic;
@@ -11,6 +12,7 @@ import javax.validation.constraints.Size;
 
 @Entity(name = "ArticlePicture")
 @Data
+@Builder
 public class ArticlePicture extends AbstractEntity {
     @NotNull
     @Size(min = 3)

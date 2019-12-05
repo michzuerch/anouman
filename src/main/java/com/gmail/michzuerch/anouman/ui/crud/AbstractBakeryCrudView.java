@@ -5,6 +5,8 @@ import com.gmail.michzuerch.anouman.backend.data.entity.AbstractEntity;
 import com.gmail.michzuerch.anouman.backend.data.entity.util.EntityUtil;
 import com.gmail.michzuerch.anouman.backend.service.FilterableCrudService;
 import com.gmail.michzuerch.anouman.ui.components.SearchBar;
+import com.gmail.michzuerch.anouman.ui.utils.TemplateUtil;
+import com.gmail.michzuerch.anouman.ui.views.HasNotifications;
 import com.vaadin.flow.component.crud.Crud;
 import com.vaadin.flow.component.crud.CrudEditor;
 import com.vaadin.flow.component.crud.CrudI18n;
@@ -12,8 +14,6 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.OptionalParameter;
-import com.gmail.michzuerch.anouman.ui.utils.TemplateUtil;
-import com.gmail.michzuerch.anouman.ui.views.HasNotifications;
 
 import java.util.function.Consumer;
 
@@ -21,16 +21,12 @@ public abstract class AbstractBakeryCrudView<E extends AbstractEntity> extends C
         implements HasUrlParameter<Long>, HasNotifications {
 
     private static final long serialVersionUID = 1L;
-	private static final String DISCARD_MESSAGE = "There are unsaved modifications to the %s. Discard changes?";
+    private static final String DISCARD_MESSAGE = "There are unsaved modifications to the %s. Discard changes?";
     private static final String DELETE_MESSAGE = "Are you sure you want to delete the selected %s? This action cannot be undone.";
 
     private final Grid<E> grid;
 
     private final CrudEntityPresenter<E> entityPresenter;
-
-    protected abstract String getBasePage();
-
-    protected abstract void setupGrid(Grid<E> grid);
 
     public AbstractBakeryCrudView(Class<E> beanType, FilterableCrudService<E> service,
                                   Grid<E> grid, CrudEditor<E> editor, CurrentUser currentUser) {
@@ -64,6 +60,10 @@ public abstract class AbstractBakeryCrudView<E extends AbstractEntity> extends C
         setToolbar(searchBar);
         setupCrudEventListeners(entityPresenter);
     }
+
+    protected abstract String getBasePage();
+
+    protected abstract void setupGrid(Grid<E> grid);
 
     private void setupCrudEventListeners(CrudEntityPresenter<E> entityPresenter) {
         Consumer<E> onSuccess = entity -> navigateToEntity(null);

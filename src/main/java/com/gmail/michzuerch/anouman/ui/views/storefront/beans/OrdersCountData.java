@@ -2,42 +2,42 @@ package com.gmail.michzuerch.anouman.ui.views.storefront.beans;
 
 public class OrdersCountData {
 
-	private String title;
-	private String subtitle;
-	private Integer count;
+    private String title;
+    private String subtitle;
+    private Integer count;
 
-	public String getTitle() {
-		return title;
-	}
+    public OrdersCountData() {
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    }
 
-	public String getSubtitle() {
-		return subtitle;
-	}
+    public OrdersCountData(String title, String subtitle, Integer count) {
+        this.title = title;
+        this.subtitle = subtitle;
+        this.count = count;
+    }
 
-	public void setSubtitle(String subtitle) {
-		this.subtitle = subtitle;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public Integer getCount() {
-		return count;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	public void setCount(Integer count) {
-		this.count = count;
-	}
+    public String getSubtitle() {
+        return subtitle;
+    }
 
-	public OrdersCountData() {
+    public void setSubtitle(String subtitle) {
+        this.subtitle = subtitle;
+    }
 
-	}
+    public Integer getCount() {
+        return count;
+    }
 
-	public OrdersCountData(String title, String subtitle, Integer count) {
-		this.title = title;
-		this.subtitle = subtitle;
-		this.count = count;
-	}
+    public void setCount(Integer count) {
+        this.count = count;
+    }
 
 }

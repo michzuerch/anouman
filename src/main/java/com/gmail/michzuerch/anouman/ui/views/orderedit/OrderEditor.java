@@ -1,20 +1,19 @@
 package com.gmail.michzuerch.anouman.ui.views.orderedit;
 
-import java.time.LocalTime;
-import java.util.SortedSet;
-import java.util.TreeSet;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
-
 import com.gmail.michzuerch.anouman.backend.data.OrderState;
+import com.gmail.michzuerch.anouman.backend.data.entity.Order;
+import com.gmail.michzuerch.anouman.backend.data.entity.PickupLocation;
+import com.gmail.michzuerch.anouman.backend.data.entity.Product;
+import com.gmail.michzuerch.anouman.backend.data.entity.User;
 import com.gmail.michzuerch.anouman.backend.service.PickupLocationService;
 import com.gmail.michzuerch.anouman.backend.service.ProductService;
+import com.gmail.michzuerch.anouman.ui.crud.CrudEntityDataProvider;
 import com.gmail.michzuerch.anouman.ui.dataproviders.DataProviderUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
-
+import com.gmail.michzuerch.anouman.ui.events.CancelEvent;
+import com.gmail.michzuerch.anouman.ui.utils.FormattingUtils;
+import com.gmail.michzuerch.anouman.ui.utils.converters.LocalTimeConverter;
+import com.gmail.michzuerch.anouman.ui.views.storefront.events.ReviewEvent;
+import com.gmail.michzuerch.anouman.ui.views.storefront.events.ValueChangeEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.ComponentUtil;
 import com.vaadin.flow.component.HasValue;
@@ -37,16 +36,16 @@ import com.vaadin.flow.data.validator.BeanValidator;
 import com.vaadin.flow.shared.Registration;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.templatemodel.TemplateModel;
-import com.gmail.michzuerch.anouman.backend.data.entity.Order;
-import com.gmail.michzuerch.anouman.backend.data.entity.PickupLocation;
-import com.gmail.michzuerch.anouman.backend.data.entity.Product;
-import com.gmail.michzuerch.anouman.backend.data.entity.User;
-import com.gmail.michzuerch.anouman.ui.crud.CrudEntityDataProvider;
-import com.gmail.michzuerch.anouman.ui.events.CancelEvent;
-import com.gmail.michzuerch.anouman.ui.utils.FormattingUtils;
-import com.gmail.michzuerch.anouman.ui.utils.converters.LocalTimeConverter;
-import com.gmail.michzuerch.anouman.ui.views.storefront.events.ReviewEvent;
-import com.gmail.michzuerch.anouman.ui.views.storefront.events.ValueChangeEvent;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+
+import java.time.LocalTime;
+import java.util.SortedSet;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 @Tag("order-editor")
 @JsModule("./src/views/orderedit/order-editor.js")
@@ -54,168 +53,166 @@ import com.gmail.michzuerch.anouman.ui.views.storefront.events.ValueChangeEvent;
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class OrderEditor extends PolymerTemplate<OrderEditor.Model> {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
+    private final LocalTimeConverter localTimeConverter = new LocalTimeConverter();
+    @Id("title")
+    private H2 title;
 
-	public interface Model extends TemplateModel {
-		void setTotalPrice(String totalPrice);
+    @Id("metaContainer")
+    private Div metaContainer;
 
-		void setStatus(String status);
-	}
+    @Id("orderNumber")
+    private Span orderNumber;
 
-	@Id("title")
-	private H2 title;
+    @Id("status")
+    private ComboBox<OrderState> status;
 
-	@Id("metaContainer")
-	private Div metaContainer;
+    @Id("dueDate")
+    private DatePicker dueDate;
 
-	@Id("orderNumber")
-	private Span orderNumber;
+    @Id("dueTime")
+    private ComboBox<LocalTime> dueTime;
 
-	@Id("status")
-	private ComboBox<OrderState> status;
+    @Id("pickupLocation")
+    private ComboBox<PickupLocation> pickupLocation;
 
-	@Id("dueDate")
-	private DatePicker dueDate;
+    @Id("customerName")
+    private TextField customerName;
 
-	@Id("dueTime")
-	private ComboBox<LocalTime> dueTime;
+    @Id("customerNumber")
+    private TextField customerNumber;
 
-	@Id("pickupLocation")
-	private ComboBox<PickupLocation> pickupLocation;
+    @Id("customerDetails")
+    private TextField customerDetails;
 
-	@Id("customerName")
-	private TextField customerName;
+    @Id("cancel")
+    private Button cancel;
 
-	@Id("customerNumber")
-	private TextField customerNumber;
+    @Id("review")
+    private Button review;
 
-	@Id("customerDetails")
-	private TextField customerDetails;
+    @Id("itemsContainer")
+    private Div itemsContainer;
 
-	@Id("cancel")
-	private Button cancel;
+    private OrderItemsEditor itemsEditor;
 
-	@Id("review")
-	private Button review;
+    private User currentUser;
 
-	@Id("itemsContainer")
-	private Div itemsContainer;
+    private BeanValidationBinder<Order> binder = new BeanValidationBinder<>(Order.class);
 
-	private OrderItemsEditor itemsEditor;
+    @Autowired
+    public OrderEditor(PickupLocationService locationService, ProductService productService) {
+        DataProvider<PickupLocation, String> locationDataProvider = new CrudEntityDataProvider<>(locationService);
+        DataProvider<Product, String> productDataProvider = new CrudEntityDataProvider<>(productService);
+        itemsEditor = new OrderItemsEditor(productDataProvider);
 
-	private User currentUser;
+        itemsContainer.add(itemsEditor);
 
-	private BeanValidationBinder<Order> binder = new BeanValidationBinder<>(Order.class);
+        cancel.addClickListener(e -> fireEvent(new CancelEvent(this, false)));
+        review.addClickListener(e -> fireEvent(new ReviewEvent(this)));
 
-	private final LocalTimeConverter localTimeConverter = new LocalTimeConverter();
+        status.setItemLabelGenerator(DataProviderUtil.createItemLabelGenerator(OrderState::getDisplayName));
+        status.setDataProvider(DataProvider.ofItems(OrderState.values()));
+        status.addValueChangeListener(
+                e -> getModel().setStatus(DataProviderUtil.convertIfNotNull(e.getValue(), OrderState::name)));
+        binder.forField(status)
+                .withValidator(new BeanValidator(Order.class, "state"))
+                .bind(Order::getState, (o, s) -> {
+                    o.changeState(currentUser, s);
+                });
 
-	@Autowired
-	public OrderEditor(PickupLocationService locationService, ProductService productService) {
-		DataProvider<PickupLocation, String> locationDataProvider = new CrudEntityDataProvider<>(locationService);
-		DataProvider<Product, String> productDataProvider = new CrudEntityDataProvider<>(productService);
-		itemsEditor = new OrderItemsEditor(productDataProvider);
+        dueDate.setRequired(true);
+        binder.bind(dueDate, "dueDate");
 
-		itemsContainer.add(itemsEditor);
+        SortedSet<LocalTime> timeValues = IntStream.rangeClosed(8, 16).mapToObj(i -> LocalTime.of(i, 0))
+                .collect(Collectors.toCollection(TreeSet::new));
+        dueTime.setItems(timeValues);
+        dueTime.setItemLabelGenerator(localTimeConverter::encode);
+        binder.bind(dueTime, "dueTime");
 
-		cancel.addClickListener(e -> fireEvent(new CancelEvent(this, false)));
-		review.addClickListener(e -> fireEvent(new ReviewEvent(this)));
+        pickupLocation.setItemLabelGenerator(DataProviderUtil.createItemLabelGenerator(PickupLocation::getName));
+        pickupLocation.setDataProvider(locationDataProvider);
+        binder.bind(pickupLocation, "pickupLocation");
+        pickupLocation.setRequired(false);
 
-		status.setItemLabelGenerator(DataProviderUtil.createItemLabelGenerator(OrderState::getDisplayName));
-		status.setDataProvider(DataProvider.ofItems(OrderState.values()));
-		status.addValueChangeListener(
-				e -> getModel().setStatus(DataProviderUtil.convertIfNotNull(e.getValue(), OrderState::name)));
-		binder.forField(status)
-				.withValidator(new BeanValidator(Order.class, "state"))
-				.bind(Order::getState, (o, s) -> {
-					o.changeState(currentUser, s);
-				});
+        customerName.setRequired(true);
+        binder.bind(customerName, "customer.fullName");
 
-		dueDate.setRequired(true);
-		binder.bind(dueDate, "dueDate");
+        customerNumber.setRequired(true);
+        binder.bind(customerNumber, "customer.phoneNumber");
 
-		SortedSet<LocalTime> timeValues = IntStream.rangeClosed(8, 16).mapToObj(i -> LocalTime.of(i, 0))
-				.collect(Collectors.toCollection(TreeSet::new));
-		dueTime.setItems(timeValues);
-		dueTime.setItemLabelGenerator(localTimeConverter::encode);
-		binder.bind(dueTime, "dueTime");
+        binder.bind(customerDetails, "customer.details");
 
-		pickupLocation.setItemLabelGenerator(DataProviderUtil.createItemLabelGenerator(PickupLocation::getName));
-		pickupLocation.setDataProvider(locationDataProvider);
-		binder.bind(pickupLocation, "pickupLocation");
-		pickupLocation.setRequired(false);
+        itemsEditor.setRequiredIndicatorVisible(true);
+        binder.bind(itemsEditor, "items");
 
-		customerName.setRequired(true);
-		binder.bind(customerName, "customer.fullName");
+        itemsEditor.addPriceChangeListener(e -> setTotalPrice(e.getTotalPrice()));
 
-		customerNumber.setRequired(true);
-		binder.bind(customerNumber, "customer.phoneNumber");
+        ComponentUtil.addListener(itemsEditor, ValueChangeEvent.class, e -> review.setEnabled(hasChanges()));
+        binder.addValueChangeListener(e -> {
+            if (e.getOldValue() != null) {
+                review.setEnabled(hasChanges());
+            }
+        });
+    }
 
-		binder.bind(customerDetails, "customer.details");
+    public boolean hasChanges() {
+        return binder.hasChanges() || itemsEditor.hasChanges();
+    }
 
-		itemsEditor.setRequiredIndicatorVisible(true);
-		binder.bind(itemsEditor, "items");
+    public void clear() {
+        binder.readBean(null);
+        itemsEditor.setValue(null);
+    }
 
-		itemsEditor.addPriceChangeListener(e -> setTotalPrice(e.getTotalPrice()));
+    public void close() {
+        setTotalPrice(0);
+    }
 
-		ComponentUtil.addListener(itemsEditor, ValueChangeEvent.class, e -> review.setEnabled(hasChanges()));
-		binder.addValueChangeListener(e -> {
-			if (e.getOldValue() != null) {
-				review.setEnabled(hasChanges());
-			}
-		});
-	}
+    public void write(Order order) throws ValidationException {
+        binder.writeBean(order);
+    }
 
-	public boolean hasChanges() {
-		return binder.hasChanges() || itemsEditor.hasChanges();
-	}
+    public void read(Order order, boolean isNew) {
+        binder.readBean(order);
 
-	public void clear() {
-		binder.readBean(null);
-		itemsEditor.setValue(null);
-	}
+        this.orderNumber.setText(isNew ? "" : order.getId().toString());
+        title.setVisible(isNew);
+        metaContainer.setVisible(!isNew);
 
-	public void close() {
-		setTotalPrice(0);
-	}
+        if (order.getState() != null) {
+            getModel().setStatus(order.getState().name());
+        }
 
-	public void write(Order order) throws ValidationException {
-		binder.writeBean(order);
-	}
+        review.setEnabled(false);
+    }
 
-	public void read(Order order, boolean isNew) {
-		binder.readBean(order);
+    public Stream<HasValue<?, ?>> validate() {
+        Stream<HasValue<?, ?>> errorFields = binder.validate().getFieldValidationErrors().stream()
+                .map(BindingValidationStatus::getField);
 
-		this.orderNumber.setText(isNew ? "" : order.getId().toString());
-		title.setVisible(isNew);
-		metaContainer.setVisible(!isNew);
+        return Stream.concat(errorFields, itemsEditor.validate());
+    }
 
-		if (order.getState() != null) {
-			getModel().setStatus(order.getState().name());
-		}
+    public Registration addReviewListener(ComponentEventListener<ReviewEvent> listener) {
+        return addListener(ReviewEvent.class, listener);
+    }
 
-		review.setEnabled(false);
-	}
+    public Registration addCancelListener(ComponentEventListener<CancelEvent> listener) {
+        return addListener(CancelEvent.class, listener);
+    }
 
-	public Stream<HasValue<?, ?>> validate() {
-		Stream<HasValue<?, ?>> errorFields = binder.validate().getFieldValidationErrors().stream()
-				.map(BindingValidationStatus::getField);
+    private void setTotalPrice(int totalPrice) {
+        getModel().setTotalPrice(FormattingUtils.formatAsCurrency(totalPrice));
+    }
 
-		return Stream.concat(errorFields, itemsEditor.validate());
-	}
+    public void setCurrentUser(User currentUser) {
+        this.currentUser = currentUser;
+    }
 
-	public Registration addReviewListener(ComponentEventListener<ReviewEvent> listener) {
-		return addListener(ReviewEvent.class, listener);
-	}
+    public interface Model extends TemplateModel {
+        void setTotalPrice(String totalPrice);
 
-	public Registration addCancelListener(ComponentEventListener<CancelEvent> listener) {
-		return addListener(CancelEvent.class, listener);
-	}
-
-	private void setTotalPrice(int totalPrice) {
-		getModel().setTotalPrice(FormattingUtils.formatAsCurrency(totalPrice));
-	}
-
-	public void setCurrentUser(User currentUser) {
-		this.currentUser = currentUser;
-	}
+        void setStatus(String status);
+    }
 }

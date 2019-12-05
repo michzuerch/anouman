@@ -2,23 +2,23 @@ package com.gmail.michzuerch.anouman.ui.views.storefront.beans;
 
 public class OrdersCountDataWithChart extends OrdersCountData {
 
-	private Integer overall;
+    private Integer overall;
 
-	public OrdersCountDataWithChart() {
+    public OrdersCountDataWithChart() {
 
-	}
+    }
 
-	public OrdersCountDataWithChart(String title, String subtitle, Integer count, Integer overall) {
-		super(title, subtitle, count);
-		this.overall = overall;
-	}
+    public OrdersCountDataWithChart(String title, String subtitle, Integer count, Integer overall) {
+        super(title, subtitle, count);
+        this.overall = overall;
+    }
 
-	public Integer getOverall() {
-		return overall;
-	}
+    public Integer getOverall() {
+        return overall;
+    }
 
-	public void setOverall(Integer overall) {
-		this.overall = overall;
-	}
+    public void setOverall(Integer overall) {
+        this.overall = overall;
+    }
 
 }

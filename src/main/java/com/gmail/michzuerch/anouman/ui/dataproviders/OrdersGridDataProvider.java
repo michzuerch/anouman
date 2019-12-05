@@ -1,25 +1,24 @@
 package com.gmail.michzuerch.anouman.ui.dataproviders;
 
-import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Consumer;
-
+import com.gmail.michzuerch.anouman.backend.data.entity.Order;
+import com.gmail.michzuerch.anouman.backend.service.OrderService;
+import com.gmail.michzuerch.anouman.ui.i18n.I18nConst;
+import com.vaadin.flow.data.provider.Query;
+import com.vaadin.flow.data.provider.QuerySortOrder;
+import com.vaadin.flow.data.provider.QuerySortOrderBuilder;
+import com.vaadin.flow.spring.annotation.SpringComponent;
+import com.vaadin.flow.spring.annotation.UIScope;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.vaadin.artur.spring.dataprovider.FilterablePageableDataProvider;
 
-import com.vaadin.flow.data.provider.Query;
-import com.vaadin.flow.data.provider.QuerySortOrder;
-import com.vaadin.flow.data.provider.QuerySortOrderBuilder;
-import com.vaadin.flow.spring.annotation.SpringComponent;
-import com.vaadin.flow.spring.annotation.UIScope;
-import com.gmail.michzuerch.anouman.backend.data.entity.Order;
-import com.gmail.michzuerch.anouman.backend.service.OrderService;
-import com.gmail.michzuerch.anouman.ui.i18n.I18nConst;
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 /**
  * A pageable order data provider.
@@ -28,90 +27,88 @@ import com.gmail.michzuerch.anouman.ui.i18n.I18nConst;
 @UIScope
 public class OrdersGridDataProvider extends FilterablePageableDataProvider<Order, OrdersGridDataProvider.OrderFilter> {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
+    private final OrderService orderService;
+    private List<QuerySortOrder> defaultSortOrders;
+    private Consumer<Page<Order>> pageObserver;
+    @Autowired
+    public OrdersGridDataProvider(OrderService orderService) {
+        this.orderService = orderService;
+        setSortOrders(I18nConst.DEFAULT_SORT_DIRECTION, I18nConst.ORDER_SORT_FIELDS);
+    }
 
-	public static class OrderFilter implements Serializable {
-		private static final long serialVersionUID = 1L;
-		private String filter;
-		private boolean showPrevious;
+    private void setSortOrders(Sort.Direction direction, String[] properties) {
+        QuerySortOrderBuilder builder = new QuerySortOrderBuilder();
+        for (String property : properties) {
+            if (direction.isAscending()) {
+                builder.thenAsc(property);
+            } else {
+                builder.thenDesc(property);
+            }
+        }
+        defaultSortOrders = builder.build();
+    }
 
-		public String getFilter() {
-			return filter;
-		}
+    @Override
+    protected Page<Order> fetchFromBackEnd(Query<Order, OrderFilter> query, Pageable pageable) {
+        OrderFilter filter = query.getFilter().orElse(OrderFilter.getEmptyFilter());
+        Page<Order> page = orderService.findAnyMatchingAfterDueDate(Optional.ofNullable(filter.getFilter()),
+                getFilterDate(filter.isShowPrevious()), pageable);
+        if (pageObserver != null) {
+            pageObserver.accept(page);
+        }
+        return page;
+    }
 
-		public boolean isShowPrevious() {
-			return showPrevious;
-		}
+    @Override
+    protected List<QuerySortOrder> getDefaultSortOrders() {
+        return defaultSortOrders;
+    }
 
-		public OrderFilter(String filter, boolean showPrevious) {
-			this.filter = filter;
-			this.showPrevious = showPrevious;
-		}
+    @Override
+    protected int sizeInBackEnd(Query<Order, OrderFilter> query) {
+        OrderFilter filter = query.getFilter().orElse(OrderFilter.getEmptyFilter());
+        return (int) orderService
+                .countAnyMatchingAfterDueDate(Optional.ofNullable(filter.getFilter()), getFilterDate(filter.isShowPrevious()));
+    }
 
-		public static OrderFilter getEmptyFilter() {
-			return new OrderFilter("", false);
-		}
-	}
+    private Optional<LocalDate> getFilterDate(boolean showPrevious) {
+        if (showPrevious) {
+            return Optional.empty();
+        }
 
-	private final OrderService orderService;
-	private List<QuerySortOrder> defaultSortOrders;
-	private Consumer<Page<Order>> pageObserver;
-	
-	@Autowired
-	public OrdersGridDataProvider(OrderService orderService) {
-		this.orderService = orderService;
-		setSortOrders(I18nConst.DEFAULT_SORT_DIRECTION, I18nConst.ORDER_SORT_FIELDS);
-	}
+        return Optional.of(LocalDate.now().minusDays(1));
+    }
 
-	private void setSortOrders(Sort.Direction direction, String[] properties) {
-		QuerySortOrderBuilder builder = new QuerySortOrderBuilder();
-		for (String property : properties) {
-			if (direction.isAscending()) {
-				builder.thenAsc(property);
-			} else {
-				builder.thenDesc(property);
-			}
-		}
-		defaultSortOrders = builder.build();
-	}
+    public void setPageObserver(Consumer<Page<Order>> pageObserver) {
+        this.pageObserver = pageObserver;
+    }
 
-	@Override
-	protected Page<Order> fetchFromBackEnd(Query<Order, OrderFilter> query, Pageable pageable) {
-		OrderFilter filter = query.getFilter().orElse(OrderFilter.getEmptyFilter());
-		Page<Order> page = orderService.findAnyMatchingAfterDueDate(Optional.ofNullable(filter.getFilter()),
-				getFilterDate(filter.isShowPrevious()), pageable);
-		if (pageObserver != null) {
-			pageObserver.accept(page);
-		}
-		return page;
-	}
+    @Override
+    public Object getId(Order item) {
+        return item.getId();
+    }
 
-	@Override
-	protected List<QuerySortOrder> getDefaultSortOrders() {
-		return defaultSortOrders;
-	}
+    public static class OrderFilter implements Serializable {
+        private static final long serialVersionUID = 1L;
+        private String filter;
+        private boolean showPrevious;
 
-	@Override
-	protected int sizeInBackEnd(Query<Order, OrderFilter> query) {
-		OrderFilter filter = query.getFilter().orElse(OrderFilter.getEmptyFilter());
-		return (int) orderService
-				.countAnyMatchingAfterDueDate(Optional.ofNullable(filter.getFilter()), getFilterDate(filter.isShowPrevious()));
-	}
+        public OrderFilter(String filter, boolean showPrevious) {
+            this.filter = filter;
+            this.showPrevious = showPrevious;
+        }
 
-	private Optional<LocalDate> getFilterDate(boolean showPrevious) {
-		if (showPrevious) {
-			return Optional.empty();
-		}
+        public static OrderFilter getEmptyFilter() {
+            return new OrderFilter("", false);
+        }
 
-		return Optional.of(LocalDate.now().minusDays(1));
-	}
+        public String getFilter() {
+            return filter;
+        }
 
-	public void setPageObserver(Consumer<Page<Order>> pageObserver) {
-		this.pageObserver = pageObserver;
-	}
-
-	@Override
-	public Object getId(Order item) {
-		return item.getId();
-	}
+        public boolean isShowPrevious() {
+            return showPrevious;
+        }
+    }
 }

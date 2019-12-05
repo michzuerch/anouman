@@ -8,10 +8,10 @@ import org.springframework.dao.DataIntegrityViolationException;
  */
 public class UserFriendlyDataException extends DataIntegrityViolationException {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public UserFriendlyDataException(String message) {
-		super(message);
-	}
+    public UserFriendlyDataException(String message) {
+        super(message);
+    }
 
 }

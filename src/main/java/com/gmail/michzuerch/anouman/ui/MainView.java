@@ -1,14 +1,8 @@
 package com.gmail.michzuerch.anouman.ui;
 
-import static com.gmail.michzuerch.anouman.ui.i18n.I18nConst.TITLE_LOGOUT;
-import static com.gmail.michzuerch.anouman.ui.i18n.I18nConst.TITLE_PRODUCTS;
-import static com.gmail.michzuerch.anouman.ui.i18n.I18nConst.TITLE_DASHBOARD;
-import static com.gmail.michzuerch.anouman.ui.i18n.I18nConst.TITLE_STOREFRONT;
-import static com.gmail.michzuerch.anouman.ui.i18n.I18nConst.TITLE_USERS;
-import static com.gmail.michzuerch.anouman.ui.i18n.I18nConst.VIEWPORT;
-
 import com.gmail.michzuerch.anouman.app.security.SecurityUtils;
 import com.gmail.michzuerch.anouman.ui.components.OfflineBanner;
+import com.gmail.michzuerch.anouman.ui.views.HasConfirmation;
 import com.gmail.michzuerch.anouman.ui.views.admin.products.ProductsView;
 import com.gmail.michzuerch.anouman.ui.views.admin.users.UsersView;
 import com.gmail.michzuerch.anouman.ui.views.dashboard.DashboardView;
@@ -28,111 +22,112 @@ import com.vaadin.flow.router.RouteConfiguration;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.PWA;
 import com.vaadin.flow.server.VaadinServlet;
-import com.gmail.michzuerch.anouman.ui.views.HasConfirmation;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.gmail.michzuerch.anouman.ui.i18n.I18nConst.*;
+
 @Viewport(VIEWPORT)
 @PWA(name = "Anouman Starter", shortName = "anouman-app",
-		startPath = "login",
-		backgroundColor = "#227aef", themeColor = "#227aef",
-		offlinePath = "offline-page.html",
-		offlineResources = {"images/offline.jpg"})
+        startPath = "login",
+        backgroundColor = "#227aef", themeColor = "#227aef",
+        offlinePath = "offline-page.html",
+        offlineResources = {"images/offline.jpg"})
 public class MainView extends AppLayout {
 
-	private static final long serialVersionUID = 1L;
-	private final ConfirmDialog confirmDialog = new ConfirmDialog();
-	private final Tabs menu;
+    private static final long serialVersionUID = 1L;
+    private final ConfirmDialog confirmDialog = new ConfirmDialog();
+    private final Tabs menu;
 
-	public MainView() {
-		// Workaround for https://github.com/vaadin/spring/issues/475
-		new OfflineBanner();
+    public MainView() {
+        // Workaround for https://github.com/vaadin/spring/issues/475
+        new OfflineBanner();
 
-		confirmDialog.setCancelable(true);
-		confirmDialog.setConfirmButtonTheme("raised tertiary error");
-		confirmDialog.setCancelButtonTheme("raised tertiary");
+        confirmDialog.setCancelable(true);
+        confirmDialog.setConfirmButtonTheme("raised tertiary error");
+        confirmDialog.setCancelButtonTheme("raised tertiary");
 
-		this.setDrawerOpened(false);
-		Span appName = new Span("Anouman");
-		appName.addClassName("hide-on-mobile");
+        this.setDrawerOpened(false);
+        Span appName = new Span("Anouman");
+        appName.addClassName("hide-on-mobile");
 
-		menu = createMenuTabs();
+        menu = createMenuTabs();
 
-		this.addToNavbar(appName);
-		this.addToNavbar(true, menu);
-		this.getElement().appendChild(confirmDialog.getElement());
+        this.addToNavbar(appName);
+        this.addToNavbar(true, menu);
+        this.getElement().appendChild(confirmDialog.getElement());
 
-		getElement().addEventListener("search-focus", e -> {
-			getElement().getClassList().add("hide-navbar");
-		});
+        getElement().addEventListener("search-focus", e -> {
+            getElement().getClassList().add("hide-navbar");
+        });
 
-		getElement().addEventListener("search-blur", e -> {
-			getElement().getClassList().remove("hide-navbar");
-		});
-	}
+        getElement().addEventListener("search-blur", e -> {
+            getElement().getClassList().remove("hide-navbar");
+        });
+    }
 
-	@Override
-	protected void afterNavigation() {
-		super.afterNavigation();
-		confirmDialog.setOpened(false);
-		if (getContent() instanceof HasConfirmation) {
-			((HasConfirmation) getContent()).setConfirmDialog(confirmDialog);
-		}
+    private static Tabs createMenuTabs() {
+        final Tabs tabs = new Tabs();
+        tabs.setOrientation(Tabs.Orientation.HORIZONTAL);
+        tabs.add(getAvailableTabs());
+        return tabs;
+    }
 
-		String target = RouteConfiguration.forSessionScope().getUrl(this.getContent().getClass());
-		Optional<Component> tabToSelect = menu.getChildren().filter(tab -> {
-			Component child = tab.getChildren().findFirst().get();
-			return child instanceof RouterLink && ((RouterLink) child).getHref().equals(target);
-		}).findFirst();
-		tabToSelect.ifPresent(tab -> menu.setSelectedTab((Tab)tab));
-	}
+    private static Tab[] getAvailableTabs() {
+        final List<Tab> tabs = new ArrayList<>(4);
+        tabs.add(createTab(VaadinIcon.EDIT, TITLE_STOREFRONT,
+                StorefrontView.class));
+        tabs.add(createTab(VaadinIcon.CLOCK, TITLE_DASHBOARD, DashboardView.class));
+        if (SecurityUtils.isAccessGranted(UsersView.class)) {
+            tabs.add(createTab(VaadinIcon.USER, TITLE_USERS, UsersView.class));
+        }
+        if (SecurityUtils.isAccessGranted(ProductsView.class)) {
+            tabs.add(createTab(VaadinIcon.CALENDAR, TITLE_PRODUCTS, ProductsView.class));
+        }
+        final String contextPath = VaadinServlet.getCurrent().getServletContext().getContextPath();
+        final Tab logoutTab = createTab(createLogoutLink(contextPath));
+        tabs.add(logoutTab);
+        return tabs.toArray(new Tab[tabs.size()]);
+    }
 
-	private static Tabs createMenuTabs() {
-		final Tabs tabs = new Tabs();
-		tabs.setOrientation(Tabs.Orientation.HORIZONTAL);
-		tabs.add(getAvailableTabs());
-		return tabs;
-	}
+    private static Tab createTab(VaadinIcon icon, String title, Class<? extends Component> viewClass) {
+        return createTab(populateLink(new RouterLink(null, viewClass), icon, title));
+    }
 
-	private static Tab[] getAvailableTabs() {
-		final List<Tab> tabs = new ArrayList<>(4);
-		tabs.add(createTab(VaadinIcon.EDIT, TITLE_STOREFRONT,
-						StorefrontView.class));
-		tabs.add(createTab(VaadinIcon.CLOCK,TITLE_DASHBOARD, DashboardView.class));
-		if (SecurityUtils.isAccessGranted(UsersView.class)) {
-			tabs.add(createTab(VaadinIcon.USER,TITLE_USERS, UsersView.class));
-		}
-		if (SecurityUtils.isAccessGranted(ProductsView.class)) {
-			tabs.add(createTab(VaadinIcon.CALENDAR, TITLE_PRODUCTS, ProductsView.class));
-		}
-		final String contextPath = VaadinServlet.getCurrent().getServletContext().getContextPath();
-		final Tab logoutTab = createTab(createLogoutLink(contextPath));
-		tabs.add(logoutTab);
-		return tabs.toArray(new Tab[tabs.size()]);
-	}
+    private static Tab createTab(Component content) {
+        final Tab tab = new Tab();
+        tab.addThemeVariants(TabVariant.LUMO_ICON_ON_TOP);
+        tab.add(content);
+        return tab;
+    }
 
-	private static Tab createTab(VaadinIcon icon, String title, Class<? extends Component> viewClass) {
-		return createTab(populateLink(new RouterLink(null, viewClass), icon, title));
-	}
+    private static Anchor createLogoutLink(String contextPath) {
+        final Anchor a = populateLink(new Anchor(), VaadinIcon.ARROW_RIGHT, TITLE_LOGOUT);
+        a.setHref(contextPath + "/logout");
+        return a;
+    }
 
-	private static Tab createTab(Component content) {
-		final Tab tab = new Tab();
-		tab.addThemeVariants(TabVariant.LUMO_ICON_ON_TOP);
-		tab.add(content);
-		return tab;
-	}
+    private static <T extends HasComponents> T populateLink(T a, VaadinIcon icon, String title) {
+        a.add(icon.create());
+        a.add(title);
+        return a;
+    }
 
-	private static Anchor createLogoutLink(String contextPath) {
-		final Anchor a = populateLink(new Anchor(), VaadinIcon.ARROW_RIGHT, TITLE_LOGOUT);
-		a.setHref(contextPath + "/logout");
-		return a;
-	}
+    @Override
+    protected void afterNavigation() {
+        super.afterNavigation();
+        confirmDialog.setOpened(false);
+        if (getContent() instanceof HasConfirmation) {
+            ((HasConfirmation) getContent()).setConfirmDialog(confirmDialog);
+        }
 
-	private static <T extends HasComponents> T populateLink(T a, VaadinIcon icon, String title) {
-		a.add(icon.create());
-		a.add(title);
-		return a;
-	}
+        String target = RouteConfiguration.forSessionScope().getUrl(this.getContent().getClass());
+        Optional<Component> tabToSelect = menu.getChildren().filter(tab -> {
+            Component child = tab.getChildren().findFirst().get();
+            return child instanceof RouterLink && ((RouterLink) child).getHref().equals(target);
+        }).findFirst();
+        tabToSelect.ifPresent(tab -> menu.setSelectedTab((Tab) tab));
+    }
 }

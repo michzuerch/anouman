@@ -15,10 +15,10 @@ import org.springframework.context.annotation.Scope;
 @Configuration
 public class PresenterFactory {
 
-	@Bean
-	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-	public EntityPresenter<Order, StorefrontView> orderEntityPresenter(OrderService crudService, CurrentUser currentUser) {
-		return new EntityPresenter<>(crudService, currentUser);
-	}
+    @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    public EntityPresenter<Order, StorefrontView> orderEntityPresenter(OrderService crudService, CurrentUser currentUser) {
+        return new EntityPresenter<>(crudService, currentUser);
+    }
 
 }

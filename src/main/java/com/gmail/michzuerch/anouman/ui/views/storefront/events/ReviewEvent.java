@@ -5,9 +5,9 @@ import com.vaadin.flow.component.ComponentEvent;
 
 public class ReviewEvent extends ComponentEvent<OrderEditor> {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public ReviewEvent(OrderEditor component) {
-		super(component, false);
-	}
+    public ReviewEvent(OrderEditor component) {
+        super(component, false);
+    }
 }

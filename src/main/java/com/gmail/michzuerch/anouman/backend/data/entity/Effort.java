@@ -1,5 +1,6 @@
 package com.gmail.michzuerch.anouman.backend.data.entity;
 
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.Entity;
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 
 @Entity(name = "Effort")
 @Data
+@Builder
 public class Effort extends AbstractEntity {
     @NotNull
     @Size(min = 3)

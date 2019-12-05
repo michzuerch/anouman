@@ -1,5 +1,6 @@
 package com.gmail.michzuerch.anouman.backend.data.entity;
 
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -11,6 +12,7 @@ import java.util.List;
 @NamedEntityGraphs({@NamedEntityGraph(name = "ArticleHasArticlePictures", attributeNodes = {
         @NamedAttributeNode("articlePictures")})})
 @Data
+@Builder
 public class Article extends AbstractEntity {
     @NotNull
     private String description;

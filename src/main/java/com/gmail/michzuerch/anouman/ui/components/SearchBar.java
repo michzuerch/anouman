@@ -1,12 +1,6 @@
 package com.gmail.michzuerch.anouman.ui.components;
 
-import com.vaadin.flow.component.ClickEvent;
-import com.vaadin.flow.component.ComponentEvent;
-import com.vaadin.flow.component.ComponentEventListener;
-import com.vaadin.flow.component.ComponentUtil;
-import com.vaadin.flow.component.DebounceSettings;
-import com.vaadin.flow.component.DomEvent;
-import com.vaadin.flow.component.Tag;
+import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.polymertemplate.Id;
@@ -20,85 +14,82 @@ import com.vaadin.flow.templatemodel.TemplateModel;
 @JsModule("./src/components/search-bar.js")
 public class SearchBar extends PolymerTemplate<SearchBar.Model> {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
+    @Id("field")
+    private TextField textField;
+    @Id("clear")
+    private Button clearButton;
+    @Id("action")
+    private Button actionButton;
 
-	public interface Model extends TemplateModel {
-		boolean isCheckboxChecked();
+    public SearchBar() {
+        textField.setValueChangeMode(ValueChangeMode.EAGER);
+        ComponentUtil.addListener(textField, SearchValueChanged.class,
+                e -> fireEvent(new FilterChanged(this, false)));
+        clearButton.addClickListener(e -> {
+            textField.clear();
+            getModel().setCheckboxChecked(false);
+        });
 
-		void setCheckboxChecked(boolean checkboxChecked);
+        getElement().addPropertyChangeListener("checkboxChecked", e -> fireEvent(new FilterChanged(this, false)));
+    }
 
-		void setCheckboxText(String checkboxText);
+    public String getFilter() {
+        return textField.getValue();
+    }
 
-		void setButtonText(String actionText);
-	}
+    public boolean isCheckboxChecked() {
+        return getModel().isCheckboxChecked();
+    }
 
-	@Id("field")
-	private TextField textField;
+    public void setPlaceHolder(String placeHolder) {
+        textField.setPlaceholder(placeHolder);
+    }
 
-	@Id("clear")
-	private Button clearButton;
+    public void setActionText(String actionText) {
+        getModel().setButtonText(actionText);
+    }
 
-	@Id("action")
-	private Button actionButton;
+    public void setCheckboxText(String checkboxText) {
+        getModel().setCheckboxText(checkboxText);
+    }
 
-	public SearchBar() {
-		textField.setValueChangeMode(ValueChangeMode.EAGER);
-		ComponentUtil.addListener(textField, SearchValueChanged.class,
-				e -> fireEvent(new FilterChanged(this, false)));
-		clearButton.addClickListener(e -> {
-			textField.clear();
-			getModel().setCheckboxChecked(false);
-		});
+    public void addFilterChangeListener(ComponentEventListener<FilterChanged> listener) {
+        this.addListener(FilterChanged.class, listener);
+    }
 
-		getElement().addPropertyChangeListener("checkboxChecked", e -> fireEvent(new FilterChanged(this, false)));
-	}
+    public void addActionClickListener(ComponentEventListener<ClickEvent<Button>> listener) {
+        actionButton.addClickListener(listener);
+    }
 
-	public String getFilter() {
-		return textField.getValue();
-	}
+    public Button getActionButton() {
+        return actionButton;
+    }
 
-	public boolean isCheckboxChecked() {
-		return getModel().isCheckboxChecked();
-	}
+    public interface Model extends TemplateModel {
+        boolean isCheckboxChecked();
 
-	public void setPlaceHolder(String placeHolder) {
-		textField.setPlaceholder(placeHolder);
-	}
+        void setCheckboxChecked(boolean checkboxChecked);
 
-	public void setActionText(String actionText) {
-		getModel().setButtonText(actionText);
-	}
+        void setCheckboxText(String checkboxText);
 
-	public void setCheckboxText(String checkboxText) {
-		getModel().setCheckboxText(checkboxText);
-	}
+        void setButtonText(String actionText);
+    }
 
-	public void addFilterChangeListener(ComponentEventListener<FilterChanged> listener) {
-		this.addListener(FilterChanged.class, listener);
-	}
+    @DomEvent(value = "value-changed", debounce = @DebounceSettings(timeout = 300, phases = DebouncePhase.TRAILING))
+    public static class SearchValueChanged extends ComponentEvent<TextField> {
+        private static final long serialVersionUID = 1L;
 
-	public void addActionClickListener(ComponentEventListener<ClickEvent<Button>> listener) {
-		actionButton.addClickListener(listener);
-	}
+        public SearchValueChanged(TextField source, boolean fromClient) {
+            super(source, fromClient);
+        }
+    }
 
-	public Button getActionButton() {
-		return actionButton;
-	}
+    public static class FilterChanged extends ComponentEvent<SearchBar> {
+        private static final long serialVersionUID = 1L;
 
-	@DomEvent(value = "value-changed", debounce = @DebounceSettings(timeout = 300, phases = DebouncePhase.TRAILING))
-	public static class SearchValueChanged extends ComponentEvent<TextField> {
-		private static final long serialVersionUID = 1L;
-
-		public SearchValueChanged(TextField source, boolean fromClient) {
-			super(source, fromClient);
-		}
-	}
-
-	public static class FilterChanged extends ComponentEvent<SearchBar> {
-		private static final long serialVersionUID = 1L;
-
-		public FilterChanged(SearchBar source, boolean fromClient) {
-			super(source, fromClient);
-		}
-	}
+        public FilterChanged(SearchBar source, boolean fromClient) {
+            super(source, fromClient);
+        }
+    }
 }

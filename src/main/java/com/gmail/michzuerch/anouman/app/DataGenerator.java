@@ -1,5 +1,15 @@
 package com.gmail.michzuerch.anouman.app;
 
+import com.gmail.michzuerch.anouman.backend.data.OrderState;
+import com.gmail.michzuerch.anouman.backend.data.Role;
+import com.gmail.michzuerch.anouman.backend.data.entity.*;
+import com.gmail.michzuerch.anouman.backend.repositories.*;
+import com.vaadin.flow.spring.annotation.SpringComponent;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.util.StopWatch;
+
+import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -11,45 +21,20 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
 
-import javax.annotation.PostConstruct;
-
-import com.gmail.michzuerch.anouman.backend.data.OrderState;
-import com.gmail.michzuerch.anouman.backend.data.Role;
-import com.gmail.michzuerch.anouman.backend.repositories.AddressRepository;
-import com.gmail.michzuerch.anouman.backend.repositories.InvoiceRepository;
-import com.gmail.michzuerch.anouman.backend.repositories.OrderRepository;
-import com.gmail.michzuerch.anouman.backend.repositories.PickupLocationRepository;
-import com.gmail.michzuerch.anouman.backend.repositories.ProductRepository;
-import com.gmail.michzuerch.anouman.backend.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.util.StopWatch;
-
-import com.vaadin.flow.spring.annotation.SpringComponent;
-import com.gmail.michzuerch.anouman.backend.data.entity.Address;
-import com.gmail.michzuerch.anouman.backend.data.entity.Customer;
-import com.gmail.michzuerch.anouman.backend.data.entity.HistoryItem;
-import com.gmail.michzuerch.anouman.backend.data.entity.Invoice;
-import com.gmail.michzuerch.anouman.backend.data.entity.Order;
-import com.gmail.michzuerch.anouman.backend.data.entity.OrderItem;
-import com.gmail.michzuerch.anouman.backend.data.entity.PickupLocation;
-import com.gmail.michzuerch.anouman.backend.data.entity.Product;
-import com.gmail.michzuerch.anouman.backend.data.entity.User;
-
 @SpringComponent
 public class DataGenerator implements HasLogger {
 
-    private static final String[] FILLING = new String[] { "Strawberry", "Chocolate", "Blueberry", "Raspberry",
-            "Vanilla" };
-    private static final String[] TYPE = new String[] { "Cake", "Pastry", "Tart", "Muffin", "Biscuit", "Bread", "Bagel",
-            "Bun", "Brownie", "Cookie", "Cracker", "Cheese Cake" };
-    private static final String[] FIRST_NAME = new String[] { "Ori", "Amanda", "Octavia", "Laurel", "Lael", "Delilah",
+    private static final String[] FILLING = new String[]{"Strawberry", "Chocolate", "Blueberry", "Raspberry",
+            "Vanilla"};
+    private static final String[] TYPE = new String[]{"Cake", "Pastry", "Tart", "Muffin", "Biscuit", "Bread", "Bagel",
+            "Bun", "Brownie", "Cookie", "Cracker", "Cheese Cake"};
+    private static final String[] FIRST_NAME = new String[]{"Ori", "Amanda", "Octavia", "Laurel", "Lael", "Delilah",
             "Jason", "Skyler", "Arsenio", "Haley", "Lionel", "Sylvia", "Jessica", "Lester", "Ferdinand", "Elaine",
-            "Griffin", "Kerry", "Dominique" };
-    private static final String[] LAST_NAME = new String[] { "Carter", "Castro", "Rich", "Irwin", "Moore", "Hendricks",
+            "Griffin", "Kerry", "Dominique"};
+    private static final String[] LAST_NAME = new String[]{"Carter", "Castro", "Rich", "Irwin", "Moore", "Hendricks",
             "Huber", "Patton", "Wilkinson", "Thornton", "Nunez", "Macias", "Gallegos", "Blevins", "Mejia", "Pickett",
             "Whitney", "Farmer", "Henry", "Chen", "Macias", "Rowland", "Pierce", "Cortez", "Noble", "Howard", "Nixon",
-            "Mcbride", "Leblanc", "Russell", "Carver", "Benton", "Maldonado", "Lyons" };
+            "Mcbride", "Leblanc", "Russell", "Carver", "Benton", "Maldonado", "Lyons"};
 
     private final Random random = new Random(1L);
 
@@ -63,8 +48,8 @@ public class DataGenerator implements HasLogger {
 
     @Autowired
     public DataGenerator(OrderRepository orderRepository, UserRepository userRepository,
-            ProductRepository productRepository, PickupLocationRepository pickupLocationRepository,
-            AddressRepository addressRepository, InvoiceRepository invoiceRepository, PasswordEncoder passwordEncoder) {
+                         ProductRepository productRepository, PickupLocationRepository pickupLocationRepository,
+                         AddressRepository addressRepository, InvoiceRepository invoiceRepository, PasswordEncoder passwordEncoder) {
         this.orderRepository = orderRepository;
         this.userRepository = userRepository;
         this.productRepository = productRepository;
@@ -113,12 +98,22 @@ public class DataGenerator implements HasLogger {
     }
 
     private void createAddressesAndInvoices(AddressRepository addressRepository, InvoiceRepository invoiceRepository) {
-        Address address = new Address("Internettechnik GmnH", "Herr", "Michael", "Zürcher", "Industriestrasse 5",
-                "8308", "Effretikon", BigDecimal.valueOf(110l));
+        Address address = Address.builder()
+                .companyName("Internettechnik GmbH")
+                .salutation("Herr")
+                .firstname("Michael").lastname("Zürcher").street("Industriestrasse 5")
+                .zipcode("83234").city("Pfarrenkapp").hourlyRate(BigDecimal.valueOf(150))
+                .build();
 
         address = addressRepository.save(address);
 
-        Invoice invoice = new Invoice(LocalDate.now(),"Testinvoice",30,false,true,address);
+        Invoice invoice = Invoice.builder().address(address)
+                .date(LocalDate.now())
+                .description("Testinvoice")
+                .forwarded(true)
+                .paid(false)
+                .timeForPayment(60)
+                .build();
         invoice = invoiceRepository.save(invoice);
 
     }
@@ -138,7 +133,7 @@ public class DataGenerator implements HasLogger {
     }
 
     private void createOrders(OrderRepository orderRepo, Supplier<Product> productSupplier,
-            Supplier<PickupLocation> pickupLocationSupplier, User barista, User baker) {
+                              Supplier<PickupLocation> pickupLocationSupplier, User barista, User baker) {
         int yearsToInclude = 2;
         LocalDate now = LocalDate.now();
         LocalDate oldestDate = LocalDate.of(now.getYear() - yearsToInclude, 1, 1);
@@ -165,7 +160,7 @@ public class DataGenerator implements HasLogger {
     }
 
     private Order createOrder(Supplier<Product> productSupplier, Supplier<PickupLocation> pickupLocationSupplier,
-            User barista, User baker, LocalDate dueDate) {
+                              User barista, User baker, LocalDate dueDate) {
         Order order = new Order(barista);
 
         fillCustomer(order.getCustomer());
@@ -376,7 +371,7 @@ public class DataGenerator implements HasLogger {
     }
 
     private User createUser(String email, String firstName, String lastName, String passwordHash, String role,
-            boolean locked) {
+                            boolean locked) {
         User user = new User();
         user.setEmail(email);
         user.setFirstName(firstName);
