@@ -1,0 +1,29 @@
+server.compression:
+  enabled: true
+  mime-types: application/json,application/xml,text/html,text/xml,text/plain,application/javascript,text/css
+
+security.basic.enabled: false
+
+server.tomcat.uri-encoding: UTF-8
+
+spring.jackson.serialization.write_dates_as_timestamps: false
+
+logging.logging.level.org:
+  athmosphere : warn
+  hibernate.SQL : warn
+
+vaadin.compatibilityMode: false
+
+spring.h2.console:
+  enabled: true
+  path: /h2-console
+
+spring.datasource:
+  url: jdbc:h2:mem:anouman;DB_CLOSE_ON_EXIT=FALSE;DB_CLOSE_DELAY=-1;
+  driverClassName: org.h2.Driver
+  username: sa
+  password: password
+
+spring.jpa:
+  database-platform: org.hibernate.dialect.H2Dialect
+  hibernate.ddl-auto: update
