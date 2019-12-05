@@ -1,48 +1,47 @@
 package com.gmail.michzuerch.anouman.backend.data.entity;
 
-import java.io.Serializable;
-import java.util.Objects;
-
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
+import java.io.Serializable;
+import java.util.Objects;
 
 @MappedSuperclass
 public abstract class AbstractEntity implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue
-	private Long id;
+    @Id
+    @GeneratedValue
+    private Long id;
 
-	@Version
-	private int version;
+    @Version
+    private int version;
 
-	public Long getId() {
-		return id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public int getVersion() {
-		return version;
-	}
+    public int getVersion() {
+        return version;
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(id, version);
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, version);
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
-		AbstractEntity that = (AbstractEntity) o;
-		return version == that.version &&
-				Objects.equals(id, that.id);
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        AbstractEntity that = (AbstractEntity) o;
+        return version == that.version &&
+                Objects.equals(id, that.id);
+    }
 }

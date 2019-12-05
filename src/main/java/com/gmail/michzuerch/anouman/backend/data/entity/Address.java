@@ -1,21 +1,14 @@
 package com.gmail.michzuerch.anouman.backend.data.entity;
 
+import lombok.Data;
+
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Objects;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.NamedAttributeNode;
-import javax.persistence.NamedEntityGraph;
-import javax.persistence.NamedEntityGraphs;
-import javax.persistence.OneToMany;
-import javax.persistence.Transient;
-import lombok.Data;
 
 @Entity(name = "Address")
 @NamedEntityGraphs({
-        @NamedEntityGraph(name = "AddressHasInvoices", attributeNodes = { @NamedAttributeNode("invoices") }) })
+        @NamedEntityGraph(name = "AddressHasInvoices", attributeNodes = {@NamedAttributeNode("invoices")})})
 @Data
 public class Address extends AbstractEntity {
     private String companyName;

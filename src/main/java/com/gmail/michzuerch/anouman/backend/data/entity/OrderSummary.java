@@ -1,25 +1,25 @@
 package com.gmail.michzuerch.anouman.backend.data.entity;
 
+import com.gmail.michzuerch.anouman.backend.data.OrderState;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-import com.gmail.michzuerch.anouman.backend.data.OrderState;
-
 public interface OrderSummary {
-	Long getId();
+    Long getId();
 
-	OrderState getState();
+    OrderState getState();
 
-	Customer getCustomer();
+    Customer getCustomer();
 
-	List<OrderItem> getItems();
+    List<OrderItem> getItems();
 
-	LocalDate getDueDate();
+    LocalDate getDueDate();
 
-	LocalTime getDueTime();
+    LocalTime getDueTime();
 
-	PickupLocation getPickupLocation();
+    PickupLocation getPickupLocation();
 
-	Integer getTotalPrice();
+    Integer getTotalPrice();
 }

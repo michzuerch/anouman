@@ -1,35 +1,26 @@
-
 package com.gmail.michzuerch.anouman.backend.data.entity;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import lombok.Data;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedAttributeNode;
-import javax.persistence.NamedEntityGraph;
-import javax.persistence.NamedEntityGraphs;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
-import lombok.Data;
+import java.util.ArrayList;
+import java.util.List;
 
-@Entity(name = "Bookkeeping") 
-@NamedEntityGraphs({ 
-    @NamedEntityGraph(
-        name = "BookkeepingHasKontoklasses", 
-        attributeNodes = { @NamedAttributeNode("kontoklasses") }),
-    @NamedEntityGraph(
-        name = "BookkeepingHasMehrwertsteuercodes", 
-        attributeNodes = { @NamedAttributeNode("mehrwertsteuercodes") }),
-    @NamedEntityGraph(
-        name = "BookkeepingHasBookEntries", 
-        attributeNodes = { @NamedAttributeNode("bookEntries") })
+@Entity(name = "Bookkeeping")
+@NamedEntityGraphs({
+        @NamedEntityGraph(
+                name = "BookkeepingHasKontoklasses",
+                attributeNodes = {@NamedAttributeNode("kontoklasses")}),
+        @NamedEntityGraph(
+                name = "BookkeepingHasMehrwertsteuercodes",
+                attributeNodes = {@NamedAttributeNode("mehrwertsteuercodes")}),
+        @NamedEntityGraph(
+                name = "BookkeepingHasBookEntries",
+                attributeNodes = {@NamedAttributeNode("bookEntries")})
 })
 @Data
 public class Bookkeeping extends AbstractEntity {

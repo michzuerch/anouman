@@ -1,17 +1,14 @@
-
 package com.gmail.michzuerch.anouman.backend.data.entity;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Objects;
+import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import lombok.Data;
+import java.time.LocalDateTime;
 
-@Entity(name = "Effort") 
+@Entity(name = "Effort")
 @Data
 public class Effort extends AbstractEntity {
     @NotNull

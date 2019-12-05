@@ -1,14 +1,12 @@
-
 package com.gmail.michzuerch.anouman.backend.data.entity;
 
-import java.time.LocalDate;
-import java.util.Objects;
+import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
-import lombok.Data;
+import java.time.LocalDate;
 
 @Entity(name = "Unterbuchung")
 @Data
@@ -30,5 +28,5 @@ public class Unterbuchung extends AbstractEntity {
 
     @ManyToOne
     @JoinColumn(name = "BUCHUNG_ID", nullable = false)
-    private Buchung buchung;
+    private BookEntry buchung;
 }
