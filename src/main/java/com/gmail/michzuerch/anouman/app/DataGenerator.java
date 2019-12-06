@@ -98,7 +98,7 @@ public class DataGenerator implements HasLogger {
     }
 
     private void createAddressesAndInvoices(AddressRepository addressRepository, InvoiceRepository invoiceRepository) {
-        Address address = Address.builder()
+        Address address = new Address.Builder()
                 .companyName("Internettechnik GmbH")
                 .salutation("Herr")
                 .firstname("Michael").lastname("Zürcher").street("Industriestrasse 5")
@@ -108,7 +108,7 @@ public class DataGenerator implements HasLogger {
                       
         address = addressRepository.save(address);
 
-        Invoice invoice = Invoice.builder().address(address)
+        Invoice invoice = new Invoice.Builder().address(address)
                 .date(LocalDate.now())
                 .description("Testinvoice")
                 .forwarded(true)
