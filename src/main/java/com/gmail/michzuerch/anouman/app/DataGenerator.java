@@ -105,7 +105,8 @@ public class DataGenerator implements HasLogger {
                 .zipcode("83234").city("Pfarrenkapp").hourlyRate(BigDecimal.valueOf(150))
                 .build();
 
-                      
+
+                
         address = addressRepository.save(address);
 
         Invoice invoice = new Invoice.Builder().address(address)
