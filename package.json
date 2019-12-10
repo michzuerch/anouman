@@ -10,11 +10,11 @@
     "webpack": "4.30.0",
     "webpack-cli": "3.3.0",
     "webpack-dev-server": "3.3.0",
-    "webpack-babel-multi-target-plugin": "2.1.0",
+    "webpack-babel-multi-target-plugin": "2.3.1",
     "copy-webpack-plugin": "5.0.3",
     "webpack-merge": "4.2.1",
     "raw-loader": "3.0.0",
     "compression-webpack-plugin": "3.0.0"
   },
-  "vaadinAppPackageHash": "27e0b8ea44ae4a2b84c2e1d2ec00dcca3d4512c7aab5ca2ba980fc0140ab3a69"
+  "vaadinAppPackageHash": "Main dependencies updated, force install"
 }
