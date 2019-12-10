@@ -4,15 +4,15 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
 @Entity(name = "TemplateKontohauptgruppe")
-public class TemplateKontohauptgruppe extends AbstractEntity {
+public class TemplateKontoHauptgruppe extends AbstractEntity {
     @ManyToOne
     private Address address;
 
-    private TemplateKontohauptgruppe(Builder builder) {
+    private TemplateKontoHauptgruppe(Builder builder) {
         setAddress(builder.address);
     }
 
-    public TemplateKontohauptgruppe() {
+    public TemplateKontoHauptgruppe() {
     }
 
     public Address getAddress() {
@@ -34,8 +34,8 @@ public class TemplateKontohauptgruppe extends AbstractEntity {
             return this;
         }
 
-        public TemplateKontohauptgruppe build() {
-            return new TemplateKontohauptgruppe(this);
+        public TemplateKontoHauptgruppe build() {
+            return new TemplateKontoHauptgruppe(this);
         }
     }
 }
