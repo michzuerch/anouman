@@ -1,36 +1,91 @@
 package com.gmail.michzuerch.anouman.backend.data.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
-@Entity(name = "TemplateKontohauptgruppe")
+@Entity(name = "TemplateKontoHauptgruppe")
 public class TemplateKontoHauptgruppe extends AbstractEntity {
+    @NotNull
+    private String kontonummer;
+
+    @NotNull
+    private String description;
+
     @ManyToOne
-    private Address address;
+    private TemplateKontoklasse templateKontoklasse;
+
+    @OneToMany(mappedBy = "templateKontoHauptgruppe", cascade = CascadeType.ALL)
+    private List<TemplateKontogruppe> kontogruppes;
 
     private TemplateKontoHauptgruppe(Builder builder) {
-        setAddress(builder.address);
+        setKontonummer(builder.kontonummer);
+        setDescription(builder.description);
+        setTemplateKontoklasse(builder.templateKontoklasse);
+        setKontogruppes(builder.kontogruppes);
     }
 
-    public TemplateKontoHauptgruppe() {
+    public String getKontonummer() {
+        return kontonummer;
     }
 
-    public Address getAddress() {
-        return address;
+    public void setKontonummer(String kontonummer) {
+        this.kontonummer = kontonummer;
     }
 
-    public void setAddress(Address address) {
-        this.address = address;
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public TemplateKontoklasse getTemplateKontoklasse() {
+        return templateKontoklasse;
+    }
+
+    public void setTemplateKontoklasse(TemplateKontoklasse templateKontoklasse) {
+        this.templateKontoklasse = templateKontoklasse;
+    }
+
+    public List<TemplateKontogruppe> getKontogruppes() {
+        return kontogruppes;
+    }
+
+    public void setKontogruppes(List<TemplateKontogruppe> kontogruppes) {
+        this.kontogruppes = kontogruppes;
     }
 
     public static final class Builder {
-        private Address address;
+        private @NotNull String kontonummer;
+        private @NotNull String description;
+        private TemplateKontoklasse templateKontoklasse;
+        private List<TemplateKontogruppe> kontogruppes;
 
         public Builder() {
         }
 
-        public Builder address(Address val) {
-            address = val;
+        public Builder kontonummer(@NotNull String val) {
+            kontonummer = val;
+            return this;
+        }
+
+        public Builder description(@NotNull String val) {
+            description = val;
+            return this;
+        }
+
+        public Builder templateKontoklasse(TemplateKontoklasse val) {
+            templateKontoklasse = val;
+            return this;
+        }
+
+        public Builder kontogruppes(List<TemplateKontogruppe> val) {
+            kontogruppes = val;
             return this;
         }
 

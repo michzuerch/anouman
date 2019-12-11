@@ -1,14 +1,11 @@
 package com.gmail.michzuerch.anouman.backend.data.entity;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
-@Entity(name = "TemplateKontogruppe")
-public class TemplateKontogruppe extends AbstractEntity {
+@Entity(name = "TemplateKonto")
+public class TemplateKonto extends AbstractEntity {
     @NotNull
     private String kontonummer;
 
@@ -17,7 +14,4 @@ public class TemplateKontogruppe extends AbstractEntity {
 
     @ManyToOne
     private TemplateKontogruppe templateKontogruppe;
-
-    @OneToMany(mappedBy = "templateKontogruppe", cascade = CascadeType.ALL)
-    private List<TemplateKonto> kontoHauptgruppes;
 }
