@@ -16,5 +16,5 @@
     "raw-loader": "3.0.0",
     "compression-webpack-plugin": "3.0.0"
   },
-  "vaadinAppPackageHash": "Main dependencies updated, force install"
+  "vaadinAppPackageHash": "d4303ac26a78c1a4c82db5581df96ba6cd8cfed7a60714c1d129febbd972ad87"
 }

@@ -18,7 +18,7 @@ public class BookEntry extends AbstractEntity {
     @ManyToOne
     private Bookkeeping bookkeeping;
 
-    @OneToMany(mappedBy = "bookEnry", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "bookEntry", cascade = CascadeType.ALL)
     private List<Unterbuchung> unterbuchungs;
 
     private BookEntry(Builder builder) {
