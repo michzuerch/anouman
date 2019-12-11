@@ -8,6 +8,9 @@ import java.time.LocalDate;
 
 @Entity(name = "Unterbuchung")
 public class Unterbuchung extends AbstractEntity {
+    @ManyToOne
+    private BookEntry bookEntry;
+
     @NotNull
     private String buchungstext;
 
@@ -28,15 +31,21 @@ public class Unterbuchung extends AbstractEntity {
     private BookEntry buchung;
 
     private Unterbuchung(Builder builder) {
-        buchungstext = builder.buchungstext;
-        buchungsdatum = builder.buchungsdatum;
-        betrag = builder.betrag;
-        kontoSoll = builder.kontoSoll;
-        kontoHaben = builder.kontoHaben;
-        buchung = builder.buchung;
+        setBookEntry(builder.bookEntry);
+        setBuchungstext(builder.buchungstext);
+        setBuchungsdatum(builder.buchungsdatum);
+        setBetrag(builder.betrag);
+        setKontoSoll(builder.kontoSoll);
+        setKontoHaben(builder.kontoHaben);
+        setBuchung(builder.buchung);
     }
 
-    public Unterbuchung() {
+    public BookEntry getBookEntry() {
+        return bookEntry;
+    }
+
+    public void setBookEntry(BookEntry bookEntry) {
+        this.bookEntry = bookEntry;
     }
 
     public String getBuchungstext() {
@@ -88,6 +97,7 @@ public class Unterbuchung extends AbstractEntity {
     }
 
     public static final class Builder {
+        private BookEntry bookEntry;
         private @NotNull String buchungstext;
         private LocalDate buchungsdatum;
         private Float betrag;
@@ -96,6 +106,11 @@ public class Unterbuchung extends AbstractEntity {
         private BookEntry buchung;
 
         public Builder() {
+        }
+
+        public Builder bookEntry(BookEntry val) {
+            bookEntry = val;
+            return this;
         }
 
         public Builder buchungstext(@NotNull String val) {

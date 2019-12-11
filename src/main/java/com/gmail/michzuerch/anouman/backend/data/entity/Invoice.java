@@ -1,13 +1,14 @@
 package com.gmail.michzuerch.anouman.backend.data.entity;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
 
 @Entity(name = "Invoice")
-@NamedEntityGraphs({
-        @NamedEntityGraph(name = "InvoiceHasEfforts", attributeNodes = {@NamedAttributeNode("efforts")})})
 public class Invoice extends AbstractEntity {
     @NotNull
     private LocalDate date;
@@ -26,6 +27,9 @@ public class Invoice extends AbstractEntity {
     @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL)
     private List<Effort> efforts;
 
+    @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL)
+    private List<InvoiceDetail> invoiceDetails;
+
     private Invoice(Builder builder) {
         setDate(builder.date);
         setDescription(builder.description);
@@ -34,9 +38,7 @@ public class Invoice extends AbstractEntity {
         setForwarded(builder.forwarded);
         setAddress(builder.address);
         setEfforts(builder.efforts);
-    }
-
-    public Invoice() {
+        setInvoiceDetails(builder.invoiceDetails);
     }
 
     public LocalDate getDate() {
@@ -95,6 +97,15 @@ public class Invoice extends AbstractEntity {
         this.efforts = efforts;
     }
 
+    public List<InvoiceDetail> getInvoiceDetails() {
+        return invoiceDetails;
+    }
+
+    public void setInvoiceDetails(List<InvoiceDetail> invoiceDetails) {
+        this.invoiceDetails = invoiceDetails;
+    }
+
+
     public static final class Builder {
         private @NotNull LocalDate date;
         private String description;
@@ -103,6 +114,7 @@ public class Invoice extends AbstractEntity {
         private boolean forwarded;
         private Address address;
         private List<Effort> efforts;
+        private List<InvoiceDetail> invoiceDetails;
 
         public Builder() {
         }
@@ -139,6 +151,11 @@ public class Invoice extends AbstractEntity {
 
         public Builder efforts(List<Effort> val) {
             efforts = val;
+            return this;
+        }
+
+        public Builder invoiceDetails(List<InvoiceDetail> val) {
+            invoiceDetails = val;
             return this;
         }
 
