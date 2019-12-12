@@ -4,8 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import java.math.BigDecimal;
 
-@Entity(name = "TemplateMehrwertsteuercode")
-public class TemplateMehrwertsteuercode extends AbstractEntity {
+@Entity(name = "Mehrwertsteuercode")
+public class Mehrwertsteuercode extends AbstractEntity {
     private String description;
 
     private BigDecimal percentage;
@@ -13,9 +13,9 @@ public class TemplateMehrwertsteuercode extends AbstractEntity {
     private boolean selling;
 
     @ManyToOne
-    private TemplateBookkeeping templateBookkeeping;
+    private Bookkeeping templateBookkeeping;
 
-    private TemplateMehrwertsteuercode(Builder builder) {
+    private Mehrwertsteuercode(Builder builder) {
         setDescription(builder.description);
         setPercentage(builder.percentage);
         setSelling(builder.selling);
@@ -46,11 +46,11 @@ public class TemplateMehrwertsteuercode extends AbstractEntity {
         this.selling = selling;
     }
 
-    public TemplateBookkeeping getTemplateBookkeeping() {
+    public Bookkeeping getTemplateBookkeeping() {
         return templateBookkeeping;
     }
 
-    public void setTemplateBookkeeping(TemplateBookkeeping templateBookkeeping) {
+    public void setTemplateBookkeeping(Bookkeeping templateBookkeeping) {
         this.templateBookkeeping = templateBookkeeping;
     }
 
@@ -58,7 +58,7 @@ public class TemplateMehrwertsteuercode extends AbstractEntity {
         private String description;
         private BigDecimal percentage;
         private boolean selling;
-        private TemplateBookkeeping templateBookkeeping;
+        private Bookkeeping templateBookkeeping;
 
         public Builder() {
         }
@@ -78,13 +78,13 @@ public class TemplateMehrwertsteuercode extends AbstractEntity {
             return this;
         }
 
-        public Builder templateBookkeeping(TemplateBookkeeping val) {
+        public Builder templateBookkeeping(Bookkeeping val) {
             templateBookkeeping = val;
             return this;
         }
 
-        public TemplateMehrwertsteuercode build() {
-            return new TemplateMehrwertsteuercode(this);
+        public Mehrwertsteuercode build() {
+            return new Mehrwertsteuercode(this);
         }
     }
 }

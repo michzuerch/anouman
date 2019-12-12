@@ -27,14 +27,15 @@ public class Bookkeeping extends AbstractEntity {
     @OneToMany(mappedBy = "bookkeeping", cascade = CascadeType.ALL)
     private List<BookEntry> bookEntries = new ArrayList<>();
 
+    @OneToMany(mappedBy = "bookkeeping", cascade = CascadeType.ALL)
+    private List<Mehrwertsteuercode> mehrwertsteuercodes = new ArrayList<>();
+
     private Bookkeeping(Builder builder) {
         setDescription(builder.description);
         setYear(builder.year);
         setKontoklasses(builder.kontoklasses);
         setBookEntries(builder.bookEntries);
-    }
-
-    public Bookkeeping() {
+        setMehrwertsteuercodes(builder.mehrwertsteuercodes);
     }
 
     public String getDescription() {
@@ -69,11 +70,20 @@ public class Bookkeeping extends AbstractEntity {
         this.bookEntries = bookEntries;
     }
 
+    public List<Mehrwertsteuercode> getMehrwertsteuercodes() {
+        return mehrwertsteuercodes;
+    }
+
+    public void setMehrwertsteuercodes(List<Mehrwertsteuercode> mehrwertsteuercodes) {
+        this.mehrwertsteuercodes = mehrwertsteuercodes;
+    }
+
     public static final class Builder {
         private @NotNull String description;
         private @NotNull @Digits(integer = 4, fraction = 0, message = "Ungültiges Zahlenformat") @DecimalMin(value = "1950", message = "Nicht vor 1950") @DecimalMax(value = "2150", message = "Nicht nach 2150") int year;
         private List<Kontoklasse> kontoklasses;
         private List<BookEntry> bookEntries;
+        private List<Mehrwertsteuercode> mehrwertsteuercodes;
 
         public Builder() {
         }
@@ -95,6 +105,11 @@ public class Bookkeeping extends AbstractEntity {
 
         public Builder bookEntries(List<BookEntry> val) {
             bookEntries = val;
+            return this;
+        }
+
+        public Builder mehrwertsteuercodes(List<Mehrwertsteuercode> val) {
+            mehrwertsteuercodes = val;
             return this;
         }
 
