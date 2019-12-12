@@ -1,6 +1,5 @@
 package com.gmail.michzuerch.anouman.backend.data.entity.report;
 
-
 import com.gmail.michzuerch.anouman.backend.data.entity.AbstractEntity;
 
 import javax.persistence.Basic;
@@ -8,21 +7,21 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 
-@Entity(name = "ReportCSSImage")
-public class ReportCSSImage extends AbstractEntity {
+@Entity(name = "ReportFOPImage")
+public class ReportFOPImage extends AbstractEntity {
     private String bezeichnung;
 
     @ManyToOne
-    private ReportCSS reportCSS;
+    private ReportFOP reportFOP;
 
     private String mimeType;
 
     @Basic(fetch = FetchType.LAZY)
     private byte[] image;
 
-    private ReportCSSImage(Builder builder) {
+    private ReportFOPImage(Builder builder) {
         setBezeichnung(builder.bezeichnung);
-        setReportCSS(builder.reportCSS);
+        setReportFOP(builder.reportFOP);
         setMimeType(builder.mimeType);
         setImage(builder.image);
     }
@@ -35,12 +34,12 @@ public class ReportCSSImage extends AbstractEntity {
         this.bezeichnung = bezeichnung;
     }
 
-    public ReportCSS getReportCSS() {
-        return reportCSS;
+    public ReportFOP getReportFOP() {
+        return reportFOP;
     }
 
-    public void setReportCSS(ReportCSS reportCSS) {
-        this.reportCSS = reportCSS;
+    public void setReportFOP(ReportFOP reportFOP) {
+        this.reportFOP = reportFOP;
     }
 
     public String getMimeType() {
@@ -61,7 +60,7 @@ public class ReportCSSImage extends AbstractEntity {
 
     public static final class Builder {
         private String bezeichnung;
-        private ReportCSS reportCSS;
+        private ReportFOP reportFOP;
         private String mimeType;
         private byte[] image;
 
@@ -73,8 +72,8 @@ public class ReportCSSImage extends AbstractEntity {
             return this;
         }
 
-        public Builder reportCSS(ReportCSS val) {
-            reportCSS = val;
+        public Builder reportFOP(ReportFOP val) {
+            reportFOP = val;
             return this;
         }
 
@@ -88,8 +87,8 @@ public class ReportCSSImage extends AbstractEntity {
             return this;
         }
 
-        public ReportCSSImage build() {
-            return new ReportCSSImage(this);
+        public ReportFOPImage build() {
+            return new ReportFOPImage(this);
         }
     }
 }

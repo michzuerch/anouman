@@ -8,21 +8,21 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 
-@Entity(name = "ReportCSSImage")
-public class ReportCSSImage extends AbstractEntity {
+@Entity(name = "ReportJasperImage")
+public class ReportJasperImage extends AbstractEntity {
     private String bezeichnung;
 
     @ManyToOne
-    private ReportCSS reportCSS;
+    private ReportJasper reportJasper;
 
     private String mimeType;
 
     @Basic(fetch = FetchType.LAZY)
     private byte[] image;
 
-    private ReportCSSImage(Builder builder) {
+    private ReportJasperImage(Builder builder) {
         setBezeichnung(builder.bezeichnung);
-        setReportCSS(builder.reportCSS);
+        setReportJasper(builder.reportJasper);
         setMimeType(builder.mimeType);
         setImage(builder.image);
     }
@@ -35,12 +35,12 @@ public class ReportCSSImage extends AbstractEntity {
         this.bezeichnung = bezeichnung;
     }
 
-    public ReportCSS getReportCSS() {
-        return reportCSS;
+    public ReportJasper getReportJasper() {
+        return reportJasper;
     }
 
-    public void setReportCSS(ReportCSS reportCSS) {
-        this.reportCSS = reportCSS;
+    public void setReportJasper(ReportJasper reportJasper) {
+        this.reportJasper = reportJasper;
     }
 
     public String getMimeType() {
@@ -61,7 +61,7 @@ public class ReportCSSImage extends AbstractEntity {
 
     public static final class Builder {
         private String bezeichnung;
-        private ReportCSS reportCSS;
+        private ReportJasper reportJasper;
         private String mimeType;
         private byte[] image;
 
@@ -73,8 +73,8 @@ public class ReportCSSImage extends AbstractEntity {
             return this;
         }
 
-        public Builder reportCSS(ReportCSS val) {
-            reportCSS = val;
+        public Builder reportJasper(ReportJasper val) {
+            reportJasper = val;
             return this;
         }
 
@@ -88,8 +88,8 @@ public class ReportCSSImage extends AbstractEntity {
             return this;
         }
 
-        public ReportCSSImage build() {
-            return new ReportCSSImage(this);
+        public ReportJasperImage build() {
+            return new ReportJasperImage(this);
         }
     }
 }
