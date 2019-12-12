@@ -13,13 +13,13 @@ public class Mehrwertsteuercode extends AbstractEntity {
     private boolean selling;
 
     @ManyToOne
-    private Bookkeeping templateBookkeeping;
+    private Bookkeeping bookkeeping;
 
     private Mehrwertsteuercode(Builder builder) {
         setDescription(builder.description);
         setPercentage(builder.percentage);
         setSelling(builder.selling);
-        setTemplateBookkeeping(builder.templateBookkeeping);
+        setBookkeeping(builder.bookkeeping);
     }
 
     public String getDescription() {
@@ -46,19 +46,19 @@ public class Mehrwertsteuercode extends AbstractEntity {
         this.selling = selling;
     }
 
-    public Bookkeeping getTemplateBookkeeping() {
-        return templateBookkeeping;
+    public Bookkeeping getBookkeeping() {
+        return bookkeeping;
     }
 
-    public void setTemplateBookkeeping(Bookkeeping templateBookkeeping) {
-        this.templateBookkeeping = templateBookkeeping;
+    public void setBookkeeping(Bookkeeping bookkeeping) {
+        this.bookkeeping = bookkeeping;
     }
 
     public static final class Builder {
         private String description;
         private BigDecimal percentage;
         private boolean selling;
-        private Bookkeeping templateBookkeeping;
+        private Bookkeeping bookkeeping;
 
         public Builder() {
         }
@@ -78,8 +78,8 @@ public class Mehrwertsteuercode extends AbstractEntity {
             return this;
         }
 
-        public Builder templateBookkeeping(Bookkeeping val) {
-            templateBookkeeping = val;
+        public Builder bookkeeping(Bookkeeping val) {
+            bookkeeping = val;
             return this;
         }
 
