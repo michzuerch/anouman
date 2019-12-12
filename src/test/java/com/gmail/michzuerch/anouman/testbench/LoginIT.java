@@ -1,13 +1,12 @@
 package com.gmail.michzuerch.anouman.testbench;
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Assert;
-import org.junit.Test;
-
 import com.gmail.michzuerch.anouman.testbench.elements.ui.DashboardViewElement;
 import com.gmail.michzuerch.anouman.testbench.elements.ui.LoginViewElement;
 import com.gmail.michzuerch.anouman.testbench.elements.ui.StorefrontViewElement;
+import org.junit.Assert;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class LoginIT extends AbstractIT<LoginViewElement> {
 

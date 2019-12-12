@@ -1,10 +1,10 @@
 package com.gmail.michzuerch.anouman.test;
 
-import java.util.Locale;
-import java.util.Locale.Category;
-
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+
+import java.util.Locale;
+import java.util.Locale.Category;
 
 /**
  * Test superclass that runs tests in Turkish locale.

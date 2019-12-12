@@ -43,19 +43,72 @@ public class DataGenerator implements HasLogger {
     private ProductRepository productRepository;
     private PickupLocationRepository pickupLocationRepository;
     private AddressRepository addressRepository;
+    private ArticleCategoryRepository articleCategoryRepository;
+    private ArticlePictureRepository articlePictureRepository;
+    private ArticleRepository articleRepository;
+    private BookEntryRepository bookEntryRepository;
+    private BookkeepingRepository bookkeepingRepository;
+    private EffortRepository effortRepository;
     private InvoiceRepository invoiceRepository;
+    private InvoiceDetailRepository invoiceDetailRepository;
+    private KontogruppeRepository kontogruppeRepository;
+    private KontoHauptgruppeRepository kontoHauptgruppeRepository;
+    private KontoklasseRepository kontoklasseRepository;
+    private KontoRepository kontoRepository;
+    private TemplateBookkeepingRepository templateBookkeepingRepository;
+    private TemplateKontogruppeRepository templateKontogruppeRepository;
+    private TemplateKontoHauptgruppeRepository templateKontoHauptgruppeRepository;
+    private TemplateKontoklasseRepository templateKontoklasseRepository;
+    private TemplateKontoRepository templateKontoRepository;
+    private TemplateMehrwertsteuercodeRepository templateMehrwertsteuercodeRepository;
     private PasswordEncoder passwordEncoder;
 
     @Autowired
     public DataGenerator(OrderRepository orderRepository, UserRepository userRepository,
                          ProductRepository productRepository, PickupLocationRepository pickupLocationRepository,
-                         AddressRepository addressRepository, InvoiceRepository invoiceRepository, PasswordEncoder passwordEncoder) {
+                         AddressRepository addressRepository,
+                         ArticleCategoryRepository articleCategoryRepository,
+                         ArticlePictureRepository articlePictureRepository,
+                         ArticleRepository articleRepository,
+                         BookEntryRepository bookEntryRepository,
+                         BookkeepingRepository bookkeepingRepository,
+                         EffortRepository effortRepository,
+                         InvoiceRepository invoiceRepository,
+                         InvoiceDetailRepository invoiceDetailRepository,
+                         KontogruppeRepository kontogruppeRepository,
+                         KontoHauptgruppeRepository kontoHauptgruppeRepository,
+                         KontoklasseRepository kontoklasseRepository,
+                         KontoRepository kontoRepository,
+                         TemplateBookkeepingRepository templateBookkeepingRepository,
+                         TemplateKontogruppeRepository templateKontogruppeRepository,
+                         TemplateKontoHauptgruppeRepository templateKontoHauptgruppeRepository,
+                         TemplateKontoklasseRepository templateKontoklasseRepository,
+                         TemplateKontoRepository templateKontoRepository,
+                         TemplateMehrwertsteuercodeRepository templateMehrwertsteuercodeRepository,
+                         PasswordEncoder passwordEncoder) {
         this.orderRepository = orderRepository;
         this.userRepository = userRepository;
         this.productRepository = productRepository;
         this.pickupLocationRepository = pickupLocationRepository;
         this.addressRepository = addressRepository;
+        this.articleCategoryRepository = articleCategoryRepository;
+        this.articlePictureRepository = articlePictureRepository;
+        this.articleRepository = articleRepository;
+        this.bookEntryRepository = bookEntryRepository;
+        this.bookkeepingRepository = bookkeepingRepository;
+        this.effortRepository = effortRepository;
         this.invoiceRepository = invoiceRepository;
+        this.invoiceDetailRepository = invoiceDetailRepository;
+        this.kontogruppeRepository = kontogruppeRepository;
+        this.kontoHauptgruppeRepository = kontoHauptgruppeRepository;
+        this.kontoklasseRepository = kontoklasseRepository;
+        this.kontoRepository = kontoRepository;
+        this.templateBookkeepingRepository = templateBookkeepingRepository;
+        this.templateKontogruppeRepository = templateKontogruppeRepository;
+        this.templateKontoHauptgruppeRepository = templateKontoHauptgruppeRepository;
+        this.templateKontoklasseRepository = templateKontoklasseRepository;
+        this.templateKontoRepository = templateKontoRepository;
+        this.templateMehrwertsteuercodeRepository = templateMehrwertsteuercodeRepository;
         this.passwordEncoder = passwordEncoder;
     }
 

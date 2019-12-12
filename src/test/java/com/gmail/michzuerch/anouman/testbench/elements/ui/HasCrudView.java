@@ -1,7 +1,5 @@
 package com.gmail.michzuerch.anouman.testbench.elements.ui;
 
-import java.util.Optional;
-
 import com.vaadin.flow.component.confirmdialog.testbench.ConfirmDialogElement;
 import com.vaadin.flow.component.dialog.testbench.DialogElement;
 import com.vaadin.flow.component.formlayout.testbench.FormLayoutElement;
@@ -9,6 +7,8 @@ import com.vaadin.flow.component.grid.testbench.GridElement;
 import com.vaadin.testbench.ElementQuery;
 import com.vaadin.testbench.HasElementQuery;
 import com.vaadin.testbench.TestBenchElement;
+
+import java.util.Optional;
 
 public interface HasCrudView extends HasElementQuery {
 

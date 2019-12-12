@@ -1,23 +1,22 @@
 package com.gmail.michzuerch.anouman.testbench;
 
-import static org.hamcrest.CoreMatchers.containsString;
-
-import java.util.Random;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
-import org.junit.Assert;
-import org.junit.Test;
-
-import com.vaadin.flow.component.button.testbench.ButtonElement;
-import com.vaadin.flow.component.notification.testbench.NotificationElement;
-import com.vaadin.flow.component.textfield.testbench.TextFieldElement;
 import com.gmail.michzuerch.anouman.testbench.elements.components.OrderCardElement;
 import com.gmail.michzuerch.anouman.testbench.elements.ui.OrderItemEditorElement;
 import com.gmail.michzuerch.anouman.testbench.elements.ui.StorefrontViewElement;
 import com.gmail.michzuerch.anouman.testbench.elements.ui.StorefrontViewElement.OrderEditorElement;
 import com.gmail.michzuerch.anouman.testbench.elements.ui.UsersViewElement;
 import com.gmail.michzuerch.anouman.ui.i18n.I18nConst;
+import com.vaadin.flow.component.button.testbench.ButtonElement;
+import com.vaadin.flow.component.notification.testbench.NotificationElement;
+import com.vaadin.flow.component.textfield.testbench.TextFieldElement;
+import org.junit.Assert;
+import org.junit.Test;
+
+import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import static org.hamcrest.CoreMatchers.containsString;
 
 public class StorefrontViewIT extends AbstractIT<StorefrontViewElement> {
 

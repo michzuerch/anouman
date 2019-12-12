@@ -1,11 +1,7 @@
 package com.gmail.michzuerch.anouman.testbench;
 
-import org.junit.Rule;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.remote.BrowserType;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import org.slf4j.LoggerFactory;
-
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
 import com.gmail.michzuerch.anouman.testbench.elements.ui.LoginViewElement;
 import com.gmail.michzuerch.anouman.ui.i18n.I18nConst;
 import com.vaadin.testbench.IPAddress;
@@ -13,9 +9,11 @@ import com.vaadin.testbench.ScreenshotOnFailureRule;
 import com.vaadin.testbench.TestBenchDriverProxy;
 import com.vaadin.testbench.TestBenchElement;
 import com.vaadin.testbench.parallel.ParallelTest;
-
-import ch.qos.logback.classic.Level;
-import ch.qos.logback.classic.Logger;
+import org.junit.Rule;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.BrowserType;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.slf4j.LoggerFactory;
 
 public abstract class AbstractIT<E extends TestBenchElement> extends ParallelTest {
 	public String APP_URL = "http://localhost:8080/";

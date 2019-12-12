@@ -1,11 +1,10 @@
 package com.gmail.michzuerch.anouman.testbench;
 
-import org.junit.Assert;
-import org.junit.Test;
-
 import com.gmail.michzuerch.anouman.testbench.elements.components.DashboardLCounterLabelElement;
 import com.gmail.michzuerch.anouman.testbench.elements.ui.DashboardViewElement;
 import com.gmail.michzuerch.anouman.testbench.elements.ui.StorefrontViewElement;
+import org.junit.Assert;
+import org.junit.Test;
 
 public class DashboardViewIT extends AbstractIT<DashboardViewElement> {
 

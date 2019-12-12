@@ -1,16 +1,13 @@
 package com.gmail.michzuerch.anouman.testbench;
 
-import java.util.Random;
-
-import org.junit.Assert;
-import org.junit.Test;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-
-import com.vaadin.flow.component.grid.testbench.GridElement;
-import com.vaadin.flow.component.grid.testbench.GridTHTDElement;
-import com.vaadin.flow.component.textfield.testbench.TextFieldElement;
 import com.gmail.michzuerch.anouman.testbench.elements.ui.ProductsViewElement;
 import com.gmail.michzuerch.anouman.testbench.elements.ui.StorefrontViewElement;
+import com.vaadin.flow.component.grid.testbench.GridElement;
+import com.vaadin.flow.component.textfield.testbench.TextFieldElement;
+import org.junit.Assert;
+import org.junit.Test;
+
+import java.util.Random;
 
 public class ProductsViewIT extends AbstractIT<ProductsViewElement> {
 
@@ -114,7 +111,7 @@ public class ProductsViewIT extends AbstractIT<ProductsViewElement> {
 		productsPage.getEditorSaveButton().click();
 		Assert.assertFalse(productsPage.isEditorOpen());
 
-		return waitUntil((ExpectedCondition<GridTHTDElement>) wd -> productsPage.getGrid().getCell(name)).getRow();
+		return waitUntil(wd -> productsPage.getGrid().getCell(name)).getRow();
 	}
 
 }

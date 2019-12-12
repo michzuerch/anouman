@@ -1,16 +1,15 @@
 package com.gmail.michzuerch.anouman.testbench;
 
-import java.util.Random;
-
-import org.junit.Assert;
-import org.junit.Test;
-
+import com.gmail.michzuerch.anouman.testbench.elements.ui.StorefrontViewElement;
+import com.gmail.michzuerch.anouman.testbench.elements.ui.UsersViewElement;
 import com.vaadin.flow.component.tabs.testbench.TabElement;
 import com.vaadin.flow.component.textfield.testbench.EmailFieldElement;
 import com.vaadin.flow.component.textfield.testbench.PasswordFieldElement;
-import com.gmail.michzuerch.anouman.testbench.elements.ui.StorefrontViewElement;
-import com.gmail.michzuerch.anouman.testbench.elements.ui.UsersViewElement;
 import com.vaadin.testbench.TestBenchElement;
+import org.junit.Assert;
+import org.junit.Test;
+
+import java.util.Random;
 
 public class UsersViewIT extends AbstractIT<UsersViewElement> {
 

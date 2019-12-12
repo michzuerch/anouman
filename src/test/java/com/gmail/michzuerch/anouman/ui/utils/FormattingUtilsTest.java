@@ -3,15 +3,15 @@
  */
 package com.gmail.michzuerch.anouman.ui.utils;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import com.gmail.michzuerch.anouman.test.FormattingTest;
+import com.gmail.michzuerch.anouman.ui.utils.converters.LocalDateTimeConverter;
+import org.junit.Test;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import com.gmail.michzuerch.anouman.test.FormattingTest;
-import com.gmail.michzuerch.anouman.ui.utils.converters.LocalDateTimeConverter;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 public class FormattingUtilsTest extends FormattingTest {
 

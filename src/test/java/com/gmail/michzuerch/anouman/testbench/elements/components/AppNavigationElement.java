@@ -1,13 +1,9 @@
 package com.gmail.michzuerch.anouman.testbench.elements.components;
 
-import com.gmail.michzuerch.anouman.testbench.elements.ui.ProductsViewElement;
-import com.gmail.michzuerch.anouman.testbench.elements.ui.StorefrontViewElement;
-import com.gmail.michzuerch.anouman.testbench.elements.ui.UsersViewElement;
+import com.gmail.michzuerch.anouman.testbench.elements.ui.*;
 import com.vaadin.flow.component.html.testbench.AnchorElement;
 import com.vaadin.flow.component.tabs.testbench.TabElement;
 import com.vaadin.flow.component.tabs.testbench.TabsElement;
-import com.gmail.michzuerch.anouman.testbench.elements.ui.DashboardViewElement;
-import com.gmail.michzuerch.anouman.testbench.elements.ui.LoginViewElement;
 import com.vaadin.testbench.TestBenchElement;
 
 public class AppNavigationElement extends TabsElement {

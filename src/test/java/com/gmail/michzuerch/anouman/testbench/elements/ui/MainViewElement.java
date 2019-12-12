@@ -1,7 +1,7 @@
 package com.gmail.michzuerch.anouman.testbench.elements.ui;
 
-import com.vaadin.flow.component.applayout.testbench.AppLayoutElement;
 import com.gmail.michzuerch.anouman.testbench.elements.components.AppNavigationElement;
+import com.vaadin.flow.component.applayout.testbench.AppLayoutElement;
 
 public class MainViewElement extends AppLayoutElement {
 

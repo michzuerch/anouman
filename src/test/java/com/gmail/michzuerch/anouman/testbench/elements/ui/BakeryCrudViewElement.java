@@ -1,9 +1,9 @@
 package com.gmail.michzuerch.anouman.testbench.elements.ui;
 
+import com.gmail.michzuerch.anouman.testbench.elements.components.SearchBarElement;
 import com.vaadin.flow.component.confirmdialog.testbench.ConfirmDialogElement;
 import com.vaadin.flow.component.crud.testbench.CrudElement;
 import com.vaadin.flow.component.formlayout.testbench.FormLayoutElement;
-import com.gmail.michzuerch.anouman.testbench.elements.components.SearchBarElement;
 import com.vaadin.testbench.TestBenchElement;
 
 public class BakeryCrudViewElement extends CrudElement implements HasApp {
