@@ -11,6 +11,7 @@ import org.springframework.util.StopWatch;
 import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Random;
 
 @SpringComponent
@@ -142,6 +143,7 @@ public class DataGenerator implements HasLogger {
                 .quantityUnit("Stück")
                 .quantity(BigDecimal.valueOf(1))
                 .unitPrice(BigDecimal.valueOf(2351.15))
+                .invoice(invoice)
                 .build();
         invoiceDetail1 = invoiceDetailRepository.save(invoiceDetail1);
 
@@ -151,8 +153,21 @@ public class DataGenerator implements HasLogger {
                 .quantityUnit("Stück")
                 .quantity(BigDecimal.valueOf(3))
                 .unitPrice(BigDecimal.valueOf(1156.54))
+                .invoice(invoice)
                 .build();
         invoiceDetail2 = invoiceDetailRepository.save(invoiceDetail2);
+
+        Effort effort = new Effort.Builder()
+                .title("Aufwand")
+                .description("Aufwand Test")
+                .startTime(LocalDateTime.now())
+                .endTime(LocalDateTime.now())
+                .movable(false)
+                .resizeable(true)
+                .invoice(invoice)
+                .build();
+        effort = effortRepository.save(effort);
+
 
     }
 
