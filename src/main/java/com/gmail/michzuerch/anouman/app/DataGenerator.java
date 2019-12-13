@@ -1,10 +1,7 @@
 package com.gmail.michzuerch.anouman.app;
 
 import com.gmail.michzuerch.anouman.backend.data.Role;
-import com.gmail.michzuerch.anouman.backend.data.entity.Address;
-import com.gmail.michzuerch.anouman.backend.data.entity.Invoice;
-import com.gmail.michzuerch.anouman.backend.data.entity.InvoiceDetail;
-import com.gmail.michzuerch.anouman.backend.data.entity.User;
+import com.gmail.michzuerch.anouman.backend.data.entity.*;
 import com.gmail.michzuerch.anouman.backend.repositories.*;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -166,6 +163,26 @@ public class DataGenerator implements HasLogger {
 
     }
 
+    private void createArticles(ArticleRepository articleRepository, ArticleCategoryRepository articleCategoryRepository, ArticlePictureRepository articlePictureRepository) {
+        ArticleCategory articleCategory = new ArticleCategory.Builder().description("First Category").build();
+        articleCategory = articleCategoryRepository.save(articleCategory);
+
+        Article article = new Article.Builder().articleCategory(articleCategory)
+                .description("Short description")
+                .descriptionLong("A very long description")
+                .quantityUnit("Stück")
+                .stueckpreis(BigDecimal.valueOf(120))
+                .build();
+        article = articleRepository.save(article);
+
+        ArticlePicture articlePicture = new ArticlePicture.Builder().titel("Title for sample")
+                .mimetype("jpg")
+                .article(article)
+                .build();
+        articlePicture = articlePictureRepository.save(articlePicture);
+
+
+    }
 
     private LocalTime getRandomDueTime() {
         int time = 8 + 4 * random.nextInt(3);

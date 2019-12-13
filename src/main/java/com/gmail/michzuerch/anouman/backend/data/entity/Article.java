@@ -6,6 +6,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Entity(name = "Article")
@@ -19,7 +20,7 @@ public class Article extends AbstractEntity {
     private String quantityUnit;
 
     @Digits(integer = 8, fraction = 2, message = "Muss ein gültiger Betrag sein")
-    private Double stueckpreis;
+    private BigDecimal stueckpreis;
 
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
     private List<ArticlePicture> articlePictures;
@@ -34,9 +35,6 @@ public class Article extends AbstractEntity {
         setStueckpreis(builder.stueckpreis);
         setArticlePictures(builder.articlePictures);
         setArticleCategory(builder.articleCategory);
-    }
-
-    public Article() {
     }
 
     public String getDescription() {
@@ -63,11 +61,11 @@ public class Article extends AbstractEntity {
         this.quantityUnit = quantityUnit;
     }
 
-    public Double getStueckpreis() {
+    public BigDecimal getStueckpreis() {
         return stueckpreis;
     }
 
-    public void setStueckpreis(Double stueckpreis) {
+    public void setStueckpreis(BigDecimal stueckpreis) {
         this.stueckpreis = stueckpreis;
     }
 
@@ -91,7 +89,7 @@ public class Article extends AbstractEntity {
         private @NotNull String description;
         private @NotNull String descriptionLong;
         private String quantityUnit;
-        private @Digits(integer = 8, fraction = 2, message = "Muss ein gültiger Betrag sein") Double stueckpreis;
+        private @Digits(integer = 8, fraction = 2, message = "Muss ein gültiger Betrag sein") BigDecimal stueckpreis;
         private List<ArticlePicture> articlePictures;
         private ArticleCategory articleCategory;
 
@@ -113,7 +111,7 @@ public class Article extends AbstractEntity {
             return this;
         }
 
-        public Builder stueckpreis(@Digits(integer = 8, fraction = 2, message = "Muss ein gültiger Betrag sein") Double val) {
+        public Builder stueckpreis(@Digits(integer = 8, fraction = 2, message = "Muss ein gültiger Betrag sein") BigDecimal val) {
             stueckpreis = val;
             return this;
         }
