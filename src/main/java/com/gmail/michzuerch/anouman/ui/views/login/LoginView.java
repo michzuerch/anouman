@@ -2,7 +2,7 @@ package com.gmail.michzuerch.anouman.ui.views.login;
 
 import com.gmail.michzuerch.anouman.app.security.SecurityUtils;
 import com.gmail.michzuerch.anouman.ui.i18n.I18nConst;
-import com.gmail.michzuerch.anouman.ui.views.storefront.StorefrontView;
+import com.gmail.michzuerch.anouman.ui.views.address.AddressView;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.login.LoginI18n;
 import com.vaadin.flow.component.login.LoginOverlay;
@@ -38,7 +38,7 @@ public class LoginView extends LoginOverlay
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
         if (SecurityUtils.isUserLoggedIn()) {
-            event.forwardTo(StorefrontView.class);
+            event.forwardTo(AddressView.class);
         } else {
             setOpened(true);
         }
