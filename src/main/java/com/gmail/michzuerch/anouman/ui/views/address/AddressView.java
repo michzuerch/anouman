@@ -4,7 +4,6 @@ import com.gmail.michzuerch.anouman.app.HasLogger;
 import com.gmail.michzuerch.anouman.app.security.CurrentUser;
 import com.gmail.michzuerch.anouman.backend.data.Role;
 import com.gmail.michzuerch.anouman.backend.data.entity.Address;
-import com.gmail.michzuerch.anouman.backend.service.AddressService;
 import com.gmail.michzuerch.anouman.backend.repositories.AddressRepository;
 import com.gmail.michzuerch.anouman.ui.MainView;
 import com.gmail.michzuerch.anouman.ui.i18n.I18nConst;
@@ -25,8 +24,8 @@ import static com.gmail.michzuerch.anouman.ui.i18n.I18nConst.PAGE_ADDRESSES;
 public class AddressView extends Div implements HasLogger {
     @Autowired
     public AddressView(AddressRepository addressRepository, CurrentUser currentUser) {
-        Grid<Address> grid = new Grid<>(Address.class);
-        //grid.addColumns("id", "localeCode", "continentCode", "continentName", "countryIsoCode", "countryName", "cityName");
+        Grid<Address> grid = new Grid<>(Address.class, false);
+        grid.addColumns("id", "city", "companyName", "street");
         grid.setItems(addressRepository.findAll());
         add(grid);
     }
