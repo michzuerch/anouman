@@ -2,7 +2,7 @@ package com.gmail.michzuerch.anouman.app;
 
 import com.gmail.michzuerch.anouman.backend.data.Role;
 import com.gmail.michzuerch.anouman.backend.data.entity.*;
-import com.gmail.michzuerch.anouman.backend.data.entity.report.ReportCSS;
+import com.gmail.michzuerch.anouman.backend.data.entity.report.*;
 import com.gmail.michzuerch.anouman.backend.repositories.*;
 import com.gmail.michzuerch.anouman.backend.repositories.report.*;
 import com.vaadin.flow.spring.annotation.SpringComponent;
@@ -157,6 +157,43 @@ public class DataGenerator implements HasLogger {
                 .build();
 
         reportCSS = reportCSSRepository.save(reportCSS);
+
+        ReportCSSImage reportCSSImage = new ReportCSSImage.Builder()
+                .bezeichnung("CSS Test")
+                .mimeType("text/css")
+                .reportCSS(reportCSS)
+                .build();
+
+        reportCSSImage = reportCSSImageRepository.save(reportCSSImage);
+
+        ReportFOP reportFOP = new ReportFOP.Builder()
+                .bezeichnung("Testreport FOP")
+                .build();
+
+        reportFOP = reportFOPRepository.save(reportFOP);
+
+        ReportFOPImage reportFOPImage = new ReportFOPImage.Builder()
+                .bezeichnung("Testreport FOP Image")
+                .mimeType("jpg")
+                .reportFOP(reportFOP)
+                .build();
+
+        reportFOPImage = reportFOPImageRepository.save(reportFOPImage);
+
+        ReportJasper reportJasper = new ReportJasper.Builder()
+                .bezeichnung("Testreport Jasper")
+                .filename("test.jrml")
+                .build();
+
+        reportJasper = reportJasperRepository.save(reportJasper);
+
+        ReportJasperImage reportJasperImage = new ReportJasperImage.Builder()
+                .bezeichnung("Testreport Jasper Image")
+                .mimeType("jpg")
+                .reportJasper(reportJasper)
+                .build();
+
+        reportJasperImage = reportJasperImageRepository.save(reportJasperImage);
     }
 
     private void createBookkeeping(BookkeepingRepository bookkeepingRepository, KontoklasseRepository kontoklasseRepository, KontoHauptgruppeRepository kontoHauptgruppeRepository, KontogruppeRepository kontogruppeRepository, KontoRepository kontoRepository) {
