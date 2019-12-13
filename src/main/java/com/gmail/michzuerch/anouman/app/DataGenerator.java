@@ -11,24 +11,10 @@ import org.springframework.util.StopWatch;
 import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.Random;
 
 @SpringComponent
 public class DataGenerator implements HasLogger {
-
-    private static final String[] FILLING = new String[]{"Strawberry", "Chocolate", "Blueberry", "Raspberry",
-            "Vanilla"};
-    private static final String[] TYPE = new String[]{"Cake", "Pastry", "Tart", "Muffin", "Biscuit", "Bread", "Bagel",
-            "Bun", "Brownie", "Cookie", "Cracker", "Cheese Cake"};
-    private static final String[] FIRST_NAME = new String[]{"Ori", "Amanda", "Octavia", "Laurel", "Lael", "Delilah",
-            "Jason", "Skyler", "Arsenio", "Haley", "Lionel", "Sylvia", "Jessica", "Lester", "Ferdinand", "Elaine",
-            "Griffin", "Kerry", "Dominique"};
-    private static final String[] LAST_NAME = new String[]{"Carter", "Castro", "Rich", "Irwin", "Moore", "Hendricks",
-            "Huber", "Patton", "Wilkinson", "Thornton", "Nunez", "Macias", "Gallegos", "Blevins", "Mejia", "Pickett",
-            "Whitney", "Farmer", "Henry", "Chen", "Macias", "Rowland", "Pierce", "Cortez", "Noble", "Howard", "Nixon",
-            "Mcbride", "Leblanc", "Russell", "Carver", "Benton", "Maldonado", "Lyons"};
-
     private final Random random = new Random(1L);
 
     private UserRepository userRepository;
@@ -119,6 +105,8 @@ public class DataGenerator implements HasLogger {
         getLogger().info("... generating addresses");
         createAddressesAndInvoices(addressRepository, invoiceRepository);
 
+        getLogger().info("... generating articles");
+        createArticles(articleRepository, articleCategoryRepository, articlePictureRepository);
         stopWatch.stop();
         getLogger().info("Generated demo data. Time:" + stopWatch.getTotalTimeMillis() + "ms.");
 
@@ -184,33 +172,8 @@ public class DataGenerator implements HasLogger {
 
     }
 
-    private LocalTime getRandomDueTime() {
-        int time = 8 + 4 * random.nextInt(3);
-
-        return LocalTime.of(time, 0);
-    }
-
-
     private <T> T getRandom(T[] array) {
         return array[random.nextInt(array.length)];
-    }
-
-    private String getRandomProductName() {
-        String firstFilling = getRandom(FILLING);
-        String name;
-        if (random.nextBoolean()) {
-            String secondFilling;
-            do {
-                secondFilling = getRandom(FILLING);
-            } while (secondFilling.equals(firstFilling));
-
-            name = firstFilling + " " + secondFilling;
-        } else {
-            name = firstFilling;
-        }
-        name += " " + getRandom(TYPE);
-
-        return name;
     }
 
     private User createBaker(UserRepository userRepository, PasswordEncoder passwordEncoder) {
