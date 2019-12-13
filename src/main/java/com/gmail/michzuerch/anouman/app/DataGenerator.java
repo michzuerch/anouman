@@ -132,7 +132,6 @@ public class DataGenerator implements HasLogger {
 
         bookkeeping = bookkeepingRepository.save(bookkeeping);
 
-        /*
         Mehrwertsteuercode mehrwertsteuercode = new Mehrwertsteuercode.Builder()
                 .description("Verkauf 12%")
                 .percentage(BigDecimal.valueOf(12))
@@ -175,7 +174,6 @@ public class DataGenerator implements HasLogger {
                 .build();
 
         konto = kontoRepository.save(konto);
-*/
     }
 
     private void createAddressesAndInvoices(AddressRepository addressRepository, InvoiceRepository invoiceRepository) {
