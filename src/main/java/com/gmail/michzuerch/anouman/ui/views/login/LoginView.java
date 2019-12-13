@@ -1,5 +1,6 @@
 package com.gmail.michzuerch.anouman.ui.views.login;
 
+import com.gmail.michzuerch.anouman.app.HasLogger;
 import com.gmail.michzuerch.anouman.app.security.SecurityUtils;
 import com.gmail.michzuerch.anouman.ui.i18n.I18nConst;
 import com.gmail.michzuerch.anouman.ui.views.address.AddressView;
@@ -14,7 +15,7 @@ import com.vaadin.flow.router.*;
 @JsModule("./styles/shared-styles.js")
 @Viewport(I18nConst.VIEWPORT)
 public class LoginView extends LoginOverlay
-        implements AfterNavigationObserver, BeforeEnterObserver {
+        implements AfterNavigationObserver, BeforeEnterObserver, HasLogger {
 
     private static final long serialVersionUID = 1L;
 
@@ -23,7 +24,7 @@ public class LoginView extends LoginOverlay
         i18n.setHeader(new LoginI18n.Header());
         i18n.getHeader().setTitle("Anouman");
         i18n.getHeader().setDescription(
-                "admin + admin\n" + "barista + pass");
+                "admin@michzuerch.gmail.com + admin\n");
         i18n.setAdditionalInformation(null);
         i18n.setForm(new LoginI18n.Form());
         i18n.getForm().setSubmit("Sign in");
@@ -38,6 +39,7 @@ public class LoginView extends LoginOverlay
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
         if (SecurityUtils.isUserLoggedIn()) {
+            getLogger().debug("Logged in User:" + SecurityUtils.getUsername());
             event.forwardTo(AddressView.class);
         } else {
             setOpened(true);
