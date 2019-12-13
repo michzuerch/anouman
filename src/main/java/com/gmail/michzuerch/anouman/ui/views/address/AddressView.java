@@ -10,12 +10,14 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouteAlias;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 
 import static com.gmail.michzuerch.anouman.ui.i18n.I18nConst.PAGE_ADDRESSES;
 
 @Route(value = PAGE_ADDRESSES, layout = MainView.class)
+@RouteAlias(value = I18nConst.PAGE_ROOT, layout = MainView.class)
 @PageTitle(I18nConst.TITLE_ADDRESSES)
 @Secured(Role.ADMIN)
 public class AddressView extends Div {
