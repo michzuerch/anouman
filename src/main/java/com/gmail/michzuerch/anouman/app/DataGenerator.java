@@ -169,15 +169,25 @@ public class DataGenerator implements HasLogger {
 
         kontogruppe = kontogruppeRepository.save(kontogruppe);
 
-        Konto konto = new Konto.Builder()
+        Konto kontoSoll = new Konto.Builder()
                 .anfangsbestand(BigDecimal.ZERO)
-                .comment("Comment")
-                .description("Konto Testdata")
+                .comment("Konto Soll")
+                .description("Konto Soll Testdata")
                 .kontonummer("5000")
                 .kontogruppe(kontogruppe)
                 .build();
 
-        konto = kontoRepository.save(konto);
+        kontoSoll = kontoRepository.save(kontoSoll);
+
+        Konto kontoHaben = new Konto.Builder()
+                .anfangsbestand(BigDecimal.ZERO)
+                .comment("Konto Haben")
+                .description("Konto Haben Testdata")
+                .kontonummer("6000")
+                .kontogruppe(kontogruppe)
+                .build();
+
+        kontoHaben = kontoRepository.save(kontoHaben);
 
         BookEntry bookEntry = new BookEntry.Builder()
                 .belegnummer("1")
@@ -190,7 +200,8 @@ public class DataGenerator implements HasLogger {
         Unterbuchung unterbuchung = new Unterbuchung.Builder()
                 .buchungstext("Testbuchung aus Test")
                 .betrag(BigDecimal.valueOf(230))
-                .kontoHaben(konto)
+                .kontoHaben(kontoHaben)
+                .kontoSoll(kontoSoll)
                 .build();
 
         unterbuchung = unterbuchungRepository.save(unterbuchung);
