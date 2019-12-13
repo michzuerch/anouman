@@ -205,10 +205,24 @@ public class DataGenerator implements HasLogger {
                 .build();
 
         templateMehrwertsteuercode2 = templateMehrwertsteuercodeRepository.save(templateMehrwertsteuercode2);
-    }
 
-    private <T> T getRandom(T[] array) {
-        return array[random.nextInt(array.length)];
+        TemplateKontoklasse templateKontoklasse = new TemplateKontoklasse.Builder()
+                .description("Kontoklasse")
+                .kontonummer("1000")
+                .templateBookkeeping(templateBookkeeping)
+                .build();
+
+        templateKontoklasse = templateKontoklasseRepository.save(templateKontoklasse);
+
+        TemplateKontoHauptgruppe templateKontoHauptgruppe = new TemplateKontoHauptgruppe.Builder()
+                .description("Kontohauptgruppe")
+                .kontonummer("2000")
+                .templateKontoklasse(templateKontoklasse)
+                .build();
+
+        templateKontoHauptgruppe = templateKontoHauptgruppeRepository.save(templateKontoHauptgruppe);
+
+
     }
 
     private User createBaker(UserRepository userRepository, PasswordEncoder passwordEncoder) {
