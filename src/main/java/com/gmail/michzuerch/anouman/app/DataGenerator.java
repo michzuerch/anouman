@@ -158,8 +158,6 @@ public class DataGenerator implements HasLogger {
                 .zipcode("83234").city("Pfarrenkapp").hourlyRate(BigDecimal.valueOf(150))
                 .build();
 
-
-                
         address = addressRepository.save(address);
 
         Invoice invoice = new Invoice.Builder().address(address)
@@ -170,6 +168,24 @@ public class DataGenerator implements HasLogger {
                 .timeForPayment(60)
                 .build();
         invoice = invoiceRepository.save(invoice);
+
+        InvoiceDetail invoiceDetail1 = new InvoiceDetail.Builder().invoice(invoice)
+                .decription("Notebook")
+                .descriptionLong("Acer Aspire 5 8756-E")
+                .quantityUnit("Stück")
+                .quantity(BigDecimal.valueOf(1))
+                .unitPrice(BigDecimal.valueOf(2351.15))
+                .build();
+        invoiceDetail1 = invoiceDetailRepository.save(invoiceDetail1);
+
+        InvoiceDetail invoiceDetail2 = new InvoiceDetail.Builder().invoice(invoice)
+                .decription("Drucker")
+                .descriptionLong("HP Laser 8520L")
+                .quantityUnit("Stück")
+                .quantity(BigDecimal.valueOf(3))
+                .unitPrice(BigDecimal.valueOf(1156.54))
+                .build();
+        invoiceDetail2 = invoiceDetailRepository.save(invoiceDetail2);
 
     }
 

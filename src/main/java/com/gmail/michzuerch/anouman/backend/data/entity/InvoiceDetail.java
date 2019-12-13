@@ -18,6 +18,8 @@ public class InvoiceDetail extends AbstractEntity {
 
     private BigDecimal quantity;
 
+    private BigDecimal unitPrice;
+
     @ManyToOne
     private Invoice invoice;
 
@@ -26,6 +28,7 @@ public class InvoiceDetail extends AbstractEntity {
         setDescriptionLong(builder.descriptionLong);
         setQuantityUnit(builder.quantityUnit);
         setQuantity(builder.quantity);
+        setUnitPrice(builder.unitPrice);
         setInvoice(builder.invoice);
     }
 
@@ -61,6 +64,14 @@ public class InvoiceDetail extends AbstractEntity {
         this.quantity = quantity;
     }
 
+    public BigDecimal getUnitPrice() {
+        return unitPrice;
+    }
+
+    public void setUnitPrice(BigDecimal unitPrice) {
+        this.unitPrice = unitPrice;
+    }
+
     public Invoice getInvoice() {
         return invoice;
     }
@@ -75,6 +86,7 @@ public class InvoiceDetail extends AbstractEntity {
         private String descriptionLong;
         private String quantityUnit;
         private BigDecimal quantity;
+        private BigDecimal unitPrice;
         private Invoice invoice;
 
         public Builder() {
@@ -97,6 +109,11 @@ public class InvoiceDetail extends AbstractEntity {
 
         public Builder quantity(BigDecimal val) {
             quantity = val;
+            return this;
+        }
+
+        public Builder unitPrice(BigDecimal val) {
+            unitPrice = val;
             return this;
         }
 
