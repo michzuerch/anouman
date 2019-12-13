@@ -237,6 +237,21 @@ public class DataGenerator implements HasLogger {
 
         templateKontoHauptgruppe = templateKontoHauptgruppeRepository.save(templateKontoHauptgruppe);
 
+        TemplateKontogruppe templateKontogruppe = new TemplateKontogruppe.Builder()
+                .description("Kontogruppe")
+                .kontonummer("3000")
+                .templateKontoHauptgruppe(templateKontoHauptgruppe)
+                .build();
+
+        templateKontogruppe = templateKontogruppeRepository.save(templateKontogruppe);
+
+        TemplateKonto templateKonto = new TemplateKonto.Builder()
+                .description("TemplateKonto")
+                .kontonummer("5400")
+                .templateKontogruppe(templateKontogruppe)
+                .build();
+
+        templateKonto = templateKontoRepository.save(templateKonto);
 
     }
 
