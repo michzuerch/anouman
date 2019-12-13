@@ -1,5 +1,6 @@
 package com.gmail.michzuerch.anouman.ui.views.address;
 
+import com.gmail.michzuerch.anouman.app.HasLogger;
 import com.gmail.michzuerch.anouman.app.security.CurrentUser;
 import com.gmail.michzuerch.anouman.backend.data.Role;
 import com.gmail.michzuerch.anouman.backend.data.entity.Address;
@@ -20,14 +21,12 @@ import static com.gmail.michzuerch.anouman.ui.i18n.I18nConst.PAGE_ADDRESSES;
 @RouteAlias(value = I18nConst.PAGE_ROOT, layout = MainView.class)
 @PageTitle(I18nConst.TITLE_ADDRESSES)
 @Secured(Role.ADMIN)
-public class AddressView extends Div {
-    private static final long serialVersionUID = 1L;
-
+public class AddressView extends Div implements HasLogger {
     @Autowired
     public AddressView(AddressService service, CurrentUser currentUser) {
         Grid<Address> grid = new Grid<>(Address.class);
         //grid.addColumns("id", "localeCode", "continentCode", "continentName", "countryIsoCode", "countryName", "cityName");
-        grid.setItems(service.getRepository().findAll());
+        //grid.setItems(service.getRepository().findAll());
         add(grid);
     }
 
