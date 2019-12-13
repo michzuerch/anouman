@@ -40,10 +40,7 @@ public class DataGenerator implements HasLogger {
 
     private final Random random = new Random(1L);
 
-    private OrderRepository orderRepository;
     private UserRepository userRepository;
-    private ProductRepository productRepository;
-    private PickupLocationRepository pickupLocationRepository;
     private AddressRepository addressRepository;
     private ArticleCategoryRepository articleCategoryRepository;
     private ArticlePictureRepository articlePictureRepository;
@@ -66,8 +63,7 @@ public class DataGenerator implements HasLogger {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public DataGenerator(OrderRepository orderRepository, UserRepository userRepository,
-                         ProductRepository productRepository, PickupLocationRepository pickupLocationRepository,
+    public DataGenerator(UserRepository userRepository,
                          AddressRepository addressRepository,
                          ArticleCategoryRepository articleCategoryRepository,
                          ArticlePictureRepository articlePictureRepository,
@@ -88,10 +84,7 @@ public class DataGenerator implements HasLogger {
                          TemplateKontoRepository templateKontoRepository,
                          TemplateMehrwertsteuercodeRepository templateMehrwertsteuercodeRepository,
                          PasswordEncoder passwordEncoder) {
-        this.orderRepository = orderRepository;
         this.userRepository = userRepository;
-        this.productRepository = productRepository;
-        this.pickupLocationRepository = pickupLocationRepository;
         this.addressRepository = addressRepository;
         this.articleCategoryRepository = articleCategoryRepository;
         this.articlePictureRepository = articlePictureRepository;
