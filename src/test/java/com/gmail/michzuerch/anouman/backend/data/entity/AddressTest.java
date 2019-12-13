@@ -8,13 +8,13 @@ public class AddressTest {
 	@Test
 	public void equalsTest() {
 		Address a1 = new Address();
-		a1.setName("name");
-		a1.setPrice(123);
+		a1.setCompanyName("TestCompany1");
+		a1.setCity("Hamburg");
 
-        Address a2 = new Address();
-        
-		a2.setName("anothername");
-		a2.setPrice(123);
+		Address a2 = new Address();
+
+		a2.setCompanyName("TestCompany2");
+		a2.setCity("Budapest");
 
 		Assert.assertNotEquals(a1, a2);
 
