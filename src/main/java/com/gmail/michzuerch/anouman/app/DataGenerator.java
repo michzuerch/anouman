@@ -160,6 +160,7 @@ public class DataGenerator implements HasLogger {
                 .descriptionLong("A very long description")
                 .quantityUnit("Stück")
                 .stueckpreis(BigDecimal.valueOf(120))
+                .articleCategory(articleCategory)
                 .build();
         article = articleRepository.save(article);
 
@@ -168,7 +169,6 @@ public class DataGenerator implements HasLogger {
                 .article(article)
                 .build();
         articlePicture = articlePictureRepository.save(articlePicture);
-
 
     }
 

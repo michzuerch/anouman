@@ -15,7 +15,6 @@ public class ArticlePicture extends AbstractEntity {
 
     private String mimetype;
 
-    @NotNull
     @Basic(fetch = FetchType.LAZY)
     private byte[] image;
 
