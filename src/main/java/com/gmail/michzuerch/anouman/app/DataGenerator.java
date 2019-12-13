@@ -2,6 +2,7 @@ package com.gmail.michzuerch.anouman.app;
 
 import com.gmail.michzuerch.anouman.backend.data.Role;
 import com.gmail.michzuerch.anouman.backend.data.entity.*;
+import com.gmail.michzuerch.anouman.backend.data.entity.report.ReportCSS;
 import com.gmail.michzuerch.anouman.backend.repositories.*;
 import com.gmail.michzuerch.anouman.backend.repositories.report.*;
 import com.vaadin.flow.spring.annotation.SpringComponent;
@@ -142,9 +143,20 @@ public class DataGenerator implements HasLogger {
         createBookkeeping(bookkeepingRepository, kontoklasseRepository, kontoHauptgruppeRepository,
                 kontogruppeRepository, kontoRepository);
 
+        getLogger().info("... generating reports");
+        createReport(reportCSSRepository, reportCSSImageRepository, reportFOPRepository, reportFOPImageRepository, reportJasperRepository, reportJasperImageRepository);
+
         stopWatch.stop();
         getLogger().info("Generated demo data. Time:" + stopWatch.getTotalTimeMillis() + "ms.");
 
+    }
+
+    private void createReport(ReportCSSRepository reportCSSRepository, ReportCSSImageRepository reportCSSImageRepository, ReportFOPRepository reportFOPRepository, ReportFOPImageRepository reportFOPImageRepository, ReportJasperRepository reportJasperRepository, ReportJasperImageRepository reportJasperImageRepository) {
+        ReportCSS reportCSS = new ReportCSS.Builder()
+                .bezeichnung("Testreport")
+                .build();
+
+        reportCSS = reportCSSRepository.save(reportCSS);
     }
 
     private void createBookkeeping(BookkeepingRepository bookkeepingRepository, KontoklasseRepository kontoklasseRepository, KontoHauptgruppeRepository kontoHauptgruppeRepository, KontogruppeRepository kontogruppeRepository, KontoRepository kontoRepository) {
