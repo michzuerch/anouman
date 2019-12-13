@@ -33,6 +33,7 @@ public class DataGenerator implements HasLogger {
     private KontoHauptgruppeRepository kontoHauptgruppeRepository;
     private KontoklasseRepository kontoklasseRepository;
     private KontoRepository kontoRepository;
+    private UnterbuchungRepository unterbuchungRepository;
     private TemplateBookkeepingRepository templateBookkeepingRepository;
     private TemplateKontogruppeRepository templateKontogruppeRepository;
     private TemplateKontoHauptgruppeRepository templateKontoHauptgruppeRepository;
@@ -57,6 +58,7 @@ public class DataGenerator implements HasLogger {
                          KontoHauptgruppeRepository kontoHauptgruppeRepository,
                          KontoklasseRepository kontoklasseRepository,
                          KontoRepository kontoRepository,
+                         UnterbuchungRepository unterbuchungRepository,
                          TemplateBookkeepingRepository templateBookkeepingRepository,
                          TemplateKontogruppeRepository templateKontogruppeRepository,
                          TemplateKontoHauptgruppeRepository templateKontoHauptgruppeRepository,
@@ -79,6 +81,7 @@ public class DataGenerator implements HasLogger {
         this.kontoHauptgruppeRepository = kontoHauptgruppeRepository;
         this.kontoklasseRepository = kontoklasseRepository;
         this.kontoRepository = kontoRepository;
+        this.unterbuchungRepository = unterbuchungRepository;
         this.templateBookkeepingRepository = templateBookkeepingRepository;
         this.templateKontogruppeRepository = templateKontogruppeRepository;
         this.templateKontoHauptgruppeRepository = templateKontoHauptgruppeRepository;
@@ -175,6 +178,22 @@ public class DataGenerator implements HasLogger {
                 .build();
 
         konto = kontoRepository.save(konto);
+
+        BookEntry bookEntry = new BookEntry.Builder()
+                .belegnummer("1")
+                .bookkeeping(bookkeeping)
+                .buchungsdatum(LocalDate.now())
+                .build();
+
+        bookEntry = bookEntryRepository.save(bookEntry);
+
+        Unterbuchung unterbuchung = new Unterbuchung.Builder()
+                .buchungstext("Testbuchung aus Test")
+                .betrag(BigDecimal.valueOf(230))
+                .kontoHaben(konto)
+                .build();
+
+        unterbuchung = unterbuchungRepository.save(unterbuchung);
     }
 
     private void createAddressesAndInvoices(AddressRepository addressRepository, InvoiceRepository invoiceRepository) {

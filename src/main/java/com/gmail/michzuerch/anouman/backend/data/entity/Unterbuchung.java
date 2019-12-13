@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
+import java.math.BigDecimal;
 
 @Entity(name = "Unterbuchung")
 public class Unterbuchung extends AbstractEntity {
@@ -14,9 +14,7 @@ public class Unterbuchung extends AbstractEntity {
     @NotNull
     private String buchungstext;
 
-    private LocalDate buchungsdatum;
-
-    private Float betrag;
+    private BigDecimal betrag;
 
     @ManyToOne
     @JoinColumn(name = "KONTOSOLL_ID", nullable = false)
@@ -26,18 +24,12 @@ public class Unterbuchung extends AbstractEntity {
     @JoinColumn(name = "KONTOHABEN_ID", nullable = false)
     private Konto kontoHaben;
 
-    @ManyToOne
-    @JoinColumn(name = "BUCHUNG_ID", nullable = false)
-    private BookEntry buchung;
-
     private Unterbuchung(Builder builder) {
         setBookEntry(builder.bookEntry);
         setBuchungstext(builder.buchungstext);
-        setBuchungsdatum(builder.buchungsdatum);
         setBetrag(builder.betrag);
         setKontoSoll(builder.kontoSoll);
         setKontoHaben(builder.kontoHaben);
-        setBuchung(builder.buchung);
     }
 
     public BookEntry getBookEntry() {
@@ -56,19 +48,11 @@ public class Unterbuchung extends AbstractEntity {
         this.buchungstext = buchungstext;
     }
 
-    public LocalDate getBuchungsdatum() {
-        return buchungsdatum;
-    }
-
-    public void setBuchungsdatum(LocalDate buchungsdatum) {
-        this.buchungsdatum = buchungsdatum;
-    }
-
-    public Float getBetrag() {
+    public BigDecimal getBetrag() {
         return betrag;
     }
 
-    public void setBetrag(Float betrag) {
+    public void setBetrag(BigDecimal betrag) {
         this.betrag = betrag;
     }
 
@@ -88,22 +72,12 @@ public class Unterbuchung extends AbstractEntity {
         this.kontoHaben = kontoHaben;
     }
 
-    public BookEntry getBuchung() {
-        return buchung;
-    }
-
-    public void setBuchung(BookEntry buchung) {
-        this.buchung = buchung;
-    }
-
     public static final class Builder {
         private BookEntry bookEntry;
         private @NotNull String buchungstext;
-        private LocalDate buchungsdatum;
-        private Float betrag;
+        private BigDecimal betrag;
         private Konto kontoSoll;
         private Konto kontoHaben;
-        private BookEntry buchung;
 
         public Builder() {
         }
@@ -118,12 +92,7 @@ public class Unterbuchung extends AbstractEntity {
             return this;
         }
 
-        public Builder buchungsdatum(LocalDate val) {
-            buchungsdatum = val;
-            return this;
-        }
-
-        public Builder betrag(Float val) {
+        public Builder betrag(BigDecimal val) {
             betrag = val;
             return this;
         }
@@ -135,11 +104,6 @@ public class Unterbuchung extends AbstractEntity {
 
         public Builder kontoHaben(Konto val) {
             kontoHaben = val;
-            return this;
-        }
-
-        public Builder buchung(BookEntry val) {
-            buchung = val;
             return this;
         }
 
