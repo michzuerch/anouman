@@ -107,6 +107,11 @@ public class DataGenerator implements HasLogger {
 
         getLogger().info("... generating articles");
         createArticles(articleRepository, articleCategoryRepository, articlePictureRepository);
+
+        getLogger().info("... generating template bookkeeping");
+        createTemplateBookkepping(templateBookkeepingRepository, templateKontoRepository, templateKontogruppeRepository,
+                templateKontoHauptgruppeRepository, templateKontoklasseRepository, templateMehrwertsteuercodeRepository);
+
         stopWatch.stop();
         getLogger().info("Generated demo data. Time:" + stopWatch.getTotalTimeMillis() + "ms.");
 
@@ -170,6 +175,18 @@ public class DataGenerator implements HasLogger {
                 .build();
         articlePicture = articlePictureRepository.save(articlePicture);
 
+    }
+
+    private void createTemplateBookkepping(TemplateBookkeepingRepository templateBookkeepingRepository,
+                                           TemplateKontoRepository templateKontoRepository, TemplateKontogruppeRepository templateKontogruppeRepository,
+                                           TemplateKontoHauptgruppeRepository templateKontoHauptgruppeRepository,
+                                           TemplateKontoklasseRepository templateKontoklasseRepository, TemplateMehrwertsteuercodeRepository templateMehrwertsteuercodeRepository) {
+        TemplateBookkeeping templateBookkeeping = new TemplateBookkeeping.Builder()
+                .description("Template Bookkeeping sample")
+                .year(2017)
+                .build();
+
+        templateBookkeeping = templateBookkeepingRepository.save(templateBookkeeping);
     }
 
     private <T> T getRandom(T[] array) {

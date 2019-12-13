@@ -40,6 +40,9 @@ public class Address extends AbstractEntity {
         setInvoices(builder.invoices);
     }
 
+    public Address() {
+    }
+
     @Transient
     public Integer getIncoicesCount() {
         return 0;
@@ -54,9 +57,6 @@ public class Address extends AbstractEntity {
         // rechnung.getRechnungstotal();
         // }
         return Double.valueOf(total);
-    }
-
-    public Address() {
     }
 
     public String getCompanyName() {
