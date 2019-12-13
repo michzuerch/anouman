@@ -187,6 +187,24 @@ public class DataGenerator implements HasLogger {
                 .build();
 
         templateBookkeeping = templateBookkeepingRepository.save(templateBookkeeping);
+
+        TemplateMehrwertsteuercode templateMehrwertsteuercode1 = new TemplateMehrwertsteuercode.Builder()
+                .description("Einkauf 12%")
+                .percentage(BigDecimal.valueOf(12))
+                .selling(false)
+                .templateBookkeeping(templateBookkeeping)
+                .build();
+
+        templateMehrwertsteuercode1 = templateMehrwertsteuercodeRepository.save(templateMehrwertsteuercode1);
+
+        TemplateMehrwertsteuercode templateMehrwertsteuercode2 = new TemplateMehrwertsteuercode.Builder()
+                .description("Verkauf 12%")
+                .percentage(BigDecimal.valueOf(12))
+                .selling(true)
+                .templateBookkeeping(templateBookkeeping)
+                .build();
+
+        templateMehrwertsteuercode2 = templateMehrwertsteuercodeRepository.save(templateMehrwertsteuercode2);
     }
 
     private <T> T getRandom(T[] array) {
