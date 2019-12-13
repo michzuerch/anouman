@@ -3,6 +3,7 @@ package com.gmail.michzuerch.anouman.app;
 import com.gmail.michzuerch.anouman.backend.data.Role;
 import com.gmail.michzuerch.anouman.backend.data.entity.*;
 import com.gmail.michzuerch.anouman.backend.repositories.*;
+import com.gmail.michzuerch.anouman.backend.repositories.report.*;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -40,6 +41,12 @@ public class DataGenerator implements HasLogger {
     private TemplateKontoklasseRepository templateKontoklasseRepository;
     private TemplateKontoRepository templateKontoRepository;
     private TemplateMehrwertsteuercodeRepository templateMehrwertsteuercodeRepository;
+    private ReportCSSRepository reportCSSRepository;
+    private ReportCSSImageRepository reportCSSImageRepository;
+    private ReportFOPRepository reportFOPRepository;
+    private ReportFOPImageRepository reportFOPImageRepository;
+    private ReportJasperRepository reportJasperRepository;
+    private ReportJasperImageRepository reportJasperImageRepository;
     private PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -65,6 +72,12 @@ public class DataGenerator implements HasLogger {
                          TemplateKontoklasseRepository templateKontoklasseRepository,
                          TemplateKontoRepository templateKontoRepository,
                          TemplateMehrwertsteuercodeRepository templateMehrwertsteuercodeRepository,
+                         ReportCSSRepository reportCSSRepository,
+                         ReportCSSImageRepository reportCSSImageRepository,
+                         ReportFOPRepository reportFOPRepository,
+                         ReportFOPImageRepository reportFOPImageRepository,
+                         ReportJasperRepository reportJasperRepository,
+                         ReportJasperImageRepository reportJasperImageRepository,
                          PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.addressRepository = addressRepository;
@@ -88,6 +101,12 @@ public class DataGenerator implements HasLogger {
         this.templateKontoklasseRepository = templateKontoklasseRepository;
         this.templateKontoRepository = templateKontoRepository;
         this.templateMehrwertsteuercodeRepository = templateMehrwertsteuercodeRepository;
+        this.reportCSSRepository = reportCSSRepository;
+        this.reportCSSImageRepository = reportCSSImageRepository;
+        this.reportFOPRepository = reportFOPRepository;
+        this.reportFOPImageRepository = reportFOPImageRepository;
+        this.reportJasperRepository = reportJasperRepository;
+        this.reportJasperImageRepository = reportJasperImageRepository;
         this.passwordEncoder = passwordEncoder;
     }
 

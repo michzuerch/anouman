@@ -12,15 +12,12 @@ public class ReportCSS extends AbstractEntity {
     @NotNull
     private String bezeichnung;
 
-    @NotNull
     @Basic(fetch = FetchType.LAZY)
     private byte[] css;
 
-    @NotNull
     @Basic(fetch = FetchType.LAZY)
     private byte[] html;
 
-    @NotNull
     @Basic(fetch = FetchType.LAZY)
     private byte[] javascript;
 
@@ -77,9 +74,9 @@ public class ReportCSS extends AbstractEntity {
 
     public static final class Builder {
         private @NotNull String bezeichnung;
-        private @NotNull byte[] css;
-        private @NotNull byte[] html;
-        private @NotNull byte[] javascript;
+        private byte[] css;
+        private byte[] html;
+        private byte[] javascript;
         private List<ReportCSSImage> reportCSSImages;
 
         public Builder() {
@@ -90,17 +87,17 @@ public class ReportCSS extends AbstractEntity {
             return this;
         }
 
-        public Builder css(@NotNull byte[] val) {
+        public Builder css(byte[] val) {
             css = val;
             return this;
         }
 
-        public Builder html(@NotNull byte[] val) {
+        public Builder html(byte[] val) {
             html = val;
             return this;
         }
 
-        public Builder javascript(@NotNull byte[] val) {
+        public Builder javascript(byte[] val) {
             javascript = val;
             return this;
         }
