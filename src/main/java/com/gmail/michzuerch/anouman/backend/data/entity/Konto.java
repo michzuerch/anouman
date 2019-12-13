@@ -6,6 +6,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,12 +18,9 @@ public class Konto extends AbstractEntity {
     @NotNull
     private String kontonummer;
 
-    @ManyToOne
-    private Address address;
-
     private String comment;
 
-    private Double anfangsbestand;
+    private BigDecimal anfangsbestand;
 
     @ManyToOne
     private Kontogruppe kontogruppe;
@@ -36,15 +34,11 @@ public class Konto extends AbstractEntity {
     private Konto(Builder builder) {
         setDescription(builder.description);
         setKontonummer(builder.kontonummer);
-        setAddress(builder.address);
         setComment(builder.comment);
         setAnfangsbestand(builder.anfangsbestand);
         setKontogruppe(builder.kontogruppe);
         setSoll(builder.soll);
         setHaben(builder.haben);
-    }
-
-    public Konto() {
     }
 
     public String getDescription() {
@@ -63,14 +57,6 @@ public class Konto extends AbstractEntity {
         this.kontonummer = kontonummer;
     }
 
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
     public String getComment() {
         return comment;
     }
@@ -79,11 +65,11 @@ public class Konto extends AbstractEntity {
         this.comment = comment;
     }
 
-    public Double getAnfangsbestand() {
+    public BigDecimal getAnfangsbestand() {
         return anfangsbestand;
     }
 
-    public void setAnfangsbestand(Double anfangsbestand) {
+    public void setAnfangsbestand(BigDecimal anfangsbestand) {
         this.anfangsbestand = anfangsbestand;
     }
 
@@ -111,12 +97,12 @@ public class Konto extends AbstractEntity {
         this.haben = haben;
     }
 
+
     public static final class Builder {
         private @NotBlank String description;
         private @NotNull String kontonummer;
-        private Address address;
         private String comment;
-        private Double anfangsbestand;
+        private BigDecimal anfangsbestand;
         private Kontogruppe kontogruppe;
         private List<Unterbuchung> soll;
         private List<Unterbuchung> haben;
@@ -134,17 +120,12 @@ public class Konto extends AbstractEntity {
             return this;
         }
 
-        public Builder address(Address val) {
-            address = val;
-            return this;
-        }
-
         public Builder comment(String val) {
             comment = val;
             return this;
         }
 
-        public Builder anfangsbestand(Double val) {
+        public Builder anfangsbestand(BigDecimal val) {
             anfangsbestand = val;
             return this;
         }

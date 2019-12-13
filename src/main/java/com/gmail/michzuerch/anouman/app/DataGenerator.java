@@ -148,6 +148,33 @@ public class DataGenerator implements HasLogger {
                 .build();
 
         kontoklasse = kontoklasseRepository.save(kontoklasse);
+
+        KontoHauptgruppe kontoHauptgruppe = new KontoHauptgruppe.Builder()
+                .description("Konto Hauptgruppe")
+                .kontonummer("2000")
+                .kontoklasse(kontoklasse)
+                .build();
+
+        kontoHauptgruppe = kontoHauptgruppeRepository.save(kontoHauptgruppe);
+
+        Kontogruppe kontogruppe = new Kontogruppe.Builder()
+                .description("Kontogruppe")
+                .kontonummer("3000")
+                .kontoHauptgruppe(kontoHauptgruppe)
+                .build();
+
+        kontogruppe = kontogruppeRepository.save(kontogruppe);
+
+        Konto konto = new Konto.Builder()
+                .anfangsbestand(BigDecimal.ZERO)
+                .comment("Comment")
+                .description("Konto Testdata")
+                .kontonummer("5000")
+                .kontogruppe(kontogruppe)
+                .build();
+
+        konto = kontoRepository.save(konto);
+
     }
 
     private void createAddressesAndInvoices(AddressRepository addressRepository, InvoiceRepository invoiceRepository) {
