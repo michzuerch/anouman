@@ -128,6 +128,7 @@ public class DataGenerator implements HasLogger {
     private void createBookkeeping(BookkeepingRepository bookkeepingRepository, KontoklasseRepository kontoklasseRepository, KontoHauptgruppeRepository kontoHauptgruppeRepository, KontogruppeRepository kontogruppeRepository, KontoRepository kontoRepository) {
         Bookkeeping bookkeeping = new Bookkeeping.Builder()
                 .description("Bookkeeping Testdata")
+                .year(2018)
                 .build();
 
         bookkeeping = bookkeepingRepository.save(bookkeeping);
