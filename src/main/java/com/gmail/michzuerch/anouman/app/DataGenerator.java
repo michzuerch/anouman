@@ -25,6 +25,7 @@ public class DataGenerator implements HasLogger {
     private ArticleRepository articleRepository;
     private BookEntryRepository bookEntryRepository;
     private BookkeepingRepository bookkeepingRepository;
+    private MehrwertsteuercodeRepository mehrwertsteuercodeRepository;
     private EffortRepository effortRepository;
     private InvoiceRepository invoiceRepository;
     private InvoiceDetailRepository invoiceDetailRepository;
@@ -48,6 +49,7 @@ public class DataGenerator implements HasLogger {
                          ArticleRepository articleRepository,
                          BookEntryRepository bookEntryRepository,
                          BookkeepingRepository bookkeepingRepository,
+                         MehrwertsteuercodeRepository mehrwertsteuercodeRepository,
                          EffortRepository effortRepository,
                          InvoiceRepository invoiceRepository,
                          InvoiceDetailRepository invoiceDetailRepository,
@@ -69,6 +71,7 @@ public class DataGenerator implements HasLogger {
         this.articleRepository = articleRepository;
         this.bookEntryRepository = bookEntryRepository;
         this.bookkeepingRepository = bookkeepingRepository;
+        this.mehrwertsteuercodeRepository = mehrwertsteuercodeRepository;
         this.effortRepository = effortRepository;
         this.invoiceRepository = invoiceRepository;
         this.invoiceDetailRepository = invoiceDetailRepository;
@@ -113,9 +116,38 @@ public class DataGenerator implements HasLogger {
         createTemplateBookkepping(templateBookkeepingRepository, templateKontoRepository, templateKontogruppeRepository,
                 templateKontoHauptgruppeRepository, templateKontoklasseRepository, templateMehrwertsteuercodeRepository);
 
+        getLogger().info("... generating bookkepping");
+        createBookkeeping(bookkeepingRepository, kontoklasseRepository, kontoHauptgruppeRepository,
+                kontogruppeRepository, kontoRepository);
+
         stopWatch.stop();
         getLogger().info("Generated demo data. Time:" + stopWatch.getTotalTimeMillis() + "ms.");
 
+    }
+
+    private void createBookkeeping(BookkeepingRepository bookkeepingRepository, KontoklasseRepository kontoklasseRepository, KontoHauptgruppeRepository kontoHauptgruppeRepository, KontogruppeRepository kontogruppeRepository, KontoRepository kontoRepository) {
+        Bookkeeping bookkeeping = new Bookkeeping.Builder()
+                .description("Bookkeeping Testdata")
+                .build();
+
+        bookkeeping = bookkeepingRepository.save(bookkeeping);
+
+        Mehrwertsteuercode mehrwertsteuercode = new Mehrwertsteuercode.Builder()
+                .description("Verkauf 12%")
+                .percentage(BigDecimal.valueOf(12))
+                .selling(true)
+                .bookkeeping(bookkeeping)
+                .build();
+
+        mehrwertsteuercode = mehrwertsteuercodeRepository.save(mehrwertsteuercode);
+
+        Kontoklasse kontoklasse = new Kontoklasse.Builder()
+                .description("Kontoklasse")
+                .kontonummer("1000")
+                .bookkeeping(bookkeeping)
+                .build();
+
+        kontoklasse = kontoklasseRepository.save(kontoklasse);
     }
 
     private void createAddressesAndInvoices(AddressRepository addressRepository, InvoiceRepository invoiceRepository) {
