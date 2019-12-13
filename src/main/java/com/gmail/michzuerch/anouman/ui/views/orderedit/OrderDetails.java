@@ -3,7 +3,6 @@
  */
 package com.gmail.michzuerch.anouman.ui.views.orderedit;
 
-import com.gmail.michzuerch.anouman.backend.data.entity.Order;
 import com.gmail.michzuerch.anouman.ui.events.CancelEvent;
 import com.gmail.michzuerch.anouman.ui.events.SaveEvent;
 import com.gmail.michzuerch.anouman.ui.utils.converters.*;

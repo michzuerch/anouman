@@ -1,7 +1,5 @@
 package com.gmail.michzuerch.anouman.ui.views.orderedit;
 
-import com.gmail.michzuerch.anouman.backend.data.entity.OrderItem;
-import com.gmail.michzuerch.anouman.backend.data.entity.Product;
 import com.gmail.michzuerch.anouman.ui.views.storefront.events.TotalPriceChangeEvent;
 import com.vaadin.flow.component.AbstractField.ComponentValueChangeEvent;
 import com.vaadin.flow.component.ComponentEventListener;

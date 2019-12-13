@@ -1,8 +1,5 @@
 package com.gmail.michzuerch.anouman.ui.views.storefront;
 
-import com.gmail.michzuerch.anouman.backend.data.entity.Order;
-import com.gmail.michzuerch.anouman.backend.data.entity.OrderItem;
-import com.gmail.michzuerch.anouman.backend.data.entity.OrderSummary;
 import com.gmail.michzuerch.anouman.ui.utils.converters.OrderStateConverter;
 import com.vaadin.flow.data.renderer.TemplateRenderer;
 

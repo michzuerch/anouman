@@ -4,8 +4,6 @@
 package com.gmail.michzuerch.anouman.ui.crud;
 
 import com.gmail.michzuerch.anouman.app.security.CurrentUser;
-import com.gmail.michzuerch.anouman.backend.data.entity.Order;
-import com.gmail.michzuerch.anouman.backend.service.OrderService;
 import com.gmail.michzuerch.anouman.ui.views.storefront.StorefrontView;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Bean;

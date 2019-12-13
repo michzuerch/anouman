@@ -1,7 +1,5 @@
 package com.gmail.michzuerch.anouman.ui.dataproviders;
 
-import com.gmail.michzuerch.anouman.backend.data.entity.Order;
-import com.gmail.michzuerch.anouman.backend.service.OrderService;
 import com.gmail.michzuerch.anouman.ui.i18n.I18nConst;
 import com.vaadin.flow.data.provider.Query;
 import com.vaadin.flow.data.provider.QuerySortOrder;

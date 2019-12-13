@@ -14,8 +14,15 @@ public class I18nConst {
     public static final String PAGE_DASHBOARD = "dashboard";
     public static final String PAGE_USERS = "users";
     public static final String PAGE_PRODUCTS = "products";
+    public static final String PAGE_ADDRESSES = "addresses";
+    public static final String PAGE_INVOICES = "invoices";
+    public static final String PAGE_INVOICEDETAILS = "invoicedetails";
+
 
     public static final String TITLE_STOREFRONT = "Storefront";
+    public static final String TITLE_ADDRESSES = "Addresses";
+    public static final String TITLE_INVOICES = "Invoices";
+    public static final String TITLE_INVOICEDETAILS = "Invoice details";
     public static final String TITLE_DASHBOARD = "Dashboard";
     public static final String TITLE_USERS = "Users";
     public static final String TITLE_PRODUCTS = "Products";

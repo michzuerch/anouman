@@ -1,12 +1,6 @@
 package com.gmail.michzuerch.anouman.ui.views.orderedit;
 
-import com.gmail.michzuerch.anouman.backend.data.OrderState;
-import com.gmail.michzuerch.anouman.backend.data.entity.Order;
-import com.gmail.michzuerch.anouman.backend.data.entity.PickupLocation;
-import com.gmail.michzuerch.anouman.backend.data.entity.Product;
 import com.gmail.michzuerch.anouman.backend.data.entity.User;
-import com.gmail.michzuerch.anouman.backend.service.PickupLocationService;
-import com.gmail.michzuerch.anouman.backend.service.ProductService;
 import com.gmail.michzuerch.anouman.ui.crud.CrudEntityDataProvider;
 import com.gmail.michzuerch.anouman.ui.dataproviders.DataProviderUtil;
 import com.gmail.michzuerch.anouman.ui.events.CancelEvent;

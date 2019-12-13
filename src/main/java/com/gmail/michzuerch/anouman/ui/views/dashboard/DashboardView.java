@@ -1,11 +1,5 @@
 package com.gmail.michzuerch.anouman.ui.views.dashboard;
 
-import com.gmail.michzuerch.anouman.backend.data.DashboardData;
-import com.gmail.michzuerch.anouman.backend.data.DeliveryStats;
-import com.gmail.michzuerch.anouman.backend.data.entity.Order;
-import com.gmail.michzuerch.anouman.backend.data.entity.OrderSummary;
-import com.gmail.michzuerch.anouman.backend.data.entity.Product;
-import com.gmail.michzuerch.anouman.backend.service.OrderService;
 import com.gmail.michzuerch.anouman.ui.MainView;
 import com.gmail.michzuerch.anouman.ui.dataproviders.OrdersGridDataProvider;
 import com.gmail.michzuerch.anouman.ui.i18n.I18nConst;

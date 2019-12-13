@@ -1,9 +1,5 @@
 package com.gmail.michzuerch.anouman.ui.views.dashboard;
 
-import com.gmail.michzuerch.anouman.backend.data.DeliveryStats;
-import com.gmail.michzuerch.anouman.backend.data.OrderState;
-import com.gmail.michzuerch.anouman.backend.data.entity.Order;
-import com.gmail.michzuerch.anouman.backend.data.entity.OrderSummary;
 import com.gmail.michzuerch.anouman.ui.views.storefront.beans.OrdersCountData;
 import com.gmail.michzuerch.anouman.ui.views.storefront.beans.OrdersCountDataWithChart;
 

@@ -1,7 +1,5 @@
 package com.gmail.michzuerch.anouman.ui.views.orderedit;
 
-import com.gmail.michzuerch.anouman.backend.data.entity.OrderItem;
-import com.gmail.michzuerch.anouman.backend.data.entity.Product;
 import com.gmail.michzuerch.anouman.ui.components.AmountField;
 import com.gmail.michzuerch.anouman.ui.utils.FormattingUtils;
 import com.gmail.michzuerch.anouman.ui.views.storefront.events.CommentChangeEvent;

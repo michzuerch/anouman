@@ -13,9 +13,6 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-/**
- * Spring boot web application initializer.
- */
 @SpringBootApplication(scanBasePackageClasses = {SecurityConfiguration.class, MainView.class, Application.class,
         UserService.class}, exclude = ErrorMvcAutoConfiguration.class)
 @EnableJpaRepositories(basePackageClasses = {UserRepository.class})

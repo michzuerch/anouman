@@ -1,8 +1,10 @@
 package com.gmail.michzuerch.anouman.app;
 
-import com.gmail.michzuerch.anouman.backend.data.OrderState;
 import com.gmail.michzuerch.anouman.backend.data.Role;
-import com.gmail.michzuerch.anouman.backend.data.entity.*;
+import com.gmail.michzuerch.anouman.backend.data.entity.Address;
+import com.gmail.michzuerch.anouman.backend.data.entity.Invoice;
+import com.gmail.michzuerch.anouman.backend.data.entity.InvoiceDetail;
+import com.gmail.michzuerch.anouman.backend.data.entity.User;
 import com.gmail.michzuerch.anouman.backend.repositories.*;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import org.springframework.beans.factory.annotation.Autowired;

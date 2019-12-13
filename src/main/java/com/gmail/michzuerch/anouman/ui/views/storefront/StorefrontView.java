@@ -1,7 +1,6 @@
 package com.gmail.michzuerch.anouman.ui.views.storefront;
 
 import com.gmail.michzuerch.anouman.app.HasLogger;
-import com.gmail.michzuerch.anouman.backend.data.entity.Order;
 import com.gmail.michzuerch.anouman.backend.data.entity.util.EntityUtil;
 import com.gmail.michzuerch.anouman.ui.MainView;
 import com.gmail.michzuerch.anouman.ui.components.SearchBar;

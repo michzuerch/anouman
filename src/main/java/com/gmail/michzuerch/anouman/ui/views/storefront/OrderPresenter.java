@@ -1,8 +1,6 @@
 package com.gmail.michzuerch.anouman.ui.views.storefront;
 
 import com.gmail.michzuerch.anouman.app.security.CurrentUser;
-import com.gmail.michzuerch.anouman.backend.data.entity.Order;
-import com.gmail.michzuerch.anouman.backend.service.OrderService;
 import com.gmail.michzuerch.anouman.ui.crud.EntityPresenter;
 import com.gmail.michzuerch.anouman.ui.dataproviders.OrdersGridDataProvider;
 import com.gmail.michzuerch.anouman.ui.i18n.I18nConst;

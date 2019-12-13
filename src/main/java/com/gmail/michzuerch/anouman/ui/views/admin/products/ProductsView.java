@@ -2,8 +2,6 @@ package com.gmail.michzuerch.anouman.ui.views.admin.products;
 
 import com.gmail.michzuerch.anouman.app.security.CurrentUser;
 import com.gmail.michzuerch.anouman.backend.data.Role;
-import com.gmail.michzuerch.anouman.backend.data.entity.Product;
-import com.gmail.michzuerch.anouman.backend.service.ProductService;
 import com.gmail.michzuerch.anouman.ui.MainView;
 import com.gmail.michzuerch.anouman.ui.crud.AbstractBakeryCrudView;
 import com.gmail.michzuerch.anouman.ui.i18n.I18nConst;
