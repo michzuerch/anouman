@@ -228,6 +228,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
         <!-- End Spring -->
         <!-- Add JAXB explicitly as the java.xml.bind module is not included
              by default anymore in Java 9-->

@@ -1,3 +1,7 @@
+spring:
+  application:
+    name: anouman
+
 server.compression:
   enabled: true
   mime-types: application/json,application/xml,text/html,text/xml,text/plain,application/javascript,text/css
@@ -27,3 +31,8 @@ spring.datasource:
 spring.jpa:
   database-platform: org.hibernate.dialect.H2Dialect
   hibernate.ddl-auto: update
+
+managment:
+  endpoint:
+    sessions:
+      enabled: true
