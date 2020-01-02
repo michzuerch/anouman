@@ -32,7 +32,15 @@ spring.jpa:
   database-platform: org.hibernate.dialect.H2Dialect
   hibernate.ddl-auto: update
 
-managment:
-  endpoint:
-    sessions:
-      enabled: true
+management.endpoint:
+  health:
+    show-details: always
+  sessions:
+    enabled: true
+  
+info.app:
+  name: Anouman
+  description: Sample project for github
+  version: development
+  java.version: 12
+  
