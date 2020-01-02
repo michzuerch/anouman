@@ -4,11 +4,3 @@ image:
 ports:
 - port: 8080
   onOpen: open-preview
-
-vscode:
-  extensions:
-  - pflannery.vscode-versionlens@0.24.0:FzMGwBqMxkIHqADhVK2e2Q==
-  - vscjava.vscode-maven@0.19.1:BvBDxQECRYP8SiCZ8Csrsg==
-  - redhat.vscode-yaml@0.5.3:9PocMeslVen4COl7FQruRA==
-  - sohibe.java-generate-setters-getters@4.2.2:TGDLfj6/6KwENqC9dWEGyQ==
-  - scala-lang.scala@0.3.8:wQBBM+lKILHBqOqlqW60xA==
