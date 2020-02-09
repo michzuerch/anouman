@@ -133,6 +133,9 @@ module.exports = {
     // Transpile with babel, and produce different bundles per browser
     new BabelMultiTargetPlugin({
       babel: {
+        // workaround for Safari 10 scope issue (https://bugs.webkit.org/show_bug.cgi?id=159270)
+        plugins: ["@babel/plugin-transform-block-scoping"],
+
         presetOptions: {
           useBuiltIns: false // polyfills are provided from webcomponents-loader.js
         }
@@ -160,7 +163,7 @@ module.exports = {
       compiler.hooks.afterEmit.tapAsync("FlowIdPlugin", (compilation, done) => {
         if (!devMode) {
           // eslint-disable-next-line no-console
-          console.log("         Emitted " + statsFile)
+          console.log("         Emitted " + statsFile);
           fs.writeFile(statsFile, JSON.stringify(compilation.getStats().toJson(), null, 1), done);
         } else {
           // eslint-disable-next-line no-console
