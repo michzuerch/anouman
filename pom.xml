@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.gmail.michzuerch.anouman</groupId>
     <artifactId>anouman-app</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>Anouman</name>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>nexus-snapshots</id>
+            <url>http://localhost:8081/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -20,7 +27,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <failOnMissingWebXml>false</failOnMissingWebXml>
         <!-- Dependencies -->
-        <vaadin.version>14.1.16</vaadin.version>
+        <vaadin.version>14.1.17</vaadin.version>
 
         <!-- Overrides the old version specified by the Spring Boot parent -->
         <selenium.version>3.141.59</selenium.version>
@@ -289,6 +296,11 @@
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>${maven.surefire.plugin.version}</version>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>3.0.0-M1</version>
+                </plugin>
             </plugins>
         </pluginManagement>
 
@@ -310,6 +322,11 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>3.0.0-M1</version>
             </plugin>
         </plugins>
         <resources>
@@ -398,7 +415,8 @@
                             <trimStackTrace>false</trimStackTrace>
                             <systemPropertyVariables>
                                 <webdriver.chrome.driver>${webdriver.chrome.driver}</webdriver.chrome.driver>
-                                <com.vaadin.testbench.Parameters.runLocally>chrome</com.vaadin.testbench.Parameters.runLocally>
+                                <com.vaadin.testbench.Parameters.runLocally>chrome
+                                </com.vaadin.testbench.Parameters.runLocally>
                             </systemPropertyVariables>
                         </configuration>
                     </plugin>
@@ -473,7 +491,9 @@
                                 <sauce.user>${sauce.user}</sauce.user>
                                 <sauce.sauceAccessKey>${sauce.sauceAccessKey}</sauce.sauceAccessKey>
                                 <sauce.options>${sauce.options}</sauce.options>
-                                <com.vaadin.testbench.Parameters.gridBrowsers>${com.vaadin.testbench.Parameters.gridBrowsers}</com.vaadin.testbench.Parameters.gridBrowsers>
+                                <com.vaadin.testbench.Parameters.gridBrowsers>
+                                    ${com.vaadin.testbench.Parameters.gridBrowsers}
+                                </com.vaadin.testbench.Parameters.gridBrowsers>
                             </systemPropertyVariables>
                         </configuration>
                     </plugin>
