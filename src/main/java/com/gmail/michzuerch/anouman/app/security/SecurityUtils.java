@@ -3,7 +3,6 @@ package com.gmail.michzuerch.anouman.app.security;
 import com.gmail.michzuerch.anouman.ui.views.errors.AccessDeniedView;
 import com.gmail.michzuerch.anouman.ui.views.errors.CustomRouteNotFoundError;
 import com.gmail.michzuerch.anouman.ui.views.login.LoginView;
-import com.vaadin.flow.server.ServletHelper.RequestType;
 import com.vaadin.flow.shared.ApplicationConstants;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.security.access.annotation.Secured;

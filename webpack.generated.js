@@ -102,15 +102,15 @@ module.exports = {
         }
     },
 
-  devServer: {
-    // webpack-dev-server serves ./ ,  webpack-generated,  and java webapp
-    contentBase: [mavenOutputFolderForFlowBundledFiles, 'src/main/webapp'],
-    after: function(app, server) {
-      app.get(`/stats.json`, function(req, res) {
-          res.json(stats);
-      });
-      app.get(`/stats.hash`, function(req, res) {
-          res.json(stats.hash.toString());
+    devServer: {
+        // webpack-dev-server serves ./ ,  webpack-generated,  and java webapp
+        contentBase: [mavenOutputFolderForFlowBundledFiles, 'src/main/webapp'],
+        after: function (app, server) {
+            app.get(`/stats.json`, function (req, res) {
+                res.json(stats);
+            });
+            app.get(`/stats.hash`, function (req, res) {
+                res.json(stats.hash.toString());
       });
       app.get(`/assetsByChunkName`, function(req, res) {
           res.json(stats.assetsByChunkName);
